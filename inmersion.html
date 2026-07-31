@@ -459,7 +459,7 @@ var esLocalHost=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
 function getCancionesAll(){
   if(window.FB && FB.user()){
     return FB.udoc().collection('canciones').get().then(function(snap){
-      var out={}; snap.forEach(function(d){out[d.id]=d.data();}); return out;
+      var out={}; snap.forEach(function(d){var v=d.data()||{}; try{out[d.id]=v.json?JSON.parse(v.json):v;}catch(e){out[d.id]=v;}}); return out;
     });
   }
   return fetch('/api/canciones').then(function(r){return r.json()});
