@@ -286,6 +286,15 @@ window.VOCAB = {
   "fottere":"joder / timar 🔴","fottuto":"puto / jodido 🔴","cazzo":"joder / carajo 🔴",
   "thot":"mujer (despectivo, jerga trap) 🔴","lean":"lean (droga, jerga trap)",
   "sippare":"beber a sorbos","network":"red de contactos",
+  /* — Canción «Hollywood» (2ª pasada, cobertura 100%) — */
+  "fa lo stesso":"da igual / me da lo mismo","il giorno dopo":"al día siguiente",
+  "il giorno prima":"el día anterior","camera":"habitación (¡no cámara!)",
+  "per mano":"de la mano","un attimo":"un momento / un instante",
+  "il solito":"lo de siempre","come al solito":"como de costumbre",
+  "ho chiuso":"se acabó / corté","appunto":"exacto / justamente",
+  "di nuovo":"otra vez / de nuevo","uscire insieme a":"salir con (en pareja)",
+  "sedersi":"sentarse","sparire":"desaparecer","tramonto":"atardecer / puesta de sol",
+  "alba":"amanecer / alba","troppo poco":"demasiado poco","single":"soltero/a",
   /* — Canción "Hollywood" (Rkomi/Irma) — */
   "come mai":"¿cómo es que…? / ¿por qué…?","bello da morire":"precioso a morir (da+inf intensificador)",
   "fare strada":"avanzar / llegar lejos (en la vida)","capita che":"pasa que / a veces",
@@ -635,6 +644,16 @@ window.DEF_IT = {
   "ti voglio bene":"affetto per amici e famiglia; per l'amore romantico si dice 'ti amo'",
   "mancare":"non esserci; 'mi manchi' = sento la tua assenza (soggetto = chi manca)",
   "fottuto":"(volgare) calco dall'inglese 'fucking', usato come intensificatore",
+  /* — Canción «Hollywood» — */
+  "fa lo stesso":"non importa, è indifferente: «vieni o no? fa lo stesso»",
+  "camera":"stanza, in particolare quella da letto o d'albergo (non l'apparecchio fotografico)",
+  "per mano":"tenendosi la mano: camminare per mano",
+  "un attimo":"un momento brevissimo; da solo vale «aspetta!»",
+  "il solito":"ciò che si fa o si prende sempre: «come al solito», «il solito, grazie»",
+  "appunto":"esattamente, proprio così: conferma quanto detto",
+  "sedersi":"mettersi a sedere; pronominale, vuole l'ausiliare essere",
+  "sparire":"scomparire, non farsi più trovare; ausiliare essere",
+  "tramonto":"il momento in cui il sole scende sotto l'orizzonte; il contrario è l'alba",
   /* — Libro caps. 12-14 (termini tecnici/storici) — */
   "orafo":"artigiano che lavora l'oro e i metalli preziosi",
   "cupola":"copertura a forma di mezza sfera che chiude un edificio dall'alto",

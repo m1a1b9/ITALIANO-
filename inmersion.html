@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inmersión · Curso de Italiano</title>
 <link rel="stylesheet" href="assets/curso.css">
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script defer src="assets/firebase.js"></script>
 <script defer src="assets/vocab.js"></script>
 <script defer src="assets/frases.js"></script>
 <script defer src="assets/curso.js"></script>
@@ -450,9 +454,37 @@ function cerrarCancion(){
   loopActivo=null;
   if(window.italianoStop)window.italianoStop();
 }
+var esLocalHost=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+// Lee las canciones de Firestore (si hay sesión) o del servidor local (fallback).
+function getCancionesAll(){
+  if(window.FB && FB.user()){
+    return FB.udoc().collection('canciones').get().then(function(snap){
+      var out={}; snap.forEach(function(d){out[d.id]=d.data();}); return out;
+    });
+  }
+  return fetch('/api/canciones').then(function(r){return r.json()});
+}
+// Migración única (SOLO en tu PC): lee /api/canciones del servidor local y las sube a Firestore.
+function subirCancionesLocales(btn){
+  btn.disabled=true; btn.textContent='subiendo…';
+  fetch('/api/canciones').then(function(r){return r.json()}).then(function(all){
+    var ids=Object.keys(all||{});
+    if(!ids.length){btn.textContent='no hay canciones locales';return;}
+    return Promise.all(ids.map(function(id){return FB.udoc().collection('canciones').doc(id).set(all[id]);}))
+      .then(function(){btn.textContent='✓ '+ids.length+' canciones subidas a la nube';cargarLib();});
+  }).catch(function(e){btn.disabled=false;btn.textContent='⚠ error: '+(e.message||e);});
+}
+function botonSubir(lib){
+  if(!(esLocalHost && window.FB && FB.user()))return;
+  var b=document.createElement('button');
+  b.textContent='⬆️ Subir mis canciones locales a la nube (una vez)';
+  b.style.cssText='display:block;margin:0 0 .8rem;background:#1a4d80;color:#fff;border:0;border-radius:7px;padding:.5rem .8rem;font:600 .82rem/1 sans-serif;cursor:pointer';
+  b.onclick=function(){subirCancionesLocales(b);};
+  lib.parentNode.insertBefore(b,lib);
+}
 function cargarLib(){
   var lib=document.getElementById('lib');
-  fetch('/api/canciones').then(function(r){return r.json()}).then(function(all){
+  getCancionesAll().then(function(all){
     var ids=Object.keys(all||{});
     if(!ids.length){lib.innerHTML='<p style="color:#888;font-size:.86rem">Aún no guardas canciones.</p>';return;}
     lib.innerHTML='';
@@ -566,7 +598,10 @@ document.getElementById('pron-btn').onclick=function(){
 aplicarPron();
 function init(){
   fetch('/api/dudas').then(function(r){return r.json()}).then(function(d){DUDAS=d||{};}).catch(function(){DUDAS={};})
-    .then(function(){cargarLib();});
+    .then(function(){
+      if(window.FB){ FB.loginGate(function(){ botonSubir(document.getElementById('lib')); cargarLib(); }); }
+      else { cargarLib(); }   // sin Firebase (no debería pasar): comportamiento viejo
+    });
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 </script>
