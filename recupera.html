@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recuperar respuestas · Curso de Italiano</title>
+<link rel="stylesheet" href="assets/curso.css">
+<style>
+  body{font-family:-apple-system,"Segoe UI",sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:820px;margin:0 auto;padding:2rem 1.5rem 5rem;line-height:1.5}
+  a.back{color:#2d6a4f;text-decoration:none;font-size:.85rem}
+  h1{font-size:1.6rem;margin:.3rem 0}
+  .sub{color:#666;margin:0 0 1rem;font-size:.92rem}
+  table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}
+  th{background:#1c1c1e;color:#fff;text-align:left;padding:.5rem .7rem;font-size:.72rem;text-transform:uppercase}
+  td{padding:.5rem .7rem;border-bottom:1px solid #dde5dd;vertical-align:top}
+  .ok{color:#1a6e47;font-weight:700}.no{color:#c0392b}.rec{color:#8a6d1f;font-weight:700}
+  .btn{background:#2d6a4f;color:#fff;border:0;border-radius:8px;padding:.7rem 1.2rem;font:700 .95rem/1 sans-serif;cursor:pointer;margin:.5rem .4rem 0 0}
+  .btn.sec{background:#fff;color:#2d6a4f;border:1px solid #2d6a4f}
+  .msg{background:#fff;border:1px solid #dde5dd;border-radius:8px;padding:.8rem 1rem;margin:1rem 0;font-size:.9rem}
+  code{background:#eef2ee;padding:.05rem .3rem;border-radius:4px;font-size:.85rem}
+  .warn{background:#fdf0ef;border:1px solid #f0c0b8;color:#922b21;border-radius:8px;padding:.7rem 1rem;font-size:.88rem;margin:1rem 0}
+</style>
+</head>
+<body>
+<a class="back" href="index.html">⌂ Índice</a>
+<h1>🛟 Recuperar respuestas</h1>
+<p class="sub">Esta página mira lo que tu <b>navegador</b> guardó (localStorage) y lo que hay en el <b>servidor</b> (respuestas.json), y te deja <b>copiar del navegador al servidor</b> lo que falte. Nunca borra nada del servidor: solo rellena huecos.</p>
+
+<div id="estado" class="msg">Cargando…</div>
+<table id="tabla"><thead><tr><th>Día</th><th>En tu navegador</th><th>En el servidor</th><th>¿Recuperable?</th></tr></thead><tbody></tbody></table>
+
+<button class="btn" id="btn-rec">⬆️ Copiar navegador → servidor (solo huecos)</button>
+<button class="btn sec" id="btn-refresh">↻ Volver a mirar</button>
+
+<div class="warn">Si un día sale <b>vacío en ambos lados</b>, esas respuestas se perdieron de verdad y hay que re-contestarlas. Si sale <span class="rec">recuperable</span>, este botón las devuelve al servidor y las verás siempre.</div>
+
+<script>
+function nonEmpty(o){var n=0;if(o)for(var k in o){if((o[k]||'').trim())n++;}return n;}
+function loadLocalAll(){
+  var days={};
+  for(var i=0;i<localStorage.length;i++){
+    var key=localStorage.key(i);var m=key&&key.match(/^resp-(\d+)$/);
+    if(!m)continue;
+    var nn=('0'+m[1]).slice(-2);
+    try{days[nn]=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){days[nn]={}}
+  }
+  return days;
+}
+function merge(srv,loc){ // servidor no-vacío gana; si vacío, usa navegador
+  var o={},rec=false,keys={};
+  [srv,loc].forEach(function(src){if(src)for(var k in src)keys[k]=1;});
+  for(var k in keys){
+    var s=(srv&&srv[k]!=null)?srv[k]:'', l=(loc&&loc[k]!=null)?loc[k]:'';
+    if(s&&s.trim())o[k]=s; else if(l&&l.trim()){o[k]=l;rec=true;} else o[k]=s||l||'';
+  }
+  return {answers:o,recovered:rec};
+}
+var SRV={}, LOC={};
+function pintar(){
+  LOC=loadLocalAll();
+  fetch('/api/respuestas').then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(all){
+    SRV=all||{};
+    document.getElementById('estado').innerHTML='✅ Servidor conectado. Comparando tu navegador con respuestas.json…';
+    var dias={};Object.keys(SRV).forEach(function(d){dias[d]=1});Object.keys(LOC).forEach(function(d){dias[d]=1});
+    var tb=document.querySelector('#tabla tbody');tb.innerHTML='';
+    Object.keys(dias).sort().forEach(function(d){
+      var nl=nonEmpty(LOC[d]),ns=nonEmpty(SRV[d]);
+      var m=merge(SRV[d]||{},LOC[d]||{});
+      var recuperable=m.recovered;
+      var tr=document.createElement('tr');
+      tr.innerHTML='<td><b>'+d+'</b></td>'+
+        '<td class="'+(nl?'ok':'no')+'">'+(nl?nl+' recuadros':'—')+'</td>'+
+        '<td class="'+(ns?'ok':'no')+'">'+(ns?ns+' recuadros':'—')+'</td>'+
+        '<td class="'+(recuperable?'rec':'')+'">'+(recuperable?'✳️ sí, hay huecos que rellenar':(nl||ns?'ya está':'vacío en ambos'))+'</td>';
+      tb.appendChild(tr);
+    });
+  }).catch(function(){
+    document.getElementById('estado').innerHTML='⚠️ No hay servidor. Abre el curso con «Abrir Curso Italiano.bat» y vuelve a entrar aquí.';
+  });
+}
+document.getElementById('btn-refresh').onclick=pintar;
+document.getElementById('btn-rec').onclick=function(){
+  var dias=Object.keys(LOC);if(!dias.length){alert('Tu navegador no tiene respuestas guardadas (localStorage vacío).');return;}
+  var pend=0,done=0,recuperados=[];
+  dias.forEach(function(d){
+    var m=merge(SRV[d]||{},LOC[d]||{});
+    if(!m.recovered)return;   // nada que rellenar en este día
+    pend++;recuperados.push(d);
+    fetch('/api/respuestas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({dia:d,answers:m.answers})})
+      .then(function(){done++;if(done===pend){document.getElementById('estado').innerHTML='✅ Recuperados y guardados en el servidor: días <b>'+recuperados.join(', ')+'</b>. Abre esos días y verás tus respuestas (y tus correcciones).';pintar();}})
+      .catch(function(){});
+  });
+  if(!pend)document.getElementById('estado').innerHTML='ℹ️ No hay huecos que rellenar: el servidor ya tiene todo lo que tu navegador tenía.';
+};
+pintar();
+</script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi diagnóstico · Italiano</title>
+<link rel="stylesheet" href="assets/curso.css">
+<style>
+  body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:760px;margin:0 auto;padding:2rem 1.5rem 4rem;line-height:1.5}
+  .top{border-left:4px solid #2d6a4f;padding-left:1rem;margin-bottom:1rem}
+  .top h1{font-size:1.7rem;margin:0}
+  .top p{color:#666;margin:.3rem 0 0;font-size:.9rem}
+  .links{display:flex;gap:.6rem;flex-wrap:wrap;margin:.6rem 0 1.6rem}
+  .links a{font-size:.82rem;color:#2d6a4f;text-decoration:none;border:1px solid #cfe3d8;border-radius:6px;padding:.4rem .7rem}
+  h2{font-size:.74rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#2d6a4f;margin:1.8rem 0 .7rem}
+  .fort{display:flex;flex-wrap:wrap;gap:.5rem}
+  .fort span{background:#e3f3ea;color:#1a6e47;border-radius:20px;padding:.35rem .8rem;font-size:.85rem;font-weight:600}
+  .fort span small{font-weight:400;opacity:.7}
+  .rasgo{background:#fff;border:1px solid #dde5dd;border-radius:10px;padding:.9rem 1rem;margin:.5rem 0;border-left:4px solid #ccc}
+  .rasgo.emergente{border-left-color:#c79a3a}
+  .rasgo.consolidando{border-left-color:#2c7be5}
+  .rasgo.dominado{border-left-color:#2d6a4f}
+  .rasgo.fosilizacion{border-left-color:#c0392b}
+  .rasgo .h{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap}
+  .rasgo .et{font-weight:700;font-size:.98rem}
+  .rasgo .cat{font-size:.74rem;color:#999}
+  .badge{font-size:.7rem;font-weight:700;border-radius:5px;padding:.18rem .5rem;white-space:nowrap}
+  .b-emergente{background:#fff4d6;color:#9a7d00}
+  .b-consolidando{background:#e7f0fb;color:#2c5aa0}
+  .b-dominado{background:#e3f3ea;color:#1a6e47}
+  .b-fosilizacion{background:#fdecea;color:#b03a2e}
+  .meta{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:.82rem;color:#555;margin-top:.5rem}
+  .meta b{color:#1c1c1e}
+  .nota{font-size:.84rem;color:#666;margin-top:.5rem;font-style:italic}
+  .acciones{margin-top:.6rem}
+  .btn-dom{background:#2d6a4f;color:#fff;border:0;border-radius:6px;padding:.4rem .8rem;font:600 .78rem/1 sans-serif;cursor:pointer}
+  .btn-dom:hover{background:#35835f}
+  .btn-dom.rev{background:#fff;color:#8a6d1f;border:1px solid #e8d9b5}
+  .btn-dom.rev:hover{background:#fffaf0}
+  .man{display:inline-block;font-size:.68rem;font-weight:700;background:#e3f3ea;color:#1a6e47;border-radius:5px;padding:.15rem .5rem;margin-left:.4rem}
+  .cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.6rem}
+  .cat-card{background:#fff;border:1px solid #dde5dd;border-radius:9px;padding:.7rem .9rem}
+  .cat-card .n{font-size:.78rem;color:#777}
+  .cat-card .v{font-weight:700;color:#2d6a4f;text-transform:capitalize}
+  .leyenda{background:#f0f7f4;border-radius:10px;padding:1rem 1.2rem;font-size:.85rem;color:#1a4731;margin-top:1.5rem}
+  .leyenda b{color:#14392b}
+  .vacio{text-align:center;color:#777;background:#fff;border:1px dashed #ccc;border-radius:10px;padding:2rem 1rem}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>🩺 Mi diagnóstico</h1>
+  <p>Qué dominas, qué se está consolidando y qué estoy reintroduciendo (siembra) para que dejes de fallarlo.</p>
+</div>
+<div class="links"><a href="index.html">⌂ Índice</a><a href="practica.html">🎯 Práctica</a><a href="mi-vocabulario.html">★ Vocabulario</a></div>
+
+<h2>💪 Tus fortalezas</h2>
+<div class="fort" id="fortalezas"></div>
+
+<h2>🎯 Rasgos en seguimiento (tus errores)</h2>
+<div id="rasgos"></div>
+
+<h2>🗺️ Mapa por categoría</h2>
+<div class="cats" id="cats"></div>
+
+<div class="leyenda">
+  <b>Cómo funciona:</b> cada error pasa por <b>🌱 emergente → 🔁 consolidando → ✅ dominado</b>. Lo reintroduzco en días siguientes (siembra) más espaciado cada vez que aciertas (D+1 → D+4 → D+10); si fallas, se acerca. Tres aciertos espaciados en contextos distintos = dominado y sale del foco. Si se repite pese a corregirlo → <b>🔴 riesgo de fosilización</b> y recibe una mini-lección dedicada.
+  <br><br>✅ <b>«Ya lo domino»:</b> si sientes que un tema ya lo tienes, márcalo y dejará de aparecer en tus <em>«focos de hoy»</em> y de sembrarse en los días nuevos. Siempre puedes <b>volver a seguirlo</b>. (Los ejercicios ya escritos en días que aún no estudias no se borran — un repaso de más no estorba.)
+</div>
+
+<script>
+function badgeEstado(e){var map={emergente:'🌱 emergente',consolidando:'🔁 consolidando',dominado:'✅ dominado',fosilizacion:'🔴 fosilización'};return map[e]||e;}
+function tend(t){return {mejorando:'📈 mejorando',estancado:'➖ estancado',fosilizando:'⚠️ se repite',nuevo:'🆕 nuevo'}[t]||t;}
+
+function render(p){
+  // fortalezas
+  var f=document.getElementById('fortalezas');f.innerHTML='';
+  (p.fortalezas||[]).forEach(function(x){var s=document.createElement('span');s.innerHTML=x.etiqueta+(x.desde?' <small>('+x.desde+')</small>':'');f.appendChild(s);});
+  if(!(p.fortalezas||[]).length)f.innerHTML='<span style="background:#eee;color:#777">Aún por descubrir</span>';
+
+  // rasgos (ordenados por prioridad desc; los dominados caen al fondo)
+  var r=document.getElementById('rasgos');r.innerHTML='';
+  var claves=Object.keys(p.rasgos||{});
+  claves.sort(function(a,b){return (p.rasgos[b].prioridad||0)-(p.rasgos[a].prioridad||0)});
+  if(!claves.length){r.innerHTML='<div class="vacio">✅ Sin errores en seguimiento. ¡Vas limpio!</div>';}
+  claves.forEach(function(clave){
+    var x=p.rasgos[clave];
+    var d=document.createElement('div');d.className='rasgo '+(x.estado||'');
+    var esDom=x.estado==='dominado';
+    d.innerHTML='<div class="h"><span><span class="et">'+x.etiqueta+'</span> <span class="cat">· '+(x.categoria||'')+'</span>'+
+      (x.dominado_manual?'<span class="man">✓ marcado por ti</span>':'')+'</span>'+
+      '<span class="badge b-'+(x.estado||'')+'">'+badgeEstado(x.estado)+'</span></div>'+
+      '<div class="meta"><span>'+tend(x.tendencia)+'</span>'+
+      '<span>✗ '+(x.fallos||0)+' · ✓ '+(x.aciertos||0)+'</span>'+
+      '<span>prioridad <b>'+(x.prioridad||0)+'/10</b></span>'+
+      (x.proxima_siembra&&!esDom?'<span>↻ reaparece: <b>'+x.proxima_siembra+'</b></span>':'')+'</div>'+
+      (x.nota?'<div class="nota">'+x.nota+'</div>':'')+
+      '<div class="acciones">'+
+      (esDom
+        ? '<button class="btn-dom rev" data-r="'+clave+'" data-a="reactivar">↩ Volver a seguirlo</button>'
+        : '<button class="btn-dom" data-r="'+clave+'" data-a="dominar">✅ Ya lo domino — deja de repetírmelo</button>')+
+      '</div>';
+    r.appendChild(d);
+  });
+  [].slice.call(r.querySelectorAll('.btn-dom')).forEach(function(b){
+    b.onclick=function(){
+      b.disabled=true;b.textContent='guardando…';
+      fetch('/api/perfil',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({rasgo:b.getAttribute('data-r'),accion:b.getAttribute('data-a')})})
+        .then(function(r){return r.json()})
+        .then(function(res){if(res.ok)cargar();else{b.disabled=false;b.textContent='⚠ no se pudo';}})
+        .catch(function(){b.disabled=false;b.textContent='⚠ ¿servidor apagado?';});
+    };
+  });
+
+  // categorías
+  var c=document.getElementById('cats');c.innerHTML='';
+  Object.keys(p.categorias||{}).forEach(function(k){
+    var card=document.createElement('div');card.className='cat-card';
+    card.innerHTML='<div class="n">'+k+'</div><div class="v">'+p.categorias[k]+'</div>';c.appendChild(card);
+  });
+}
+
+function cargar(){
+  fetch('/api/perfil').then(function(r){return r.json()}).then(function(p){
+    if(p&&(p.rasgos||p.fortalezas))render(p);
+    else document.getElementById('rasgos').innerHTML='<div class="vacio">Tu perfil se llena conforme te corrijo cada día.</div>';
+  }).catch(function(){
+    document.getElementById('rasgos').innerHTML='<div class="vacio">Abre el curso con «Abrir Curso Italiano.bat» (servidor) para ver tu diagnóstico.</div>';
+  });
+}
+cargar();
+</script>
+</body>
+</html>

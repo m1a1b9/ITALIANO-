@@ -1,0 +1,29 @@
+# ─────────────────────────────────────────────────────────────
+#  Curso de Italiano — .gitignore
+#  REGLA DE ORO: los DATOS PERSONALES nunca van a un repo público.
+#  Respuestas, correcciones, perfil, backups → viven en Firestore (Fase 2).
+# ─────────────────────────────────────────────────────────────
+
+# Todos los datos de runtime/personales…
+datos/*
+# …excepto el contenido de curso NO personal:
+!datos/drills.json
+
+# Secretos (claves de servicio Firebase Admin, credenciales)
+*serviceAccount*.json
+*firebase-adminsdk*.json
+*.key
+.env
+.env.*
+
+# Notas de desarrollo internas (no para publicar)
+REGLAS_DESARROLLO.txt
+temario_maestro.md
+
+# SO / Python / basura
+__pycache__/
+*.pyc
+*.lnk
+*.docx
+.DS_Store
+Thumbs.db

@@ -1,0 +1,120 @@
+{
+  "_esquema": "Banco curado de drills por rasgo del perfil. Lo escribe Claude al corregir cada día (REGLAS §7 paso 6). Claves de 'rasgos' = las mismas de perfil.json; la app excluye sola los rasgos con estado 'dominado'. tipo: 'scrivi' (el usuario teclea; comparar normalizado con soluzione/accettate) o 'scelta' (opción múltiple, c = índice correcto). 'accenti': true = comparar acentos estrictos (para e/è). Renovar drills gastados con contextos NUEVOS.",
+  "actualizado": "2026-07-10",
+  "rasgos": {
+    "ausiliare_pronominali_riflessivi": {
+      "etiqueta": "Auxiliar ESSERE: pronominales, recíprocos y movimiento en tiempos compuestos",
+      "drills": [
+        { "id": "auxpr_1", "tipo": "scrivi", "q": "Completa con l'ausiliare: «Ci ___ visti al bar, ma non ci siamo parlati.»", "soluzione": "siamo", "accettate": [], "explica": "vedersi (recíproco) → essere: ci siamo visti." },
+        { "id": "auxpr_2", "tipo": "scrivi", "q": "Traduci: «Se habrían conocido antes.»", "soluzione": "si sarebbero conosciuti prima", "accettate": ["si sarebbero conosciute prima"], "explica": "conoscersi (recíproco) → essere: sarebbero, no avrebbero." },
+        { "id": "auxpr_3", "tipo": "scelta", "q": "Quale è corretta?", "op": ["Ve ne avete andati presto", "Ve ne siete andati presto", "Ve ne avete andato presto"], "c": 1, "explica": "andarsene (pronominale) → SEMPRE essere: ve ne siete andati." },
+        { "id": "auxpr_4", "tipo": "scelta", "q": "«Nonostante ci ___ scritti per mesi, non ci siamo mai visti.»", "op": ["avessimo", "fossimo", "saremmo"], "c": 1, "explica": "scriversi (recíproco) → essere; congiuntivo trapassato: ci fossimo scritti." }
+      ]
+    },
+    "pronome_scelta_diretto_indiretto": {
+      "etiqueta": "Directo vs indirecto según el verbo (chiamare/vedere = directo; telefonare/rispondere = indirecto)",
+      "drills": [
+        { "id": "dirind_1", "tipo": "scelta", "q": "«Ho visto Marco e ___ ho salutato.»", "op": ["gli", "lo", "le"], "c": 1, "explica": "salutare = directo → lo. 'Gli' sería para verbos con A (telefonare a, rispondere a)." },
+        { "id": "dirind_2", "tipo": "scelta", "q": "«I tuoi amici? ___ telefono stasera.»", "op": ["Li", "Gli", "Ne"], "c": 1, "explica": "telefonare A qualcuno → indirecto → gli (a ellos)." },
+        { "id": "dirind_3", "tipo": "scrivi", "q": "Traduci: «¿Tus hermanas? Las llamo mañana.»", "soluzione": "le chiamo domani", "accettate": ["le mie sorelle le chiamo domani", "le chiamerò domani"], "explica": "chiamare = directo → le (las). No 'gli chiamo'." }
+      ]
+    },
+    "clitici_forma_presenza": {
+      "etiqueta": "Clíticos: no omitirlos y pegarlos al imperativo (dammi, dimmi)",
+      "drills": [
+        { "id": "clit_1", "tipo": "scrivi", "q": "Traduci: «¡Dame las llaves!»", "soluzione": "dammi le chiavi", "accettate": [], "explica": "dare (tu) = da' + mi → DAMMI (doble m). El clítico va pegado al imperativo." },
+        { "id": "clit_2", "tipo": "scrivi", "q": "Traduci: «¿Me lo puedes explicar?»", "soluzione": "me lo puoi spiegare", "accettate": ["puoi spiegarmelo"], "explica": "No sueltes los clíticos: ME LO puoi spiegare / puoi spiegarMELO." },
+        { "id": "clit_3", "tipo": "scelta", "q": "Suona naturale in italiano:", "op": ["Di' la verità a me!", "Dimmi la verità!", "Mi di' la verità!"], "c": 1, "explica": "di' + mi = DIMMI. El clítico se pega detrás del imperativo, nunca delante." }
+      ]
+    },
+    "distinzione_e_è": {
+      "etiqueta": "e (y) vs è (es/está)",
+      "drills": [
+        { "id": "ee_1", "tipo": "scrivi", "accenti": true, "q": "Scrivi la frase con e / è al posto giusto: «Luca _ stanco _ affamato, _ non vuole cucinare.»", "soluzione": "luca è stanco e affamato, e non vuole cucinare", "accettate": ["è e e", "è, e, e"], "explica": "è = verbo essere (está); e = y. Aquí: È stanco E affamato, E non vuole…" },
+        { "id": "ee_2", "tipo": "scelta", "q": "«Il caffè ___ pronto ___ caldo.»", "op": ["è / e", "e / è", "è / è"], "c": 0, "explica": "Primero verbo (è pronto), luego conjunción (e caldo)." }
+      ]
+    },
+    "concordanza_participio_pron": {
+      "etiqueta": "Concordancia del participio con li/le + avere (le ho viste)",
+      "drills": [
+        { "id": "concp_1", "tipo": "scrivi", "q": "Rispondi col pronome: «Hai comprato le scarpe?» — Sì, ___", "soluzione": "le ho comprate", "accettate": ["sì, le ho comprate"], "explica": "Con li/le delante, el participio concuerda: le … compratE." },
+        { "id": "concp_2", "tipo": "scrivi", "q": "Rispondi col pronome: «Hai visto i ragazzi?» — Sì, ___", "soluzione": "li ho visti", "accettate": ["sì, li ho visti"], "explica": "li (masc. pl.) → vistI." },
+        { "id": "concp_3", "tipo": "scelta", "q": "«Le foto? Le ho ___ ieri.»", "op": ["stampato", "stampate", "stampati"], "c": 1, "explica": "le (fem. pl.) delante de avere → participio concuerda: stampatE." }
+      ]
+    },
+    "reggenza_verbo_prep": {
+      "etiqueta": "Reggenze: provare A, cercare DI, pensare A, smettere DI, è necessario + inf",
+      "drills": [
+        { "id": "regg_1", "tipo": "scrivi", "q": "Completa: «Penso spesso ___ mio futuro.»", "soluzione": "al", "accettate": [], "explica": "pensare A + il = AL. 'Pensare su' es calco del español." },
+        { "id": "regg_2", "tipo": "scrivi", "q": "Completa: «Prova ___ chiamarlo, magari risponde.»", "soluzione": "a", "accettate": ["ad"], "explica": "provare A + infinito." },
+        { "id": "regg_3", "tipo": "scelta", "q": "«È necessario ___ prenotare in anticipo.»", "op": ["di", "a", "— (niente)"], "c": 2, "explica": "è necessario + infinito directo, SIN preposición (no 'di')." },
+        { "id": "regg_4", "tipo": "scelta", "q": "«Ha smesso ___ piovere.»", "op": ["di", "a", "da"], "c": 0, "explica": "smettere DI + infinito." }
+      ]
+    },
+    "articolo_uno_lo": {
+      "etiqueta": "LO ante s+cons/z/ps también en las articuladas (allo, con lo, nello)",
+      "drills": [
+        { "id": "unolo_1", "tipo": "scrivi", "q": "Completa con (con + lo): «Ho parlato ___ psicologo.»", "soluzione": "con lo", "accettate": [], "explica": "ps- → lo → con lo psicologo (con y lo no se fusionan)." },
+        { "id": "unolo_2", "tipo": "scrivi", "q": "Completa con (a + lo): «Pensavo ___ stesso problema.»", "soluzione": "allo", "accettate": [], "explica": "st- → lo → ALLO stesso problema (tu clásico 'al stesso' ✗)." },
+        { "id": "unolo_3", "tipo": "scelta", "q": "Quale è corretta?", "op": ["nel zaino", "nello zaino", "nei zaino"], "c": 1, "explica": "z- → lo → NELLO zaino." }
+      ]
+    },
+    "comparativo_migliore_meglio": {
+      "etiqueta": "migliore vs meglio + DI entre nombres",
+      "drills": [
+        { "id": "migl_1", "tipo": "scelta", "q": "«Il gelato di qui è migliore ___ quello di ieri.»", "op": ["che", "di", "del"], "c": 1, "explica": "Comparación entre nombres/pronombres → DI: migliore DI quello." },
+        { "id": "migl_2", "tipo": "scrivi", "q": "Traduci: «Cocinas mejor que yo.»", "soluzione": "cucini meglio di me", "accettate": [], "explica": "Con verbo → MEGLIO (adverbio); ante pronombre → di me." }
+      ]
+    },
+    "articolo_possessivo_famiglia": {
+      "etiqueta": "Posesivo con familiares: singular SIN artículo, plural CON artículo",
+      "drills": [
+        { "id": "possf_1", "tipo": "scelta", "q": "Quale è corretta?", "op": ["La mia sorella vive a Roma", "Mia sorella vive a Roma", "Mia la sorella vive a Roma"], "c": 1, "explica": "Familiar SINGULAR sin artículo: mia sorella (pero: le mie sorelle)." },
+        { "id": "possf_2", "tipo": "scrivi", "q": "Traduci: «Mis primos llegan mañana.»", "soluzione": "i miei cugini arrivano domani", "accettate": [], "explica": "PLURAL → CON artículo: I miei cugini." }
+      ]
+    },
+    "elisione_l_apostrofo": {
+      "etiqueta": "Elisión l': ante vocal SÍ, ante consonante NO",
+      "drills": [
+        { "id": "elis_1", "tipo": "scelta", "q": "Quale è corretta?", "op": ["l'esame", "il esame", "lo esame"], "c": 0, "explica": "Ante vocal se elide: L'esame." },
+        { "id": "elis_2", "tipo": "scelta", "q": "Quale è corretta?", "op": ["l'tedesco", "il tedesco", "lo tedesco"], "c": 1, "explica": "Ante consonante normal NO se elide: IL tedesco." }
+      ]
+    },
+    "imperativo_irregolare_tu": {
+      "etiqueta": "Imperativo tu irregular (sii, va', fa', di', da', sta')",
+      "drills": [
+        { "id": "imptu_1", "tipo": "scrivi", "q": "Imperativo (tu) di ESSERE: «___ gentile!»", "soluzione": "sii", "accettate": [], "explica": "essere → SII (el único con doble i)." },
+        { "id": "imptu_2", "tipo": "scrivi", "q": "Imperativo (tu) di DARE: «___ una mano a Luca!»", "soluzione": "da'", "accettate": ["dai", "da"], "explica": "dare → da' / dai. Con clítico se dobla: dammi." }
+      ]
+    },
+    "ausiliare_essere_movimento": {
+      "etiqueta": "Essere con verbos de movimiento en compuestos",
+      "drills": [
+        { "id": "auxmov_1", "tipo": "scelta", "q": "«Ieri Marco ___ arrivato tardi.»", "op": ["ha", "è", "aveva"], "c": 1, "explica": "arrivare (movimiento) → essere: è arrivato." },
+        { "id": "auxmov_2", "tipo": "scrivi", "q": "Traduci al passato prossimo: «Salimos a las ocho.»", "soluzione": "siamo usciti alle otto", "accettate": ["siamo uscite alle otto"], "explica": "uscire → essere: SIAMO usciti (y el participio concuerda)." }
+      ]
+    },
+    "concordanza_numero_art_agg": {
+      "etiqueta": "Concordancia artículo + sustantivo + adjetivo",
+      "drills": [
+        { "id": "concn_1", "tipo": "scelta", "q": "Quale è corretta?", "op": ["gli sport estremo", "gli sport estremi", "lo sport estremi"], "c": 1, "explica": "Toda la cadena en plural: GLI sport estremI (sport es invariable)." },
+        { "id": "concn_2", "tipo": "scrivi", "q": "Volgi al plurale: «il ragazzo simpatico»", "soluzione": "i ragazzi simpatici", "accettate": [], "explica": "il→i, -o→-i en sustantivo Y adjetivo." }
+      ]
+    },
+    "articolo_lingue": {
+      "etiqueta": "Artículo con idiomas (l'italiano, il tedesco)",
+      "drills": [
+        { "id": "artl_1", "tipo": "scelta", "q": "«Studio ___ russo da un mese.»", "op": ["il", "lo", "— (niente)"], "c": 0, "explica": "Los idiomas llevan artículo: IL russo (r- normal → il)." },
+        { "id": "artl_2", "tipo": "scrivi", "q": "Completa con l'articolo: «___ inglese è più facile ___ tedesco?»", "soluzione": "l' / del", "accettate": ["l' del", "l'inglese del tedesco"], "explica": "Ante vocal → L'inglese; comparación entre nombres → DI + il = DEL tedesco." }
+      ]
+    },
+    "condizionale_loro_ebbero": {
+      "etiqueta": "Condizionale de loro en -ebbero",
+      "drills": [
+        { "id": "condl_1", "tipo": "scelta", "q": "«I miei amici ___ volentieri.» (venire, condizionale)", "op": ["verranno", "verrebbero", "vennero"], "c": 1, "explica": "Condizionale loro = -EBBERO: verrebbero. Verranno es futuro." },
+        { "id": "condl_2", "tipo": "scrivi", "q": "Condizionale, loro, AIUTARE: «Loro ci ___ di sicuro.»", "soluzione": "aiuterebbero", "accettate": [], "explica": "aiutare → aiuterebbero (las dobles del condizionale)." }
+      ]
+    }
+  },
+  "vocab": []
+}

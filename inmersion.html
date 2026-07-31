@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inmersión · Curso de Italiano</title>
+<link rel="stylesheet" href="assets/curso.css">
+<script defer src="assets/vocab.js"></script>
+<script defer src="assets/frases.js"></script>
+<script defer src="assets/curso.js"></script>
+<style>
+  body{font-family:-apple-system,"Segoe UI",sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:800px;margin:0 auto;padding:2rem 1.5rem 6rem;line-height:1.6}
+  h1{font-size:1.7rem;margin:.2rem 0}
+  .sub{color:#666;margin:0 0 1rem}
+  h2{font-size:1.1rem;color:#1a4731;border-bottom:2px solid #dde5dd;padding-bottom:.3rem;margin:2rem 0 .6rem}
+  .box{background:#fff;border:1px solid #dde5dd;border-radius:10px;padding:1rem 1.2rem;margin:1rem 0}
+  .diet .n{font-size:2.2rem;font-weight:800;color:#2d6a4f}
+  .diet button{background:#2d6a4f;color:#fff;border:0;border-radius:7px;padding:.5rem .8rem;font:600 .85rem/1 sans-serif;cursor:pointer;margin:.2rem .3rem 0 0}
+  .diet .track{height:12px;background:#eef2ee;border-radius:6px;overflow:hidden;margin:.6rem 0}
+  .diet .fill{height:100%;width:0;background:#2d6a4f;transition:width .3s}
+  textarea{width:100%;box-sizing:border-box;border:1px solid #cfd8d2;border-radius:8px;padding:.6rem;font:inherit;min-height:6rem;background:#fffef9}
+  input[type=text]{border:1px solid #cfd8d2;border-radius:7px;padding:.5rem .6rem;font:inherit;background:#fffef9}
+  .btn{background:#2d6a4f;color:#fff;border:0;border-radius:7px;padding:.55rem .9rem;font:600 .85rem/1 sans-serif;cursor:pointer}
+  .btn.sec{background:#8a8f9c}
+  .btn.amber{background:#b07d1a}
+  select.vel{border:1px solid #cfd8d2;border-radius:7px;padding:.45rem .5rem;font:600 .82rem/1 sans-serif;background:#fff;color:#2d6a4f}
+  /* líneas de la canción */
+  .lyric{margin:.55rem 0;padding:.4rem .6rem;border-left:3px solid #cfe3d8;border-radius:0 6px 6px 0;background:#fff}
+  .lyric .fila{display:flex;align-items:flex-start;gap:.45rem;flex-wrap:wrap}
+  .lyric .it-line{font-weight:600;flex:1;min-width:200px}
+  .lyric .mini{border:0;border-radius:6px;padding:.35rem .5rem;font:700 .72rem/1 sans-serif;cursor:pointer}
+  .lyric .b-say{background:#eef2ee;color:#2d6a4f}
+  .lyric .b-loop{background:#eef2ee;color:#2d6a4f}
+  .lyric .b-loop.on{background:#2d6a4f;color:#fff}
+  .lyric .b-fav{background:#fff4d6;color:#8a6d1f}
+  .lyric .es-line{font-size:.86rem;color:#667;margin:.25rem 0 0;font-style:italic}
+  .lyric .lit-line{font-size:.82rem;color:#8a6d1f;margin:.15rem 0 0;border-left:2px dashed #d8c48a;padding-left:.5rem}
+  .lyric .es-line.curada{color:#1a4731;font-style:normal}
+  .lyric .pron-line{font-size:.8rem;color:#8a6d1f;margin:.2rem 0 0;letter-spacing:.02em;font-family:Consolas,monospace}
+  .lyric .pron-line.hide{display:none}
+  .lyric .notas{margin:.35rem 0 0}
+  .nota-tag{display:block;font-size:.82rem;background:#f6f2fb;border:1px solid #ddd0f0;border-radius:6px;padding:.35rem .55rem;margin:.25rem 0;color:#3d3d44}
+  .nota-tag b{color:#4a2d75}
+  .badge{display:inline-block;font-size:.64rem;font-weight:800;border-radius:4px;padding:.12rem .4rem;margin-right:.35rem;vertical-align:middle}
+  .bg-slang{background:#e8f7ee;color:#1a6e47}.bg-abrev{background:#fff4d6;color:#8a6d1f}
+  .bg-chunk{background:#e8eefc;color:#2a4a9c}.bg-sentido{background:#fde9f1;color:#a83268}
+  .bg-cultural{background:#f0e9fc;color:#5b3a9e}.bg-forma{background:#e6f0f2;color:#186a72}
+  /* conjugación desplegable (idea D) */
+  .conjug{margin:.35rem 0 0;font-size:.84rem}
+  .conjug summary{cursor:pointer;color:#186a72;font-weight:700;list-style:none}
+  .conjug summary::-webkit-details-marker{display:none}
+  .conjug summary::before{content:"▸ ";}
+  .conjug[open] summary::before{content:"▾ ";}
+  .conjug table{border-collapse:collapse;margin:.45rem 0 .2rem;width:100%}
+  .conjug td{border-bottom:1px solid #e3edee;padding:.3rem .5rem;vertical-align:top}
+  .conjug td.k{color:#186a72;font-weight:700;white-space:nowrap;width:1%}
+  .conjug .aux{font-size:.78rem;color:#888;margin-top:.2rem}
+  /* botón y caja de dudas (idea A) */
+  .b-duda{background:#fff3e0;color:#b06a00}
+  .b-duda.on{background:#b06a00;color:#fff}
+  .duda-box{margin:.35rem 0 0;font-size:.84rem;background:#fff8ef;border:1px solid #f0dcc0;border-left:3px solid #d9982a;border-radius:0 6px 6px 0;padding:.45rem .6rem;color:#7a5a1a}
+  .duda-box.resuelta{background:#eef7f0;border-color:#bfe0c8;border-left-color:#2d6a4f;color:#23503a}
+  .duda-box b{color:#8a5a10}
+  .dudas-panel{background:#fff8ef;border:1px solid #f0dcc0;border-radius:8px;padding:.7rem .9rem;margin:.6rem 0;font-size:.88rem}
+  .dudas-panel h4{margin:0 0 .3rem;font-size:.92rem;color:#8a5a10}
+  .dudas-panel li{margin:.2rem 0}
+  .comp{display:flex;align-items:center;gap:.7rem;margin:.6rem 0}
+  .comp .pct{font-size:1.5rem;font-weight:800;color:#2d6a4f}
+  .comp .track{flex:1;height:10px;background:#eef2ee;border-radius:5px;overflow:hidden}
+  .comp .fill{height:100%;background:#2d6a4f;width:0;transition:width .4s}
+  .rec{font-size:.9rem;margin:.35rem 0}
+  .rec b{color:#2d6a4f}
+  .lvl{display:inline-block;font-size:.66rem;font-weight:700;background:#eef2ee;color:#2d6a4f;border-radius:4px;padding:.05rem .4rem;margin-left:.3rem}
+  .canc-item{display:flex;align-items:center;gap:.7rem;background:#fff;border:1px solid #dde5dd;border-radius:8px;padding:.6rem .9rem;margin:.4rem 0;cursor:pointer}
+  .canc-item:hover{border-color:#2d6a4f}
+  .canc-item::before{content:"▸";color:#2d6a4f;font-size:.8rem}
+  .canc-item.open{border-color:#2d6a4f;background:#f3faf6}
+  .canc-item.open::before{content:"▾"}
+  .canc-item .t{font-weight:700;flex:1}
+  .canc-item .s{font-size:.78rem;color:#888}
+  /* panel que se despliega JUSTO debajo de su canción (acordeón) */
+  .canc-panel{margin:0 0 .6rem .6rem;padding:0 0 0 .8rem;border-left:2px solid #cfe3d8}
+  .canc-panel:empty{display:none;margin:0;padding:0;border:0}
+  .estado{font-size:.68rem;font-weight:800;border-radius:4px;padding:.15rem .45rem}
+  .estado.ok{background:#e8f7ee;color:#1a6e47}.estado.pend{background:#fff4d6;color:#8a6d1f}
+  .resumen{background:#f6f2fb;border-left:4px solid #7c4dbc;border-radius:0 8px 8px 0;padding:.8rem 1rem;font-size:.9rem;margin:.8rem 0}
+  .quiz-q{background:#fff;border:1px solid #dde5dd;border-radius:8px;padding:.8rem 1rem;margin:.5rem 0;font-size:.92rem}
+  .quiz-q label{display:block;margin:.25rem 0;cursor:pointer}
+  .quiz-q.bien{border-color:#2d6a4f;background:#f3faf6}
+  .quiz-q.mal{border-color:#c0392b;background:#fdf0ef}
+  .quiz-q.quasi{border-color:#c79a3a;background:#fffaf0}
+  .quiz-q .explica{font-size:.84rem;color:#666;margin-top:.4rem;display:none}
+  .quiz-q .q-write{width:100%;box-sizing:border-box;margin:.5rem 0 .4rem;padding:.5rem .6rem;border:1px solid #cfd8d2;border-radius:7px;font:inherit;font-size:.92rem;background:#fffef9}
+  .quiz-q .q-write:focus{outline:none;border-color:#2d6a4f;box-shadow:0 0 0 2px #cfe3d8}
+  .quiz-q .q-check{background:#2d6a4f;color:#fff;border:0;border-radius:7px;padding:.45rem .9rem;font:600 .82rem/1 sans-serif;cursor:pointer}
+  .quiz-q .q-check:hover{background:#35835f}
+  .vclave{display:flex;align-items:center;gap:.5rem;background:#fff;border:1px solid #dde5dd;border-radius:7px;padding:.45rem .7rem;margin:.3rem 0;font-size:.9rem}
+  .vclave .it{font-weight:700}
+  .toolbar{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin:.5rem 0}
+</style>
+</head>
+<body>
+<h1>🎧 Inmersión</h1>
+<p class="sub">El salto a C1 se hace con el <strong>oído</strong>, fuera de clase. La app te lo hace comprensible y lleva la cuenta. <span style="color:#8a6d1f">La voz se elige en la barra negra de arriba 🔊.</span></p>
+
+<h2>1. Dieta de inmersión</h2>
+<div class="box diet">
+  <p style="margin:.2rem 0">Esta semana llevas <span class="n" id="min">0</span> <span style="color:#888">/ <span id="goal">120</span> min</span></p>
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <div>
+    <button data-add="5">+5 min</button>
+    <button data-add="10">+10 min</button>
+    <button data-add="15">+15 min</button>
+    <button data-add="30">+30 min</button>
+    <button data-add="-5" style="background:#8a8f9c">−5</button>
+  </div>
+  <p style="font-size:.82rem;color:#888;margin:.6rem 0 0">Cuenta música mientras trabajas, un podcast en el coche, un video en italiano… la <strong>constancia de exposición</strong> es el motor #1.</p>
+</div>
+
+<h2>2. Canción de la semana</h2>
+<div class="box">
+  <p style="margin:.2rem 0 .5rem">Pega la <strong>letra</strong> en italiano. La app la glosa, la traduce línea por línea, te dice qué % ya entiendes, y cada línea tiene 🔊 oír · 🔁 loop (shadowing) · ★ guardar el chunk.</p>
+  <textarea id="letra" placeholder="Incolla qui il testo della canzone…"></textarea>
+  <div class="toolbar">
+    <button class="btn" id="proc">Procesar letra</button>
+    <label style="font-size:.8rem;color:#666">Velocidad:
+      <select class="vel" id="vel">
+        <option value="0.7">🐢 0.7×</option>
+        <option value="0.85" selected>0.85×</option>
+        <option value="1">1×</option>
+      </select>
+    </label>
+    <button class="btn sec" id="pron-btn" title="Mostrar/ocultar la pronunciación figurada">🔤 pron: on</button>
+  </div>
+  <div class="toolbar" id="guardar-zona" style="display:none">
+    <input type="text" id="c-titulo" placeholder="Título de la canción" style="flex:1;min-width:150px">
+    <input type="text" id="c-artista" placeholder="Artista" style="width:140px">
+    <button class="btn amber" id="c-save">💾 Guardar para análisis</button>
+  </div>
+  <div id="save-msg" style="font-size:.84rem;color:#1a4731;margin:.3rem 0"></div>
+  <div class="comp" id="comp" style="display:none"><span class="pct" id="comp-pct">0%</span><div class="track"><div class="fill" id="comp-fill"></div></div><span style="font-size:.78rem;color:#888">de la letra ya la entiendes</span></div>
+  <div id="out"></div>
+</div>
+
+<h2>3. 📚 Biblioteca de canciones</h2>
+<div class="box">
+  <p style="margin:.2rem 0 .5rem;font-size:.88rem;color:#666">Tus canciones guardadas. Las <span class="estado pend">⏳ pendientes</span> me las pides en el chat: <em>«analiza la canción "Título"»</em> — y te devuelvo aquí la traducción curada + slang, abreviaciones, frases hechas, dobles sentidos y un mini-quiz. Quedan guardadas para siempre.</p>
+  <div id="lib"></div>
+</div>
+
+<h2>4. Recomendaciones por tu nivel</h2>
+<div class="box">
+  <p class="rec"><b>Mes 1-2 (B1):</b> <span class="lvl">graduado</span> Easy Italian (subtítulos dobles), Podcast Italiano (Davide, nivel intermedio), Lucrezia Oddone; música clara: Pinguini Tattici Nucleari, Calcutta, Ultimo.</p>
+  <p class="rec"><b>Mes 3-4 (B2):</b> <span class="lvl">semi-nativo</span> podcasts nativos pausados, YouTube nativo (Breaking Italy); Måneskin, Coez, Mahmood con letra.</p>
+  <p class="rec"><b>Mes 5-6 (C1):</b> <span class="lvl">nativo</span> stand-up (LOL: Chi ride è fuori, Zelig), rap veloz (Salmo, Marracash), series sin subtítulos (Skam Italia, Mare Fuori); medir % de comprensión.</p>
+  <p style="font-size:.82rem;color:#888;margin-top:.6rem">💡 Shadowing con el 🔁: la línea se repite sola — tú canta encima hasta clavarla. 2 min al día bastan.</p>
+</div>
+
+<script>
+function logAct(){try{var d=new Date(),k=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
+  var m=JSON.parse(localStorage.getItem('italiano-actividad')||'{}');
+  if(!m[k]){m[k]=1;localStorage.setItem('italiano-actividad',JSON.stringify(m));}}catch(e){}}
+
+/* ---- 1. Dieta de inmersión ---- */
+(function(){
+  var GOAL=120;
+  function weekKey(){var d=new Date();var y=d.getFullYear();
+    var oneJan=new Date(y,0,1);var wk=Math.ceil((((d-oneJan)/86400000)+oneJan.getDay()+1)/7);
+    return y+'-W'+wk;}
+  var KEY='italiano-inmersion';
+  function load(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return{}}}
+  function save(o){localStorage.setItem(KEY,JSON.stringify(o));
+    fetch('/api/inmersion',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)}).catch(function(){});}
+  var data=load(), wk=weekKey();
+  document.getElementById('goal').textContent=GOAL;
+  function render(){
+    var m=data[wk]||0;
+    document.getElementById('min').textContent=m;
+    document.getElementById('fill').style.width=Math.min(100,m/GOAL*100)+'%';
+  }
+  render();
+  document.querySelectorAll('.diet button[data-add]').forEach(function(b){
+    b.onclick=function(){data[wk]=Math.max(0,(data[wk]||0)+parseInt(b.dataset.add,10));save(data);render();logAct();};
+  });
+})();
+
+/* ---- utilidades canción ---- */
+var LCKEY='italiano-line-cache', LCACHE={};
+try{LCACHE=JSON.parse(localStorage.getItem(LCKEY)||'{}')}catch(e){LCACHE={}}
+function lcSet(k,v){LCACHE[k]=v;try{localStorage.setItem(LCKEY,JSON.stringify(LCACHE))}catch(e){}}
+function trLine(line){
+  var k=line.toLowerCase().trim();
+  if(LCACHE[k])return Promise.resolve(LCACHE[k]);
+  return fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=it&tl=es&dt=t&q='+encodeURIComponent(line))
+    .then(function(r){return r.json()})
+    .then(function(j){var t=(j&&j[0])?j[0].map(function(x){return x[0]}).join(''):null;
+      if(t){lcSet(k,t.trim());return t.trim();} return null;})
+    .catch(function(){return null});
+}
+// Normaliza una respuesta para comparar (minúsculas, sin acentos, sin puntuación, un espacio)
+function normQ(s){
+  return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .replace(/['’`]/g,"'").replace(/[.,;:!?«»"()…]/g,'').replace(/\s+/g,' ').trim();
+}
+function saveChunk(it,es,ctx){
+  it=(it||'').trim(); if(!it)return false;
+  var l;try{l=JSON.parse(localStorage.getItem('italiano-vocab-activo')||'[]')}catch(e){l=[]}
+  var n=it.toLowerCase().trim();
+  if(l.some(function(w){return (w.it||'').toLowerCase().trim()===n}))return 'dup';
+  l.push({it:it,es:es||'',ctx:ctx||'',estado:'practica',t:Date.now()});
+  localStorage.setItem('italiano-vocab-activo',JSON.stringify(l));return true;
+}
+var loopActivo=null;
+function speak(txt,rate){ if(window.italianoSay)window.italianoSay(txt,{rate:rate}); }
+function loop(txt,rate,btn){
+  if(loopActivo===btn){loopActivo=null;btn.classList.remove('on');if(window.italianoStop)window.italianoStop();return;}
+  document.querySelectorAll('.b-loop.on').forEach(function(x){x.classList.remove('on')});
+  loopActivo=btn;btn.classList.add('on');
+  (function go(){
+    if(loopActivo!==btn)return;
+    if(window.italianoSay)window.italianoSay(txt,{rate:rate(),onend:function(){setTimeout(go,600)}});
+  })();
+}
+var TIPOS={forma:['bg-forma','📐 FORMA'],slang:['bg-slang','🗣️ SLANG'],abrev:['bg-abrev','✂️ ABREVIA'],chunk:['bg-chunk','🧱 FRASE HECHA'],sentido:['bg-sentido','🔄 OTRO SENTIDO'],cultural:['bg-cultural','📚 CULTURA'],gramm:['bg-forma','🔀 IT vs ES']};
+
+/* Conjugación desplegable (idea D). Recibe {inf,aux,part,ger,tabla:[[etiqueta,formas],…]} */
+function conjugEl(cj){
+  if(!cj)return null;
+  var d=document.createElement('details');d.className='conjug';
+  var filas=(cj.tabla||[]).map(function(row){return '<tr><td class="k">'+row[0]+'</td><td>'+row[1]+'</td></tr>'}).join('');
+  var meta=[];if(cj.aux)meta.push('aux: <b>'+cj.aux+'</b>');if(cj.part)meta.push('participio: '+cj.part);if(cj.ger)meta.push('gerundio: '+cj.ger);
+  d.innerHTML='<summary>conjugación de '+(cj.inf||'')+'</summary>'+
+    (filas?'<table>'+filas+'</table>':'')+
+    (meta.length?'<div class="aux">'+meta.join(' · ')+'</div>':'');
+  return d;
+}
+
+/* Dudas del usuario por línea (idea A). Cargadas del servidor; el botón 🤔 anota una. */
+var DUDAS={};
+function dudaDe(id,i){return (DUDAS[id]&&DUDAS[id][String(i)])||null;}
+function postDuda(id,i,texto){
+  DUDAS[id]=DUDAS[id]||{};DUDAS[id][String(i)]={texto:texto,fecha:new Date().toISOString().slice(0,10),respuesta:(dudaDe(id,i)||{}).respuesta||null};
+  return fetch('/api/dudas',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({id:id,linea:i,texto:texto,fecha:DUDAS[id][String(i)].fecha})}).catch(function(){});
+}
+
+/* ---- Pronunciación figurada (transliteración fonética IT → lector hispano) ----
+   Sílaba tónica en MAYÚSCULAS; trampas convertidas: che→ke, ci→chi, gn→ñ, gli→lli,
+   sce→she, z→ts, gue→güe, h muda. Guía aproximada generada por reglas. */
+var PRON_MAP={ // palabras que las reglas no cubren (inglés, coloquiales, esdrújulas frecuentes)
+  "c'ho":"chó","c'hai":"chái","c'è":"chè","goddamn":"gad-DÉM","baby":"BÉI-bi",
+  "down":"dáun","boyband":"BÓI-band","stories":"STÓ-ris","road":"róud","cash":"cash",
+  "sos":"ése-o-ése","drink":"drink","po'":"po",
+  "essere":"ES-se-re","prendere":"PREN-de-re","mettere":"MET-te-re","perdere":"PER-de-re",
+  "scrivere":"SKRI-ve-re","vivere":"VI-ve-re","credere":"CRE-de-re","chiudere":"KIU-de-re",
+  "ridere":"RI-de-re","vendere":"VEN-de-re","correre":"COR-re-re","nascere":"NA-she-re",
+  "conoscere":"co-NO-she-re","leggere":"LED-ye-re","piangere":"PIAN-ye-re",
+  "subito":"SU-bi-to","ultimo":"UL-ti-mo","musica":"MU-si-ca","camera":"CA-me-ra",
+  "macchina":"MAK-ki-na","numero":"NU-me-ro","giovane":"YO-va-ne","sabato":"SA-ba-to",
+  "facile":"FA-chi-le","difficile":"dif-FI-chi-le","simpatico":"sim-PA-ti-co",
+  "dimmelo":"DIM-me-lo","fammelo":"FAM-me-lo","dammelo":"DAM-me-lo"
+};
+function pronWord(raw){
+  var key=raw.toLowerCase().replace(/[^a-zà-ù']/g,'');
+  if(!key)return '';
+  if(PRON_MAP[key])return PRON_MAP[key];
+  var w=key.replace(/'/g,''); // l'italiano → litaliano
+  // dígrafos y trampas (el orden importa)
+  w=w.replace(/cch(?=[ei])/g,'KK¦').replace(/ch(?=[ei])/g,'k')      // occhi→okki, che→ke
+     .replace(/KK¦/g,'kk')
+     .replace(/ggh(?=[ei])/g,'gg').replace(/gh(?=[ei])/g,'g')       // ghe→gue (g dura)
+     .replace(/gli/g,'lli')                                          // voglio→vollio
+     .replace(/gn/g,'ñ')                                             // ogni→oñi
+     .replace(/sci(?=[aou])/g,'sh').replace(/sc(?=[ei])/g,'sh')      // lascia→lasha, scelta→shelta
+     .replace(/cci(?=[aou])/g,'cch').replace(/cc(?=[ei])/g,'cch')    // faccia→faccha
+     .replace(/ci(?=[aou])/g,'ch').replace(/c(?=[ei])/g,'ch')        // ciao→chao, cento→chento
+     .replace(/ggi(?=[aou])/g,'ggy').replace(/gg(?=[ei])/g,'ggy')    // oggi→oggyi→ok
+     .replace(/gi(?=[aou])/g,'y').replace(/g(?=[ei])/g,'y')          // giorno→yorno, gente→yente
+     .replace(/gu(?=[ei])/g,'gü')                                    // guerra→güerra
+     .replace(/qu/g,'ku')                                            // questo→kuesto
+     .replace(/zz/g,'tts').replace(/z/g,'ts')                        // pazzo→pattso
+     .replace(/(^|[^csgk])h/g,'$1');                                 // h muda (ho→o) sin tocar ch/sh/gh
+  // silabificación aproximada
+  var parts=w.match(/[^aeiouàèéìòóù]*[aeiouàèéìòóù]+/g);
+  if(!parts)return w;
+  var tail=w.slice(parts.join('').length);
+  if(tail)parts[parts.length-1]+=tail;
+  // reparto de consonantes entre sílabas: not-te (no no-tte), guar-da-mi (no gua-rda-mi)
+  var keep2=/^(ch|sh|ll|ts|gü|[bcdfgptvk][rl])/; // dígrafos y muta+líquida que SÍ abren sílaba
+  for(var i=1;i<parts.length;i++){
+    var m=parts[i].match(/^([bcdfglmnpqrstvkñy])\1/);
+    if(m){parts[i-1]+=m[1];parts[i]=parts[i].slice(1);}
+    var on=(parts[i].match(/^[^aeiouàèéìòóù]+/)||[''])[0];
+    while(on.length>1&&!keep2.test(on)){
+      parts[i-1]+=on[0];parts[i]=parts[i].slice(1);on=on.slice(1);
+    }
+  }
+  // sílaba tónica: acento gráfico > verbos en -ano/-ono (esdrújulas) > penúltima
+  var tonica=-1;
+  for(var j=0;j<parts.length;j++)if(/[àèéìòóù]/.test(parts[j]))tonica=j;
+  if(tonica<0&&parts.length>2&&/(ano|ono)$/.test(w)&&!/(anno|onno)$/.test(w))tonica=parts.length-3;
+  if(tonica<0)tonica=Math.max(0,parts.length-2);
+  if(parts.length===1)tonica=-1; // monosílabos sin marcar
+  return parts.map(function(s,k){
+    s=s.replace(/[àèéìòóù]/g,function(c){return 'aeeioou'['àèéìòóù'.indexOf(c)]});
+    return k===tonica?s.toUpperCase():s;
+  }).join('-');
+}
+function pronIt(line){
+  return line.split(/\s+/).map(pronWord).filter(function(x){return x}).join(' ');
+}
+function pronOff(){return localStorage.getItem('italiano-pron-off')==='1'}
+function aplicarPron(){
+  var off=pronOff();
+  document.querySelectorAll('.pron-line').forEach(function(el){el.classList.toggle('hide',off)});
+  var b=document.getElementById('pron-btn');if(b)b.textContent=off?'🔤 pron: off':'🔤 pron: on';
+}
+
+/* Render de una letra (con o sin análisis curado) en un contenedor.
+   cancId: id de la canción guardada (habilita el botón 🤔 de dudas); null en el preview. */
+function renderLetra(cont, letraRaw, analisis, ctxTitulo, cancId){
+  cont.innerHTML='';
+  var lineas=letraRaw.split(/\n/).map(function(s){return s.trim()}).filter(function(s){return s});
+  var velSel=document.getElementById('vel');
+  function rate(){return parseFloat(velSel?velSel.value:'0.85')}
+  lineas.forEach(function(line,i){
+    var div=document.createElement('div');div.className='lyric';
+    var fila=document.createElement('div');fila.className='fila';
+    var bSay=document.createElement('button');bSay.className='mini b-say';bSay.textContent='🔊';bSay.title='Oír línea';
+    bSay.onclick=function(){speak(line,rate());logAct();};
+    var bLoop=document.createElement('button');bLoop.className='mini b-loop';bLoop.textContent='🔁';bLoop.title='Loop para shadowing';
+    bLoop.onclick=function(){loop(line,rate,bLoop);logAct();};
+    var bFav=document.createElement('button');bFav.className='mini b-fav';bFav.textContent='★';bFav.title='Guardar la línea como chunk';
+    var bDuda=null;
+    if(cancId){
+      bDuda=document.createElement('button');bDuda.className='mini b-duda';bDuda.textContent='🤔';
+      bDuda.title='No entiendo esta línea — anótala para que te la explique';
+      if(dudaDe(cancId,i))bDuda.classList.add('on');
+      bDuda.onclick=function(){
+        postDuda(cancId,i,line);bDuda.classList.add('on');
+        renderDuda();if(window._refreshDudasPanel)window._refreshDudasPanel();logAct();
+      };
+    }
+    var span=document.createElement('span');span.className='it-line it';span.textContent=line;
+    fila.appendChild(bSay);fila.appendChild(bLoop);fila.appendChild(bFav);if(bDuda)fila.appendChild(bDuda);fila.appendChild(span);
+    div.appendChild(fila);
+    var pr=document.createElement('div');pr.className='pron-line'+(pronOff()?' hide':'');
+    pr.textContent='['+pronIt(line)+']';
+    div.appendChild(pr);
+    var es=document.createElement('div');es.className='es-line';es.textContent='…';
+    div.appendChild(es);
+    var cur=analisis&&analisis.lineas&&(analisis.lineas[i]||analisis.lineas[String(i)]);
+    if(cur&&cur.es){es.textContent='→ '+cur.es;es.className='es-line curada';}
+    else{trLine(line).then(function(t){es.textContent=t?('→ '+t):'(sin traducción)';});}
+    // línea LITERAL palabra-por-palabra: SIEMPRE presente (idea del usuario).
+    // Si hay 'lit' curada se usa; si no, se AUTO-GENERA de las glosas tras el glosado (abajo).
+    var litD=document.createElement('div');litD.className='lit-line';
+    if(cur&&cur.lit){litD.textContent='🔤 '+cur.lit;litD.setAttribute('data-manual','1');}
+    else litD.textContent='🔤 …';
+    div.appendChild(litD);
+    if(cur&&cur.notas&&cur.notas.length){
+      var nz=document.createElement('div');nz.className='notas';
+      cur.notas.forEach(function(n){
+        var t=TIPOS[n.tipo]||['bg-cultural',(n.tipo||'').toUpperCase()];
+        var el=document.createElement('span');el.className='nota-tag';
+        el.innerHTML='<span class="badge '+t[0]+'">'+t[1]+'</span><b>'+(n.frag||'')+'</b> — '+(n.nota||'');
+        nz.appendChild(el);
+        if(n.conjug){var ce=conjugEl(n.conjug);if(ce)nz.appendChild(ce);}   // idea D: tabla desplegable
+      });
+      div.appendChild(nz);
+    }
+    // idea A: si esta línea tiene una duda anotada, mostrarla (y la respuesta si ya la resolví)
+    function renderDuda(){
+      var old=div.querySelector('.duda-box');if(old)old.remove();
+      var d=cancId&&dudaDe(cancId,i);if(!d)return;
+      var box=document.createElement('div');box.className='duda-box'+(d.respuesta?' resuelta':'');
+      box.innerHTML=d.respuesta?('<b>✅ Respuesta:</b> '+d.respuesta):'<b>🤔 Anotada.</b> Dime en el chat «resuélveme las dudas de canciones» y te la explico aquí.';
+      div.appendChild(box);
+    }
+    renderDuda();
+    bFav.onclick=function(){
+      var esTxt=(cur&&cur.es)||es.textContent.replace(/^→ /,'');
+      var r=saveChunk(line,esTxt,ctxTitulo||'canción');
+      bFav.textContent=r==='dup'?'✓':'✓';bFav.disabled=true;logAct();
+    };
+    cont.appendChild(div);
+  });
+  if(window.italianoGloss)window.italianoGloss(cont);
+  // AUTO-LITERAL: para las líneas sin 'lit' curado, arma el literal palabra por palabra
+  // leyendo las glosas ya resueltas (.g = palabra, .gp = frase; usa data-lit si es idiomática).
+  cont.querySelectorAll('.lyric').forEach(function(div){
+    var litD=div.querySelector('.lit-line'); if(!litD||litD.getAttribute('data-manual'))return;
+    var itEl=div.querySelector('.it-line'); if(!itEl)return;
+    var parts=[];
+    itEl.childNodes.forEach(function(nd){
+      if(nd.nodeType===3){var t=(nd.nodeValue||'').trim();if(t)parts.push(t);}       // palabra sin glosa: se deja tal cual
+      else if(nd.classList&&nd.classList.contains('gp')){parts.push(nd.getAttribute('data-lit')||nd.getAttribute('data-es')||nd.textContent);}
+      else if(nd.classList&&nd.classList.contains('g')){parts.push((nd.getAttribute('data-es')||nd.textContent).split(/[\/·,;]/)[0].trim());}
+      else if(nd.textContent&&nd.textContent.trim())parts.push(nd.textContent.trim());
+    });
+    litD.textContent='🔤 '+parts.join(' ').replace(/\s+([?!.,;:])/g,'$1');
+  });
+  // % de comprensión: palabras glosadas (conocidas) / palabras totales
+  var words=0,known=0;
+  cont.querySelectorAll('.it-line').forEach(function(l){
+    l.textContent.split(/\s+/).forEach(function(w){if(/[a-zàèéìòù]/i.test(w))words++;});
+    l.querySelectorAll('.g,.gp').forEach(function(g){known+=g.textContent.trim().split(/\s+/).length;});
+  });
+  return {words:words,known:Math.min(known,words),lineas:lineas};
+}
+
+/* ---- 2. Procesar letra ---- */
+var ultimaLetra='';
+document.getElementById('proc').onclick=function(){
+  var raw=document.getElementById('letra').value.trim();
+  var out=document.getElementById('out');
+  if(!raw){out.textContent='Pega una letra primero.';return;}
+  ultimaLetra=raw;
+  var st=renderLetra(out,raw,null,document.getElementById('c-titulo').value||'canción');
+  var pct=st.words?Math.round(st.known/st.words*100):0;
+  document.getElementById('comp').style.display='';
+  document.getElementById('comp-pct').textContent=pct+'%';
+  document.getElementById('comp-fill').style.width=pct+'%';
+  document.getElementById('guardar-zona').style.display='';
+  logAct();
+};
+
+/* ---- Guardar canción para análisis ---- */
+document.getElementById('c-save').onclick=function(){
+  var titulo=document.getElementById('c-titulo').value.trim();
+  var artista=document.getElementById('c-artista').value.trim();
+  var msg=document.getElementById('save-msg');
+  if(!ultimaLetra){msg.textContent='Primero procesa la letra.';return;}
+  if(!titulo){msg.textContent='Ponle título para poder pedirme el análisis.';return;}
+  var id=titulo.toLowerCase().replace(/[^a-z0-9àèéìòù]+/g,'-').replace(/^-|-$/g,'');
+  var hoy=new Date().toISOString().slice(0,10);
+  fetch('/api/canciones',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({id:id,cancion:{titulo:titulo,artista:artista,fecha:hoy,letra:ultimaLetra,analisis:null}})})
+    .then(function(r){return r.json()})
+    .then(function(){msg.innerHTML='✅ Guardada. Ahora dime en el chat: <b>«analiza la canción "'+titulo+'"»</b> y te la regreso desmenuzada.';cargarLib();})
+    .catch(function(){msg.textContent='⚠ No se pudo guardar (¿servidor apagado?). Abre siempre con el .bat.';});
+};
+
+/* ---- 3. Biblioteca ---- */
+var abiertaId=null;
+function cerrarCancion(){
+  abiertaId=null;
+  document.querySelectorAll('.canc-panel').forEach(function(p){p.innerHTML='';});
+  document.querySelectorAll('.canc-item.open').forEach(function(x){x.classList.remove('open')});
+  loopActivo=null;
+  if(window.italianoStop)window.italianoStop();
+}
+function cargarLib(){
+  var lib=document.getElementById('lib');
+  fetch('/api/canciones').then(function(r){return r.json()}).then(function(all){
+    var ids=Object.keys(all||{});
+    if(!ids.length){lib.innerHTML='<p style="color:#888;font-size:.86rem">Aún no guardas canciones.</p>';return;}
+    lib.innerHTML='';
+    ids.sort(function(a,b){return (all[b].fecha||'').localeCompare(all[a].fecha||'')});
+    ids.forEach(function(id){
+      var c=all[id];
+      var el=document.createElement('div');el.className='canc-item';
+      el.innerHTML='<span class="t">'+(c.titulo||id)+'</span><span class="s">'+(c.artista||'')+' · '+(c.fecha||'')+'</span>'+
+        '<span class="estado '+(c.analisis?'ok':'pend')+'">'+(c.analisis?'✔ analizada':'⏳ pendiente')+'</span>';
+      var panel=document.createElement('div');panel.className='canc-panel';
+      el.onclick=function(){
+        if(abiertaId===id){cerrarCancion();return;}      // segundo clic = plegar
+        cerrarCancion();
+        el.classList.add('open');abiertaId=id;
+        abrirCancion(id,c,panel);                         // se despliega bajo su renglón
+        el.scrollIntoView({behavior:'smooth',block:'nearest'});
+      };
+      lib.appendChild(el);lib.appendChild(panel);
+    });
+  }).catch(function(){lib.innerHTML='<p style="color:#888">Sin conexión con el servidor.</p>';});
+}
+function abrirCancion(id,c,v){
+  v.innerHTML='<h3 style="margin:.8rem 0 .2rem">'+(c.titulo||id)+' <span style="color:#888;font-weight:400;font-size:.85rem">'+(c.artista||'')+'</span></h3>';
+  if(c.analisis&&c.analisis.resumen){
+    var rz=document.createElement('div');rz.className='resumen';rz.innerHTML='🎭 <b>Contexto:</b> '+c.analisis.resumen;v.appendChild(rz);
+  }
+  // panel de dudas de esta canción (idea A)
+  var dp=document.createElement('div');dp.id='dudas-panel-host';v.appendChild(dp);
+  function renderDudasPanel(){
+    dp.innerHTML='';
+    var d=DUDAS[id];if(!d)return;
+    var claves=Object.keys(d).sort(function(a,b){return (+a)-(+b)});if(!claves.length)return;
+    var pend=claves.filter(function(k){return !d[k].respuesta}).length;
+    var box=document.createElement('div');box.className='dudas-panel';
+    box.innerHTML='<h4>🤔 Tus dudas de esta canción ('+claves.length+(pend?', '+pend+' por responder':'')+')</h4>'+
+      '<ul>'+claves.map(function(k){return '<li>«'+d[k].texto+'» — '+(d[k].respuesta?'✅ respondida':'⏳ pendiente')+'</li>'}).join('')+'</ul>'+
+      (pend?'<div style="font-size:.82rem;color:#8a5a10;margin-top:.3rem">Dime en el chat <b>«resuélveme las dudas de canciones»</b> y las contesto bajo cada línea.</div>':'');
+    dp.appendChild(box);
+  }
+  window._refreshDudasPanel=renderDudasPanel;
+  renderDudasPanel();
+  var cont=document.createElement('div');v.appendChild(cont);
+  renderLetra(cont,c.letra||'',c.analisis,c.titulo,id);
+  if(c.analisis&&c.analisis.vocab&&c.analisis.vocab.length){
+    var h=document.createElement('h3');h.textContent='⭐ Vocabulario y formas clave';h.style.margin='1rem 0 .3rem';v.appendChild(h);
+    c.analisis.vocab.forEach(function(w){
+      var el=document.createElement('div');el.className='vclave';
+      el.innerHTML='<span class="it">'+w.it+'</span><span style="flex:1;color:#555">'+(w.es||'')+(w.nota?' · <i style="color:#888">'+w.nota+'</i>':'')+'</span>';
+      var b=document.createElement('button');b.className='mini b-fav';b.textContent='★';
+      b.onclick=function(){saveChunk(w.it,w.es,c.titulo);b.textContent='✓';b.disabled=true;};
+      el.appendChild(b);v.appendChild(el);
+      if(w.conjug){var ce=conjugEl(w.conjug);if(ce){ce.style.margin='-.1rem 0 .5rem 1rem';v.appendChild(ce);}}  // idea D
+    });
+  }
+  if(c.analisis&&c.analisis.quiz&&c.analisis.quiz.length){
+    var hq=document.createElement('h3');hq.innerHTML='📝 Quiz della canzone <span style="font-weight:400;font-size:.78rem;color:#888">(in italiano · 3 a scelta + 2 da scrivere)</span>';hq.style.margin='1rem 0 .3rem';v.appendChild(hq);
+    var qc=document.createElement('div');v.appendChild(qc);
+    c.analisis.quiz.forEach(function(q,qi){
+      var el=document.createElement('div');el.className='quiz-q';
+      var isWrite=(q.tipo==='scrivi');
+      el.innerHTML='<b>'+(qi+1)+'. '+(isWrite?'✍️ ':'')+q.q+'</b>';
+      if(isWrite){
+        var inp=document.createElement('input');inp.type='text';inp.className='q-write';inp.placeholder='Scrivi la tua risposta in italiano…';
+        var btn=document.createElement('button');btn.className='q-check';btn.textContent='Controlla';
+        var ex=document.createElement('div');ex.className='explica';
+        el.appendChild(inp);el.appendChild(btn);el.appendChild(ex);
+        function comprobar(){
+          var ans=normQ(inp.value); if(!ans){return;}
+          var sol=q.soluzione||'';
+          var oks=[sol].concat(q.accettate||[]).map(normQ);
+          el.classList.remove('bien','quasi');
+          if(oks.indexOf(ans)>-1){
+            el.classList.add('bien');
+            ex.innerHTML='✅ Esatto! <b>'+sol+'</b>'+(q.explica?' — '+q.explica:'');
+          }else{
+            el.classList.add('quasi');
+            ex.innerHTML='🔶 Soluzione: <b>'+sol+'</b>'+(q.explica?' — '+q.explica:'')+
+              '<br><span style="color:#999">La tua: «'+(inp.value.trim()||'—')+'» — confronta.</span>';
+            saveChunk(sol, q.explica||('di "'+(c.titulo||'')+'"'), 'quiz canción'); // guarda la forma correcta al SRS
+          }
+          ex.style.display='block';logAct();
+        }
+        btn.onclick=comprobar;
+        inp.addEventListener('keydown',function(e){if(e.key==='Enter')comprobar();});
+      }else{
+        (q.op||[]).forEach(function(op,oi){
+          var lab=document.createElement('label');
+          lab.innerHTML='<input type="radio" name="q'+id+qi+'" value="'+oi+'"> '+op;
+          el.appendChild(lab);
+        });
+        var ex2=document.createElement('div');ex2.className='explica';ex2.textContent=q.explica||'';el.appendChild(ex2);
+        el.addEventListener('change',function(e){
+          var val=parseInt(e.target.value,10);
+          el.classList.remove('bien','mal');
+          if(val===q.c){el.classList.add('bien');}
+          else{el.classList.add('mal');
+            var correcta=(q.op||[])[q.c]||'';
+            saveChunk(correcta, q.explica||('de "'+(c.titulo||'')+'"'), 'quiz canción');
+          }
+          ex2.style.display='block';logAct();
+        });
+      }
+      qc.appendChild(el);
+    });
+    if(window.italianoGloss)window.italianoGloss(qc);   // glosa el quiz (en italiano)
+  }
+}
+document.getElementById('pron-btn').onclick=function(){
+  localStorage.setItem('italiano-pron-off',pronOff()?'0':'1');aplicarPron();
+};
+aplicarPron();
+function init(){
+  fetch('/api/dudas').then(function(r){return r.json()}).then(function(d){DUDAS=d||{};}).catch(function(){DUDAS={};})
+    .then(function(){cargarLib();});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+</script>
+</body>
+</html>

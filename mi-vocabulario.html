@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Vocabulario · Italiano</title>
+<link rel="stylesheet" href="assets/curso.css">
+<script src="assets/vocab.js"></script>
+<script src="assets/frases.js"></script>
+<style>
+  body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:760px;margin:0 auto;padding:2.5rem 1.5rem 4rem;line-height:1.5}
+  .top{border-left:4px solid #c79a3a;padding-left:1rem;margin-bottom:1.2rem}
+  .top h1{font-size:1.7rem;margin:0}
+  .top p{color:#666;margin:.3rem 0 0;font-size:.9rem}
+  .links{display:flex;gap:.6rem;flex-wrap:wrap;margin:.6rem 0 1.4rem}
+  .links a,.links button{font-size:.82rem;color:#2d6a4f;text-decoration:none;border:1px solid #cfe3d8;border-radius:6px;padding:.4rem .7rem;background:#fff;cursor:pointer}
+  .links a:hover,.links button:hover{background:#eef2ee}
+  .add{display:flex;gap:.5rem;flex-wrap:wrap;background:#fffaf0;border:1px solid #e8d9b5;border-radius:8px;padding:.9rem 1rem;margin-bottom:1.4rem}
+  .add input{flex:1;min-width:140px;border:1px solid #ddd;border-radius:6px;padding:.5rem .6rem;font-size:.9rem}
+  .add button{background:#c79a3a;color:#fff;border:0;border-radius:6px;padding:.5rem 1rem;font-weight:700;cursor:pointer}
+  .stats{font-size:.85rem;color:#666;margin-bottom:.8rem}
+  .word{display:flex;align-items:center;flex-wrap:wrap;gap:.7rem;background:#fff;border:1px solid #dde5dd;border-radius:8px;padding:.6rem .9rem;margin:.4rem 0}
+  .word .ctx{flex-basis:100%;font-size:.8rem;color:#999;font-style:italic;border-top:1px dashed #eee;padding-top:.35rem;margin-top:.1rem}
+  .word .es.vacia{color:#bbb;font-style:italic}
+  .word .defit{font-size:.85rem;font-style:italic;color:#2d6a4f;cursor:pointer;border-bottom:1px dotted #cfe3d8}
+  .word .es{color:#666}
+  .word.dominada{opacity:.6;background:#f0f7f4}
+  .word .it{font-weight:700;font-style:italic;color:#14392b;cursor:pointer}
+  .word .es{flex:1;font-size:.9rem;color:#444}
+  .word .badge{font-size:.68rem;font-weight:700;border-radius:5px;padding:.2rem .5rem;cursor:pointer;border:0}
+  .badge.practica{background:#fff4d6;color:#9a7d00}
+  .badge.dominada{background:#e3f3ea;color:#1a6e47}
+  .word .del{background:none;border:0;color:#c0392b;cursor:pointer;font-size:1rem}
+  .vacio{text-align:center;color:#999;padding:2.5rem 1rem;background:#fff;border:1px dashed #ccc;border-radius:8px}
+  /* Agregar con contexto */
+  .ctxadd{background:#eef5fb;border:1px solid #cddff0;border-radius:8px;padding:.9rem 1rem;margin-bottom:1rem}
+  .ctxadd-h{font-weight:700;color:#1a4d80;font-size:.92rem;margin-bottom:.5rem}
+  .ctxadd-h span{font-weight:400;color:#5a7a99;font-size:.8rem}
+  .ctxadd textarea{width:100%;box-sizing:border-box;border:1px solid #cddff0;border-radius:6px;padding:.5rem .6rem;font:inherit;font-size:.9rem;min-height:3rem;background:#fff;resize:vertical}
+  .cx-tokens{margin:.5rem 0 0;line-height:2.1}
+  .cx-hint{color:#5a7a99;font-size:.8rem;margin:0 0 .3rem}
+  .cx-tokens .tk{cursor:pointer;padding:.05rem .25rem;border-radius:4px;border-bottom:1px dotted #9ec3e6}
+  .cx-tokens .tk:hover{background:#dcebf8}
+  .cx-tokens .tk.sel{background:#1a4d80;color:#fff;border-bottom:0}
+  .cx-result{margin-top:.7rem;background:#fff;border:1px solid #cddff0;border-radius:6px;padding:.6rem .8rem}
+  .cx-line{font-size:.9rem;color:#333;margin-bottom:.5rem}
+  .cx-line b{color:#1a4d80}
+  .cx-word{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+  .cx-word .cx-it{font-weight:700;font-style:italic;color:#14392b}
+  .cx-word input{flex:1;min-width:160px;border:1px solid #ddd;border-radius:6px;padding:.45rem .6rem;font-size:.9rem}
+  .cx-defit{font-size:.83rem;font-style:italic;color:#2d6a4f;margin:.4rem 0;min-height:1rem}
+  .cx-result button{background:#1a4d80;color:#fff;border:0;border-radius:6px;padding:.5rem 1rem;font-weight:700;cursor:pointer;margin-top:.5rem}
+  .word .es{cursor:text}
+  .es-edit{border:1px solid #c79a3a;border-radius:5px;padding:.25rem .45rem;font:inherit;font-size:.9rem;min-width:200px}
+  .cx-sensos{font-size:.83rem;color:#555;margin:.2rem 0 .1rem}
+  .cx-sensos b{color:#1a4d80}
+  .cx-ia-row{margin:.5rem 0 0}
+  .cx-result .cx-ia-btn{background:#6b4dbc}
+  .cx-ia{background:#f6f2fb;border:1px solid #e0d3f0;border-radius:6px;padding:.6rem .8rem;margin:.5rem 0;font-size:.86rem;color:#3a2d55;white-space:pre-wrap;line-height:1.5}
+  .cx-key{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;margin:.5rem 0;font-size:.8rem;color:#6b4dbc}
+  .cx-key input{flex:1;min-width:180px;border:1px solid #ccc;border-radius:6px;padding:.4rem .5rem}
+  .cx-key button{background:#6b4dbc;color:#fff;border:0;border-radius:6px;padding:.4rem .7rem;cursor:pointer;font-weight:700}
+  .cx-key a{color:#6b4dbc}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>★ Mi Vocabulario Activo</h1>
+  <p>Palabras y frases que quieres llevar de <em>pasivo</em> a <em>activo</em>. Guárdalas con el botón ★ en los días, o agrégalas aquí a mano.</p>
+</div>
+
+<div class="links">
+  <a href="index.html">⌂ Índice</a>
+  <button id="export">⬇ Exportar (respaldo)</button>
+  <label class="lbl" style="display:inline-flex;align-items:center"><input id="import" type="file" accept="application/json" style="display:none"><span style="cursor:pointer">⬆ Importar</span></label>
+  <button id="ia-key-mgr">🔑 Clave IA</button>
+</div>
+<div id="ia-key-box" class="cx-key" style="display:none">
+  <input id="ia-key-input" type="password" placeholder="Pega tu clave de Google AI Studio…">
+  <button id="ia-key-set">Guardar</button>
+  <button id="ia-key-del" style="background:#c0392b">Borrar</button>
+  <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">obtener clave gratis ↗</a>
+  <span id="ia-key-status" style="color:#7a6a99"></span>
+  <div id="ia-model-row" style="flex-basis:100%;display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;margin-top:.4rem">
+    <span style="color:#7a6a99">Modelo:</span>
+    <input id="ia-model-input" placeholder="(auto — se elige solo)" style="min-width:170px">
+    <button id="ia-model-save">Fijar</button>
+    <button id="ia-model-list" style="background:#1a4d80">🔍 modelos disponibles</button>
+  </div>
+  <div id="ia-model-out" style="flex-basis:100%;font-size:.78rem;color:#555;margin-top:.2rem"></div>
+</div>
+
+<div class="ctxadd">
+  <div class="ctxadd-h">🧩 Agregar con contexto <span>— pega la frase y elige la palabra (traducción más precisa)</span></div>
+  <textarea id="cx-frase" placeholder="Pega aquí la frase completa donde encontraste la palabra… (ej. «artificiale che mescola forme ioniche ed eoliche»)"></textarea>
+  <div id="cx-tokens" class="cx-tokens"></div>
+  <div id="cx-result" class="cx-result" style="display:none">
+    <div class="cx-line"><b>Frase:</b> <span id="cx-frase-es">…</span></div>
+    <div class="cx-word">
+      <span class="cx-it" id="cx-word-it"></span>
+      <input id="cx-word-es" placeholder="significado en contexto (edítalo si hace falta)">
+    </div>
+    <div class="cx-defit" id="cx-defit"></div>
+    <div class="cx-sensos" id="cx-sensos"></div>
+    <div class="cx-ia-row"><button id="cx-ia-btn" class="cx-ia-btn">🤖 Explicar con IA</button></div>
+    <div class="cx-ia" id="cx-ia" style="display:none"></div>
+    <div class="cx-key" id="cx-key" style="display:none">
+      <input id="cx-key-in" type="password" placeholder="Pega tu clave gratuita de Google AI Studio…">
+      <button id="cx-key-save">Guardar clave</button>
+      <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">obtener clave gratis ↗</a>
+    </div>
+    <button id="cx-save">★ Guardar con este significado</button>
+  </div>
+</div>
+
+<div class="add">
+  <input id="in-it" placeholder="Palabra o frase en italiano (de una canción, etc.)">
+  <input id="in-es" placeholder="Significado (se completa solo)">
+  <input id="in-ctx" placeholder="¿Dónde la encontraste? (opcional)">
+  <button id="add-btn">＋ Agregar</button>
+</div>
+<p style="font-size:.82rem;color:#8a6d1f;background:#fffaf0;border:1px solid #e8d9b5;border-radius:8px;padding:.5rem .8rem;margin:-.6rem 0 1.4rem">💡 <strong>Verbos:</strong> guarda el <strong>infinitivo</strong> (ej. <em>scattare</em>) y pon la forma que viste (ej. <em>scattano</em>) en el campo de origen. Así aprendes el verbo completo.</p>
+
+<div class="stats" id="stats"></div>
+<div id="lista"></div>
+
+<script>
+var VKEY='italiano-vocab-activo';
+function load(){try{return JSON.parse(localStorage.getItem(VKEY)||'[]')}catch(e){return[]}}
+function save(l){localStorage.setItem(VKEY,JSON.stringify(l))}
+function norm(s){return (s||'').toLowerCase().replace(/[«»"“”.,;:!¿?()…]/g,'').replace(/[’]/g,"'").trim()}
+var VOCAB=window.VOCAB||{}, SENT=window.SENTENCES||{};
+var DKEY='italiano-dic-cache', DCACHE={};
+try{DCACHE=JSON.parse(localStorage.getItem(DKEY)||'{}')}catch(e){}
+function cacheSet(n,es){if(n&&es){DCACHE[n]=es;localStorage.setItem(DKEY,JSON.stringify(DCACHE))}}
+function lookup(it){var n=norm(it);return VOCAB[n]||SENT[n]||DCACHE[n]||null;}
+function translateOnline(t){return fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=it&tl=es&dt=t&q='+encodeURIComponent(t)).then(function(r){return r.json()}).then(function(j){var x=(j&&j[0])?j[0].map(function(s){return s[0]}).join(''):null;return (x&&x.toLowerCase()!==t.toLowerCase())?x.trim():null}).catch(function(){return null});}
+// Definición EN ITALIANO (monolingüe): curada (slang) → caché → Google it→it
+var DEF_IT=window.DEF_IT||{};
+var FKEY='italiano-defit-cache', FCACHE={};
+try{FCACHE=JSON.parse(localStorage.getItem(FKEY)||'{}')}catch(e){}
+function fcacheSet(n,d){if(n&&d){FCACHE[n]=d;localStorage.setItem(FKEY,JSON.stringify(FCACHE))}}
+function shorten(s){if(!s)return null;s=(''+s).replace(/<[^>]+>/g,'').trim().split(/[;:|]/)[0].trim();if(s.length>95)s=s.slice(0,93)+'…';return s;}
+function defLocal(it){var n=norm(it);return DEF_IT[n]||FCACHE[n]||null;}
+function defOnline(t){return fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=it&tl=it&dt=md&q='+encodeURIComponent(t)).then(function(r){return r.json()}).then(function(j){var md=j&&j[12];if(!md||!md.length)return null;var e=md[0]&&md[0][1]&&md[0][1][0];var def=Array.isArray(e)?e[0]:e;return shorten(def);}).catch(function(){return null});}
+// Varios sentidos (traducciones alternativas it→es, dt=at — el diccionario dt=bd está vacío en este endpoint)
+function dictOnline(t){var stripAcc=function(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();};var wn=stripAcc(t);
+  return fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=it&tl=es&dt=t&dt=at&q='+encodeURIComponent(t)).then(function(r){return r.json()}).then(function(j){
+  var terms=[]; try{(j[5][0][2]||[]).forEach(function(a){if(a&&a[0]&&stripAcc(a[0])!==wn&&terms.indexOf(a[0])<0)terms.push(a[0]);});}catch(e){}
+  return terms.length>1?terms.slice(0,8).join(', '):null;   // solo si hay MÁS de un sentido (y ninguno = la palabra sin traducir)
+}).catch(function(){return null});}
+// Explicación IA (Gemini). La clave gratuita se guarda SOLO en este equipo (localStorage).
+function iaKey(){try{return localStorage.getItem('italiano-gemini-key')||''}catch(e){return ''}}
+function iaSetKey(k){try{localStorage.setItem('italiano-gemini-key',k||'')}catch(e){}}
+function iaExplain(word,frase){
+  var p='Eres profesor de italiano para un hispanohablante. En este pasaje italiano:\n«'+frase+'»\nExplica en español, breve y claro (máx. 5 líneas), qué significa exactamente «'+word+'» AQUÍ: el sentido literal, el matiz que aporta en este contexto y 1 ejemplo corto. No repitas toda la frase.';
+  return window.IA.generate(p,false);
+}
+function autofill(){var itEl=document.getElementById('in-it'),esEl=document.getElementById('in-es');
+  var it=itEl.value.trim(); if(!it||esEl.value.trim())return;
+  var es=lookup(it); if(es){esEl.value=es;return;}
+  esEl.placeholder='buscando…';
+  translateOnline(it).then(function(t){esEl.placeholder='Significado (se completa solo si está en el glosario)';if(t&&!esEl.value.trim()){esEl.value=t;cacheSet(norm(it),t);}});}
+
+// audio italiano
+var itVoice=null;
+function pick(){var vs=speechSynthesis.getVoices();itVoice=vs.find(function(v){return /^it/i.test(v.lang)&&!/pt|bra/i.test(v.lang+v.name)})||null;}
+if('speechSynthesis' in window){pick();speechSynthesis.onvoiceschanged=pick;}
+function say(t){if(!('speechSynthesis'in window))return;speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='it-IT';if(itVoice)u.voice=itVoice;u.rate=.9;speechSynthesis.speak(u);}
+
+function render(){
+  var l=load(), lista=document.getElementById('lista');
+  var prac=l.filter(function(w){return w.estado!=='dominada'}).length;
+  document.getElementById('stats').textContent=l.length+' palabras · '+prac+' en práctica · '+(l.length-prac)+' dominadas';
+  if(!l.length){lista.innerHTML='<div class="vacio">Aún no tienes palabras. Selecciona una palabra o frase en cualquier día y pulsa ★ Guardar, o agrégala aquí arriba.</div>';return;}
+  l.sort(function(a,b){return (b.t||0)-(a.t||0)});
+  lista.innerHTML='';
+  l.forEach(function(w,i){
+    var d=document.createElement('div');d.className='word'+(w.estado==='dominada'?' dominada':'');
+    d.innerHTML='<span class="it">'+w.it+'</span>'+
+      (w.itdef?'<span class="defit">'+w.itdef+'</span>':'')+
+      '<span class="es'+(w.es?'':' vacia')+'" title="Clic para corregir el significado">'+(w.itdef?'→ ':'')+(w.es||'…resolviendo…')+'</span>'+
+      '<button class="badge '+(w.estado==='dominada'?'dominada':'practica')+'">'+(w.estado==='dominada'?'dominada':'en práctica')+'</button>'+
+      '<button class="del" title="Borrar">✕</button>'+
+      (w.ctx?'<div class="ctx">“'+w.ctx+'”</div>':'');
+    d.querySelector('.it').onclick=function(){say(w.it)};
+    var dfe=d.querySelector('.defit');if(dfe)dfe.onclick=function(){say(w.itdef)};
+    // editar el significado a mano: clic → input → guarda y PISA la traducción automática (caché)
+    var esEl=d.querySelector('.es');
+    if(esEl)esEl.onclick=function(){
+      if(esEl.querySelector('input'))return;
+      esEl.innerHTML='';
+      var inp=document.createElement('input');inp.className='es-edit';inp.value=w.es||'';
+      esEl.appendChild(inp);inp.focus();inp.select();
+      function commit(){var v=inp.value.trim();w.es=v;if(v)cacheSet(norm(w.it),v);save(l);render();}
+      inp.onblur=commit;
+      inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();inp.blur();}else if(e.key==='Escape'){render();}});
+    };
+    d.querySelector('.badge').onclick=function(){w.estado=(w.estado==='dominada')?'practica':'dominada';save(l);render()};
+    d.querySelector('.del').onclick=function(){if(confirm('¿Borrar "'+w.it+'"?')){l.splice(l.indexOf(w),1);save(l);render()}};
+    lista.appendChild(d);
+  });
+}
+document.getElementById('in-it').addEventListener('blur',autofill);
+document.getElementById('add-btn').onclick=function(){
+  var it=document.getElementById('in-it').value.trim(), es=document.getElementById('in-es').value.trim();
+  var ctx=document.getElementById('in-ctx').value.trim();
+  if(!it)return;
+  if(!es)es=lookup(it)||'';
+  var l=load();
+  if(l.some(function(w){return norm(w.it)===norm(it)})){alert('Ya está en tu lista.');return;}
+  l.push({it:it,es:es,ctx:ctx,estado:'practica',t:Date.now()});save(l);
+  document.getElementById('in-it').value='';document.getElementById('in-es').value='';document.getElementById('in-ctx').value='';
+  render();resolveMissing();
+};
+document.getElementById('export').onclick=function(){
+  var blob=new Blob([JSON.stringify(load(),null,2)],{type:'application/json'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mi-vocabulario-italiano.json';a.click();
+};
+document.getElementById('import').onchange=function(e){
+  var f=e.target.files[0];if(!f)return;var r=new FileReader();
+  r.onload=function(){try{var imp=JSON.parse(r.result);var l=load();imp.forEach(function(w){if(w.it&&!l.some(function(x){return norm(x.it)===norm(w.it)}))l.push(w)});save(l);render();alert('Importado.');}catch(err){alert('Archivo no válido.')}};
+  r.readAsText(f);
+};
+/* ---------- Gestor de la clave de IA (Gemini): cambiar / borrar cuando quieras ---------- */
+(function(){
+  var mgr=document.getElementById('ia-key-mgr'), box=document.getElementById('ia-key-box');
+  var inp=document.getElementById('ia-key-input'), setB=document.getElementById('ia-key-set');
+  var delB=document.getElementById('ia-key-del'), st=document.getElementById('ia-key-status');
+  if(!mgr)return;
+  function refresh(){st.textContent=iaKey()?'✓ hay una clave guardada (pega otra para reemplazarla)':'sin clave';}
+  mgr.onclick=function(){var vis=box.style.display!=='none';box.style.display=vis?'none':'flex';if(!vis){refresh();inp.value='';inp.focus();}};
+  setB.onclick=function(){var k=inp.value.trim();if(!k){alert('Pega la clave primero.');return;}iaSetKey(k);inp.value='';refresh();alert('✓ Clave de IA actualizada.');};
+  delB.onclick=function(){iaSetKey('');inp.value='';refresh();alert('Clave de IA borrada.');};
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();setB.click();}});
+  var modIn=document.getElementById('ia-model-input'), modSave=document.getElementById('ia-model-save'), modList=document.getElementById('ia-model-list'), modOut=document.getElementById('ia-model-out');
+  if(modIn){
+    modIn.value=window.IA.model()||'';
+    modSave.onclick=function(){window.IA.setModel(modIn.value.trim());alert('Modelo fijado: '+(modIn.value.trim()||'(auto)'));};
+    modList.onclick=function(){modOut.textContent='buscando modelos disponibles para tu clave…';
+      window.IA.listModels().then(function(ms){
+        if(!ms.length){modOut.textContent='Tu clave no devuelve modelos con generateContent (¿free tier no habilitado?).';return;}
+        modOut.innerHTML='Disponibles (clic para fijar): '+ms.map(function(m){return '<a href="#" class="pickmodel" style="color:#1a4d80">'+m+'</a>';}).join(' · ');
+        modOut.querySelectorAll('.pickmodel').forEach(function(a){a.onclick=function(e){e.preventDefault();modIn.value=a.textContent;window.IA.setModel(a.textContent);modOut.innerHTML='✓ Modelo fijado: <b>'+a.textContent+'</b>';};});
+      }).catch(function(e){modOut.textContent='Error al listar: '+e;});};
+  }
+})();
+function resolveMissing(){
+  var l=load(), changed=false;
+  // 1) lo local (glosario + def italiana curada/caché)
+  l.forEach(function(w){
+    if(!w.es){var es=lookup(w.it);if(es){w.es=es;changed=true;}}
+    if(!w.itdef){var di=defLocal(w.it);if(di){w.itdef=di;changed=true;}}
+  });
+  if(changed){save(l);render();}
+  // 2) lo que falte, en línea (uno por uno, sin saturar)
+  var pend=load().filter(function(w){return !w.es||!w.itdef});
+  (function step(i){
+    if(i>=pend.length)return;
+    var w=pend[i], jobs=[];
+    if(!w.es)jobs.push(translateOnline(w.it).then(function(t){if(t){w._es=t;}}));
+    if(!w.itdef)jobs.push(defOnline(w.it).then(function(d){if(d){w._def=d;}}));
+    Promise.all(jobs).then(function(){
+      var cur=load(),f=cur.filter(function(x){return norm(x.it)===norm(w.it)})[0];
+      if(f){if(w._es&&!f.es){f.es=w._es;cacheSet(norm(f.it),w._es);}if(w._def&&!f.itdef){f.itdef=w._def;fcacheSet(norm(f.it),w._def);}save(cur);render();}
+      setTimeout(function(){step(i+1)},180);
+    });
+  })(0);
+}
+/* ---------- Agregar con contexto: pega la frase y elige la palabra ---------- */
+(function(){
+  var fraseEl=document.getElementById('cx-frase'), tokensEl=document.getElementById('cx-tokens');
+  var resEl=document.getElementById('cx-result'), fraseEsEl=document.getElementById('cx-frase-es');
+  var wordItEl=document.getElementById('cx-word-it'), wordEsEl=document.getElementById('cx-word-es');
+  var defitEl=document.getElementById('cx-defit'), saveBtn=document.getElementById('cx-save');
+  var sensosEl=document.getElementById('cx-sensos'), iaBtn=document.getElementById('cx-ia-btn'), iaOut=document.getElementById('cx-ia');
+  var keyRow=document.getElementById('cx-key'), keyIn=document.getElementById('cx-key-in'), keySave=document.getElementById('cx-key-save');
+  var sel=null;
+  function clean(w){return w.replace(/^[«»"“”'.,;:!¿?()\[\]…]+|[«»"“”'.,;:!¿?()\[\]…]+$/g,'');}
+  function normWords(s){return (s||'').toLowerCase().replace(/[.,;:!¿?()«»"“”…]/g,' ').split(/\s+/).filter(Boolean);}
+  // conectores/artículos que son ruido en el diff (no son la traducción de la palabra)
+  var STOP={'el':1,'la':1,'los':1,'las':1,'un':1,'una':1,'unos':1,'unas':1,'lo':1,'le':1,'les':1,
+    'de':1,'del':1,'al':1,'a':1,'y':1,'e':1,'o':1,'u':1,'que':1,'por':1,'para':1,'con':1,'sin':1,
+    'en':1,'es':1,'son':1,'su':1,'sus':1,'se':1,'todo':1,'todos':1,'toda':1,'todas':1,'tanto':1,
+    'tan':1,'mas':1,'muy':1,'pero':1,'como':1,'este':1,'esta':1,'ese':1,'esa':1};
+  // palabras de fraseES que NO están cubiertas por la frase-sin-la-palabra ≈ traducción en contexto.
+  // Filtra conectores y descarta si queda la propia palabra (= Google no la tradujo) o si es muy larga.
+  function contextDiff(fraseES,sinES,word){
+    var pool=normWords(sinES).slice(), extra=[];
+    normWords(fraseES).forEach(function(w){var i=pool.indexOf(w);if(i>=0)pool.splice(i,1);else extra.push(w);});
+    var wn=norm(word);
+    extra=extra.filter(function(w){return !STOP[w] && w!==wn;});
+    var out=extra.join(' ').trim();
+    return (out && out.length<=40 && extra.length<=3) ? out : null;
+  }
+  function solaFallback(word){
+    // último recurso: la palabra sola. Si Google la deja igual (término propio), campo vacío + pista.
+    translateOnline(word).then(function(sola){
+      if(sola && norm(sola)!==norm(word)){wordEsEl.value=sola;}
+      else{wordEsEl.value='';wordEsEl.placeholder='escríbelo tú: Google no traduce «'+word+'» aquí (término propio)';}
+    }).catch(function(){wordEsEl.value='';});
+  }
+  function renderTokens(){
+    var s=fraseEl.value; tokensEl.innerHTML=''; sel=null; resEl.style.display='none';
+    if(!s.trim())return;
+    var hint=document.createElement('div');hint.className='cx-hint';hint.textContent='👆 Haz clic en la palabra que quieres guardar:';
+    tokensEl.appendChild(hint);
+    var wrap=document.createElement('div');
+    s.split(/(\s+)/).forEach(function(t){
+      if(/^\s+$/.test(t)||!clean(t)){wrap.appendChild(document.createTextNode(t));return;}
+      var sp=document.createElement('span');sp.className='tk';sp.textContent=t;
+      sp.onclick=function(){
+        wrap.querySelectorAll('.tk.sel').forEach(function(x){x.classList.remove('sel')});
+        sp.classList.add('sel'); pick(clean(t), s);
+      };
+      wrap.appendChild(sp);
+    });
+    tokensEl.appendChild(wrap);
+  }
+  function pick(word,frase){
+    sel=word; resEl.style.display='block';
+    wordItEl.textContent=word; wordEsEl.value='…'; wordEsEl.placeholder='significado en contexto (edítalo si hace falta)';
+    fraseEsEl.textContent='traduciendo…'; defitEl.textContent='';
+    sensosEl.innerHTML=''; iaOut.style.display='none'; iaOut.textContent=''; keyRow.style.display='none';
+    dictOnline(word).then(function(s){if(s&&sel===word)sensosEl.innerHTML='<b>Otros sentidos:</b> '+s;});
+    translateOnline(frase).then(function(fraseES){
+      fraseEsEl.textContent=fraseES||'(sin conexión: escribe el significado a mano)';
+      var local=lookup(word); if(local){wordEsEl.value=local;return;}
+      var re=new RegExp('\\b'+word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i');
+      var sinES=frase.replace(re,' ').replace(/\s+/g,' ').trim();
+      translateOnline(sinES).then(function(sinES2){
+        var ctx=(fraseES&&sinES2)?contextDiff(fraseES,sinES2,word):null;
+        if(ctx){wordEsEl.value=ctx;} else{solaFallback(word);}
+      }).catch(function(){solaFallback(word);});
+    }).catch(function(){fraseEsEl.textContent='(sin conexión: escribe el significado a mano)';wordEsEl.value='';});
+    defOnline(word).then(function(d){if(d)defitEl.textContent='🇮🇹 '+d;});
+  }
+  saveBtn.onclick=function(){
+    if(!sel){alert('Primero haz clic en la palabra que quieres guardar.');return;}
+    var l=load();
+    if(l.some(function(w){return norm(w.it)===norm(sel)})){alert('"'+sel+'" ya está en tu lista.');return;}
+    var es=wordEsEl.value.trim(), it=defitEl.textContent.replace(/^🇮🇹\s*/,'').trim();
+    l.push({it:sel,es:es,ctx:fraseEl.value.trim(),itdef:it||'',estado:'practica',t:Date.now()});
+    save(l); if(es)cacheSet(norm(sel),es);
+    fraseEl.value=''; renderTokens(); render();
+  };
+  function runIA(){
+    if(!sel){alert('Primero haz clic en la palabra.');return;}
+    if(!iaKey()){keyRow.style.display='flex';keyIn.focus();return;}
+    iaOut.style.display='block'; iaOut.textContent='🤖 pensando…';
+    iaExplain(sel, fraseEl.value.trim()).then(function(t){iaOut.textContent=t;})
+      .catch(function(e){iaOut.textContent='⚠ '+(e==='nokey'?'Falta la clave.':('Error IA: '+e))+'\n(Revisa la clave o el modelo; obtén una gratis en aistudio.google.com/apikey)';});
+  }
+  iaBtn.onclick=runIA;
+  keySave.onclick=function(){var k=keyIn.value.trim();if(k){iaSetKey(k);keyRow.style.display='none';keyIn.value='';runIA();}};
+  keyIn.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();keySave.click();}});
+  var ft; fraseEl.addEventListener('input',function(){clearTimeout(ft);ft=setTimeout(renderTokens,250);});
+})();
+
+render();
+resolveMissing();
+</script>
+</body>
+</html>

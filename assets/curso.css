@@ -1,0 +1,182 @@
+/* ====== Curso Italiano — capa compartida ====== */
+
+/* Barra superior que se inyecta en cada día */
+.cb-bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:.6rem;
+  background:#1c1c1e;color:#fff;padding:.5rem .9rem;margin:-2rem -1.5rem 1.5rem;
+  font:600 .8rem/1 -apple-system,sans-serif;flex-wrap:wrap}
+.cb-bar a{color:#9be3c4;text-decoration:none}
+.cb-bar a:hover{text-decoration:underline}
+.cb-bar .sp{flex:1}
+.cb-bar button{background:#2d6a4f;color:#fff;border:0;border-radius:6px;
+  padding:.35rem .7rem;font:600 .72rem/1 inherit;cursor:pointer}
+.cb-bar button:hover{background:#35835f}
+.cb-bar button.on{background:#9be3c4;color:#14392b}
+.cb-bar select{background:#2a2a2c;color:#9be3c4;border:1px solid #444;border-radius:6px;padding:.3rem .4rem;font:600 .72rem/1 inherit;max-width:170px}
+
+/* Audio: cualquier italiano es clicable para oírlo */
+.it,.cb-say{cursor:pointer;transition:background .15s}
+.it:hover,.cb-say:hover{background:#d8efe3;border-radius:3px}
+.cb-speaking{background:#ffe9a8 !important;border-radius:3px}
+
+/* Glosa al pasar el cursor: <span class="g" data-es="...">italiano</span> */
+.g{position:relative;border-bottom:1px dotted #2d6a4f;cursor:help;font-weight:600;color:#14392b}
+.g::after{content:attr(data-es);position:absolute;left:50%;bottom:140%;transform:translateX(-50%);
+  background:#1c1c1e;color:#fff;padding:.3rem .55rem;border-radius:6px;font:400 .78rem/1.3 sans-serif;
+  white-space:normal;width:max-content;max-width:300px;opacity:0;pointer-events:none;transition:opacity .12s;z-index:60;
+  box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.g:hover::after,.g:focus::after{opacity:1}
+
+/* Frase compuesta / modismo: subrayado doble y color distinto (ojo: no es literal) */
+.gp{position:relative;cursor:help;font-weight:600;color:#8a4b00;
+  border-bottom:3px double #c77d20;background:#fdf6ec;border-radius:2px;padding:0 1px}
+.gp::after{content:"≈ " attr(data-es);position:absolute;left:50%;bottom:150%;transform:translateX(-50%);
+  background:#5a3000;color:#fff;padding:.3rem .55rem;border-radius:6px;font:400 .78rem/1.3 sans-serif;
+  white-space:normal;width:max-content;max-width:300px;opacity:0;pointer-events:none;transition:opacity .12s;z-index:60;
+  box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.gp:hover::after,.gp:focus::after{opacity:1}
+/* modismo con "literal vs real": el globo muestra el sentido y, debajo, la trampa literal */
+.gp[data-lit]::after{content:"≈ " attr(data-es) "   ·   lett.: " attr(data-lit)}
+@media (hover:none){.g::after,.it[data-es]::after{white-space:normal;max-width:240px}}
+
+/* Italiano con traducción: punteado + glosa al pasar cursor, y clic para oír */
+.it[data-es]{position:relative;border-bottom:1px dotted #2d6a4f}
+.it[data-es]::after{content:attr(data-es);position:absolute;left:50%;bottom:140%;transform:translateX(-50%);
+  background:#1c1c1e;color:#fff;padding:.3rem .55rem;border-radius:6px;font:400 .78rem/1.3 sans-serif;
+  white-space:normal;width:max-content;max-width:300px;opacity:0;pointer-events:none;transition:opacity .12s;z-index:60;
+  box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.it[data-es]:hover::after{opacity:1}
+
+/* Solucionario plegable */
+.solu{margin:1.2rem 0;border:1px solid #dde5dd;border-radius:8px;overflow:hidden}
+.solu summary{cursor:pointer;list-style:none;background:#f0f7f4;padding:.7rem 1rem;
+  font:700 .72rem/1 sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#2d6a4f}
+.solu summary::before{content:"▸ ";}
+.solu[open] summary::before{content:"▾ ";}
+.solu .body{padding:.8rem 1.1rem;font-size:.9rem}
+.solu .body p{margin:.4rem 0}
+
+/* Globo del traductor de selección */
+.cb-pop{position:absolute;z-index:200;background:#1c1c1e;color:#fff;border-radius:8px;
+  padding:.6rem .7rem;max-width:280px;font:400 .85rem/1.35 sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.cb-pop-it{font-weight:600;color:#9be3c4;font-style:italic;margin-bottom:.25rem;font-size:.82rem}
+.cb-pop-es{font-size:.95rem;font-weight:600}
+.cb-pop-break{margin-top:.4rem;border-top:1px solid #444;padding-top:.3rem;opacity:.92}
+.cb-pop-row{display:flex;justify-content:space-between;gap:.8rem;padding:.12rem 0;border-top:1px solid #333}
+.cb-pop-row b{color:#9be3c4;font-style:italic}
+.cb-pop-row span{color:#eee}
+.cb-pop-actions{display:flex;gap:.4rem;margin-top:.5rem}
+.cb-pop-say,.cb-pop-fav{background:#2d6a4f;color:#fff;border:0;border-radius:5px;padding:.3rem .6rem;font:600 .72rem/1 sans-serif;cursor:pointer}
+.cb-pop-fav{background:#c79a3a}
+.cb-pop-fav:disabled{background:#5a5a5a;cursor:default}
+
+/* Bloque de slang (Cultura & Strada) — global */
+.slang{background:#fff;border:1px solid #dde5dd;border-radius:8px;padding:1rem 1.2rem;margin:.5rem 0 1rem}
+.slang strong{color:#2d6a4f;font-size:1.05rem}
+.slang .uso{font-size:.82rem;color:#888;margin-top:.2rem}
+.slang .ejemplo{font-size:.88rem;font-style:italic;color:#444;margin-top:.4rem;background:#f5f7fa;padding:.3rem .6rem;border-radius:4px}
+.reg{display:inline-block;font-size:.68rem;font-weight:700;padding:.05rem .4rem;border-radius:4px;vertical-align:middle;margin-left:.3rem}
+.reg.verde{background:#e3f3ea;color:#1a6e47}
+.reg.amari{background:#fff4d6;color:#9a7d00}
+.reg.rojo{background:#fdecea;color:#b03a2e}
+
+/* Botón de dictado: reproduce una frase SIN mostrarla (data-frase) */
+.say-frase{display:inline-block;background:#2d6a4f;color:#fff;border:0;border-radius:7px;
+  padding:.5rem .8rem;font:600 .85rem/1 sans-serif;cursor:pointer;margin:.25rem .3rem .25rem 0}
+.say-frase:hover{background:#35835f}
+.say-frase::before{content:"🔊 "}
+
+/* Marca inline "✍️ a tu cuaderno" (se pone junto a lo que conviene copiar) */
+.cuad{display:inline-block;background:#fff4d6;color:#8a6d1f;border:1px solid #e8d9b5;border-radius:12px;font:700 .64rem/1 sans-serif;padding:.22rem .5rem;vertical-align:middle;margin-left:.4rem;white-space:nowrap;cursor:default}
+.cuad::before{content:"✍️ "}
+
+/* Bloque "Para tu cuaderno" — global (en desuso, se reemplazó por marcas inline) */
+.cuaderno{background:#fffaf0;border:1px solid #e8d9b5;border-left:4px solid #c79a3a;border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin:1rem 0;font-size:.9rem}
+.cuaderno h3{margin:.2rem 0 .6rem;font-size:.95rem;color:#8a6d1f}
+.cuaderno .lado{font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#b07d1a;margin:.7rem 0 .2rem}
+.cuaderno ul{margin:.2rem 0;padding-left:1.2rem}
+.cuaderno li{margin:.15rem 0}
+
+/* Recuadros de respuesta (auto-guardado) */
+.resp{display:block;width:100%;box-sizing:border-box;margin:.5rem 0 .2rem;padding:.55rem .7rem;
+  border:1px solid #cfd8d2;border-radius:7px;font:inherit;font-size:.9rem;line-height:1.5;
+  background:#fffef9;resize:vertical;min-height:2.6rem}
+.resp:focus{outline:none;border-color:#2d6a4f;box-shadow:0 0 0 2px #cfe3d8}
+.resp-lbl{font-size:.72rem;color:#2d6a4f;font-weight:700;letter-spacing:.04em}
+.cb-save{position:fixed;bottom:14px;right:14px;z-index:300;background:#1c1c1e;color:#9be3c4;
+  font:600 .72rem/1 sans-serif;padding:.4rem .7rem;border-radius:20px;box-shadow:0 3px 10px rgba(0,0,0,.25);
+  opacity:.92;pointer-events:none;transition:opacity .2s}
+.cb-save:empty{opacity:0}
+.cb-save.cb-fail{background:#c0392b;color:#fff;opacity:1}
+
+/* Siembra viva: caja de focos del perfil que curso.js inyecta al abrir cada día */
+.siembra-viva{background:#fdf6ec;border:1px solid #ecd9b8;border-left:4px solid #c79a3a;border-radius:0 8px 8px 0;
+  padding:.7rem 1rem;margin:0 0 1.5rem;font-size:.86rem;color:#6b511c}
+.siembra-viva .sv-sub{font-size:.76rem;color:#a3854a;font-weight:400}
+.siembra-viva ul{margin:.35rem 0 0;padding-left:1.2rem}
+.siembra-viva li{margin:.1rem 0}
+
+/* Cápsula cultural — ☕ Cultura (va justo debajo del slang). Sale de los capítulos del libro,
+   con enfoque de CONVERSACIÓN: un dato, frases listas para usar, y un spunto para responder. */
+.cultura{background:#f6f2fb;border:1px solid #ddd0f0;border-left:4px solid #7c4dbc;border-radius:0 8px 8px 0;
+  padding:1rem 1.2rem;margin:1rem 0 1.2rem;font-size:.9rem}
+.cultura .tipo{display:inline-block;font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  background:#7c4dbc;color:#fff;border-radius:4px;padding:.18rem .5rem}
+.cultura h3{margin:.45rem 0 .3rem;font-size:1.05rem;color:#4a2d75}
+.cultura .ctx{color:#3d3d44}
+.cultura .frasi{background:#fff;border:1px solid #e8e0f5;border-radius:6px;padding:.55rem .75rem;margin:.6rem 0}
+.cultura .frasi .lbl{font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#5b3a9e}
+.cultura .frasi .f{margin:.3rem 0;font-size:.9rem}
+.cultura .frasi .f .es{color:#777;font-size:.84rem}
+.cultura .spunto{background:#fffaf0;border:1px solid #e8d9b5;border-radius:6px;padding:.55rem .75rem;margin:.55rem 0;color:#6b511c}
+.cultura .puente{font-size:.83rem;color:#6a5090;margin-top:.45rem}
+
+/* ====== Corrección del día (modo repaso): panel + cajas inline ======
+   Lo pinta respuestas.js leyendo datos/errores.json cuando el día ya fue corregido. */
+.corr-panel{background:#fff;border:1px solid #e3c9c4;border-left:4px solid #c0392b;border-radius:0 10px 10px 0;margin:1.5rem 0;overflow:hidden}
+.corr-panel .corr-head{background:#fdf0ef;padding:.7rem 1rem;font-weight:700;color:#922b21;cursor:pointer;display:flex;align-items:center;gap:.5rem;font-size:.92rem}
+.corr-panel .corr-head .sub{font-weight:400;color:#a86a63;font-size:.82rem}
+.corr-panel .corr-head .tg{margin-left:auto;font-size:.9rem}
+.corr-panel .corr-body{padding:.4rem 1rem 1rem}
+.corr-panel.closed .corr-body{display:none}
+.corr-panel h4{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#777;margin:1rem 0 .4rem}
+.corr-item{border-left:3px solid #c0392b;background:#fff8f7;border-radius:0 6px 6px 0;padding:.5rem .7rem;margin:.4rem 0;font-size:.88rem}
+.corr-item.descuido{border-left-color:#c79a3a;background:#fffaf0}
+.corr-item.matiz{border-left-color:#2c7be5;background:#f0f6ff}
+.corr-item .tema{font-weight:700;color:#333;display:block;margin-bottom:.15rem}
+.corr-item .ej-chip{display:inline-block;font-size:.64rem;font-weight:800;letter-spacing:.03em;background:#eef2ee;color:#2d6a4f;border-radius:4px;padding:.1rem .45rem;margin-left:.4rem;vertical-align:middle}
+.corr-item.descuido .ej-chip{background:#fff4d6;color:#8a6d1f}
+.corr-item.matiz .ej-chip{background:#e7f0fb;color:#2c5aa0}
+.corr-tuvo{color:#c0392b;text-decoration:line-through}
+.corr-ok{color:#1a6e47;font-weight:700}
+/* en matiz la respuesta NO fue error → sin tachado */
+.corr-item.matiz .corr-tuvo,.corr-inline.matiz .corr-tuvo{text-decoration:none;color:#2c5aa0}
+.corr-item .cnota{color:#666;font-size:.84rem;margin-top:.25rem}
+.corr-panel ul{margin:.2rem 0;padding-left:1.2rem;font-size:.86rem}
+.corr-panel li{margin:.15rem 0}
+/* Bloque-resumen al FINAL del día (errores sin ejercicio + aciertos + a reforzar).
+   Los errores de cada ejercicio ya NO van aquí: van inline bajo su recuadro. */
+.corr-final{margin-top:2.5rem;border-left-color:#2d6a4f}
+.corr-final .corr-head{background:#f0f7f4;color:#1a4731;cursor:default}
+.corr-final .corr-head .sub{color:#5a8a72}
+/* caja pegada bajo un ejercicio concreto (cuando el error trae su data-ej) */
+.corr-inline{border-left:3px solid #c0392b;background:#fff8f7;border-radius:0 6px 6px 0;padding:.45rem .65rem;margin:.35rem 0 .2rem;font-size:.85rem}
+.corr-inline.descuido{border-left-color:#c79a3a;background:#fffaf0}
+.corr-inline.matiz{border-left-color:#2c7be5;background:#f0f6ff}
+.corr-inline .tag{font-size:.66rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#922b21}
+.corr-inline.descuido .tag{color:#8a6d1f}.corr-inline.matiz .tag{color:#2c5aa0}
+
+/* Corregir con IA (Gemini) — barra y cajas moradas, SOLO muestra (no se guarda) */
+.ia-corr-bar{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin:1.2rem 0;padding:.6rem .85rem;background:#f6f2fb;border:1px solid #e0d3f0;border-radius:8px}
+.ia-corr-btn{background:#6b4dbc;color:#fff;border:0;border-radius:7px;padding:.5rem .95rem;font:700 .85rem/1 sans-serif;cursor:pointer}
+.ia-corr-btn:disabled{opacity:.6;cursor:default}
+.ia-corr-hint{font-size:.78rem;color:#7a6a99}
+.ia-corr-clear{background:none;border:1px solid #d8cbee;color:#7a6a99;border-radius:6px;padding:.3rem .55rem;font-size:.72rem;cursor:pointer}
+.ia-corr-key{display:inline-flex;gap:.4rem;align-items:center;flex-wrap:wrap;font-size:.8rem}
+.ia-corr-key input{border:1px solid #ccc;border-radius:6px;padding:.35rem .5rem;min-width:190px}
+.ia-corr-key .ia-key-save{background:#6b4dbc;color:#fff;border:0;border-radius:6px;padding:.35rem .6rem;cursor:pointer}
+.ia-corr-key a{color:#6b4dbc}
+.ia-inline{border-left:3px solid #6b4dbc;background:#f6f2fb;border-radius:0 6px 6px 0;padding:.45rem .65rem;margin:.35rem 0 .2rem;font-size:.85rem;color:#3a2d55}
+.ia-inline.ok{border-left-color:#2d6a4f;background:#f3faf6;color:#1a4731}
+.ia-inline .tag{font-size:.66rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#6b4dbc;margin-right:.3rem}
+.ia-inline.ok .tag{color:#2d6a4f}
+@media print{.cb-bar,.cb-pop,.cb-save,.ia-corr-bar,.ia-inline{display:none}.g::after{display:none}.g{border-bottom:none}.resp{border:1px solid #ccc}.corr-panel.closed .corr-body{display:block}}

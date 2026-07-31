@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Día 21 — Italiano</title>
+<style>
+  body { font-family: -apple-system, sans-serif; background: #f5f7fa; color: #1c1c1e; max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 4rem; line-height: 1.7; }
+  .header { border-left: 4px solid #2d6a4f; padding-left: 1rem; margin-bottom: 1.5rem; }
+  .header .dia { font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #2d6a4f; margin-bottom: .3rem; }
+  .header h1 { font-size: 1.7rem; font-weight: 700; margin: 0; }
+  .header p { color: #666; font-size: .9rem; margin: .3rem 0 0; }
+  .ruta { display: flex; gap: .4rem; margin: 1.2rem 0 2rem; flex-wrap: wrap; }
+  .ruta div { flex: 1; min-width: 120px; background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: .5rem .7rem; font-size: .78rem; }
+  .ruta div .n { font-weight: 700; color: #2d6a4f; font-size: .7rem; text-transform: uppercase; letter-spacing: .05em; }
+  .ruta div .t { color: #999; font-size: .72rem; }
+  .fase { border-radius: 10px; padding: 1.2rem 1.4rem; margin: 1.5rem 0; }
+  .fase.teoria { background: #fff; border: 1px solid #dde5dd; }
+  .fase.input { background: #eef5f1; border: 1px solid #cfe3d8; }
+  .fase.anki { background: #fdf6ec; border: 1px solid #f0e0c4; }
+  .fase.output { background: #1c1c1e; color: #f0f0f0; }
+  .fase .badge { display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .2rem .6rem; border-radius: 20px; margin-bottom: .6rem; }
+  .fase.teoria .badge, .fase.input .badge { background: #2d6a4f; color: #fff; }
+  .fase.anki .badge { background: #c08a2e; color: #fff; }
+  .fase.output .badge { background: #52b788; color: #1c1c1e; }
+  .fase h2 { font-size: 1.05rem; font-weight: 700; margin: 0 0 .6rem; color: inherit; letter-spacing: 0; text-transform: none; }
+  .fase.output h2 { color: #fff; }
+  .fase.output em { color: #aaa; }
+  h3 { font-size: .95rem; font-weight: 700; margin: 1.1rem 0 .4rem; }
+  .bloque { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: .9rem 1.1rem; margin: .7rem 0; font-size: .9rem; }
+  .nota { background: #f0f7f4; border-left: 3px solid #2d6a4f; padding: .6rem 1rem; border-radius: 0 6px 6px 0; font-size: .86rem; color: #1a4731; margin: .7rem 0; }
+  .slang { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: .9rem 1.1rem; margin: .6rem 0; }
+  .slang strong { color: #2d6a4f; font-size: 1.02rem; }
+  .slang .uso { font-size: .82rem; color: #888; margin-top: .2rem; }
+  .slang .ejemplo { font-size: .86rem; font-style: italic; color: #444; margin-top: .4rem; background: #f5f7fa; padding: .3rem .6rem; border-radius: 4px; }
+  .tarea { background: rgba(45,106,79,.08); border-radius: 6px; padding: .6rem .9rem; margin: .6rem 0; font-size: .88rem; }
+  .tarea strong { color: #2d6a4f; }
+  .fase.output .tarea { background: rgba(82,183,136,.15); }
+  .fase.output .tarea strong { color: #52b788; }
+  ul { font-size: .9rem; padding-left: 1.2rem; margin: .4rem 0; }
+  li { margin: .25rem 0; }
+  .it { font-weight: 600; font-style: italic; }
+  .tiempo { text-align: right; font-size: .8rem; color: #999; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #dde5dd; }
+  p { font-size: .92rem; }
+</style>
+<link rel="stylesheet" href="assets/curso.css"><script defer src="assets/vocab.js"></script><script defer src="assets/frases.js"></script><script defer src="assets/curso.js"></script><script defer src="assets/respuestas.js"></script>
+</head>
+<body>
+
+<div class="header">
+  <div class="dia">Semana 3 · Día 21 · Nivel B1→B2</div>
+  <h1>Comprensione orale — día de oído</h1>
+  <p>Hoy el protagonista es escuchar: la habilidad que más cuesta y más vale</p>
+</div>
+
+<div class="ruta">
+  <div><span class="n">1 · Estrategia</span><br><span class="t">~10 min</span></div>
+  <div><span class="n">2 · Escucha activa</span><br><span class="t">~35 min</span></div>
+  <div><span class="n">3 · Anki</span><br><span class="t">~10 min</span></div>
+  <div><span class="n">4 · Output</span><br><span class="t">~15 min</span></div>
+</div>
+
+<div class="fase teoria">
+  <span class="badge">Fase 1 · Estrategia</span>
+  <h2>Primero: ¿por qué un día solo de escuchar?</h2>
+  <p>Porque entender de oído es lo último que llega y lo que más se entrena con horas, no con reglas. Puedes saber toda la gramática y aun así "no agarrar" una conversación rápida. Hoy entrenas eso a propósito.</p>
+
+  <h3>3 técnicas que vas a usar</h3>
+  <div class="bloque">
+    <strong>1. Escucha global → detalle:</strong> primero capta de qué va (idea general). Recién en la 2ª pasada busca detalles.<br>
+    <strong>2. Dictado parcial:</strong> pausa y escribe lo que oíste. Comparar con la transcripción revela exactamente qué sonidos se te escapan.<br>
+    <strong>3. Predicción:</strong> pausa antes de que la persona termine la frase e intenta adivinar cómo sigue. Entrena el "anticipar" que hacen los nativos.
+  </div>
+  <div class="nota">No subtítulos en español hoy. Italiano o nada — si lees la traducción, tu oído se apaga.</div>
+
+  <h3>Slang del día — Norte</h3>
+  <div class="slang">
+    <strong>Sbocciare</strong> <span style="font-size:.78rem;color:#888;font-weight:400">[zboc-CHÁ-re] · "sb"→"zb"; "ci"="ch"</span> — Irse de reventón / celebrar a lo grande
+    <div class="uso">Jerga nocturna milanesa (de "descorchar"). Salir de fiesta fuerte.</div>
+    <div class="ejemplo">Stasera si sboccia! → ¡Esta noche hay reventón!</div>
+  </div>
+</div>
+
+<div class="fase input">
+  <span class="badge">Fase 2 · Escucha activa (el corazón de hoy)</span>
+  <h2>35 minutos, 3 rondas</h2>
+  <div class="tarea"><strong>Ronda 1 — global (10 min):</strong> elige un episodio de <em>Easy Italian</em> (entrevistas de calle, con velocidad real). Escúchalo entero una vez. Solo responde: ¿de qué hablaban? Nada de detalles.</div>
+  <div class="tarea"><strong>Ronda 2 — dictado parcial (15 min):</strong> toma 1 minuto del audio. Pausa cada frase y escribe lo que oíste. Luego compara con los subtítulos italianos. Apunta los sonidos/palabras que se te escaparon.</div>
+  <div class="tarea"><strong>Ronda 3 — predicción (10 min):</strong> otro fragmento. Pausa a media frase e intenta adivinar el final antes de reproducir.</div>
+  <div class="nota">Si los acentos del norte te cuestan, busca creadores de Milán/Torino — entrenas justo el acento de tu objetivo.</div>
+</div>
+
+<div class="fase anki">
+  <span class="badge">Fase 3 · Anki</span>
+  <h2>Tarjetas de hoy</h2>
+  <p>Añade las palabras que <strong>no reconociste de oído</strong> en el dictado (suelen ser distintas de las que no sabes leer). Mínimo 6. Más <em>sbocciare</em>.</p>
+  <div class="tarea"><strong>Repaso:</strong> idioms del día 20 + vencidas. 10 min.</div>
+</div>
+
+<div class="fase output">
+  <span class="badge">Fase 4 · Output</span>
+  <h2>Producir</h2>
+  <div class="tarea"><strong>Resumen hablado (8 min):</strong> grábate resumiendo en italiano de qué trató el audio de hoy. 1 minuto seguido, sin guion.</div>
+  <div class="tarea"><strong>Shadowing (7 min):</strong> el fragmento del dictado — repítelo imitando velocidad y entonación hasta que te salga sin trabarte.</div>
+</div>
+
+<div class="tiempo">⏱ Tiempo total: ~70 min &nbsp;·&nbsp; Mañana: repaso B2 + roleplay + chat conmigo</div>
+
+</body>
+</html>

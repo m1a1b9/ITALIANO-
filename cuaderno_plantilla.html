@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plantilla de cuaderno · Italiano</title>
+<style>
+  body{font-family:-apple-system,sans-serif;color:#1c1c1e;background:#f5f7fa;margin:0;padding:1.5rem}
+  .toolbar{max-width:760px;margin:0 auto 1rem;display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+  .toolbar h1{font-size:1.3rem;margin:0;flex:1}
+  .toolbar button,.toolbar a{background:#2d6a4f;color:#fff;border:0;border-radius:6px;padding:.5rem .9rem;font:600 .82rem/1 inherit;cursor:pointer;text-decoration:none}
+  .hint{max-width:760px;margin:0 auto 1.2rem;font-size:.86rem;color:#555;background:#f0f7f4;border-left:3px solid #2d6a4f;padding:.7rem 1rem;border-radius:0 6px 6px 0}
+  .hoja{max-width:760px;margin:0 auto;background:#fff;border:1px solid #dde5dd;border-radius:10px;padding:1.6rem;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+  .hh{display:flex;justify-content:space-between;border-bottom:2px solid #1c1c1e;padding-bottom:.5rem;margin-bottom:1rem}
+  .hh .d{font-weight:700;font-size:1.1rem}
+  .hh .f{color:#888;font-size:.85rem}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+  .col h2{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:#2d6a4f;border-bottom:1px solid #dde5dd;padding-bottom:.3rem;margin:0 0 .6rem}
+  .box{border:1px dashed #c4d4ca;border-radius:6px;min-height:2.6rem;margin:.3rem 0 .9rem;padding:.4rem .6rem;font-size:.82rem;color:#aaa}
+  .box.tall{min-height:5rem}
+  .tag{display:inline-block;font-size:.72rem;font-weight:700;padding:.12rem .45rem;border-radius:4px;margin-right:.3rem}
+  .verde{background:#e3f3ea;color:#1a6e47} .rojo{background:#fdecea;color:#b03a2e} .estrella{background:#fff4d6;color:#9a7d00} .repaso{background:#e7eef9;color:#2c5aa0}
+  .leyenda{max-width:760px;margin:1.2rem auto 0;font-size:.84rem;background:#fff;border:1px solid #dde5dd;border-radius:10px;padding:1rem 1.2rem}
+  .leyenda div{margin:.25rem 0}
+  @media print{
+    body{background:#fff;padding:0}
+    .toolbar,.hint{display:none}
+    .hoja{border:0;box-shadow:none;border-radius:0;max-width:none;padding:1cm}
+    .box{color:transparent}
+    @page{size:A4 landscape;margin:1cm}
+  }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <h1>📓 Plantilla de cuaderno</h1>
+  <a href="index.html">⌂ Índice</a>
+  <button onclick="window.print()">🖨 Imprimir / Guardar PDF</button>
+</div>
+<div class="hint">Imprime varias copias (una por día) o úsala como guía para tu cuaderno físico. <strong>Izquierda = lo que debo saber · Derecha = lo que hago yo.</strong> En el navegador: Imprimir → Destino “Guardar como PDF”.</div>
+
+<div class="hoja">
+  <div class="hh"><span class="d">Día ______ — Tema: ____________________</span><span class="f">Fecha: ____ / ____ / ______</span></div>
+  <div class="cols">
+    <div class="col">
+      <h2>Lo que debo saber</h2>
+      <div><span class="tag verde">REGLA</span> en una sola frase:</div>
+      <div class="box">________________________________________</div>
+      <div>📊 Tabla clave (copiar a mano — escribirla la fija):</div>
+      <div class="box tall"></div>
+      <div><span class="tag rojo">ERROR del hispanohablante</span> (¡ojo!):</div>
+      <div class="box">________________________________________</div>
+      <div>🗣️ Slang del día + fonética:</div>
+      <div class="box">________________________________________</div>
+    </div>
+    <div class="col">
+      <h2>Lo que hago yo</h2>
+      <div>✍️ Ejercicios resueltos:</div>
+      <div class="box tall"></div>
+      <div>5 frases mías usando el tema de hoy:</div>
+      <div class="box tall"></div>
+      <div><span class="tag repaso">REPASAR</span> dudas para mañana:</div>
+      <div class="box">________________________________________</div>
+    </div>
+  </div>
+</div>
+
+<div class="leyenda">
+  <strong>Sistema de marcas (para saber qué es importante):</strong>
+  <div><span class="tag verde">REGLA</span> verde = lo esencial que no puede faltar</div>
+  <div><span class="tag rojo">ERROR</span> rojo = trampa del hispanohablante — esto es oro</div>
+  <div><span class="tag estrella">★</span> = lo que me costó entender (revisar más)</div>
+  <div><span class="tag repaso">🔁</span> = repasar mañana antes de empezar</div>
+  <div style="margin-top:.6rem;color:#666">💡 Reserva las <strong>últimas 2 hojas del cuaderno</strong> como glosario: <em>palabra italiana | significado | día</em>.</div>
+</div>
+</body>
+</html>

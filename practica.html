@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Práctica · Italiano</title>
+<link rel="stylesheet" href="assets/curso.css">
+<style>
+  body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:720px;margin:0 auto;padding:2rem 1.5rem 4rem;line-height:1.5}
+  .top{border-left:4px solid #2d6a4f;padding-left:1rem;margin-bottom:1.2rem}
+  .top h1{font-size:1.7rem;margin:0}
+  .top p{color:#666;margin:.3rem 0 0;font-size:.9rem}
+  .links{display:flex;gap:.6rem;flex-wrap:wrap;margin:.6rem 0 1.4rem}
+  .links a{font-size:.82rem;color:#2d6a4f;text-decoration:none;border:1px solid #cfe3d8;border-radius:6px;padding:.4rem .7rem}
+  .links a:hover{background:#eef2ee}
+  /* progreso */
+  .panel{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.7rem;margin-bottom:1.4rem}
+  .stat{background:#fff;border:1px solid #dde5dd;border-radius:10px;padding:.8rem .9rem}
+  .stat .n{font-size:1.5rem;font-weight:700;color:#2d6a4f}
+  .stat .l{font-size:.74rem;color:#777;text-transform:uppercase;letter-spacing:.05em}
+  .nivel{background:#1c1c1e;color:#fff;border-radius:10px;padding:.9rem 1.1rem;margin-bottom:1rem}
+  .nivel b{color:#9be3c4;font-size:1.1rem}
+  .nivel .bar{height:8px;background:#333;border-radius:4px;margin-top:.5rem;overflow:hidden}
+  .nivel .fill{height:100%;background:#2d6a4f}
+  .reforzar{background:#fffaf0;border:1px solid #e8d9b5;border-left:4px solid #c79a3a;border-radius:0 8px 8px 0;padding:.7rem 1rem;margin-bottom:1.4rem;font-size:.88rem}
+  .reforzar b{color:#8a6d1f}
+  .reforzar ul{margin:.3rem 0 0;padding-left:1.2rem}
+  /* mazos */
+  .decks{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+  .decks button{flex:1;min-width:100px;background:#fff;border:1px solid #cfd8d2;border-radius:8px;padding:.5rem;font:600 .82rem/1 inherit;cursor:pointer;color:#444}
+  .decks button.on{background:#2d6a4f;color:#fff;border-color:#2d6a4f}
+  /* tarjeta de práctica */
+  .card{background:#fff;border:1px solid #dde5dd;border-radius:14px;padding:1.6rem 1.4rem;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+  .card .tag{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#999;margin-bottom:.6rem;display:flex;justify-content:space-between}
+  .card .tag .modo{color:#2d6a4f}
+  .card .q{font-size:1.15rem;color:#14392b;margin-bottom:1rem}
+  .card .q .mal{color:#c0392b;font-style:italic}
+  .card .q .gap{display:inline-block;min-width:3.2rem;border-bottom:2px solid #2d6a4f;text-align:center;color:#2d6a4f;font-weight:700}
+  .card .q .es{color:#666;font-size:.95rem}
+  .card input[type=text]{width:100%;box-sizing:border-box;font:inherit;font-size:1.05rem;padding:.7rem .8rem;border:1.5px solid #cfd8d2;border-radius:9px;outline:none}
+  .card input[type=text]:focus{border-color:#2d6a4f}
+  .opts{display:flex;flex-direction:column;gap:.5rem}
+  .opts button{text-align:left;background:#f7faf8;border:1.5px solid #cfd8d2;border-radius:9px;padding:.7rem .9rem;font:inherit;font-size:1rem;cursor:pointer}
+  .opts button:hover{border-color:#2d6a4f}
+  .opts button.ok{background:#e8f6ee;border-color:#2d6a4f;font-weight:700}
+  .opts button.ko{background:#fdf0ef;border-color:#c0392b;text-decoration:line-through}
+  .fb{margin-top:1rem;border-radius:9px;padding:.8rem 1rem;font-size:.92rem}
+  .fb.ok{background:#e8f6ee;border-left:4px solid #2d6a4f;color:#1a4731}
+  .fb.warn{background:#fff8e8;border-left:4px solid #c79a3a;color:#7a5c12}
+  .fb.ko{background:#fdf0ef;border-left:4px solid #c0392b;color:#922b21}
+  .fb .sol{font-size:1.05rem;font-weight:700;font-style:italic}
+  .fb .why{margin-top:.3rem;color:inherit;opacity:.85}
+  .controls{display:flex;gap:.5rem;margin-top:1rem}
+  .controls button{flex:1;border:0;border-radius:9px;padding:.8rem;font:700 .85rem/1 inherit;cursor:pointer;color:#fff}
+  .b-check{background:#2d6a4f}
+  .b-next{background:#2d6a4f}
+  .b-again{background:#c0392b}
+  .b-accept{background:#c79a3a}
+  .b-easy{background:#5a8f76}
+  .b-say{background:#444;flex:0 0 auto;padding:.8rem 1rem}
+  .vacio{text-align:center;color:#777;background:#fff;border:1px dashed #ccc;border-radius:12px;padding:2.5rem 1rem}
+  .vacio .big{font-size:2rem}
+  .resta{font-size:.78rem;color:#999;text-align:right;margin-top:.5rem}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>🎯 Práctica</h1>
+  <p>Práctica real generada de TUS errores y tu vocabulario: escribe, corrige y elige — no solo voltear tarjetas.</p>
+</div>
+<div class="links"><a href="index.html">⌂ Índice</a><a href="diagnostico.html">🩺 Mi diagnóstico</a><a href="mi-vocabulario.html">★ Mi Vocabulario</a></div>
+
+<div class="nivel">
+  Nivel aproximado: <b id="nivel">—</b> <span id="nivel-sub" style="opacity:.7;font-size:.85rem"></span>
+  <div class="bar"><div class="fill" id="nivel-fill" style="width:0"></div></div>
+</div>
+
+<div class="panel">
+  <div class="stat"><div class="n" id="s-dias">0</div><div class="l">Días hechos</div></div>
+  <div class="stat"><div class="n" id="s-vocab">0</div><div class="l">Palabras activas</div></div>
+  <div class="stat"><div class="n" id="s-due">0</div><div class="l">Repasos hoy</div></div>
+  <div class="stat"><div class="n" id="s-dom">0</div><div class="l">Dominadas</div></div>
+</div>
+
+<div class="reforzar" id="reforzar" style="display:none"><b>🔁 A reforzar</b><ul id="reforzar-list"></ul></div>
+
+<div class="decks">
+  <button data-deck="todo" class="on">Todo</button>
+  <button data-deck="vocab">Vocabulario</button>
+  <button data-deck="error">Mis errores</button>
+  <button data-deck="drill">Drills frescos</button>
+</div>
+
+<div id="zona"></div>
+
+<script>
+/* ---------- audio ---------- */
+var itVoice=null;
+function pick(){var vs=speechSynthesis.getVoices().filter(function(v){return /^it/i.test(v.lang)&&!/pt|bra/i.test(v.lang+v.name)});
+  var saved=localStorage.getItem('italiano-voz');
+  itVoice=(saved&&vs.find(function(v){return v.name===saved}))||vs[0]||null;}
+if('speechSynthesis'in window){pick();speechSynthesis.onvoiceschanged=pick;}
+function say(t){if(!('speechSynthesis'in window)||!t)return;speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='it-IT';if(itVoice)u.voice=itVoice;u.rate=.9;speechSynthesis.speak(u);}
+
+/* ---------- estado SRS (mismo de siempre: no se pierde el historial) ---------- */
+var SKEY='italiano-srs';
+var state=(function(){try{return JSON.parse(localStorage.getItem(SKEY)||'{}')}catch(e){return{}}})();
+function saveState(){localStorage.setItem(SKEY,JSON.stringify(state))}
+function today0(){var d=new Date();d.setHours(0,0,0,0);return d.getTime();}
+var DAY=86400000;
+function reps(id){return state[id]?state[id].reps||0:0}
+function logAct(){try{var d=new Date(),k=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
+  var m=JSON.parse(localStorage.getItem('italiano-actividad')||'{}');
+  if(!m[k]){m[k]=1;localStorage.setItem('italiano-actividad',JSON.stringify(m));}}catch(e){}}
+
+/* ---------- normalización (misma convención que el quiz de canciones) ---------- */
+function baseNorm(s){return (s||'').toLowerCase()
+  .replace(/[’‘´`]/g,"'")
+  .replace(/[«»"“”.,;:!?()…]/g,' ')
+  .replace(/\s+/g,' ').trim();}
+function stripAcc(s){return s.normalize('NFD').replace(/[̀-ͯ]/g,'');}
+/* devuelve: 'exact' | 'acc' (solo difieren acentos) | 'no' */
+function match(input,target){
+  var a=baseNorm(input),b=baseNorm(target);
+  if(!b)return 'no';
+  if(a===b)return 'exact';
+  if(stripAcc(a)===stripAcc(b))return 'acc';
+  return 'no';
+}
+function checkAgainst(input,targets){
+  var best='no';
+  for(var i=0;i<targets.length;i++){
+    var r=match(input,targets[i]);
+    if(r==='exact')return {r:'exact',t:targets[i]};
+    if(r==='acc'&&best==='no')best={r:'acc',t:targets[i]};
+  }
+  return best==='no'?{r:'no'}:best;
+}
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+/* ---------- fuentes ---------- */
+var errSrc={},examSrc={},drillSrc={},perfilSrc={};
+function vocabList(){try{return JSON.parse(localStorage.getItem('italiano-vocab-activo')||'[]')}catch(e){return[]}}
+
+function vocabItems(){
+  return vocabList().map(function(w){
+    return {id:'v:'+baseNorm(w.it),deck:'vocab',prio:4,tipo:'vocab',it:w.it,es:w.es||'',nota:w.contexto||'',estado:w.estado};
+  }).filter(function(w){return w.it&&w.es});
+}
+function errorItems(){
+  var out=[];
+  Object.keys(errSrc).forEach(function(dia){
+    (errSrc[dia].errores||[]).forEach(function(e,i){
+      if(e.repasar!==true)return; // solo errores reales (no dedazos ni matices)
+      if(!e.correcto)return;
+      out.push({id:'e:'+dia+':'+i,deck:'error',prio:6,tipo:'error',dia:dia,
+        tema:e.tema||'',tuvo:e.tuvo||'',correcto:e.correcto,nota:e.nota||''});
+    });
+  });
+  return out;
+}
+function examItems(){
+  var out=[];
+  Object.keys(examSrc).forEach(function(sem){
+    (examSrc[sem].fallos||[]).forEach(function(f,i){
+      if(!f.correcta)return;
+      out.push({id:'x:'+sem+':'+i,deck:'error',prio:6,tipo:'error',dia:'examen S'+sem,
+        tema:f.tema||'',tuvo:'',correcto:f.correcta,nota:(f.q||'').replace(/<[^>]+>/g,'')});
+    });
+  });
+  return out;
+}
+function drillItems(){
+  var out=[],rs=(drillSrc&&drillSrc.rasgos)||{};
+  var perf=(perfilSrc&&perfilSrc.rasgos)||{};
+  Object.keys(rs).forEach(function(k){
+    var p=perf[k];
+    if(p&&(p.estado==='dominado'||p.dominado_manual))return; // el perfil vivo apaga lo dominado
+    var prio=p?(p.prioridad||5):5;
+    (rs[k].drills||[]).forEach(function(d){
+      out.push({id:'d:'+d.id,deck:'drill',prio:prio,tipo:d.tipo,drill:d,rasgo:rs[k].etiqueta||k});
+    });
+  });
+  ((drillSrc&&drillSrc.vocab)||[]).forEach(function(d){
+    out.push({id:'dv:'+d.id,deck:'vocab',prio:5,tipo:d.tipo,drill:d,rasgo:'Vocabulario ★ (curado)'});
+  });
+  return out;
+}
+function allItems(){return vocabItems().concat(errorItems()).concat(examItems()).concat(drillItems());}
+
+/* ---------- panel de progreso ---------- */
+function renderPanel(){
+  var prog;try{prog=JSON.parse(localStorage.getItem('italiano-progreso')||'{}')}catch(e){prog={}}
+  var dias=Object.keys(prog).filter(function(k){return prog[k]}).length;
+  var vl=vocabList();
+  var dom=vl.filter(function(w){return w.estado==='dominada'}).length;
+  var items=allItems(),due=items.filter(isDue).length;
+  document.getElementById('s-dias').textContent=dias;
+  document.getElementById('s-vocab').textContent=vl.length;
+  document.getElementById('s-dom').textContent=dom;
+  document.getElementById('s-due').textContent=due;
+  var nivel='A2',sub='(arrancando)',pct=Math.min(100,Math.round(dias/30*100));
+  if(dias>=8) {nivel='A2→B1';sub='(bases sólidas)';}
+  if(dias>=15){nivel='B1';sub='(núcleo intermedio)';}
+  if(dias>=22){nivel='B1→B2';sub='(rumbo a B2)';}
+  if(dias>=30){nivel='B2';sub='(¡Mes 1 completo!)';}
+  document.getElementById('nivel').textContent=nivel;
+  document.getElementById('nivel-sub').textContent=sub+' · estimación por avance, no examen oficial';
+  document.getElementById('nivel-fill').style.width=pct+'%';
+  var refs=[];Object.keys(errSrc).forEach(function(dia){(errSrc[dia].a_reforzar||[]).forEach(function(r){refs.push(r)})});
+  if(refs.length){document.getElementById('reforzar').style.display='';
+    document.getElementById('reforzar-list').innerHTML=refs.map(function(r){return '<li>'+r+'</li>'}).join('');}
+}
+
+/* ---------- cola SRS ---------- */
+var currentDeck='todo',queue=[],current=null;
+function isDue(c){var s=state[c.id];if(!s)return true;return s.due<=today0()+DAY-1;}
+function buildQueue(){
+  var pool=currentDeck==='todo'?allItems():allItems().filter(function(c){return c.deck===currentDeck});
+  queue=pool.filter(isDue);
+  queue.sort(function(a,b){return (b.prio-a.prio)||(reps(a.id)-reps(b.id));});
+}
+function schedule(c,grade){
+  logAct();
+  var s=state[c.id]||{ease:2.5,interval:0,reps:0,lapses:0};
+  if(grade==='again'){s.lapses++;s.reps=0;s.interval=0;s.ease=Math.max(1.3,s.ease-0.2);}
+  else if(grade==='good'){s.reps++;s.interval=s.interval===0?1:Math.round(s.interval*s.ease);}
+  else {s.reps++;s.ease+=0.15;s.interval=s.interval===0?2:Math.round(s.interval*s.ease*1.3);}
+  s.due=today0()+s.interval*DAY;
+  state[c.id]=s;saveState();
+  if(grade==='again')queue.push(c);
+}
+function next(){current=queue.shift();render();}
+
+/* ---------- construir el EJERCICIO según el ítem y sus repeticiones ---------- */
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+/* hueco = diff de palabras entre 'tuvo' y 'correcto' */
+function clozeOf(tuvo,correcto){
+  var A=baseNorm(tuvo).split(' '),B=correcto.split(/\s+/);
+  var Bn=B.map(function(w){return baseNorm(w)});
+  var i=0;while(i<A.length&&i<B.length&&stripAcc(A[i])===stripAcc(Bn[i]))i++;
+  var j=0;while(j<A.length-i&&j<B.length-i&&stripAcc(A[A.length-1-j])===stripAcc(Bn[B.length-1-j]))j++;
+  var gap=B.slice(i,B.length-j);
+  if(!gap.length||gap.length===B.length)return null;
+  return {pre:B.slice(0,i).join(' '),gap:gap.join(' '),post:B.slice(B.length-j).join(' ')};
+}
+function buildExercise(c){
+  var r=reps(c.id);
+  if(c.tipo==='vocab'){
+    var vs=vocabItems();
+    var mode=(r===0&&vs.length>=4)?'mc':(r%2===1?'dict':'write');
+    if(mode==='mc'){
+      var others=shuffle(vs.filter(function(v){return v.id!==c.id}).map(function(v){return v.es})).slice(0,2);
+      var ops=shuffle([{t:c.es,ok:true}].concat(others.map(function(o){return {t:o,ok:false}})));
+      return {kind:'mc',tag:'Vocabulario ★',modo:'¿Qué significa?',q:'<span style="font-style:italic;font-weight:700">'+esc(c.it)+'</span> <span style="color:#999;font-size:.85rem">(toca 🔊 para oír)</span>',
+        ops:ops,say:c.it,explica:c.nota};
+    }
+    if(mode==='dict'){
+      return {kind:'write',tag:'Vocabulario ★',modo:'Al oído: escribe lo que escuchas',q:'🔊 Escucha y escribe la palabra/frase en italiano <span class="es">(significa: «'+esc(c.es)+'»)</span>',
+        targets:[c.it],say:c.it,autoSay:true,explica:c.nota};
+    }
+    return {kind:'write',tag:'Vocabulario ★',modo:'Escríbelo en italiano',q:'¿Cómo se dice: <b>«'+esc(c.es)+'»</b>?',
+      targets:[c.it],say:c.it,explica:c.nota};
+  }
+  if(c.tipo==='error'){
+    var tagE='Tu error · '+esc(c.tema)+' ('+esc(String(c.dia)).replace(/^(\d)/,'día $1')+')';
+    if(!c.tuvo){ // fallo de examen u error sin frase original → recuerda la forma
+      return {kind:'write',tag:tagE,modo:'Recuerda la forma correcta',q:esc(c.nota||c.tema)||'Scrivi la forma corretta:',
+        targets:[c.correcto],say:c.correcto,explica:c.nota};
+    }
+    if(r===0){
+      var ops=shuffle([{t:c.correcto,ok:true},{t:c.tuvo,ok:false}]);
+      return {kind:'mc',tag:tagE,modo:'¿Cuál es la buena?',q:'Una de estas la escribiste tú (mal). Elige la correcta:',
+        ops:ops,say:c.correcto,explica:c.nota};
+    }
+    if(r===1){
+      var cz=clozeOf(c.tuvo,c.correcto);
+      if(cz)return {kind:'write',tag:tagE,modo:'Completa el hueco (donde caíste)',
+        q:'<i>'+esc(cz.pre)+' <span class="gap">___</span> '+esc(cz.post)+'</i>',
+        targets:[cz.gap],say:c.correcto,explica:c.nota,full:c.correcto};
+    }
+    return {kind:'write',tag:tagE,modo:'Corrige tu error',q:'Tú escribiste: <span class="mal">«'+esc(c.tuvo)+'»</span> — escríbelo bien:',
+      targets:[c.correcto],say:c.correcto,explica:c.nota};
+  }
+  /* drill curado (scrivi / scelta) */
+  var d=c.drill,tagD='Drill fresco · '+esc(c.rasgo);
+  if(c.tipo==='scelta'){
+    var ops=d.op.map(function(o,i){return {t:o,ok:i===d.c}});
+    return {kind:'mc',tag:tagD,modo:'Elige',q:esc(d.q),ops:shuffle(ops.slice()),say:d.op[d.c],explica:d.explica};
+  }
+  return {kind:'write',tag:tagD,modo:'Escribe',q:esc(d.q),targets:[d.soluzione].concat(d.accettate||[]),
+    say:d.soluzione,explica:d.explica,accenti:!!d.accenti};
+}
+
+/* ---------- render ---------- */
+function render(){
+  var z=document.getElementById('zona');
+  if(!current){
+    var any=allItems().length;
+    z.innerHTML='<div class="vacio"><div class="big">✅</div>'+
+      (any?'¡Al día! No hay repasos pendientes en este mazo. Vuelve mañana.':
+           'Aún no tienes material. Guarda palabras con ★ en los días, o termina ejercicios para generar errores que practicar.')+'</div>';
+    renderPanel();return;
+  }
+  var c=current,ex=buildExercise(c);
+  var h='<div class="card"><div class="tag"><span>'+ex.tag+'</span><span class="modo">'+ex.modo+'</span></div>';
+  h+='<div class="q">'+ex.q+'</div>';
+  if(ex.kind==='write'){
+    h+='<input type="text" id="inp" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Scrivi qui…">';
+    h+='<div class="controls"><button class="b-say" id="btn-say">🔊</button><button class="b-check" id="btn-check">Comprobar (Invio)</button></div>';
+  }else{
+    h+='<div class="opts" id="opts">'+ex.ops.map(function(o,i){return '<button data-i="'+i+'">'+esc(o.t)+'</button>'}).join('')+'</div>';
+    h+='<div class="controls"><button class="b-say" id="btn-say">🔊</button></div>';
+  }
+  h+='<div id="fb"></div><div class="resta">quedan '+(queue.length+1)+' en este mazo</div></div>';
+  z.innerHTML=h;
+
+  var btnSay=document.getElementById('btn-say');
+  if(btnSay)btnSay.onclick=function(){say(ex.say)};
+  if(ex.autoSay)setTimeout(function(){say(ex.say)},300);
+
+  function finish(gradeButtons,fbHtml,cls){
+    document.getElementById('fb').innerHTML='<div class="fb '+cls+'">'+fbHtml+'</div>'+
+      '<div class="controls">'+gradeButtons+'</div>';
+    var bn=document.getElementById('b-next');if(bn)bn.onclick=function(){schedule(c,'good');renderPanel();next();};
+    var be=document.getElementById('b-easy');if(be)be.onclick=function(){schedule(c,'easy');renderPanel();next();};
+    var ba=document.getElementById('b-again');if(ba)ba.onclick=function(){schedule(c,'again');renderPanel();next();};
+    var bc=document.getElementById('b-accept');if(bc)bc.onclick=function(){schedule(c,'good');renderPanel();next();};
+    say(ex.say);
+  }
+  var GOOD='<button class="b-next" id="b-next">Continua →</button><button class="b-easy" id="b-easy">⭐ Fácil</button>';
+  var BAD='<button class="b-again" id="b-again">🔁 La repito hoy</button><button class="b-accept" id="b-accept">Era válida, cuéntala buena</button>';
+
+  if(ex.kind==='write'){
+    var inp=document.getElementById('inp');inp.focus();
+    function check(){
+      var v=inp.value.trim();if(!v)return;
+      var res=checkAgainst(v,ex.targets);
+      var solu='<div class="sol">'+esc(ex.full||ex.targets[0])+'</div>'+(ex.explica?'<div class="why">'+esc(ex.explica)+'</div>':'');
+      if(res.r==='exact'){finish(GOOD,'✅ <b>Esatto!</b> '+solu,'ok');}
+      else if(res.r==='acc'&&!ex.accenti){finish(GOOD,'🔸 <b>Casi perfecto</b> — solo los acentos: '+solu,'warn');}
+      else if(res.r==='acc'&&ex.accenti){finish(BAD,'❌ <b>Los acentos eran justo el punto:</b> '+solu,'ko');}
+      else{finish(BAD,'❌ <b>No exactamente.</b> La respuesta era: '+solu,'ko');}
+    }
+    document.getElementById('btn-check').onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check();});
+  }else{
+    [].slice.call(document.querySelectorAll('#opts button')).forEach(function(b){
+      b.onclick=function(){
+        var i=+b.getAttribute('data-i'),ok=ex.ops[i].ok;
+        [].slice.call(document.querySelectorAll('#opts button')).forEach(function(x,xi){
+          x.disabled=true;
+          if(ex.ops[xi].ok)x.classList.add('ok');else if(xi===i)x.classList.add('ko');
+        });
+        var why=ex.explica?'<div class="why">'+esc(ex.explica)+'</div>':'';
+        if(ok)finish(GOOD,'✅ <b>Esatto!</b>'+why,'ok');
+        else finish(BAD,'❌ La buena era: <span class="sol">'+esc(ex.ops.filter(function(o){return o.ok})[0].t)+'</span>'+why,'ko');
+      };
+    });
+  }
+}
+
+/* ---------- init ---------- */
+[].slice.call(document.querySelectorAll('.decks button')).forEach(function(b){
+  b.onclick=function(){document.querySelectorAll('.decks button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');currentDeck=b.getAttribute('data-deck');buildQueue();next();};
+});
+Promise.all([
+  fetch('/api/errores').then(function(r){return r.json()}).then(function(e){errSrc=e||{}}).catch(function(){errSrc={}}),
+  fetch('/api/examenes').then(function(r){return r.json()}).then(function(e){examSrc=e||{}}).catch(function(){examSrc={}}),
+  fetch('datos/drills.json').then(function(r){return r.json()}).then(function(e){drillSrc=e||{}}).catch(function(){drillSrc={}}),
+  fetch('/api/perfil').then(function(r){return r.json()}).then(function(e){perfilSrc=e||{}}).catch(function(){perfilSrc={}})
+]).then(function(){renderPanel();buildQueue();next();});
+</script>
+</body>
+</html>

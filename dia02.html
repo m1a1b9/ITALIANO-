@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Día 2 — Italiano</title>
+<style>
+  body { font-family: -apple-system, sans-serif; background: #f5f7fa; color: #1c1c1e; max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 4rem; line-height: 1.7; }
+  .header { border-left: 4px solid #2d6a4f; padding-left: 1rem; margin-bottom: 2.5rem; }
+  .header .dia { font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #2d6a4f; margin-bottom: .3rem; }
+  .header h1 { font-size: 1.7rem; font-weight: 700; margin: 0; }
+  .header p { color: #666; font-size: .9rem; margin: .3rem 0 0; }
+  h2 { font-size: .7rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: #2d6a4f; margin: 2rem 0 .8rem; }
+  h3 { font-size: .95rem; font-weight: 700; margin: 1.4rem 0 .5rem; }
+  .sonido { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: 1.1rem 1.3rem; margin: .6rem 0 1rem; }
+  .sonido h3 { margin: 0 0 .4rem; font-size: 1rem; color: #1c1c1e; }
+  .sonido .pron { font-size: 1.4rem; font-weight: 700; color: #2d6a4f; letter-spacing: .05em; }
+  .sonido .desc { font-size: .88rem; color: #444; margin: .4rem 0; }
+  .sonido .trampa { font-size: .84rem; background: #fdf0ef; border-left: 3px solid #c0392b; padding: .4rem .7rem; border-radius: 0 4px 4px 0; margin-top: .5rem; color: #922b21; }
+  .sonido .ventaja { font-size: .84rem; background: #f0f7f4; border-left: 3px solid #2d6a4f; padding: .4rem .7rem; border-radius: 0 4px 4px 0; margin-top: .5rem; color: #1a4731; }
+  .sonido .drill { font-size: .84rem; background: #eef2ee; padding: .5rem .8rem; border-radius: 4px; margin-top: .5rem; font-style: italic; }
+  .par { display: flex; gap: .5rem; margin: .3rem 0; }
+  .par span { background: #fff; border: 1px solid #dde5dd; border-radius: 6px; padding: .3rem .8rem; font-size: .88rem; flex: 1; text-align: center; }
+  .par span em { display: block; font-size: .72rem; color: #888; font-style: normal; }
+  .nota { background: #f0f7f4; border-left: 3px solid #2d6a4f; padding: .7rem 1rem; border-radius: 0 6px 6px 0; font-size: .88rem; color: #1a4731; margin: .8rem 0; }
+  .alerta { background: #fdf0ef; border-left: 3px solid #c0392b; padding: .7rem 1rem; border-radius: 0 6px 6px 0; font-size: .88rem; color: #922b21; margin: .8rem 0; }
+  .ejercicio { counter-reset: ej; padding-left: 0; }
+  .ejercicio li { list-style: none; counter-increment: ej; padding: .6rem 0 .6rem 2.4rem; position: relative; border-bottom: 1px solid #dde5dd; font-size: .92rem; }
+  .ejercicio li:last-child { border-bottom: none; }
+  .ejercicio li::before { content: counter(ej); position: absolute; left: 0; top: .65rem; background: #2d6a4f; color: #fff; font-size: .65rem; font-weight: 700; width: 1.5rem; height: 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .destacado { background: #1c1c1e; color: #f9f6f1; border-radius: 8px; padding: 1.2rem 1.4rem; margin: 1.2rem 0; font-size: .9rem; line-height: 1.7; }
+  .destacado strong { color: #52b788; }
+  .tiempo { text-align: right; font-size: .8rem; color: #999; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #dde5dd; }
+  p { font-size: .92rem; }
+  .regla { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; margin: .5rem 0; }
+  .regla div { background: #eef2ee; border-radius: 6px; padding: .5rem .8rem; font-size: .88rem; text-align: center; }
+  .regla div strong { display: block; color: #2d6a4f; font-size: 1rem; }
+</style>
+<link rel="stylesheet" href="assets/curso.css"><script defer src="assets/vocab.js"></script><script defer src="assets/frases.js"></script><script defer src="assets/curso.js"></script><script defer src="assets/respuestas.js"></script>
+</head>
+<body>
+
+<div class="header">
+  <div class="dia">Settimana 1 · Giorno 2 · Fonetica</div>
+  <h1>Drill de pronunciación</h1>
+  <p>El día que convierte lo que leíste ayer en automatismo muscular</p>
+</div>
+
+<p>Tienes ventaja enorme sobre angloparlantes: el 70% de los sonidos italianos ya existen en español. Este día se centra en el 30% que no — y en las trampas específicas del hispanohablante que piensa que sabe cómo suena algo cuando en realidad no.</p>
+
+<div class="alerta"><strong>Regla del día:</strong> todo lo que leas aquí lo dices en voz alta. Si no hablas, no sirve. La fonética es muscular.<br>💡 <strong>Audio:</strong> haz clic en cualquier palabra en italiano para oírla y comparar con tu pronunciación.</div>
+
+<h2>Trampa 1 — Las consonantes dobles</h2>
+
+<div class="sonido">
+  <h3>La diferencia que los italianos oyen al instante</h3>
+  <div class="pron">fatto ≠ fato · palla ≠ pala</div>
+  <div class="desc">
+    Las consonantes dobles en italiano no son decoración ortográfica — cambian el significado y el ritmo de la palabra. La técnica: <strong>bloquea el sonido un instante antes de soltarlo</strong>. Como un pequeño "hold" antes de la consonante.<br><br>
+    · <em>fatto</em> (hecho) ≠ <em>fato</em> (destino)<br>
+    · <em>palla</em> (pelota) ≠ <em>pala</em> (pala)<br>
+    · <em>notte</em> (noche) ≠ <em>note</em> (notas musicales)<br>
+    · <em>pizza</em> = [PIT-tsa] — la T se bloquea, luego explota<br>
+    · <em>bello</em> = [BEL-lo] — la L se mantiene un instante antes de soltar
+  </div>
+  <div class="trampa">El hispanohablante tiende a ignorar las dobles porque en español no cambian el significado. En italiano el cerebro nativo las oye siempre — es el error más detectado.</div>
+  <div class="drill">Drill: di en voz alta alternando 5 veces → fato / fatto / fato / fatto. ¿Sientes el bloqueo en la T? Luego: pala / palla / pala / palla. Después: notte · bello · pizza · mamma · cappuccino.</div>
+</div>
+
+<h3>Pares mínimos — simples vs dobles</h3>
+<div class="par"><span>fato [FÁ-to]<em>destino</em></span><span>fatto [FÁT-to]<em>hecho</em></span></div>
+<div class="par"><span>pala [PÁ-la]<em>pala</em></span><span>palla [PÁL-la]<em>pelota</em></span></div>
+<div class="par"><span>note [NÓ-te]<em>notas</em></span><span>notte [NÓT-te]<em>noche</em></span></div>
+<div class="par"><span>caro [KÁ-ro]<em>querido/caro</em></span><span>carro [KÁR-ro]<em>carro</em></span></div>
+
+<h2>Trampa 2 — C y G cambian antes de E e I</h2>
+
+<div class="sonido">
+  <h3>La regla que lo cambia todo</h3>
+  <div class="pron">c + e/i = [ch] · c + a/o/u = [k]</div>
+  <div class="regla">
+    <div><strong>ce</strong> = [che]<br><em>cena</em></div>
+    <div><strong>ci</strong> = [chi]<br><em>città</em></div>
+    <div><strong>ca</strong> = [ka]<br><em>casa</em></div>
+    <div><strong>co</strong> = [ko]<br><em>cosa</em></div>
+  </div>
+  <div class="regla">
+    <div><strong>ge</strong> = [dje]<br><em>gente</em></div>
+    <div><strong>gi</strong> = [dji]<br><em>girare</em></div>
+    <div><strong>ga</strong> = [ga]<br><em>gatto</em></div>
+    <div><strong>go</strong> = [go]<br><em>gonna</em></div>
+  </div>
+  <div class="desc">
+    <strong>Excepciones con H:</strong> la H "bloquea" el cambio → <em>chi</em> = [ki], <em>che</em> = [ke], <em>ghi</em> = [gi], <em>ghe</em> = [ge].<br>
+    Ejemplos: <em>chiamare</em> [kya-MÁ-re] · <em>spaghetti</em> [spa-GÉT-ti] · <em>forchetta</em> [for-KÉT-ta]
+  </div>
+  <div class="trampa">Leer <em>ciao</em> como "kiao" o <em>cinema</em> como "kinema". También: <em>arrivederci</em> = [ar-ri-ve-DÉR-chi], no "derki" ni "dersi".</div>
+  <div class="drill">Drill: lee en voz alta rápido → ca · ce · ci · co · cu → [ka · che · chi · ko · ku]. Luego: ga · ge · gi · go · gu → [ga · dje · dji · go · gu]. Después practica: cena · città · casa · cosa · gente · girare · gatto.</div>
+</div>
+
+<h2>Trampa 3 — SC antes de E e I = [sh]</h2>
+
+<div class="sonido">
+  <h3>SC — el grupo que nadie te enseña</h3>
+  <div class="pron">sci = [shi] · sce = [she] · sca = [ska]</div>
+  <div class="desc">
+    SC + e/i → suena como "sh" en inglés "shop".<br>
+    SC + a/o/u → suena [sk] normal.<br><br>
+    · <em>scena</em> → [SHÉ-na] (escena)<br>
+    · <em>uscire</em> → [u-SHÍ-re] (salir)<br>
+    · <em>pesce</em> → [PÉ-she] (pescado)<br>
+    · <em>scuola</em> → [SKUÓ-la] (escuela) — aquí sí es [sk]<br>
+    · <em>sci</em> → [shi] — así se dice "esquí" en italiano
+  </div>
+  <div class="trampa">Leer <em>pesce</em> como "peske" o <em>uscire</em> como "uskire". La SC antes de vocal frontal siempre es [sh].</div>
+  <div class="drill">Drill: scena · pesce · uscire · sci · sce → todos con sonido [sh]. Luego scuola · scala · scarpa → todos con [sk]. Alterna 3 veces.</div>
+</div>
+
+<h2>Ventaja 1 — GLI = tu "ll" española</h2>
+
+<div class="sonido">
+  <h3>El sonido que ya tienes</h3>
+  <div class="pron">gli = [lli] como "llama"</div>
+  <div class="desc">
+    <em>Gli</em> en italiano suena exactamente como la "ll" española clásica (la de Castilla y Cono Sur). Si eres de México, Colombia, etc. donde ll = y, hazlo aún más palatal que tu "ll".<br><br>
+    · <em>figlio</em> (hijo) → [FÍ-llyo]<br>
+    · <em>voglio</em> (quiero) → [VÓ-llyo]<br>
+    · <em>meglio</em> (mejor) → [MÉ-llyo]<br>
+    · <em>gli</em> (pronombre "le/los") → [lli]
+  </div>
+  <div class="ventaja">Ventaja hispanohablante: este sonido ya está en tu boca. Solo tienes que reconocer que "gli" = tu "ll". No lo pronuncies como G+L+I separados.</div>
+  <div class="drill">Drill: voglio · figlio · meglio · gli · luglio (julio). Repite 5 veces rápido. Si suena como "ll" suave, perfecto.</div>
+</div>
+
+<h2>Ventaja 2 — GN = tu Ñ</h2>
+
+<div class="sonido">
+  <h3>Gratis para el hispanohablante</h3>
+  <div class="pron">gn = [ñ] como "año"</div>
+  <div class="desc">
+    Sin truco, sin trabajo. La GN italiana es exactamente la Ñ española.<br><br>
+    · <em>bagno</em> (baño) → [BÁ-ño]<br>
+    · <em>signore</em> (señor) → [si-ÑÓ-re]<br>
+    · <em>gnocchi</em> (ñoquis) → [ÑÓ-ki]<br>
+    · <em>bisogno</em> (necesidad) → [bi-ZÓ-ño]
+  </div>
+  <div class="ventaja">El único trabajo es reconocer que "gn" escrito = tu "ñ". Nada más.</div>
+  <div class="drill">Drill: bagno · signore · gnocchi · campagna · montagna. Si suena como tu "ñ", lo estás haciendo perfecto.</div>
+</div>
+
+<h2>Trampa 4 — La R italiana es un toque, no un trino</h2>
+
+<div class="sonido">
+  <h3>La R de "pero", no la de "perro"</h3>
+  <div class="pron">r = un solo golpe rápido</div>
+  <div class="desc">
+    La R italiana es un flap — un solo toque rápido de la lengua contra los alvéolos, como la R de "pero" en español (no la RR de "perro").<br><br>
+    · En posición simple: <em>Roma · amore · parlare</em> → R de golpe único<br>
+    · La RR italiana SÍ se pronuncia doble (como "perro") pero es menos común<br><br>
+    <strong>Región:</strong> en el sur de Italia la R es más vibrante. En el norte (Milano, Torino) es más suave, casi como la R francesa en algunos hablantes. Para tu objetivo (norte) → R ligera.
+  </div>
+  <div class="trampa">Trinar la R como en español en cada palabra suena artificioso — parodia de italiano de película. La R italiana fluye sin esfuerzo.</div>
+  <div class="drill">Drill: Roma · amore · parlare · mangiare · correre (aquí sí doble). Enfócate en que la R sea ligera y rápida, sin retención del aire.</div>
+</div>
+
+<h2>Trampa 5 — Z = [ts] o [dz], nunca S ni TH</h2>
+
+<div class="sonido">
+  <h3>La Z africada</h3>
+  <div class="pron">z = [ts] · zz = [tts]</div>
+  <div class="desc">
+    La Z italiana es siempre africada: [ts] sorda o [dz] sonora. Nunca suena como la S española ni como la TH del español peninsular.<br><br>
+    · <em>pizza</em> → [PÍT-tsa] — ZZ = [tts] doble<br>
+    · <em>grazie</em> → [GRÁ-tsye] — Z = [ts]<br>
+    · <em>zero</em> → [DZÉR-o] — Z = [dz] sonora<br>
+    · <em>stazione</em> → [sta-TSYÓ-ne]
+  </div>
+  <div class="trampa">Leer <em>grazie</em> como "grassie" (con S española) o como "grathie" (con TH). Ambas están mal.</div>
+  <div class="drill">Drill: di "ts" como en "pizza" en voz alta 5 veces. Luego: grazie · pizza · stazione · nazione. ¿Sale el [ts]? Luego prueba con [dz]: zero · zona.</div>
+</div>
+
+<h2>🗣️ Cultura & Strada — slang del norte</h2>
+<p style="font-size:.86rem;color:#666">Cómo suenan estas expresiones es buen drill de pronunciación — y de paso amplías tu vocabulario de calle. Haz clic para oírlas.</p>
+<div class="slang">
+  <strong>Bella lì!</strong> <span class="reg verde">suave</span> <span style="font-size:.78rem;color:#888">[bél-la lì] · L doble bloqueada</span> — <span class="it">¡qué chido! / ¡está chingón!</span>
+  <div class="uso">Exclamación muy del norte (Milán) entre jóvenes, para algo que te late o salió bien.</div>
+  <div class="ejemplo"><span class="it">Hai preso il lavoro? Bella lì!</span> → ¿Conseguiste el trabajo? ¡Qué chido!</div>
+</div>
+<div class="slang">
+  <strong>Che figata!</strong> <span class="reg verde">suave</span> <span style="font-size:.78rem;color:#888">[ke fi-gá-ta] · G suave ante A</span> — <span class="it">¡qué padre! / ¡está chingón!</span>
+  <div class="uso">De lo más usado por los jóvenes para algo genial. Versión limpia y cotidiana.</div>
+  <div class="ejemplo"><span class="it">Un viaggio in Italia? Che figata!</span> → ¿Un viaje a Italia? ¡Qué padrísimo!</div>
+</div>
+<div class="slang">
+  <strong>Scialla</strong> <span class="reg verde">suave</span> <span style="font-size:.78rem;color:#888">[shál-la] · SC = "sh", L doble</span> — <span class="it">tranqui / relájate</span>
+  <div class="uso">Juvenil: "tómatelo con calma, sin estrés". Junta dos sonidos del día: SC = sh y la doble.</div>
+  <div class="ejemplo"><span class="it">Non ti preoccupare, scialla!</span> → No te preocupes, ¡tranqui!</div>
+</div>
+<div class="slang">
+  <strong>Che palle!</strong> <span class="reg amari">algo fuerte</span> <span style="font-size:.78rem;color:#888">[ke pál-le] · L doble</span> — <span class="it">¡qué hueva! / ¡qué pedo!</span>
+  <div class="uso">Coloquial y un pelín vulgar (lit. "qué pelotas") para expresar fastidio. Entre amigos, normalísimo.</div>
+  <div class="ejemplo"><span class="it">Ancora compiti? Che palle!</span> → ¿Otra vez tarea? ¡Qué hueva!</div>
+</div>
+
+<h2>Ejercicios del día</h2>
+<ol class="ejercicio">
+  <li><strong>Dobles en voz alta:</strong> Lee esta lista lentamente exagerando la pausa antes de cada doble consonante: <em>bello · notte · pizza · cappuccino · mamma · appartamento · affitto · caffè</em>. Luego leerla a velocidad normal manteniendo la distinción.</li>
+  <li><strong>Regla C/G — dictado mental:</strong> Lee estas palabras y di en voz alta si la C suena [k] o [ch]: <em>ciao · casa · cinema · come · cercare · cucina · pace · arrivederci</em>. Respuestas: ch · k · ch · k · ch · k · che · chi.</li>
+  <li><strong>Busca en YouTube:</strong> "ItalianPod101 Italian pronunciation" o "Italy Made Easy pronunciation". Mira 5 minutos enfocándote solo en las consonantes dobles y en la C/G. Pausa y repite cada ejemplo.</li>
+  <li><strong>Grabación de referencia:</strong> Di en voz alta y graba: <em>pizza · figlio · bagno · scena · grazie · bello · notte · ciao · gente · voglio</em>. Guarda el audio como <strong>voz_italiano_fonetica_dia02</strong>. En el día 9 (repaso de semana 2) te escuchas y comparas.</li>
+  <li><strong>Lectura en voz alta:</strong> Lee esta frase completa en voz alta 5 veces, cada vez más fluida: <em>"Buona notte, figlio mio. Hai voglia di pizza? Grazie, mamma — è bellissima!"</em></li>
+</ol>
+
+<details class="solu">
+  <summary>Soluciones (ábrelas después de intentarlo en voz alta)</summary>
+  <div class="body">
+    <p><strong>2. Regla C/G:</strong> <em>ciao</em> [ch] · <em>casa</em> [k] · <em>cinema</em> [ch] · <em>come</em> [k] · <em>cercare</em> [ch] · <em>cucina</em> [k] · <em>pace</em> [pá-che] · <em>arrivederci</em> [...dér-chi].</p>
+    <p><strong>1, 3, 4, 5:</strong> son de pronunciación en voz alta / grabación — no tienen respuesta escrita. Si quieres, grábate diciendo la frase del ejercicio 5 y compárala con el botón 🔊 de cada palabra.</p>
+  </div>
+</details>
+
+<div class="cuaderno">
+  <h3>✍️ Para tu cuaderno (hoy)</h3>
+  <div class="lado">Página izquierda — Lo que debo saber</div>
+  <ul>
+    <li>🔴 <strong>Las 2 trampas que más delatan:</strong> consonantes <strong>dobles</strong> (fatto ≠ fato) y la regla <strong>C/G + e/i</strong> (ciao = "chao").</li>
+    <li>🟩 <strong>Reglas rápidas:</strong> SC + e/i = "sh" (pesce) · Z = [ts] (grazie) · R = un toque, no trino.</li>
+    <li>🟢 <strong>Gratis:</strong> GN = tu ñ (bagno) · GLI = tu ll (figlio).</li>
+    <li>🗣️ <strong>Slang:</strong> bella lì / che figata = está chingón · scialla = tranqui · che palle = qué hueva.</li>
+  </ul>
+  <div class="lado">Página derecha — Lo que hago yo</div>
+  <ul>
+    <li>Copia 4 pares mínimos y márcalos: fato/fatto · pala/palla · note/notte · caro/carro.</li>
+    <li>Escribe 5 palabras con doble consonante y subráyala en rojo.</li>
+    <li>Graba tu audio de referencia (las 10 palabras del ejercicio 4) → guárdalo como <em>voz_dia02</em>.</li>
+    <li>🔁 <strong>Sonido que más me cuesta:</strong> _______________</li>
+  </ul>
+  <div class="lado">🔎 Vocabulario para mi glosario</div>
+  <ul>
+    <li>Anota en las últimas hojas las palabras nuevas: <em>italiano · significado · día</em>. Marca ★ las que te resuenen para volverlas activas.</li>
+    <li>Candidatas de hoy: <em>forchetta</em> (tenedor), <em>scarpa</em> (zapato), <em>montagna</em> (montaña) + el slang que te late.</li>
+  </ul>
+</div>
+
+<div class="destacado">
+  <strong>Tu ventaja real como hispanohablante:</strong><br>
+  GN = ñ (gratis) · GLI = ll (casi gratis) · vocales siempre claras (como en español, no como en francés) · ritmo silábico parecido · sin reducción vocálica como en ruso o inglés.<br><br>
+  Lo que realmente tienes que trabajar: <strong>consonantes dobles</strong> y <strong>la regla C/G</strong>. Todo lo demás es perfeccionamiento gradual.
+</div>
+
+<div class="tiempo">⏱ Tiempo estimado: 40–45 min &nbsp;·&nbsp; Mañana: Futuro Semplice + Condizionale Presente</div>
+
+</body>
+</html>

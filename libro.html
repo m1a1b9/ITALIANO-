@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Il mio libro · Curso de Italiano</title>
+<link rel="stylesheet" href="assets/curso.css">
+<script defer src="assets/vocab.js"></script>
+<script defer src="assets/frases.js"></script>
+<script defer src="assets/curso.js"></script>
+<style>
+  body{font-family:-apple-system,"Segoe UI",sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:800px;margin:0 auto;padding:2rem 1.5rem 6rem;line-height:1.6}
+  a.back{color:#2d6a4f;text-decoration:none;font-size:.85rem;display:block}
+  h1{font-size:1.7rem;margin:.2rem 0}
+  .sub{color:#666;margin:0 0 1rem}
+  .box{background:#fff;border:1px solid #dde5dd;border-radius:10px;padding:1rem 1.2rem;margin:1rem 0}
+  .cap-item{display:flex;align-items:center;gap:.7rem;background:#fff;border:1px solid #dde5dd;border-radius:8px;padding:.55rem .9rem;margin:.35rem 0;cursor:pointer}
+  .cap-item:hover{border-color:#2d6a4f}
+  .cap-item::before{content:"▸";color:#2d6a4f;font-size:.8rem}
+  .cap-item.open{border-color:#2d6a4f;background:#f3faf6}
+  .cap-item.open::before{content:"▾"}
+  .cap-item .num{flex:none;width:1.9rem;height:1.9rem;border-radius:50%;background:#eef2ee;color:#2d6a4f;font-weight:700;font-size:.8rem;display:flex;align-items:center;justify-content:center}
+  .cap-item.letto .num{background:#2d6a4f;color:#fff}
+  .cap-item .t{font-weight:700;flex:1}
+  .estado{font-size:.66rem;font-weight:800;border-radius:4px;padding:.15rem .45rem}
+  .estado.ok{background:#e8f7ee;color:#1a6e47}.estado.pend{background:#fff4d6;color:#8a6d1f}
+  .letto-badge{font-size:.66rem;font-weight:800;color:#1a6e47}
+  .domanda{background:#f6f2fb;border-left:4px solid #7c4dbc;border-radius:0 8px 8px 0;padding:.7rem 1rem;font-size:.95rem;margin:.8rem 0;font-weight:600;color:#4a2d75}
+  .riassunto{font-size:.9rem;color:#444;margin:.6rem 0}
+  .btn{background:#2d6a4f;color:#fff;border:0;border-radius:7px;padding:.55rem .9rem;font:600 .85rem/1 sans-serif;cursor:pointer}
+  .btn.letto{background:#1a6e47}
+  .btn.sec{background:#fff;color:#8a6d1f;border:1px solid #e8d9b5}
+  .spunto{background:#fffaf0;border:1px solid #e8d9b5;border-left:4px solid #c79a3a;border-radius:0 8px 8px 0;padding:.8rem 1rem;font-size:.9rem;color:#6b511c;margin:1rem 0}
+  .spunto textarea{width:100%;box-sizing:border-box;border:1px solid #e0d3b0;border-radius:7px;padding:.5rem;font:inherit;min-height:4rem;background:#fff;margin-top:.4rem}
+  .vclave{display:flex;align-items:center;gap:.5rem;background:#fff;border:1px solid #dde5dd;border-radius:7px;padding:.45rem .7rem;margin:.3rem 0;font-size:.9rem}
+  .vclave .it{font-weight:700}
+  .mini{border:0;border-radius:6px;padding:.35rem .5rem;font:700 .72rem/1 sans-serif;cursor:pointer;background:#fff4d6;color:#8a6d1f}
+  /* quiz (mismo look que inmersión) */
+  .quiz-q{background:#fff;border:1px solid #dde5dd;border-radius:8px;padding:.8rem 1rem;margin:.5rem 0;font-size:.92rem}
+  .quiz-q label{display:block;margin:.25rem 0;cursor:pointer}
+  .quiz-q.bien{border-color:#2d6a4f;background:#f3faf6}
+  .quiz-q.mal{border-color:#c0392b;background:#fdf0ef}
+  .quiz-q.quasi{border-color:#c79a3a;background:#fffaf0}
+  .quiz-q .explica{font-size:.84rem;color:#666;margin-top:.4rem;display:none}
+  .quiz-q .q-write{width:100%;box-sizing:border-box;margin:.5rem 0 .4rem;padding:.5rem .6rem;border:1px solid #cfd8d2;border-radius:7px;font:inherit;font-size:.92rem;background:#fffef9}
+  .quiz-q .q-check{background:#2d6a4f;color:#fff;border:0;border-radius:7px;padding:.45rem .9rem;font:600 .82rem/1 sans-serif;cursor:pointer}
+  .corr-tuvo{color:#c0392b}.corr-ok{color:#1a6e47;font-weight:700}
+  h3{font-size:1rem;margin:1rem 0 .3rem;color:#1a4731}
+  .prep{opacity:.7;font-size:.86rem;color:#666;padding:.6rem 0}
+  /* panel que se despliega JUSTO debajo de su capítulo (acordeón) */
+  .cap-panel{margin:0 0 .6rem .6rem;padding:0 0 0 .8rem;border-left:2px solid #cfe3d8}
+  .cap-panel:empty{display:none;margin:0;padding:0;border:0}
+</style>
+</head>
+<body>
+<a class="back" href="index.html">⌂ Índice</a>
+<h1>📖 Il mio libro</h1>
+<p class="sub"><strong>«Sapere e guardare lontano»</strong> — 30 capítulos de cultura italiana. Lo lees de noche; aquí, al día siguiente, lo <strong>activas</strong>: marca "leído", haz el quiz, guarda vocabulario con ★ y responde la pregunta Feynman. Cada capítulo leído suma a tu racha y a la dieta de inmersión.</p>
+<div id="progreso" class="box" style="font-size:.9rem"></div>
+<div id="lista"></div>
+
+<script>
+function logAct(){try{var d=new Date(),k=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
+  var m=JSON.parse(localStorage.getItem('italiano-actividad')||'{}');
+  if(!m[k]){m[k]=1;localStorage.setItem('italiano-actividad',JSON.stringify(m));}}catch(e){}}
+function weekKey(){var d=new Date(),y=d.getFullYear(),oneJan=new Date(y,0,1);
+  var wk=Math.ceil((((d-oneJan)/86400000)+oneJan.getDay()+1)/7);return y+'-W'+wk;}
+function addInmersione(min){ // leer cuenta como inmersión (FUSIONA con el servidor: nunca lo sobrescribe)
+  fetch('/api/inmersion').then(function(r){return r.json()}).catch(function(){return{}}).then(function(srv){
+    var KEY='italiano-inmersion',loc={};
+    try{loc=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){loc={}}
+    srv=srv||{};
+    var merged={};
+    Object.keys(srv).concat(Object.keys(loc)).forEach(function(k){
+      merged[k]=Math.max(srv[k]||0, loc[k]||0);   // conserva lo más alto de ambos lados
+    });
+    var wk=weekKey();
+    merged[wk]=(merged[wk]||0)+min;
+    try{localStorage.setItem(KEY,JSON.stringify(merged))}catch(e){}
+    fetch('/api/inmersion',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(merged)}).catch(function(){});
+  });}
+function normQ(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')
+  .replace(/['’`]/g,"'").replace(/[.,;:!?«»"()…]/g,'').replace(/\s+/g,' ').trim();}
+function saveChunk(it,es,ctx){it=(it||'').trim();if(!it)return false;
+  var l;try{l=JSON.parse(localStorage.getItem('italiano-vocab-activo')||'[]')}catch(e){l=[]}
+  var n=it.toLowerCase().trim();if(l.some(function(w){return (w.it||'').toLowerCase().trim()===n}))return 'dup';
+  l.push({it:it,es:es||'',ctx:ctx||'',estado:'practica',t:Date.now()});
+  localStorage.setItem('italiano-vocab-activo',JSON.stringify(l));return true;}
+
+/* ---- render de un quiz (3 scelta + 2 scrivi) en un contenedor ---- */
+function renderQuiz(cont, quiz, ctxTitulo){
+  quiz.forEach(function(q,qi){
+    var el=document.createElement('div');el.className='quiz-q';
+    var isWrite=(q.tipo==='scrivi');
+    el.innerHTML='<b>'+(qi+1)+'. '+(isWrite?'✍️ ':'')+q.q+'</b>';
+    if(isWrite){
+      var inp=document.createElement('input');inp.type='text';inp.className='q-write';inp.placeholder='Scrivi la tua risposta in italiano…';
+      var btn=document.createElement('button');btn.className='q-check';btn.textContent='Controlla';
+      var ex=document.createElement('div');ex.className='explica';
+      el.appendChild(inp);el.appendChild(btn);el.appendChild(ex);
+      function comprobar(){var ans=normQ(inp.value);if(!ans)return;
+        var sol=q.soluzione||'',oks=[sol].concat(q.accettate||[]).map(normQ);
+        el.classList.remove('bien','quasi');
+        if(oks.indexOf(ans)>-1){el.classList.add('bien');ex.innerHTML='✅ Esatto! <b>'+sol+'</b>'+(q.explica?' — '+q.explica:'');}
+        else{el.classList.add('quasi');ex.innerHTML='🔶 Soluzione: <b>'+sol+'</b>'+(q.explica?' — '+q.explica:'')+
+          '<br><span style="color:#999">La tua: «'+(inp.value.trim()||'—')+'» — confronta.</span>';
+          saveChunk(sol,q.explica||('di "'+ctxTitulo+'"'),'quiz libro');}
+        ex.style.display='block';logAct();}
+      btn.onclick=comprobar;inp.addEventListener('keydown',function(e){if(e.key==='Enter')comprobar();});
+    }else{
+      (q.op||[]).forEach(function(op,oi){var lab=document.createElement('label');
+        lab.innerHTML='<input type="radio" name="q'+ctxTitulo+qi+'" value="'+oi+'"> '+op;el.appendChild(lab);});
+      var ex2=document.createElement('div');ex2.className='explica';ex2.textContent=q.explica||'';el.appendChild(ex2);
+      el.addEventListener('change',function(e){var val=parseInt(e.target.value,10);
+        el.classList.remove('bien','mal');
+        if(val===q.c){el.classList.add('bien');}
+        else{el.classList.add('mal');saveChunk((q.op||[])[q.c]||'',q.explica||('di "'+ctxTitulo+'"'),'quiz libro');}
+        ex2.style.display='block';logAct();});
+    }
+    cont.appendChild(el);
+  });
+  if(window.italianoGloss)window.italianoGloss(cont);
+}
+
+/* ---- biblioteca ---- */
+var DATA={}, abierta=null;
+function cerrar(){abierta=null;
+  document.querySelectorAll('.cap-panel').forEach(function(p){p.innerHTML='';});
+  document.querySelectorAll('.cap-item.open').forEach(function(x){x.classList.remove('open')});}
+function cargar(){
+  fetch('/api/libro').then(function(r){return r.json()}).then(function(d){
+    DATA=d||{};var caps=DATA.capitoli||{};var lista=document.getElementById('lista');lista.innerHTML='';
+    var claves=Object.keys(caps).sort();
+    var leidos=claves.filter(function(k){return caps[k].letto}).length;
+    var listos=claves.filter(function(k){return caps[k].analisi}).length;
+    document.getElementById('progreso').innerHTML='📗 <b>'+leidos+'</b> / 30 capítulos leídos · '+listos+' preparados para activar. Marca "leído" el que terminaste anoche.';
+    claves.forEach(function(k){
+      var c=caps[k];var el=document.createElement('div');el.className='cap-item'+(c.letto?' letto':'');
+      el.innerHTML='<span class="num">'+c.num+'</span><span class="t">'+c.titolo+'</span>'+
+        (c.letto?'<span class="letto-badge">✓ letto</span>':'')+
+        '<span class="estado '+(c.analisi?'ok':'pend')+'">'+(c.analisi?'✔ pronto':'⏳ in prep.')+'</span>';
+      var panel=document.createElement('div');panel.className='cap-panel';
+      el.onclick=function(){
+        if(abierta===k){cerrar();return;}            // 2º clic sobre el mismo → se pliega
+        cerrar();
+        el.classList.add('open');abierta=k;
+        abrir(k,c,el,panel);                          // se despliega JUSTO debajo de su renglón
+        el.scrollIntoView({behavior:'smooth',block:'nearest'});
+      };
+      lista.appendChild(el);lista.appendChild(panel);
+    });
+  }).catch(function(){document.getElementById('lista').innerHTML='<p style="color:#888">Abre el curso con «Abrir Curso Italiano.bat» para ver tu libro.</p>';});
+}
+function abrir(k,c,rowEl,v){
+  v.innerHTML='';
+  var a=c.analisi;
+  var h=document.createElement('div');h.className='box';
+  h.innerHTML='<h2 style="margin:.1rem 0 .4rem;font-size:1.15rem;color:#1a4731">Capitolo '+c.num+' — '+c.titolo+'</h2>';
+  v.appendChild(h);
+  // botón leído
+  var bl=document.createElement('button');bl.className='btn'+(c.letto?' letto':'');
+  bl.textContent=c.letto?'✓ Letto':'📖 L\'ho letto stanotte';
+  bl.onclick=function(){
+    var nuevo=!c.letto;c.letto=nuevo;
+    var hoy=new Date().toISOString().slice(0,10);
+    fetch('/api/libro',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({cap:k,letto:nuevo,fecha:hoy})}).catch(function(){});
+    bl.className='btn'+(nuevo?' letto':'');bl.textContent=nuevo?'✓ Letto':'📖 L\'ho letto stanotte';
+    if(rowEl){rowEl.classList.toggle('letto',nuevo);}
+    if(nuevo){logAct();addInmersione(15);}
+  };
+  h.appendChild(bl);
+  if(!a){
+    var pr=document.createElement('div');pr.className='prep';
+    pr.innerHTML='⏳ Questo capitolo non è ancora preparato. Quando lo leggi, dimmi in chat <b>«prepara il capitolo '+c.num+'»</b> e ti preparo il quiz, il vocabolario e lo spunto.';
+    v.appendChild(pr);return;
+  }
+  var dq=document.createElement('div');dq.className='domanda';dq.textContent='❓ '+(a.domanda||'');h.appendChild(dq);
+  if(a.riassunto){var rs=document.createElement('div');rs.className='riassunto';rs.textContent=a.riassunto;h.appendChild(rs);}
+  // vocabulario
+  if(a.vocab&&a.vocab.length){
+    var hv=document.createElement('h3');hv.textContent='⭐ Vocabolario chiave';v.appendChild(hv);
+    a.vocab.forEach(function(w){
+      var el=document.createElement('div');el.className='vclave';
+      el.innerHTML='<span class="it">'+w.it+'</span><span style="flex:1;color:#555">'+(w.es||'')+(w.nota?' · <i style="color:#888">'+w.nota+'</i>':'')+'</span>';
+      var b=document.createElement('button');b.className='mini';b.textContent='★';
+      b.onclick=function(){saveChunk(w.it,w.es,'libro: '+c.titolo);b.textContent='✓';b.disabled=true;};
+      el.appendChild(b);v.appendChild(el);
+    });
+  }
+  // quiz
+  if(a.quiz&&a.quiz.length){
+    var hq=document.createElement('h3');hq.innerHTML='📝 Quiz di comprensione <span style="font-weight:400;font-size:.78rem;color:#888">(hai bisogno di aver letto · 3 a scelta + 2 da scrivere)</span>';v.appendChild(hq);
+    var qc=document.createElement('div');v.appendChild(qc);
+    renderQuiz(qc,a.quiz,c.titolo);
+  }
+  // spunto (producción) — se auto-guarda (servidor + localStorage), sobrevive al refresh
+  if(a.spunto){
+    var sp=document.createElement('div');sp.className='spunto';
+    sp.innerHTML=a.spunto;
+    var ta=document.createElement('textarea');ta.placeholder='Scrivi qui (o dillo a voce)…';
+    var loc='';try{loc=localStorage.getItem('libro-spunto-'+k)||''}catch(e){}
+    ta.value=(c.spunto_risposta!=null&&c.spunto_risposta!=='')?c.spunto_risposta:loc;
+    var badge=document.createElement('span');
+    badge.style.cssText='font-size:.72rem;color:#1a6e47;margin-left:.5rem;font-weight:700';
+    var tmr;
+    ta.addEventListener('input',function(){
+      c.spunto_risposta=ta.value;
+      try{localStorage.setItem('libro-spunto-'+k,ta.value)}catch(e){}
+      badge.textContent='…';clearTimeout(tmr);
+      tmr=setTimeout(function(){
+        fetch('/api/libro',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({cap:k,spunto:ta.value})})
+          .then(function(){badge.textContent='✓ salvato';}).catch(function(){badge.textContent='✓ (locale)';});
+        setTimeout(function(){if(badge.textContent.indexOf('✓')===0)badge.textContent='';},2200);
+      },700);
+    });
+    sp.appendChild(ta);sp.appendChild(badge);
+    v.appendChild(sp);
+  }
+  if(window.italianoGloss)window.italianoGloss(h);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',cargar);else cargar();
+</script>
+</body>
+</html>

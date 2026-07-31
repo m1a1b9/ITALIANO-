@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen semanal · Italiano</title>
+<link rel="stylesheet" href="assets/curso.css">
+<script src="assets/examenes.js"></script>
+<style>
+  body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:720px;margin:0 auto;padding:2rem 1.5rem 4rem;line-height:1.5}
+  .top{border-left:4px solid #c0392b;padding-left:1rem;margin-bottom:1rem}
+  .top h1{font-size:1.6rem;margin:0}
+  .top p{color:#666;margin:.3rem 0 0;font-size:.9rem}
+  .links{margin:.5rem 0 1.4rem}
+  .links a{font-size:.82rem;color:#2d6a4f;text-decoration:none;border:1px solid #cfe3d8;border-radius:6px;padding:.4rem .7rem}
+  .temas{font-size:.8rem;color:#777;margin-bottom:1.2rem}
+  h2{font-size:.95rem;color:#1c1c1e;margin:1.6rem 0 .6rem;border-bottom:2px solid #eee;padding-bottom:.3rem}
+  .q{background:#fff;border:1px solid #dde5dd;border-radius:9px;padding:.8rem 1rem;margin:.6rem 0}
+  .q .pr{font-size:.95rem;margin-bottom:.5rem}
+  .q .pr b{color:#2d6a4f}
+  .q input[type=text],.q textarea{width:100%;box-sizing:border-box;border:1px solid #cfd8d2;border-radius:6px;padding:.5rem .6rem;font:inherit;font-size:.92rem}
+  .q textarea{min-height:5rem;resize:vertical}
+  .opt{display:block;padding:.35rem 0;font-size:.92rem;cursor:pointer}
+  .opt input{margin-right:.5rem}
+  .res-ok{color:#1a6e47;font-weight:700;font-size:.82rem;margin-top:.35rem}
+  .res-bad{color:#b03a2e;font-weight:700;font-size:.82rem;margin-top:.35rem}
+  .q.ok{border-color:#9bd3b4;background:#f3faf6}
+  .q.bad{border-color:#e6b3ab;background:#fdf3f1}
+  .btn{display:block;width:100%;background:#c0392b;color:#fff;border:0;border-radius:10px;padding:1rem;font:700 1rem/1 inherit;cursor:pointer;margin-top:1.5rem}
+  .resultado{background:#1c1c1e;color:#fff;border-radius:14px;padding:1.6rem;text-align:center;margin-bottom:1.5rem}
+  .resultado .score{font-size:3rem;font-weight:800}
+  .resultado .badge{display:inline-block;margin-top:.5rem;padding:.3rem .9rem;border-radius:20px;font-weight:700}
+  .resultado .aprob{background:#2d6a4f;color:#fff}
+  .resultado .repro{background:#c0392b;color:#fff}
+  .resultado .tema{display:flex;justify-content:space-between;font-size:.85rem;color:#ddd;border-top:1px solid #333;padding:.3rem 0;margin-top:.2rem}
+  .aviso{background:#fffaf0;border-left:4px solid #c79a3a;border-radius:0 8px 8px 0;padding:.8rem 1rem;font-size:.88rem;margin-top:1rem}
+</style>
+</head>
+<body>
+<div class="top"><h1 id="titulo">Examen</h1><p>Como una prueba de certificación · sin límite de tiempo</p></div>
+<div class="links"><a href="index.html">⌂ Índice</a> <a href="practica.html">🎯 Práctica</a></div>
+<div class="temas" id="temas"></div>
+<div id="resultado"></div>
+<div id="examen"></div>
+<button class="btn" id="calificar">✅ Calificar examen</button>
+
+<script>
+function norm(s){return (s||'').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[«»"“”.,;:!¿?()…]/g,'').replace(/\s+/g,' ').trim();}
+var sem=(location.search.match(/semana=(\d+)/)||[])[1]||'1';
+var ex=(window.EXAMENES||{})[sem];
+var cont=document.getElementById('examen');
+if(!ex){cont.innerHTML='<div class="aviso">Aún no existe el examen de la semana '+sem+'.</div>';document.getElementById('calificar').style.display='none';}
+else{
+  document.getElementById('titulo').textContent=ex.titulo+' · Nivel '+ex.nivel;
+  document.getElementById('temas').textContent='Temas: '+ex.temas.join(' · ');
+  var idx=0, items=[]; // {sec,tipo,pregunta,inputEl,...}
+  ex.secciones.forEach(function(sec){
+    var h=document.createElement('h2');h.textContent=sec.titulo;cont.appendChild(h);
+    sec.preguntas.forEach(function(p){
+      var qid='q'+(idx++);
+      var div=document.createElement('div');div.className='q';div.id=qid;
+      var html='<div class="pr"><b>'+(items.length+1)+'.</b> '+p.q+'</div>';
+      if(sec.tipo==='opcion'){
+        p.op.forEach(function(o,oi){html+='<label class="opt"><input type="radio" name="'+qid+'" value="'+oi+'">'+o+'</label>';});
+      }else if(sec.tipo==='escritura'){
+        html+='<textarea data-w="'+qid+'" placeholder="Tu respuesta en italiano…"></textarea>';
+      }else{
+        html+='<input type="text" data-t="'+qid+'" placeholder="Tu respuesta…">';
+      }
+      div.innerHTML=html;cont.appendChild(div);
+      items.push({qid:qid,tipo:sec.tipo,p:p,div:div});
+    });
+  });
+
+  document.getElementById('calificar').onclick=function(){
+    var obj=0,aciertos=0,fallos=[],porTema={},escritura=[];
+    items.forEach(function(it){
+      var p=it.p,div=it.div;
+      div.classList.remove('ok','bad');
+      var old=div.querySelector('.res-ok,.res-bad');if(old)old.remove();
+      if(it.tipo==='escritura'){
+        var ta=div.querySelector('textarea');escritura.push({q:p.q,texto:ta.value.trim()});
+        return;
+      }
+      obj++;
+      porTema[p.tema]=porTema[p.tema]||{ok:0,t:0};porTema[p.tema].t++;
+      var correcto=false,correctaTxt='';
+      if(it.tipo==='opcion'){
+        var sel=div.querySelector('input[name="'+it.qid+'"]:checked');
+        correcto = sel && parseInt(sel.value)===p.correcta;
+        correctaTxt=p.op[p.correcta];
+      }else{
+        var val=div.querySelector('input[type=text]').value;
+        correcto = p.resp.some(function(r){return norm(r)===norm(val)});
+        correctaTxt=p.resp[0];
+      }
+      if(correcto){aciertos++;porTema[p.tema].ok++;div.classList.add('ok');
+        var ok=document.createElement('div');ok.className='res-ok';ok.textContent='✓ Correcto';div.appendChild(ok);}
+      else{div.classList.add('bad');
+        var bad=document.createElement('div');bad.className='res-bad';bad.textContent='✗ Correcto: '+correctaTxt;div.appendChild(bad);
+        fallos.push({q:(p.q+'').replace(/<[^>]+>/g,''),correcta:correctaTxt,tema:p.tema});}
+    });
+    var pct=obj?Math.round(aciertos/obj*100):0;
+    var aprob=pct>=70;
+    // panel resultado
+    var rh='<div class="resultado"><div class="score">'+pct+'%</div>'+
+      '<div>'+aciertos+' / '+obj+' aciertos (objetivo)</div>'+
+      '<div class="badge '+(aprob?'aprob':'repro')+'">'+(aprob?'APROBADO ✓ · '+ex.nivel:'A REFORZAR')+'</div>';
+    Object.keys(porTema).forEach(function(t){rh+='<div class="tema"><span>'+t+'</span><span>'+porTema[t].ok+'/'+porTema[t].t+'</span></div>';});
+    rh+='</div>';
+    if(escritura.some(function(e){return e.texto})) rh+='<div class="aviso">✍️ Tu parte de escritura quedó guardada. Dime <b>"ya terminé el examen de la semana '+sem+'"</b> y te la corrijo aquí.</div>';
+    var rdiv=document.getElementById('resultado');rdiv.innerHTML=rh;window.scrollTo(0,0);
+
+    // guardar resultado en disco
+    var resultado={fecha:new Date().toISOString().slice(0,10),score:pct,aciertos:aciertos,total:obj,aprobado:aprob,porTema:porTema,fallos:fallos,escritura:escritura};
+    fetch('/api/examenes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({semana:sem,resultado:resultado})}).catch(function(){});
+
+    // mandar fallos al repaso (SRS)
+    try{
+      var srs=JSON.parse(localStorage.getItem('italiano-srs')||'{}');
+      fallos.forEach(function(f,i){var id='x:'+sem+':'+norm(f.q).slice(0,30);if(!srs[id])srs[id]={ease:2.5,interval:0,reps:0,lapses:0,due:0};});
+      localStorage.setItem('italiano-srs',JSON.stringify(srs));
+      var fl=JSON.parse(localStorage.getItem('italiano-examen-fallos')||'{}');fl[sem]=fallos;localStorage.setItem('italiano-examen-fallos',JSON.stringify(fl));
+    }catch(e){}
+  };
+}
+</script>
+</body>
+</html>

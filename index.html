@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curso de Italiano · A2 → C1</title>
+<link rel="stylesheet" href="assets/curso.css">
+<style>
+  body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:760px;margin:0 auto;padding:2.5rem 1.5rem 4rem;line-height:1.6}
+  .top{border-left:4px solid #2d6a4f;padding-left:1rem;margin-bottom:1.5rem}
+  .top h1{font-size:1.9rem;margin:0}
+  .top p{color:#666;margin:.3rem 0 0;font-size:.95rem}
+  .barra{background:#fff;border:1px solid #dde5dd;border-radius:10px;padding:1rem 1.2rem;margin:1.2rem 0 2rem}
+  .barra .track{height:12px;background:#eef2ee;border-radius:6px;overflow:hidden}
+  .barra .fill{height:100%;width:0;background:#2d6a4f;transition:width .4s}
+  .barra .lbl{display:flex;justify-content:space-between;font-size:.82rem;color:#555;margin-bottom:.45rem}
+  .barra button{margin-top:.7rem;background:none;border:1px solid #ccc;border-radius:6px;padding:.3rem .7rem;font-size:.72rem;cursor:pointer;color:#999}
+  h2{font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#2d6a4f;margin:2rem 0 .6rem}
+  .dia{display:flex;align-items:center;gap:.8rem;background:#fff;border:1px solid #dde5dd;border-radius:8px;padding:.7rem .9rem;margin:.45rem 0;text-decoration:none;color:inherit;transition:border-color .15s}
+  .dia:hover{border-color:#2d6a4f}
+  .dia .num{flex:none;width:2rem;height:2rem;border-radius:50%;background:#eef2ee;color:#2d6a4f;font-weight:700;font-size:.8rem;display:flex;align-items:center;justify-content:center}
+  .dia.ok .num{background:#2d6a4f;color:#fff}
+  .dia .tit{font-weight:600;font-size:.95rem}
+  .dia .sub{font-size:.78rem;color:#888;margin-top:.1rem}
+  .dia .chk{flex:none;font-size:1.1rem;color:#2d6a4f;opacity:0}
+  .dia.ok .chk{opacity:1}
+  .dia.prep{opacity:.55;cursor:default}
+  .dia.prep:hover{border-color:#dde5dd}
+  .dia.prep .num{background:#eef2ee;color:#aaa}
+  .dia.prep .chk{opacity:.6;color:#aaa}
+  .dia.prep .sub em{color:#b08900;font-style:normal;font-weight:600}
+  .nota{background:#f0f7f4;border-left:3px solid #2d6a4f;padding:.7rem 1rem;border-radius:0 6px 6px 0;font-size:.86rem;color:#1a4731;margin:1rem 0}
+  .links{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.4rem}
+  .links a{font-size:.83rem;color:#2d6a4f;text-decoration:none;border:1px solid #cfe3d8;border-radius:6px;padding:.35rem .7rem}
+  .links a:hover{background:#eef2ee}
+  /* Panel HOY: racha + heatmap + qué toca */
+  .hoy{display:flex;gap:1.2rem;flex-wrap:wrap;align-items:stretch;background:#fff;border:1px solid #dde5dd;border-radius:10px;padding:1rem 1.2rem;margin:1.2rem 0}
+  .hoy .racha{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:5.2rem}
+  .hoy .racha .n{font-size:2.4rem;font-weight:800;color:#2d6a4f;line-height:1}
+  .hoy .racha .lbl{font-size:.68rem;color:#888;text-align:center;margin-top:.25rem;letter-spacing:.05em;text-transform:uppercase}
+  .hoy .heat{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,11px);gap:3px;align-self:center}
+  .hoy .heat i{width:11px;height:11px;border-radius:2px;background:#eef2ee}
+  .hoy .heat i.on{background:#2d6a4f}
+  .hoy .heat i.hoy0{outline:1.5px solid #c79a3a}
+  .hoy .qh{flex:1;min-width:220px;display:flex;flex-direction:column;gap:.45rem;justify-content:center}
+  .hoy .qh a{display:block;text-decoration:none;color:#1a4731;background:#eef2ee;border:1px solid #cfe3d8;border-radius:7px;padding:.5rem .8rem;font-size:.88rem;font-weight:600}
+  .hoy .qh a:hover{border-color:#2d6a4f}
+  .hoy .qh a b{color:#2d6a4f}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>Curso de Italiano 🇮🇹</h1>
+  <p>De A2 hacia C1 · para hispanohablantes · con slang del norte · Mes 1: bases hasta B1</p>
+</div>
+
+<div class="hoy">
+  <div class="racha"><span class="n" id="racha-n">0</span><span class="lbl">días<br>seguidos</span></div>
+  <div class="heat" id="heat" title="Tus últimas 12 semanas (verde = día con actividad)"></div>
+  <div class="qh">
+    <a id="hoy-dia" href="#">📖 Hoy toca: <b id="hoy-dia-t">…</b></a>
+    <a href="practica.html">🎯 Repasos pendientes: <b id="hoy-due">…</b></a>
+    <a href="inmersion.html">🎧 Inmersión esta semana: <b id="hoy-inm">0 min</b></a>
+  </div>
+</div>
+
+<div class="links">
+  <a href="cuaderno_plantilla.html">📓 Plantilla de cuaderno (imprimir)</a>
+  <a href="mi-vocabulario.html">★ Mi Vocabulario</a>
+  <a href="practica.html">🎯 Práctica (repaso)</a>
+  <a href="inmersion.html">🎧 Inmersión</a>
+  <a href="libro.html">📖 Il mio libro</a>
+  <a href="diagnostico.html">🩺 Mi diagnóstico</a>
+  <a href="recupera.html">🛟 Recuperar respuestas</a>
+</div>
+
+<div class="barra">
+  <div class="lbl"><span>Tu progreso</span><span id="pct">0 / 30</span></div>
+  <div class="track"><div class="fill" id="fill"></div></div>
+  <button id="reset">Reiniciar progreso</button>
+</div>
+
+<div class="nota">🔊 <strong>Audio:</strong> dentro de cada día, haz clic en cualquier frase <em>en italiano</em> y el navegador la pronuncia. 💡 <strong>Glosa:</strong> pasa el cursor sobre las palabras subrayadas con puntos para ver su significado.</div>
+
+<div id="lista"></div>
+
+<script>
+var dias=[
+["Passato Prossimo vs Imperfetto","Semana 1 · A2 · el contraste clave"],
+["Drill de pronunciación","Semana 1 · Fonética · automatismo muscular"],
+["Futuro Semplice + Condizionale","Semana 1 · A2 · planes y deseos"],
+["Verbi Modali + Imperativo","Semana 1 · A2 · órdenes y consejos"],
+["Pronomi Diretti e Indiretti","Semana 1 · A2 · lo que más acelera la fluidez"],
+["Verbi Pronominali + Comparativi","Semana 1 · A2 · verbos idiomáticos"],
+["Congiuntivo Presente — primer contacto","Semana 1 · A2→B1"],
+["Repaso y cierre de semana 1","Semana 1 · A2 · consolidación"],
+["Congiuntivo Passato + Trapassato","Semana 2 · B1 · el salto real"],
+["Periodo Ipotetico","Semana 2 · B1 · las tres hipótesis"],
+["La Forma Passiva","Semana 2 · B1 · foco en la acción"],
+["Discorso Indiretto","Semana 2 · B1 · reportar lo dicho"],
+["Gerundio e Participio","Semana 2 · B1 · encadenar acciones"],
+["Preposizioni e Connettivi","Semana 2 · B1 · el pegamento del discurso"],
+["Repaso B1 + Roleplay","Semana 2 · B1 · consolidación"],
+["Congiuntivo nelle frasi indipendenti","Semana 3 · B1→B2 · registro culto"],
+["Pronomi relativi e forme implicite","Semana 3 · B1→B2 · unir con elegancia"],
+["Collocazioni — hablar por bloques","Semana 3 · B1→B2"],
+["Registri — la misma idea, tres tonos","Semana 3 · B1→B2"],
+["Espressioni idiomatiche del nord","Semana 3 · B1→B2 · sonar de Milán"],
+["Comprensione orale — día de oído","Semana 3 · B1→B2 · escuchar"],
+["Cierre semana 3 + balance del mes","Semana 3 · Repaso + Medición"],
+["Pronomi combinati (glielo, me lo…)","Semana 4 · B1 · completar la base"],
+["Condizionale composto + futuro nel passato","Semana 4 · B1 · cerrar hipotéticos"],
+["Futuro anteriore + repaso de futuros","Semana 4 · B1 · sistema de futuros"],
+["Verbi causativi (fare / lasciare + inf.)","Semana 4 · B1 · construcción italianísima"],
+["Concordanza dei tempi (consecutio)","Semana 4 · B1→B2 · rumbo a C1"],
+["Passato remoto (reconocimiento)","Semana 4 · B1 · lectura y narrativa"],
+["Alterati (-ino / -one / -accio)","Semana 4 · B1 · léxico y registro"],
+["Repaso integral Mes 1 + medición","Semana 4 · Cierre + Medición"]
+];
+var PREP_DESDE=23; // días cuyo archivo aún no existe (en preparación, no navegables)
+var semanas=[[1,8,"Semana 1 · Bases A2 → B1"],[9,15,"Semana 2 · Núcleo B1"],[16,22,"Semana 3 · Hacia B2"],[23,30,"Semana 4 · Cierre Mes 1 → B1 completo"]];
+var done=JSON.parse(localStorage.getItem('italiano-progreso')||'{}');
+var lista=document.getElementById('lista');
+semanas.forEach(function(s){
+  var h=document.createElement('h2');h.textContent=s[2];lista.appendChild(h);
+  for(var d=s[0];d<=s[1];d++){
+    var info=dias[d-1];var nn=String(d).padStart(2,'0');
+    var prep=d>=PREP_DESDE;
+    var el=document.createElement(prep?'div':'a');
+    if(!prep)el.href='dia'+nn+'.html';
+    el.className='dia'+(done[d]?' ok':'')+(prep?' prep':'');
+    var sub=prep?info[1]+' · <em>en preparación</em>':info[1];
+    el.innerHTML='<div class="num">'+d+'</div><div style="flex:1"><div class="tit">'+info[0]+'</div><div class="sub">'+sub+'</div></div><div class="chk">'+(prep?'🔒':'✓')+'</div>';
+    lista.appendChild(el);
+  }
+});
+var TOTAL=dias.length;
+function refresh(){var n=Object.keys(done).filter(function(k){return done[k]}).length;
+  document.getElementById('pct').textContent=n+' / '+TOTAL;
+  document.getElementById('fill').style.width=(n/TOTAL*100)+'%';}
+refresh();
+document.getElementById('reset').onclick=function(){if(confirm('¿Borrar todo tu progreso?')){done={};localStorage.setItem('italiano-progreso','{}');location.reload();}};
+
+/* ---------- Panel HOY: racha + heatmap + qué toca ---------- */
+(function(){
+  function k(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}
+  var act;try{act=JSON.parse(localStorage.getItem('italiano-actividad')||'{}')}catch(e){act={}}
+  // racha: si hoy aún no hay actividad, sigue viva si ayer la hubo
+  var streak=0,d=new Date();
+  if(!act[k(d)])d.setDate(d.getDate()-1);
+  while(act[k(d)]){streak++;d.setDate(d.getDate()-1);}
+  document.getElementById('racha-n').textContent=streak;
+  // heatmap: últimas 12 semanas (84 días), columnas = semanas
+  var heat=document.getElementById('heat'),hoyK=k(new Date());
+  for(var i=83;i>=0;i--){
+    var dd=new Date();dd.setDate(dd.getDate()-i);
+    var cell=document.createElement('i'),kk=k(dd);
+    if(act[kk])cell.className='on';
+    if(kk===hoyK)cell.className+=(act[kk]?' on':'')+' hoy0';
+    cell.title=kk;heat.appendChild(cell);
+  }
+  // lección de hoy: el primer día no completado que ya está construido
+  var next=1;while(next<PREP_DESDE&&done[next])next++;
+  var a=document.getElementById('hoy-dia'),t=document.getElementById('hoy-dia-t');
+  if(next<PREP_DESDE){a.href='dia'+String(next).padStart(2,'0')+'.html';t.textContent='Día '+next+' — '+dias[next-1][0];}
+  else{a.removeAttribute('href');t.textContent='¡Mes 1 al día! Pide los días siguientes.';}
+  // repasos SRS pendientes (misma lógica que practica.html)
+  function today0(){var x=new Date();x.setHours(0,0,0,0);return x.getTime();}
+  var DAY=86400000,srs;try{srs=JSON.parse(localStorage.getItem('italiano-srs')||'{}')}catch(e){srs={}}
+  function isDue(id){var s=srs[id];if(!s)return true;return s.due<=today0()+DAY-1;}
+  var vl;try{vl=JSON.parse(localStorage.getItem('italiano-vocab-activo')||'[]')}catch(e){vl=[]}
+  var ids=vl.map(function(w){return 'v:'+(w.it||'').toLowerCase().trim()});
+  Promise.all([
+    fetch('/api/errores').then(function(r){return r.json()}).catch(function(){return{}}),
+    fetch('/api/examenes').then(function(r){return r.json()}).catch(function(){return{}})
+  ]).then(function(res){
+    var err=res[0]||{},ex=res[1]||{};
+    Object.keys(err).forEach(function(dia){(err[dia].errores||[]).forEach(function(e,i){if(e.repasar===true)ids.push('e:'+dia+':'+i)})});
+    Object.keys(ex).forEach(function(sem){((ex[sem]||{}).fallos||[]).forEach(function(f,i){ids.push('x:'+sem+':'+i)})});
+    document.getElementById('hoy-due').textContent=ids.filter(isDue).length;
+  });
+  // inmersión de la semana
+  function weekKey(){var x=new Date(),y=x.getFullYear(),oneJan=new Date(y,0,1);
+    var wk=Math.ceil((((x-oneJan)/86400000)+oneJan.getDay()+1)/7);return y+'-W'+wk;}
+  var inm;try{inm=JSON.parse(localStorage.getItem('italiano-inmersion')||'{}')}catch(e){inm={}}
+  document.getElementById('hoy-inm').textContent=(inm[weekKey()]||0)+' min';
+})();
+</script>
+</body>
+</html>
