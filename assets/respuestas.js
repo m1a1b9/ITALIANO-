@@ -135,22 +135,29 @@
     });
     return {answers:o,recovered:recovered};
   }
-  fetch('/api/respuestas').then(function(r){
-    if(!r.ok)throw new Error('http '+r.status);
-    return r.json();
-  }).then(function(all){
-    setServer(true);
-    var m=mergeSaved(all[dia]||{}, loadLocal());
-    fill(m.answers);
-    // si recuperamos respuestas del navegador que el servidor no tenía, las persistimos en respuestas.json
-    if(m.recovered){
-      fetch('/api/respuestas',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({dia:dia,answers:m.answers})}).catch(function(){});
-    }
-  }).catch(function(){
-    setServer(false);
-    fill(loadLocal());
-  });
+  // usarNube = en la WEB (no localhost) con Firebase → respuestas y correcciones en Firestore.
+  //            en localhost sigue el servidor local (.bat) como siempre.
+  var usarNube = !esLocal && window.FB;
+  function cargarLocal(){
+    fetch('/api/respuestas').then(function(r){
+      if(!r.ok)throw new Error('http '+r.status);
+      return r.json();
+    }).then(function(all){
+      setServer(true);
+      var m=mergeSaved(all[dia]||{}, loadLocal());
+      fill(m.answers);
+      if(m.recovered){
+        fetch('/api/respuestas',{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({dia:dia,answers:m.answers})}).catch(function(){});
+      }
+    }).catch(function(){ setServer(false); fill(loadLocal()); });
+  }
+  function cargarNube(){
+    FB.doc('respuestas',dia).get().then(function(d){ fill(d.exists?d.data():loadLocal()); })
+      .catch(function(){ fill(loadLocal()); });
+  }
+  if(usarNube){ FB.loginGate(function(){ cargarNube(); cargarCorreccion(); }); }
+  else { cargarLocal(); cargarCorreccion(); }
 
   var t, dirty=false;   // dirty=true solo cuando el usuario ESCRIBE algo (evita guardar recuadros vacíos al abrir/cerrar)
   function doSave(){
@@ -158,14 +165,20 @@
     try{localStorage.setItem('resp-'+dia,JSON.stringify(o))}catch(e){}
     if(window.marcaActividad)window.marcaActividad(); // contar el día para la racha
     status('guardando…');
-    fetch('/api/respuestas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({dia:dia,answers:o})})
-      .then(function(r){
-        if(!r.ok)throw new Error('http '+r.status);
-        setServer(true);badge.classList.remove('cb-fail');status('✓ guardado en el curso');
-      })
-      .catch(function(){
-        setServer(false);badge.classList.add('cb-fail');status('⚠ NO guardado en el curso (solo local)');
-      });
+    if(usarNube && FB.user()){
+      FB.doc('respuestas',dia).set(o)
+        .then(function(){badge.classList.remove('cb-fail');status('✓ guardado en la nube');})
+        .catch(function(){badge.classList.add('cb-fail');status('⚠ error al guardar');});
+    } else {
+      fetch('/api/respuestas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({dia:dia,answers:o})})
+        .then(function(r){
+          if(!r.ok)throw new Error('http '+r.status);
+          setServer(true);badge.classList.remove('cb-fail');status('✓ guardado en el curso');
+        })
+        .catch(function(){
+          setServer(false);badge.classList.add('cb-fail');status('⚠ NO guardado en el curso (solo local)');
+        });
+    }
     setTimeout(function(){if(badge.textContent.indexOf('✓')===0)status('')},2500);
   }
   document.addEventListener('input',function(e){
@@ -261,10 +274,15 @@
       '<div class="corr-body">'+body+'</div>';
     document.body.appendChild(p);
   }
-  // Pide SOLO la corrección de este día (datos/errores/NN.json) en vez del agregado completo.
-  fetch('/api/errores?dia='+dia).then(function(r){return r.json()}).then(function(c){
-    if(c&&((c.errores&&c.errores.length)||(c.aciertos&&c.aciertos.length)))renderCorreccion(c);
-  }).catch(function(){});
+  // Carga la corrección del día: de Firestore (web) o del servidor local (datos/errores/NN.json).
+  function cargarCorreccion(){
+    function pintar(c){ if(c&&((c.errores&&c.errores.length)||(c.aciertos&&c.aciertos.length)))renderCorreccion(c); }
+    if(usarNube){
+      FB.doc('errores',dia).get().then(function(d){ pintar(d.exists?d.data():null); }).catch(function(){});
+    } else {
+      fetch('/api/errores?dia='+dia).then(function(r){return r.json()}).then(pintar).catch(function(){});
+    }
+  }
 
   /* ===== CORREGIR CON IA (Gemini) — SOLO MUESTRA: no guarda, no toca errores.json/SRS/siembra ===== */
   (function(){

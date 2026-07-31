@@ -56,6 +56,9 @@
   window.FB={
     auth:auth, db:db, udoc:udoc, loginGate:loginGate,
     user:function(){return auth.currentUser;},
-    logout:function(){return auth.signOut();}
+    logout:function(){return auth.signOut();},
+    // referencias a los datos del usuario: users/{uid}/{col}/{id}
+    doc:function(col,id){var u=auth.currentUser;return u?db.collection('users').doc(u.uid).collection(col).doc(String(id)):null;},
+    col:function(col){var u=auth.currentUser;return u?db.collection('users').doc(u.uid).collection(col):null;}
   };
 })();
