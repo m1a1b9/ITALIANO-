@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Práctica · Italiano</title>
-<link rel="stylesheet" href="assets/curso.css">
+<link rel="stylesheet" href="assets/curso.css?v=20260801c">
 <style>
   body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:720px;margin:0 auto;padding:2rem 1.5rem 4rem;line-height:1.5}
   .top{border-left:4px solid #2d6a4f;padding-left:1rem;margin-bottom:1.2rem}
@@ -62,7 +62,7 @@
   .vacio .big{font-size:2rem}
   .resta{font-size:.78rem;color:#999;text-align:right;margin-top:.5rem}
 </style>
-<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260801c"></script>
 </head>
 <body>
 <div class="top">
@@ -372,6 +372,10 @@ function render(){
 });
 /* ---------- carga de fuentes (Datos = /api en localhost, Firestore en la web; ver assets/firebase.js) ---------- */
 function arrancar(){
+  if(!window.Datos){   // no cargó firebase.js (caché vieja o SDK bloqueado): dilo, no te quedes en blanco
+    document.getElementById('zona').innerHTML='<div class="vacio">⚠ No se pudo cargar la conexión con tus datos.<br>Recarga la página forzando caché: <b>Ctrl+F5</b> (o Cmd+Shift+R).</div>';
+    return;
+  }
   Promise.all([
     Datos.errores().then(function(e){errSrc=e||{}}),
     Datos.examenes().then(function(e){examSrc=e||{}}),
