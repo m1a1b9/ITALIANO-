@@ -20,10 +20,12 @@
   function udoc(){ var u=auth.currentUser; return u?db.collection('users').doc(u.uid):null; }
 
   // ---- overlay de login: llama onReady(user) UNA vez cuando hay sesión ----
-  var ov=null, lanzado=false;
+  //      (bandera POR LLAMADA para que varios loginGate independientes disparen su propio callback)
+  var ov=null;
   function loginGate(onReady){
+    var fired=false;
     auth.onAuthStateChanged(function(u){
-      if(u){ if(ov)ov.style.display='none'; if(!lanzado){lanzado=true; onReady&&onReady(u);} }
+      if(u){ if(ov)ov.style.display='none'; if(!fired){fired=true; onReady&&onReady(u);} }
       else { mostrarOverlay(); }
     });
   }
@@ -61,4 +63,45 @@
     doc:function(col,id){var u=auth.currentUser;return u?db.collection('users').doc(u.uid).collection(col).doc(String(id)):null;},
     col:function(col){var u=auth.currentUser;return u?db.collection('users').doc(u.uid).collection(col):null;}
   };
+
+  /* ===== Sincronización de PROGRESO (localStorage <-> Firestore) — SOLO en la WEB con sesión =====
+     Espeja ciertas claves de localStorage a users/{uid}/progreso/{clave}, FUSIONANDO (unión) para
+     no perder datos entre dispositivos. En localhost NO se activa (ahí manda el servidor local). */
+  (function(){
+    var esLocal=/^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname)||location.protocol==='file:';
+    if(esLocal)return;
+    function norm(s){return (''+(s||'')).toLowerCase().trim();}
+    function mergeArrBy(keyName){return function(cloud,local){
+      var out=[], seen={};
+      (Array.isArray(local)?local:[]).forEach(function(o){var k=norm(o&&o[keyName]);if(k&&!seen[k]){seen[k]=1;out.push(o);}});
+      (Array.isArray(cloud)?cloud:[]).forEach(function(o){var k=norm(o&&o[keyName]);if(k&&!seen[k]){seen[k]=1;out.push(o);}});
+      return out;
+    };}
+    function mergeMapUnion(cloud,local){var o={},c=cloud||{},l=local||{},k;for(k in c)o[k]=c[k];for(k in l)o[k]=l[k];return o;}
+    function mergeMax(cloud,local){var o={},c=cloud||{},l=local||{},k;for(k in c)o[k]=c[k];for(k in l)o[k]=Math.max(o[k]||0,l[k]||0);return o;}
+    var CLAVES={
+      'italiano-vocab-activo': mergeArrBy('it'),
+      'italiano-actividad':    mergeMapUnion,
+      'italiano-progreso':     mergeMapUnion,
+      'italiano-srs':          mergeMapUnion,
+      'italiano-inmersion':    mergeMax
+    };
+    function lsGet(k){try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}}
+    var muted=false;
+    function lsSetMuted(k,v){muted=true;try{localStorage.setItem(k,JSON.stringify(v));}finally{muted=false;}}
+    function progRef(k){var u=auth.currentUser;return u?db.collection('users').doc(u.uid).collection('progreso').doc(k):null;}
+    function sync(k){
+      var ref=progRef(k); if(!ref)return;
+      var local=lsGet(k);
+      ref.get().then(function(d){
+        var cloud=d.exists?(d.data()||{}).data:null;
+        var merged=CLAVES[k](cloud, local);
+        lsSetMuted(k, merged);
+        ref.set({data:merged, t:Date.now()}).catch(function(){});
+      }).catch(function(){ if(local!=null)ref.set({data:local, t:Date.now()}).catch(function(){}); });
+    }
+    var timers={}, _set=localStorage.setItem.bind(localStorage);
+    localStorage.setItem=function(k,v){ _set(k,v); if(!muted && CLAVES[k]){ clearTimeout(timers[k]); timers[k]=setTimeout(function(){sync(k);},1200); } };
+    loginGate(function(){ Object.keys(CLAVES).forEach(function(k){ sync(k); }); });
+  })();
 })();
