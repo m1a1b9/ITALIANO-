@@ -68,8 +68,6 @@
      Espeja ciertas claves de localStorage a users/{uid}/progreso/{clave}, FUSIONANDO (unión) para
      no perder datos entre dispositivos. En localhost NO se activa (ahí manda el servidor local). */
   (function(){
-    var esLocal=/^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname)||location.protocol==='file:';
-    if(esLocal)return;
     function norm(s){return (''+(s||'')).toLowerCase().trim();}
     function mergeArrBy(keyName){return function(cloud,local){
       var out=[], seen={};
@@ -91,17 +89,24 @@
     function lsSetMuted(k,v){muted=true;try{localStorage.setItem(k,JSON.stringify(v));}finally{muted=false;}}
     function progRef(k){var u=auth.currentUser;return u?db.collection('users').doc(u.uid).collection('progreso').doc(k):null;}
     function sync(k){
-      var ref=progRef(k); if(!ref)return;
-      var local=lsGet(k);
-      ref.get().then(function(d){
+      var ref=progRef(k); if(!ref)return Promise.resolve(false);
+      var before=localStorage.getItem(k), local=lsGet(k);
+      return ref.get().then(function(d){
         var cloud=d.exists?(d.data()||{}).data:null;
         var merged=CLAVES[k](cloud, local);
         lsSetMuted(k, merged);
         ref.set({data:merged, t:Date.now()}).catch(function(){});
-      }).catch(function(){ if(local!=null)ref.set({data:local, t:Date.now()}).catch(function(){}); });
+        return localStorage.getItem(k)!==before;   // ¿la nube trajo algo nuevo a este dispositivo?
+      }).catch(function(){ if(local!=null)ref.set({data:local, t:Date.now()}).catch(function(){}); return false; });
     }
     var timers={}, _set=localStorage.setItem.bind(localStorage);
     localStorage.setItem=function(k,v){ _set(k,v); if(!muted && CLAVES[k]){ clearTimeout(timers[k]); timers[k]=setTimeout(function(){sync(k);},1200); } };
-    loginGate(function(){ Object.keys(CLAVES).forEach(function(k){ sync(k); }); });
+    loginGate(function(){
+      Promise.all(Object.keys(CLAVES).map(sync)).then(function(res){
+        if(res.some(function(c){return c;}) && !sessionStorage.getItem('fb-reload')){
+          sessionStorage.setItem('fb-reload','1'); location.reload();   // recarga UNA vez para mostrar lo sincronizado
+        }
+      });
+    });
   })();
 })();
