@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Práctica · Italiano</title>
-<link rel="stylesheet" href="assets/curso.css?v=20260801c">
+<link rel="stylesheet" href="assets/curso.css?v=20260801d">
 <style>
   body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:720px;margin:0 auto;padding:2rem 1.5rem 4rem;line-height:1.5}
   .top{border-left:4px solid #2d6a4f;padding-left:1rem;margin-bottom:1.2rem}
@@ -69,7 +69,7 @@
   .vacio .big{font-size:2rem}
   .resta{font-size:.78rem;color:#999;text-align:right;margin-top:.5rem}
 </style>
-<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260801c"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260801d"></script>
 </head>
 <body>
 <div class="top">
@@ -157,7 +157,10 @@ function vocabList(){try{return JSON.parse(localStorage.getItem('italiano-vocab-
 
 function vocabItems(){
   return vocabList().map(function(w){
-    return {id:'v:'+baseNorm(w.it),deck:'vocab',prio:4,tipo:'vocab',it:w.it,es:w.es||'',nota:w.contexto||'',estado:w.estado};
+    // ojo: el campo guardado siempre ha sido `ctx` (antes decía w.contexto, así que la frase de
+    // contexto nunca llegaba a la tarjeta). `lema`/`pos`/`flex` se muestran al corregir.
+    return {id:'v:'+baseNorm(w.it),deck:'vocab',prio:4,tipo:'vocab',it:w.it,es:w.es||'',nota:w.ctx||'',
+            estado:w.estado,lema:w.lema||'',pos:w.pos||'',flex:w.flex||''};
   }).filter(function(w){return w.it&&w.es});
 }
 function errorItems(){
@@ -262,23 +265,31 @@ function clozeOf(tuvo,correcto){
   if(!gap.length||gap.length===B.length)return null;
   return {pre:B.slice(0,i).join(' '),gap:gap.join(' '),post:B.slice(B.length-j).join(' ')};
 }
+/* «de mangiare · verbo (3ª pers. sing. imperfecto)» — se enseña al CORREGIR, no en la pregunta:
+   la tarjeta sigue preguntando por la forma que guardaste. */
+function lemaTxt(c){
+  if(!c.lema&&!c.pos)return '';
+  var mismo=c.lema&&baseNorm(c.lema)===baseNorm(c.it);
+  return (c.lema&&!mismo?'de «'+c.lema+'»':'')+(c.pos?(c.lema&&!mismo?' · ':'')+c.pos:'')+(c.flex?' ('+c.flex+')':'');
+}
 function buildExercise(c){
   var r=reps(c.id);
   if(c.tipo==='vocab'){
     var vs=vocabItems();
+    var nota=[lemaTxt(c),c.nota].filter(Boolean).join(' — ');
     var mode=(r===0&&vs.length>=4)?'mc':(r%2===1?'dict':'write');
     if(mode==='mc'){
       var others=shuffle(vs.filter(function(v){return v.id!==c.id}).map(function(v){return v.es})).slice(0,2);
       var ops=shuffle([{t:c.es,ok:true}].concat(others.map(function(o){return {t:o,ok:false}})));
       return {kind:'mc',tag:'Vocabulario ★',modo:'¿Qué significa?',q:'<span style="font-style:italic;font-weight:700">'+esc(c.it)+'</span> <span style="color:#999;font-size:.85rem">(toca 🔊 para oír)</span>',
-        ops:ops,say:c.it,explica:c.nota};
+        ops:ops,say:c.it,explica:nota};
     }
     if(mode==='dict'){
       return {kind:'write',tag:'Vocabulario ★',modo:'Al oído: escribe lo que escuchas',q:'🔊 Escucha y escribe la palabra/frase en italiano <span class="es">(significa: «'+esc(c.es)+'»)</span>',
-        targets:[c.it],say:c.it,autoSay:true,explica:c.nota};
+        targets:[c.it],say:c.it,autoSay:true,explica:nota};
     }
     return {kind:'write',tag:'Vocabulario ★',modo:'Escríbelo en italiano',q:'¿Cómo se dice: <b>«'+esc(c.es)+'»</b>?',
-      targets:[c.it],say:c.it,explica:c.nota};
+      targets:[c.it],say:c.it,explica:nota};
   }
   if(c.tipo==='error'){
     var tagE='Tu error · '+esc(c.tema)+' ('+esc(String(c.dia)).replace(/^(\d)/,'día $1')+')';

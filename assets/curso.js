@@ -155,7 +155,24 @@
     var list=loadVocabList();
     if(list.some(function(w){return norm(w.it)===norm(it)}))return 'dup';
     list.push({it:it, es:es||'', ctx:ctx||'', estado:'practica', t:Date.now()});
-    localStorage.setItem(VKEY,JSON.stringify(list)); return true;
+    localStorage.setItem(VKEY,JSON.stringify(list));
+    completarLema(it);          // la palabra base se busca DESPUÉS: guardar debe ser instantáneo
+    return true;
+  }
+  /* Busca la palabra base en segundo plano y la añade a la entrada ya guardada.
+     Aquí no se pregunta nada (el globo del ★ es efímero): si hay varias lecturas se marca
+     'regla' para que aparezca con el aviso «revisar» en Mi Vocabulario y la elijas allí. */
+  function completarLema(it){
+    if(!window.LEMA)return;
+    LEMA.analizar(it).then(function(ls){
+      if(!ls||!ls.length)return;
+      var cur=loadVocabList(), f=cur.filter(function(x){return norm(x.it)===norm(it)})[0];
+      if(!f||f.lema||f.pos)return;
+      var l=ls[0];
+      f.lema=l.lema||''; f.pos=l.pos||''; f.flex=l.flex||'';
+      f.lemaFuente=(ls.length>1?'regla':(l.fuente||''));
+      localStorage.setItem(VKEY,JSON.stringify(cur));
+    }).catch(function(){});
   }
   function translateSelection(sel){
     var raw=sel.toString().trim();

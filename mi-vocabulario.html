@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mi Vocabulario · Italiano</title>
-<link rel="stylesheet" href="assets/curso.css?v=20260801c">
-<script src="assets/vocab.js?v=20260801c"></script>
-<script src="assets/frases.js?v=20260801c"></script>
+<link rel="stylesheet" href="assets/curso.css?v=20260801d">
+<script src="assets/vocab.js?v=20260801d"></script>
+<script src="assets/frases.js?v=20260801d"></script>
 <style>
   body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:760px;margin:0 auto;padding:2.5rem 1.5rem 4rem;line-height:1.5}
   .top{border-left:4px solid #c79a3a;padding-left:1rem;margin-bottom:1.2rem}
@@ -54,8 +54,23 @@
   .es-edit{border:1px solid #c79a3a;border-radius:5px;padding:.25rem .45rem;font:inherit;font-size:.9rem;min-width:200px}
   .cx-sensos{font-size:.83rem;color:#555;margin:.2rem 0 .1rem}
   .cx-sensos b{color:#1a4d80}
+  /* lema / categoría: la palabra base desde la que se estudia y conjuga */
+  .cx-lema{margin:.5rem 0 .2rem;font-size:.83rem;color:#555}
+  .cx-lema .t{color:#7a5c12;font-weight:700;display:block;margin-bottom:.25rem}
+  .lema-op{display:inline-flex;align-items:center;gap:.35rem;background:#fff;border:1.5px solid #e8d9b5;
+           border-radius:20px;padding:.3rem .7rem;margin:.15rem .3rem .15rem 0;font:inherit;font-size:.82rem;
+           cursor:pointer;color:#444}
+  .lema-op:hover{border-color:#c79a3a}
+  .lema-op.on{background:#fffaf0;border-color:#c79a3a;color:#8a6d1f;font-weight:700}
+  .lema-op b{font-style:italic}
+  .lema-op .cat{font-size:.72rem;opacity:.75;font-weight:400;font-style:normal}
+  .word .lema{flex-basis:100%;font-size:.8rem;color:#8a6d1f;cursor:text}
+  .word .lema .cat{color:#999}
+  .word .lema.falta{color:#bbb;font-style:italic}
+  .word .revisar{font-size:.66rem;font-weight:700;background:#fff4d6;color:#9a7d00;border:0;
+                 border-radius:5px;padding:.12rem .45rem;margin-left:.35rem;cursor:pointer}
 </style>
-<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260801c"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260801d"></script>
 </head>
 <body>
 <div class="top">
@@ -81,6 +96,7 @@
     </div>
     <div class="cx-defit" id="cx-defit"></div>
     <div class="cx-sensos" id="cx-sensos"></div>
+    <div class="cx-lema" id="cx-lema"></div>
     <button id="cx-save">★ Guardar con este significado</button>
   </div>
 </div>
@@ -133,6 +149,15 @@ function pick(){var vs=speechSynthesis.getVoices();itVoice=vs.find(function(v){r
 if('speechSynthesis' in window){pick();speechSynthesis.onvoiceschanged=pick;}
 function say(t){if(!('speechSynthesis'in window))return;speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='it-IT';if(itVoice)u.voice=itVoice;u.rate=.9;speechSynthesis.speak(u);}
 
+/* Línea de la palabra base: «→ mangiare · verbo (3ª pers. sing. imperfecto)».
+   Si viene de una regla local (supuesta) o falta, se marca para revisar. */
+function lemaHTML(w){
+  if(!w.lema&&!w.pos)return '<div class="lema falta" title="Clic para escribir la palabra base">＋ palabra base…</div>';
+  var dudoso=w.lemaFuente==='regla';
+  return '<div class="lema" title="Clic para corregir la palabra base">→ <b>'+(w.lema||'—')+'</b>'+
+    '<span class="cat"> · '+(w.pos||'')+(w.flex?' ('+w.flex+')':'')+'</span>'+
+    (dudoso?'<span class="revisar">revisar</span>':'')+'</div>';
+}
 function render(){
   var l=load(), lista=document.getElementById('lista');
   var prac=l.filter(function(w){return w.estado!=='dominada'}).length;
@@ -147,6 +172,7 @@ function render(){
       '<span class="es'+(w.es?'':' vacia')+'" title="Clic para corregir el significado">'+(w.itdef?'→ ':'')+(w.es||'…resolviendo…')+'</span>'+
       '<button class="badge '+(w.estado==='dominada'?'dominada':'practica')+'">'+(w.estado==='dominada'?'dominada':'en práctica')+'</button>'+
       '<button class="del" title="Borrar">✕</button>'+
+      lemaHTML(w)+
       (w.ctx?'<div class="ctx">“'+w.ctx+'”</div>':'');
     d.querySelector('.it').onclick=function(){say(w.it)};
     var dfe=d.querySelector('.defit');if(dfe)dfe.onclick=function(){say(w.itdef)};
@@ -158,6 +184,18 @@ function render(){
       var inp=document.createElement('input');inp.className='es-edit';inp.value=w.es||'';
       esEl.appendChild(inp);inp.focus();inp.select();
       function commit(){var v=inp.value.trim();w.es=v;if(v)cacheSet(norm(w.it),v);save(l);render();}
+      inp.onblur=commit;
+      inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();inp.blur();}else if(e.key==='Escape'){render();}});
+    };
+    // corregir la palabra base a mano (tú mandas: Wiktionary solo propone)
+    var lemEl=d.querySelector('.lema');
+    if(lemEl)lemEl.onclick=function(){
+      if(lemEl.querySelector('input'))return;
+      lemEl.innerHTML='';
+      var inp=document.createElement('input');inp.className='es-edit';inp.value=w.lema||'';
+      inp.placeholder='palabra base (ej. mangiare)';
+      lemEl.appendChild(inp);inp.focus();inp.select();
+      function commit(){var v=inp.value.trim();w.lema=v;if(v)w.lemaFuente='manual';save(l);render();}
       inp.onblur=commit;
       inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();inp.blur();}else if(e.key==='Escape'){render();}});
     };
@@ -208,6 +246,36 @@ function resolveMissing(){
       setTimeout(function(){step(i+1)},180);
     });
   })(0);
+  resolveLemas();
+}
+/* Relleno de la palabra base en las palabras que ya tenías. Va DESPACIO a propósito:
+   Wikimedia responde 429 si se le piden muchas seguidas. Nunca toca `es` ni `ctx`. */
+function resolveLemas(){
+  if(!window.LEMA)return;
+  var V=LEMA.version||1;
+  // pendientes = las que no tienen palabra base + las analizadas con una versión vieja del parser.
+  // Lo que hayas escrito TÚ (lemaFuente==='manual') no se toca nunca.
+  var pend=load().filter(function(w){
+    if(!w.it||w.lemaFuente==='manual')return false;
+    return (!w.lema&&!w.pos)||(w.lemaV||0)<V;
+  });
+  (function step(i){
+    if(i>=pend.length)return;
+    var w=pend[i];
+    LEMA.analizar(w.it).then(function(ls){
+      if(ls&&ls.length){
+        var cur=load(), f=cur.filter(function(x){return norm(x.it)===norm(w.it)})[0];
+        if(f&&f.lemaFuente!=='manual'){
+          var l=ls[0];
+          f.lema=l.lema||''; f.pos=l.pos||''; f.flex=l.flex||''; f.lemaV=V;
+          // si hay varias lecturas o vino de una regla, queda marcada para que la revises
+          f.lemaFuente=(ls.length>1?'regla':(l.fuente||''));
+          save(cur); render();
+        }
+      }
+      setTimeout(function(){step(i+1)},600);
+    }).catch(function(){setTimeout(function(){step(i+1)},1200);});
+  })(0);
 }
 /* ---------- Agregar con contexto: pega la frase y elige la palabra ---------- */
 (function(){
@@ -215,8 +283,38 @@ function resolveMissing(){
   var resEl=document.getElementById('cx-result'), fraseEsEl=document.getElementById('cx-frase-es');
   var wordItEl=document.getElementById('cx-word-it'), wordEsEl=document.getElementById('cx-word-es');
   var defitEl=document.getElementById('cx-defit'), saveBtn=document.getElementById('cx-save');
-  var sensosEl=document.getElementById('cx-sensos');
-  var sel=null;
+  var sensosEl=document.getElementById('cx-sensos'), lemaEl=document.getElementById('cx-lema');
+  var sel=null, lemaSel=null;   // lemaSel = la lectura que el usuario elige (o la única que haya)
+
+  /* Lema y categoría: cuando hay más de una lectura (p. ej. «premuto» = adjetivo O participio de
+     «premere») se ofrecen para elegir AQUÍ, que es donde se tiene la frase delante. */
+  function pintarLemas(palabra){
+    lemaEl.innerHTML=''; lemaSel=null;
+    if(!window.LEMA)return;
+    lemaEl.innerHTML='<span class="t">buscando la palabra base…</span>';
+    LEMA.analizar(palabra).then(function(ls){
+      if(sel!==palabra)return;                       // el usuario ya cambió de palabra
+      if(!ls.length){lemaEl.innerHTML='<span class="t">Palabra base: no la encontré — puedes escribirla luego en la lista</span>';return;}
+      lemaSel=ls[0];
+      var titulo=ls.length>1
+        ? '¿Cuál es aquí? — toca la correcta según tu frase'
+        : 'Palabra base'+(ls[0].fuente==='regla'?' (supuesta: revísala)':'');
+      var h='<span class="t">'+titulo+'</span>';
+      ls.forEach(function(l,i){
+        h+='<button type="button" class="lema-op'+(i===0?' on':'')+'" data-i="'+i+'">'+
+           (l.lema?'<b>'+esc(l.lema)+'</b>':'')+'<span class="cat">'+esc(l.pos||'')+
+           (l.flex?' · '+esc(l.flex):'')+'</span></button>';
+      });
+      lemaEl.innerHTML=h;
+      [].slice.call(lemaEl.querySelectorAll('.lema-op')).forEach(function(b){
+        b.onclick=function(){
+          lemaEl.querySelectorAll('.lema-op').forEach(function(x){x.classList.remove('on')});
+          b.classList.add('on'); lemaSel=ls[+b.getAttribute('data-i')];
+        };
+      });
+    });
+  }
+  function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
   function clean(w){return w.replace(/^[«»"“”'.,;:!¿?()\[\]…]+|[«»"“”'.,;:!¿?()\[\]…]+$/g,'');}
   function normWords(s){return (s||'').toLowerCase().replace(/[.,;:!¿?()«»"“”…]/g,' ').split(/\s+/).filter(Boolean);}
   // conectores/artículos que son ruido en el diff (no son la traducción de la palabra)
@@ -264,6 +362,7 @@ function resolveMissing(){
     fraseEsEl.textContent='traduciendo…'; defitEl.textContent='';
     sensosEl.innerHTML='';
     dictOnline(word).then(function(s){if(s&&sel===word)sensosEl.innerHTML='<b>Otros sentidos:</b> '+s;});
+    pintarLemas(word);
     translateOnline(frase).then(function(fraseES){
       fraseEsEl.textContent=fraseES||'(sin conexión: escribe el significado a mano)';
       var local=lookup(word); if(local){wordEsEl.value=local;return;}
@@ -281,7 +380,10 @@ function resolveMissing(){
     var l=load();
     if(l.some(function(w){return norm(w.it)===norm(sel)})){alert('"'+sel+'" ya está en tu lista.');return;}
     var es=wordEsEl.value.trim(), it=defitEl.textContent.replace(/^🇮🇹\s*/,'').trim();
-    l.push({it:sel,es:es,ctx:fraseEl.value.trim(),itdef:it||'',estado:'practica',t:Date.now()});
+    // se guarda la forma TAL CUAL la seleccionaste (it) + su palabra base para poder estudiarla
+    var e={it:sel,es:es,ctx:fraseEl.value.trim(),itdef:it||'',estado:'practica',t:Date.now()};
+    if(lemaSel){e.lema=lemaSel.lema||'';e.pos=lemaSel.pos||'';e.flex=lemaSel.flex||'';e.lemaFuente=lemaSel.fuente||'';}
+    l.push(e);
     save(l); if(es)cacheSet(norm(sel),es);
     fraseEl.value=''; renderTokens(); render();
   };

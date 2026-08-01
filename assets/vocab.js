@@ -671,3 +671,135 @@ window.DEF_IT = {
   "maremoto":"onda enorme del mare provocata da un terremoto sottomarino, che colpisce la costa",
   "muretto a secco":"muro di pietre incastrate senza cemento, usato per reggere le terrazze coltivate"
 };
+
+/* ====== LEMA — de la forma que ves a la palabra base (2026-08-01) ==========================
+   Guardas "mangiava" pero para estudiarla necesitas "mangiare". Este módulo devuelve TODAS las
+   lecturas posibles de una forma, cada una con su categoría, para poder elegir la correcta según
+   el contexto (p. ej. «premuto» es a la vez ADJETIVO y participio del verbo «premere»).
+   Fuente: Wiktionary italiano (gratis, sin clave, CORS abierto). Si no hay red o no hay página,
+   cae a reglas locales marcadas como dudosas (fuente:'regla') para que se puedan revisar.
+   Uso:  LEMA.analizar('mangiava').then(function(ls){ ... })   ->  [{lema,pos,flex,fuente}]      */
+window.LEMA = (function(){
+  var VERSION = 3;                       // súbela si cambia el parser: invalida caché y re-analiza
+  var CKEY = 'italiano-lema-cache-v' + VERSION, CACHE = {};
+  try { CACHE = JSON.parse(localStorage.getItem(CKEY) || '{}'); } catch (e) {}
+  function cacheSet(k, v){ try { CACHE[k] = v; localStorage.setItem(CKEY, JSON.stringify(CACHE)); } catch (e) {} }
+  function norm(s){ return (s || '').toLowerCase().replace(/[«»"“”.,;:!¿?()…]/g, '').replace(/[’]/g, "'").trim(); }
+
+  // encabezado de Wiktionary -> [categoría en español, ¿es una forma flexionada?]
+  var POS = {
+    'voce verbale':            ['verbo', true],
+    'verbo':                   ['verbo', false],
+    'sostantivo, forma flessa':['sustantivo', true],
+    'sostantivo':              ['sustantivo', false],
+    'aggettivo, forma flessa': ['adjetivo', true],
+    'aggettivo':               ['adjetivo', false],
+    'avverbio':                ['adverbio', false],
+    'locuzione':               ['locución', false],
+    'pronome':                 ['pronombre', false],
+    'preposizione':            ['preposición', false],
+    'congiunzione':            ['conjunción', false],
+    'interiezione':            ['interjección', false],
+    'articolo':                ['artículo', false]
+  };
+  var OTRAS_LENGUAS = /^(inglese|francese|spagnolo|latino|tedesco|portoghese|catalano|napoletano|siciliano|sardo|esperanto|romeno|olandese)$/i;
+  // la descripción de una forma flexionada SIEMPRE lleva alguna de estas palabras; sirve de filtro
+  // para no confundir una definición («…l'atto di espirazione») con un lema
+  var DESC_FLEX = /(persona|singolare|plurale|maschile|femminile|participio|gerundio|indicativo|congiuntivo|condizionale|imperativo|presente|passato|imperfetto|futuro|remoto|infinito|diminutivo|accrescitivo|vezzeggiativo|peggiorativo|superlativo|comparativo)/i;
+
+  // «prima persona singolare del condizionale presente» -> «1ª pers. sing. condicional presente»
+  var T = {
+    prima:'1ª', seconda:'2ª', terza:'3ª', persona:'pers.', singolare:'sing.', plurale:'pl.',
+    maschile:'masc.', femminile:'fem.', participio:'participio', passato:'pasado', presente:'presente',
+    imperfetto:'imperfecto', remoto:'remoto', futuro:'futuro', trapassato:'pluscuamperfecto',
+    indicativo:'indicativo', congiuntivo:'subjuntivo', condizionale:'condicional',
+    imperativo:'imperativo', gerundio:'gerundio', infinito:'infinitivo',
+    semplice:'', del:'', della:'', dello:'', dell:'', di:'', al:'', il:'', la:'', e:'y'
+  };
+  function flexEs(desc){
+    var t = (desc || '').toLowerCase().replace(/dell'/g, ' ').trim();
+    if (!t) return null;
+    if (/^plurale$/.test(t)) return 'plural';
+    if (/^femminile$/.test(t)) return 'femenino';
+    var w = t.split(/\s+/).map(function(x){ return T[x] !== undefined ? T[x] : x; }).filter(Boolean);
+    return w.join(' ').replace(/\s+/g, ' ').trim() || null;
+  }
+
+  /* Del texto plano de Wiktionary saca una lectura por sección gramatical.
+     Estructura real: «=== Voce verbale ===» y debajo la palabra + «…​ di <lema>». */
+  function parsear(txt, palabra){
+    var bloques = [], sec = null, enItaliano = false;
+    (txt || '').split('\n').forEach(function(ln){
+      var s = ln.trim(); if (!s) return;
+      var m = /^=+\s*(.+?)\s*=+$/.exec(s);
+      if (m){
+        var h = m[1].trim();
+        if (/^italiano$/i.test(h)) { enItaliano = true; sec = null; return; }
+        if (OTRAS_LENGUAS.test(h)) { enItaliano = false; sec = null; return; }
+        sec = POS[h.toLowerCase()] ? h.toLowerCase() : null;
+        if (sec && enItaliano) bloques.push({ sec: sec, lineas: [] });
+        return;
+      }
+      if (enItaliano && sec && bloques.length) bloques[bloques.length - 1].lineas.push(s);
+    });
+
+    var out = [], vistos = {};
+    bloques.forEach(function(b){
+      var info = POS[b.sec], pos = info[0], esForma = info[1], lema = null, flex = null;
+      b.lineas.forEach(function(l){
+        // SOLO en las secciones de forma flexionada se busca «… di <lema>». Si no, una línea de
+        // DEFINICIÓN que acabe en «di algo» se colaría como lema (bug real: fiato -> «espirazione»,
+        // de «…durante l'atto di espirazione»).
+        if (lema || !esForma) return;
+        var mm = /^(.*?)\bdi\s+([a-zàèéìòùA-ZÀÈÉÌÒÙ'\-]+)\s*$/.exec(l);
+        if (mm && DESC_FLEX.test(mm[1])) { lema = mm[2]; flex = flexEs(mm[1]); }
+      });
+      if (!lema && !esForma) lema = palabra;      // la palabra ya ES el lema (p. ej. «rovesciato» adjetivo)
+      if (!lema) return;
+      var k = pos + '|' + lema.toLowerCase();
+      if (vistos[k]) return;
+      vistos[k] = 1;
+      out.push({ lema: lema, pos: pos, flex: flex, fuente: 'wiktionary' });
+    });
+    return out;
+  }
+
+  /* Sin red o sin página (mucho slang no está en Wiktionary): reglas del italiano regular.
+     SIEMPRE marcadas como dudosas. Van en cascada excluyente y son prudentes a propósito:
+     una regla de plural demasiado suelta convertía «fottersi» en «fotterso». */
+  function reglas(p){
+    var out = [], m;
+    // ya es infinitivo, incluido el pronominal (fottersi, beccarsi, riempirci): es su propio lema
+    if (/(?:are|ere|ire|rsi|rci|rmi|rti|rvi)$/.test(p)) return [{ lema: p, pos: 'verbo', flex: null, fuente: 'regla' }];
+    if ((m = /^(.{2,})(ato|ata|ati|ate)$/.exec(p)))      out.push({ lema: m[1] + 'are', pos: 'verbo', flex: 'participio (supuesto)' });
+    else if ((m = /^(.{2,})(uto|uta|uti|ute)$/.exec(p))) out.push({ lema: m[1] + 'ere', pos: 'verbo', flex: 'participio (supuesto)' });
+    else if ((m = /^(.{2,})(ito|ita|iti|ite)$/.exec(p))) out.push({ lema: m[1] + 'ire', pos: 'verbo', flex: 'participio (supuesto)' });
+    else if ((m = /^(.{3,})i$/.exec(p)))                 out.push({ lema: m[1] + 'o', pos: 'sustantivo', flex: 'plural (supuesto)' });
+    else if ((m = /^(.{3,})e$/.exec(p)))                 out.push({ lema: m[1] + 'a', pos: 'sustantivo', flex: 'plural (supuesto)' });
+    return out.map(function(o){ o.fuente = 'regla'; return o; });
+  }
+
+  function analizar(palabra){
+    var p = norm(palabra);
+    if (!p) return Promise.resolve([]);
+    if (/\s/.test(p)) return Promise.resolve([{ lema: null, pos: 'locución', flex: null, fuente: 'local' }]);
+    if (CACHE[p]) return Promise.resolve(CACHE[p]);
+    var url = 'https://it.wiktionary.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&origin=*&titles=' + encodeURIComponent(p);
+    return fetch(url).then(function(r){ return r.json(); }).then(function(j){
+      var pgs = (j && j.query && j.query.pages) || {}, k = Object.keys(pgs)[0];
+      var res = parsear(k ? (pgs[k].extract || '') : '', p);
+      if (!res.length) res = reglas(p);
+      if (res.length) cacheSet(p, res);          // solo se cachea lo que dio algo
+      return res;
+    }).catch(function(){ return reglas(p); });   // sin red: no rompe nada
+  }
+
+  // etiqueta lista para pintar: «mangiare · verbo (1ª pers. sing. imperfecto)»
+  function etiqueta(l){
+    if (!l) return '';
+    if (!l.lema) return l.pos || '';
+    return l.lema + ' · ' + l.pos + (l.flex ? ' (' + l.flex + ')' : '');
+  }
+
+  return { analizar: analizar, etiqueta: etiqueta, norm: norm, version: VERSION };
+})();
