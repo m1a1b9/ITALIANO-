@@ -6,6 +6,7 @@
 <title>Examen semanal · Italiano</title>
 <link rel="stylesheet" href="assets/curso.css">
 <script src="assets/examenes.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js"></script>
 <style>
   body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:720px;margin:0 auto;padding:2rem 1.5rem 4rem;line-height:1.5}
   .top{border-left:4px solid #c0392b;padding-left:1rem;margin-bottom:1rem}
@@ -113,7 +114,7 @@ else{
 
     // guardar resultado en disco
     var resultado={fecha:new Date().toISOString().slice(0,10),score:pct,aciertos:aciertos,total:obj,aprobado:aprob,porTema:porTema,fallos:fallos,escritura:escritura};
-    fetch('/api/examenes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({semana:sem,resultado:resultado})}).catch(function(){});
+    Datos.guardarExamen(sem,resultado);   // localhost -> /api · web -> Firestore (ver assets/firebase.js)
 
     // mandar fallos al repaso (SRS)
     try{

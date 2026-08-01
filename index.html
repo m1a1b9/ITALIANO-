@@ -169,14 +169,14 @@ document.getElementById('reset').onclick=function(){if(confirm('¿Borrar todo tu
   function isDue(id){var s=srs[id];if(!s)return true;return s.due<=today0()+DAY-1;}
   var vl;try{vl=JSON.parse(localStorage.getItem('italiano-vocab-activo')||'[]')}catch(e){vl=[]}
   var ids=vl.map(function(w){return 'v:'+(w.it||'').toLowerCase().trim()});
-  Promise.all([
-    fetch('/api/errores').then(function(r){return r.json()}).catch(function(){return{}}),
-    fetch('/api/examenes').then(function(r){return r.json()}).catch(function(){return{}})
-  ]).then(function(res){
+  // firebase.js es `defer`: window.Datos aparece hasta DOMContentLoaded
+  document.addEventListener('DOMContentLoaded',function(){
+  Promise.all([Datos.errores(),Datos.examenes()]).then(function(res){
     var err=res[0]||{},ex=res[1]||{};
     Object.keys(err).forEach(function(dia){(err[dia].errores||[]).forEach(function(e,i){if(e.repasar===true)ids.push('e:'+dia+':'+i)})});
     Object.keys(ex).forEach(function(sem){((ex[sem]||{}).fallos||[]).forEach(function(f,i){ids.push('x:'+sem+':'+i)})});
     document.getElementById('hoy-due').textContent=ids.filter(isDue).length;
+  });
   });
   // inmersión de la semana
   function weekKey(){var x=new Date(),y=x.getFullYear(),oneJan=new Date(y,0,1);

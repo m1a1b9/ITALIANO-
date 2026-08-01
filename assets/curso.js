@@ -231,7 +231,8 @@
      Los días pueden estar PRE-CONSTRUIDOS (buffer): esta caja lee tu perfil ACTUAL
      al abrir el día, así los focos siempre reflejan tu última corrección. */
   function siembraViva(){
-    fetch('/api/perfil').then(function(r){return r.json()}).then(function(p){
+    if(!window.Datos)return;   // sin el helper (página suelta) no hay perfil que leer
+    Datos.perfil().then(function(p){
       var rs=(p&&p.rasgos)?Object.keys(p.rasgos).map(function(k){return p.rasgos[k]}):[];
       rs=rs.filter(function(t){return t&&t.estado!=='dominado'&&(t.prioridad||0)>=6});
       if(!rs.length)return;

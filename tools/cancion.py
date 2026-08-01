@@ -34,6 +34,13 @@ REGLAS QUE ESTE MOTOR IMPONE SOLO (no hace falta recordarlas):
 """
 import json, os, io, sys, unicodedata
 
+# La consola de Windows usa cp1252 y revienta al imprimir ✅/·/acentos (UnicodeEncodeError),
+# abortando el guardado aunque la auditoría haya salido bien. Forzamos UTF-8 en la salida.
+try:
+    sys.stdout.reconfigure(encoding='utf-8')
+except Exception:
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CANC = os.path.join(BASE, 'datos', 'canciones')
 

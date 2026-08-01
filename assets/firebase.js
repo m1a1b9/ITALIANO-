@@ -64,6 +64,73 @@
     col:function(col){var u=auth.currentUser;return u?db.collection('users').doc(u.uid).collection(col):null;}
   };
 
+  /* ===== DATOS del curso — MISMA API en localhost y en la web =====
+     En localhost manda el servidor local (/api); en la web, Firestore (tras login).
+     Centralizado aquí para que ninguna página tenga que repetir ese switch.
+     Las páginas solo llaman: Datos.perfil() · .errores() · .examenes() · .guardarExamen() · .marcarRasgo()
+     OJO: como este archivo es `defer`, window.Datos no existe durante los <script> inline
+     del <body>; esas páginas deben arrancar en DOMContentLoaded. */
+  window.Datos=(function(){
+    var esLocal=/localhost|127\.0\.0\.1/.test(location.hostname);
+    function listo(){   // en la web hace falta sesión para poder leer/escribir Firestore
+      if(esLocal)return Promise.resolve();
+      return new Promise(function(res){loginGate(function(){res();});});
+    }
+    function get(ruta,vacio){return fetch(ruta).then(function(r){return r.json()}).catch(function(){return vacio;});}
+    function post(ruta,body){return fetch(ruta,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(body)}).then(function(r){return r.json()}).catch(function(){return {ok:false};});}
+    function colMap(col){          // users/{uid}/{col} -> {id:data}
+      return listo().then(function(){
+        var u=udoc(); if(!u)return {};
+        return u.collection(col).get().then(function(qs){var o={};qs.forEach(function(d){o[d.id]=d.data()||{};});return o;});
+      }).catch(function(){return {};});
+    }
+    function perfilRef(){var u=udoc();return u?u.collection('perfil').doc('actual'):null;}
+    return {
+      esLocal:esLocal,
+      perfil:function(){
+        if(esLocal)return get('/api/perfil',{});
+        return listo().then(function(){
+          var r=perfilRef(); if(!r)return {};
+          return r.get().then(function(d){return d.exists?(d.data()||{}):{};});
+        }).catch(function(){return {};});
+      },
+      errores:function(){  return esLocal?get('/api/errores',{}) :colMap('errores');  },
+      examenes:function(){ return esLocal?get('/api/examenes',{}):colMap('examenes'); },
+      guardarExamen:function(sem,resultado){
+        if(esLocal)return post('/api/examenes',{semana:sem,resultado:resultado});
+        return listo().then(function(){
+          var u=udoc(); if(!u)return {ok:false};
+          return u.collection('examenes').doc(String(sem)).set(resultado).then(function(){return {ok:true};});
+        }).catch(function(){return {ok:false};});
+      },
+      // marca manual del diagnóstico: misma semántica que servidor.py (toca SOLO ese rasgo
+      // y guarda prev_* para poder revertir con "reactivar")
+      marcarRasgo:function(clave,accion){
+        if(esLocal)return post('/api/perfil',{rasgo:clave,accion:accion});
+        return listo().then(function(){
+          var ref=perfilRef(); if(!ref)return {ok:false};
+          return ref.get().then(function(d){
+            var p=d.exists?(d.data()||{}):{}, rs=p.rasgos||{}, r=rs[clave];
+            if(!r)return {ok:false,error:'rasgo no encontrado'};
+            if(accion==='dominar'){
+              r.prev_estado=r.estado||'consolidando';
+              r.prev_prioridad=(r.prioridad!==undefined?r.prioridad:6);
+              r.prev_tendencia=r.tendencia||'estancado';
+              r.estado='dominado'; r.prioridad=0; r.tendencia='mejorando'; r.dominado_manual=true;
+            }else{
+              r.estado=r.prev_estado||'consolidando';
+              r.prioridad=(r.prev_prioridad!==undefined?r.prev_prioridad:6);
+              r.tendencia=r.prev_tendencia||'estancado';
+              delete r.prev_estado; delete r.prev_prioridad; delete r.prev_tendencia; delete r.dominado_manual;
+            }
+            return ref.set(p).then(function(){return {ok:true};});
+          });
+        }).catch(function(){return {ok:false};});
+      }
+    };
+  })();
+
   /* ===== Sincronización de PROGRESO (localStorage <-> Firestore) — SOLO en la WEB con sesión =====
      Espeja ciertas claves de localStorage a users/{uid}/progreso/{clave}, FUSIONANDO (unión) para
      no perder datos entre dispositivos. En localhost NO se activa (ahí manda el servidor local). */

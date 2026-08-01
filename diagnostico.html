@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mi diagnóstico · Italiano</title>
 <link rel="stylesheet" href="assets/curso.css">
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js"></script>
 <style>
   body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:760px;margin:0 auto;padding:2rem 1.5rem 4rem;line-height:1.5}
   .top{border-left:4px solid #2d6a4f;padding-left:1rem;margin-bottom:1rem}
@@ -105,11 +106,9 @@ function render(p){
   [].slice.call(r.querySelectorAll('.btn-dom')).forEach(function(b){
     b.onclick=function(){
       b.disabled=true;b.textContent='guardando…';
-      fetch('/api/perfil',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({rasgo:b.getAttribute('data-r'),accion:b.getAttribute('data-a')})})
-        .then(function(r){return r.json()})
-        .then(function(res){if(res.ok)cargar();else{b.disabled=false;b.textContent='⚠ no se pudo';}})
-        .catch(function(){b.disabled=false;b.textContent='⚠ ¿servidor apagado?';});
+      Datos.marcarRasgo(b.getAttribute('data-r'),b.getAttribute('data-a'))
+        .then(function(res){if(res&&res.ok)cargar();else{b.disabled=false;b.textContent='⚠ no se pudo';}})
+        .catch(function(){b.disabled=false;b.textContent='⚠ no se pudo guardar';});
     };
   });
 
@@ -122,14 +121,15 @@ function render(p){
 }
 
 function cargar(){
-  fetch('/api/perfil').then(function(r){return r.json()}).then(function(p){
+  Datos.perfil().then(function(p){
     if(p&&(p.rasgos||p.fortalezas))render(p);
     else document.getElementById('rasgos').innerHTML='<div class="vacio">Tu perfil se llena conforme te corrijo cada día.</div>';
   }).catch(function(){
-    document.getElementById('rasgos').innerHTML='<div class="vacio">Abre el curso con «Abrir Curso Italiano.bat» (servidor) para ver tu diagnóstico.</div>';
+    document.getElementById('rasgos').innerHTML='<div class="vacio">No se pudo leer tu perfil.</div>';
   });
 }
-cargar();
+// firebase.js es `defer`: window.Datos aparece hasta DOMContentLoaded
+document.addEventListener('DOMContentLoaded',cargar);
 </script>
 </body>
 </html>

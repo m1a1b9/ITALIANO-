@@ -370,32 +370,17 @@ function render(){
 [].slice.call(document.querySelectorAll('.decks button')).forEach(function(b){
   b.onclick=function(){document.querySelectorAll('.decks button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');currentDeck=b.getAttribute('data-deck');buildQueue();next();};
 });
-/* ---------- carga de fuentes: en la WEB desde Firestore (tras login), en localhost desde /api ---------- */
-var esLocal=/localhost|127\.0\.0\.1/.test(location.hostname);
-function colToMap(col){   // users/{uid}/{col} -> {id:data}
-  var ref=(window.FB&&FB.col)?FB.col(col):null;
-  if(!ref)return Promise.resolve({});
-  return ref.get().then(function(qs){var o={};qs.forEach(function(d){o[d.id]=d.data();});return o;}).catch(function(){return {};});
+/* ---------- carga de fuentes (Datos = /api en localhost, Firestore en la web; ver assets/firebase.js) ---------- */
+function arrancar(){
+  Promise.all([
+    Datos.errores().then(function(e){errSrc=e||{}}),
+    Datos.examenes().then(function(e){examSrc=e||{}}),
+    Datos.perfil().then(function(e){perfilSrc=e||{}}),
+    fetch('datos/drills.json').then(function(r){return r.json()}).then(function(e){drillSrc=e||{}}).catch(function(){drillSrc={}})
+  ]).then(function(){renderPanel();buildQueue();next();});
 }
-function loadFuentes(){
-  var pDrill=fetch('datos/drills.json').then(function(r){return r.json()}).then(function(e){drillSrc=e||{}}).catch(function(){drillSrc={}});
-  var pErr,pExam,pPerf;
-  if(esLocal){
-    pErr =fetch('/api/errores').then(function(r){return r.json()}).then(function(e){errSrc=e||{}}).catch(function(){errSrc={}});
-    pExam=fetch('/api/examenes').then(function(r){return r.json()}).then(function(e){examSrc=e||{}}).catch(function(){examSrc={}});
-    pPerf=fetch('/api/perfil').then(function(r){return r.json()}).then(function(e){perfilSrc=e||{}}).catch(function(){perfilSrc={}});
-  }else{
-    // en la nube: errores y exámenes viven en users/{uid}/... ; el perfil aún no se sincroniza (los drills se muestran sin filtrar)
-    pErr =colToMap('errores').then(function(m){errSrc=m;});
-    pExam=colToMap('examenes').then(function(m){examSrc=m;});
-    pPerf=Promise.resolve().then(function(){perfilSrc={};});
-  }
-  return Promise.all([pErr,pExam,pDrill,pPerf]);
-}
-function arrancar(){loadFuentes().then(function(){renderPanel();buildQueue();next();});}
-if(esLocal){arrancar();}
-else if(window.FB&&FB.loginGate){FB.loginGate(function(){arrancar();});}   // en la web: espera al login para poder leer Firestore
-else{arrancar();}   // sin Firebase disponible: al menos los drills estáticos
+// firebase.js es `defer`: window.Datos aún no existe mientras corre este <script> inline
+document.addEventListener('DOMContentLoaded',arrancar);
 </script>
 </body>
 </html>
