@@ -22,9 +22,16 @@
   .nivel b{color:#9be3c4;font-size:1.1rem}
   .nivel .bar{height:8px;background:#333;border-radius:4px;margin-top:.5rem;overflow:hidden}
   .nivel .fill{height:100%;background:#2d6a4f}
-  .reforzar{background:#fffaf0;border:1px solid #e8d9b5;border-left:4px solid #c79a3a;border-radius:0 8px 8px 0;padding:.7rem 1rem;margin-bottom:1.4rem;font-size:.88rem}
+  .reforzar{background:#fffaf0;border:1px solid #e8d9b5;border-left:4px solid #c79a3a;border-radius:0 8px 8px 0;padding:.55rem 1rem;margin-bottom:1.4rem;font-size:.88rem}
   .reforzar b{color:#8a6d1f}
-  .reforzar ul{margin:.3rem 0 0;padding-left:1.2rem}
+  .reforzar ul{margin:.5rem 0 .2rem;padding-left:1.2rem}
+  .reforzar ul[hidden]{display:none}
+  /* cabecera plegable: arranca CERRADA para no comerse la pantalla */
+  .ref-h{display:flex;align-items:center;gap:.5rem;width:100%;background:none;border:0;padding:.15rem 0;font:inherit;color:inherit;text-align:left;cursor:pointer}
+  .ref-h .ico{color:#c79a3a;font-size:.75rem;transition:transform .15s}
+  .ref-h[aria-expanded="true"] .ico{transform:rotate(90deg)}
+  .ref-h .n{margin-left:auto;background:#e8d9b5;color:#7a5c12;border-radius:20px;padding:.1rem .55rem;font-size:.74rem;font-weight:700}
+  .ref-h:hover b{text-decoration:underline}
   /* mazos */
   .decks{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
   .decks button{flex:1;min-width:100px;background:#fff;border:1px solid #cfd8d2;border-radius:8px;padding:.5rem;font:600 .82rem/1 inherit;cursor:pointer;color:#444}
@@ -83,7 +90,12 @@
   <div class="stat"><div class="n" id="s-dom">0</div><div class="l">Dominadas</div></div>
 </div>
 
-<div class="reforzar" id="reforzar" style="display:none"><b>🔁 A reforzar</b><ul id="reforzar-list"></ul></div>
+<div class="reforzar" id="reforzar" style="display:none">
+  <button type="button" class="ref-h" id="ref-toggle" aria-expanded="false" aria-controls="reforzar-list">
+    <span class="ico">▶</span><b>🔁 A reforzar</b><span class="n" id="reforzar-n">0</span>
+  </button>
+  <ul id="reforzar-list" hidden></ul>
+</div>
 
 <div class="decks">
   <button data-deck="todo" class="on">Todo</button>
@@ -208,9 +220,14 @@ function renderPanel(){
   document.getElementById('nivel').textContent=nivel;
   document.getElementById('nivel-sub').textContent=sub+' · estimación por avance, no examen oficial';
   document.getElementById('nivel-fill').style.width=pct+'%';
+  // "A reforzar": solo se rellena el contenido; el abierto/cerrado lo decide el usuario y NO se toca
+  // aquí (renderPanel corre tras cada tarjeta y si no, se cerraría sola mientras la lees).
   var refs=[];Object.keys(errSrc).forEach(function(dia){(errSrc[dia].a_reforzar||[]).forEach(function(r){refs.push(r)})});
-  if(refs.length){document.getElementById('reforzar').style.display='';
-    document.getElementById('reforzar-list').innerHTML=refs.map(function(r){return '<li>'+r+'</li>'}).join('');}
+  document.getElementById('reforzar').style.display=refs.length?'':'none';
+  if(refs.length){
+    document.getElementById('reforzar-n').textContent=refs.length;
+    document.getElementById('reforzar-list').innerHTML=refs.map(function(r){return '<li>'+r+'</li>'}).join('');
+  }
 }
 
 /* ---------- cola SRS ---------- */
@@ -367,6 +384,14 @@ function render(){
 }
 
 /* ---------- init ---------- */
+(function(){   // "A reforzar" plegable (arranca cerrado: la lista crece con cada día corregido)
+  var b=document.getElementById('ref-toggle'), ul=document.getElementById('reforzar-list');
+  b.onclick=function(){
+    var abierto=b.getAttribute('aria-expanded')==='true';
+    b.setAttribute('aria-expanded',abierto?'false':'true');
+    ul.hidden=abierto;
+  };
+})();
 [].slice.call(document.querySelectorAll('.decks button')).forEach(function(b){
   b.onclick=function(){document.querySelectorAll('.decks button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');currentDeck=b.getAttribute('data-deck');buildQueue();next();};
 });
