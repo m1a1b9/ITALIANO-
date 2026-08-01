@@ -9,6 +9,10 @@ datos/*
 # …excepto el contenido de curso NO personal:
 !datos/drills.json
 
+# Contenido de canciones: traducen la letra verso a verso (derechos de autor) → solo Firestore.
+# La maquinaria (tools/cancion.py, tools/sync.py) SÍ se publica; el contenido NO.
+tools/_song_*.py
+
 # Secretos (claves de servicio Firebase Admin, credenciales)
 *serviceAccount*.json
 *firebase-adminsdk*.json

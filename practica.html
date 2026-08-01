@@ -214,7 +214,7 @@ function renderPanel(){
 }
 
 /* ---------- cola SRS ---------- */
-var currentDeck='todo',queue=[],current=null;
+var currentDeck='todo',queue=[],current=null,contKey=null;
 function isDue(c){var s=state[c.id];if(!s)return true;return s.due<=today0()+DAY-1;}
 function buildQueue(){
   var pool=currentDeck==='todo'?allItems():allItems().filter(function(c){return c.deck===currentDeck});
@@ -295,6 +295,7 @@ function buildExercise(c){
 
 /* ---------- render ---------- */
 function render(){
+  if(contKey){document.removeEventListener('keydown',contKey);contKey=null;}   // limpia el "Enter para continuar" de la tarjeta anterior
   var z=document.getElementById('zona');
   if(!current){
     var any=allItems().length;
@@ -327,6 +328,9 @@ function render(){
     var be=document.getElementById('b-easy');if(be)be.onclick=function(){schedule(c,'easy');renderPanel();next();};
     var ba=document.getElementById('b-again');if(ba)ba.onclick=function(){schedule(c,'again');renderPanel();next();};
     var bc=document.getElementById('b-accept');if(bc)bc.onclick=function(){schedule(c,'good');renderPanel();next();};
+    // Enter (o Invio) avanza sin ratón: dispara el botón primario del feedback
+    var primary=document.getElementById('b-next')||document.getElementById('b-again');
+    if(primary){contKey=function(e){if(e.key==='Enter'){e.preventDefault();document.removeEventListener('keydown',contKey);contKey=null;primary.click();}};document.addEventListener('keydown',contKey);}
     say(ex.say);
   }
   var GOOD='<button class="b-next" id="b-next">Continua →</button><button class="b-easy" id="b-easy">⭐ Fácil</button>';
@@ -336,6 +340,7 @@ function render(){
     var inp=document.getElementById('inp');inp.focus();
     function check(){
       var v=inp.value.trim();if(!v)return;
+      inp.disabled=true;   // ya respondido: libera el Enter para "continuar" (evita re-comprobar)
       var res=checkAgainst(v,ex.targets);
       var solu='<div class="sol">'+esc(ex.full||ex.targets[0])+'</div>'+(ex.explica?'<div class="why">'+esc(ex.explica)+'</div>':'');
       if(res.r==='exact'){finish(GOOD,'✅ <b>Esatto!</b> '+solu,'ok');}
@@ -365,12 +370,32 @@ function render(){
 [].slice.call(document.querySelectorAll('.decks button')).forEach(function(b){
   b.onclick=function(){document.querySelectorAll('.decks button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');currentDeck=b.getAttribute('data-deck');buildQueue();next();};
 });
-Promise.all([
-  fetch('/api/errores').then(function(r){return r.json()}).then(function(e){errSrc=e||{}}).catch(function(){errSrc={}}),
-  fetch('/api/examenes').then(function(r){return r.json()}).then(function(e){examSrc=e||{}}).catch(function(){examSrc={}}),
-  fetch('datos/drills.json').then(function(r){return r.json()}).then(function(e){drillSrc=e||{}}).catch(function(){drillSrc={}}),
-  fetch('/api/perfil').then(function(r){return r.json()}).then(function(e){perfilSrc=e||{}}).catch(function(){perfilSrc={}})
-]).then(function(){renderPanel();buildQueue();next();});
+/* ---------- carga de fuentes: en la WEB desde Firestore (tras login), en localhost desde /api ---------- */
+var esLocal=/localhost|127\.0\.0\.1/.test(location.hostname);
+function colToMap(col){   // users/{uid}/{col} -> {id:data}
+  var ref=(window.FB&&FB.col)?FB.col(col):null;
+  if(!ref)return Promise.resolve({});
+  return ref.get().then(function(qs){var o={};qs.forEach(function(d){o[d.id]=d.data();});return o;}).catch(function(){return {};});
+}
+function loadFuentes(){
+  var pDrill=fetch('datos/drills.json').then(function(r){return r.json()}).then(function(e){drillSrc=e||{}}).catch(function(){drillSrc={}});
+  var pErr,pExam,pPerf;
+  if(esLocal){
+    pErr =fetch('/api/errores').then(function(r){return r.json()}).then(function(e){errSrc=e||{}}).catch(function(){errSrc={}});
+    pExam=fetch('/api/examenes').then(function(r){return r.json()}).then(function(e){examSrc=e||{}}).catch(function(){examSrc={}});
+    pPerf=fetch('/api/perfil').then(function(r){return r.json()}).then(function(e){perfilSrc=e||{}}).catch(function(){perfilSrc={}});
+  }else{
+    // en la nube: errores y exámenes viven en users/{uid}/... ; el perfil aún no se sincroniza (los drills se muestran sin filtrar)
+    pErr =colToMap('errores').then(function(m){errSrc=m;});
+    pExam=colToMap('examenes').then(function(m){examSrc=m;});
+    pPerf=Promise.resolve().then(function(){perfilSrc={};});
+  }
+  return Promise.all([pErr,pExam,pDrill,pPerf]);
+}
+function arrancar(){loadFuentes().then(function(){renderPanel();buildQueue();next();});}
+if(esLocal){arrancar();}
+else if(window.FB&&FB.loginGate){FB.loginGate(function(){arrancar();});}   // en la web: espera al login para poder leer Firestore
+else{arrancar();}   // sin Firebase disponible: al menos los drills estáticos
 </script>
 </body>
 </html>
