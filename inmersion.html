@@ -438,11 +438,15 @@ document.getElementById('c-save').onclick=function(){
   if(!titulo){msg.textContent='Ponle título para poder pedirme el análisis.';return;}
   var id=titulo.toLowerCase().replace(/[^a-z0-9àèéìòù]+/g,'-').replace(/^-|-$/g,'');
   var hoy=new Date().toISOString().slice(0,10);
-  fetch('/api/canciones',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({id:id,cancion:{titulo:titulo,artista:artista,fecha:hoy,letra:ultimaLetra,analisis:null}})})
-    .then(function(r){return r.json()})
-    .then(function(){msg.innerHTML='✅ Guardada. Ahora dime en el chat: <b>«analiza la canción "'+titulo+'"»</b> y te la regreso desmenuzada.';cargarLib();})
-    .catch(function(){msg.textContent='⚠ No se pudo guardar (¿servidor apagado?). Abre siempre con el .bat.';});
+  var cancion={titulo:titulo,artista:artista,fecha:hoy,letra:ultimaLetra,analisis:null};
+  function ok(){msg.innerHTML='✅ Guardada. Ahora dime en el chat: <b>«analiza la canción "'+titulo+'"»</b> y te la regreso desmenuzada.';cargarLib();}
+  function fail(){msg.textContent='⚠ No se pudo guardar. Reintenta.';}
+  if(window.FB && FB.user()){   // WEB: guarda la canción pendiente en la nube
+    FB.doc('canciones',id).set({json:JSON.stringify(cancion),titulo:titulo,artista:artista,fecha:hoy,analizada:false}).then(ok).catch(fail);
+  } else {                      // localhost: servidor local
+    fetch('/api/canciones',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({id:id,cancion:cancion})}).then(function(r){return r.json()}).then(ok).catch(fail);
+  }
 };
 
 /* ---- 3. Biblioteca ---- */
