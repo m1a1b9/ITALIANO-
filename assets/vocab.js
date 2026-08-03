@@ -680,7 +680,7 @@ window.DEF_IT = {
    cae a reglas locales marcadas como dudosas (fuente:'regla') para que se puedan revisar.
    Uso:  LEMA.analizar('mangiava').then(function(ls){ ... })   ->  [{lema,pos,flex,fuente}]      */
 window.LEMA = (function(){
-  var VERSION = 3;                       // súbela si cambia el parser: invalida caché y re-analiza
+  var VERSION = 4;                       // súbela si cambia el parser: invalida caché y re-analiza
   var CKEY = 'italiano-lema-cache-v' + VERSION, CACHE = {};
   try { CACHE = JSON.parse(localStorage.getItem(CKEY) || '{}'); } catch (e) {}
   function cacheSet(k, v){ try { CACHE[k] = v; localStorage.setItem(CKEY, JSON.stringify(CACHE)); } catch (e) {} }
@@ -703,6 +703,89 @@ window.LEMA = (function(){
     'articolo':                ['artículo', false]
   };
   var OTRAS_LENGUAS = /^(inglese|francese|spagnolo|latino|tedesco|portoghese|catalano|napoletano|siciliano|sardo|esperanto|romeno|olandese)$/i;
+  // subsecciones de «Verbo»: dan la transitividad, que es de donde sale el auxiliar
+  var SUBVERBO = /^(transitivo|intransitivo|riflessivo|pronominale|impersonale)$/i;
+
+  /* REGISTRO: Wiktionary mezcla registro con DOMINIO temático, todo entre paréntesis.
+     Lista blanca para no etiquetar «física» como si fuera un registro. */
+  var REGISTRO = {
+    gergale:'jerga', volgare:'vulgar', colloquiale:'coloquial', popolare:'popular',
+    familiare:'familiar', informale:'informal', letterario:'literario', formale:'formal',
+    arcaico:'arcaico', desueto:'en desuso', regionale:'regional', dialettale:'dialectal',
+    spregiativo:'despectivo', scherzoso:'jocoso', eufemistico:'eufemístico', raro:'raro'
+  };
+  var VULGAR = /^(volgare|spregiativo)$/;
+
+  /* CURADO A MANO — manda siempre sobre Wiktionary (misma regla que el glosario del curso).
+     Aquí van las palabras que el análisis automático interpreta mal, típicamente slang: Wiktionary
+     lee «scialla» como 3ª persona de «sciallare» cuando en la calle es una interjección invariable.
+     Ampliar esta tabla es la forma correcta de corregir un caso concreto para siempre. */
+  var CURADO = {
+    'scialla':  { lema:'scialla',  pos:'interjección', flex:null, registro:'gergale' },
+    'raga':     { lema:'raga',     pos:'interjección', flex:null, registro:'gergale' },
+    'vabbè':    { lema:'vabbè',    pos:'interjección', flex:null, registro:'colloquiale' },
+    'boh':      { lema:'boh',      pos:'interjección', flex:null, registro:'colloquiale' },
+    'tranqui':  { lema:'tranqui',  pos:'interjección', flex:null, registro:'gergale' },
+    'gasato':   { lema:'gasato',   pos:'adjetivo',     flex:null, registro:'gergale' },
+    'sfigato':  { lema:'sfigato',  pos:'adjetivo',     flex:null, registro:'gergale' },
+    'figata':   { lema:'figata',   pos:'sustantivo',   flex:null, registro:'gergale', genero:'f', plural:'figate' }
+  };
+
+  /* Participios irregulares de alta frecuencia. El resto sale por regla (-are→-ato, -ere→-uto,
+     -ire→-ito); esto cubre justo los que la regla erraría. */
+  var PART_IRREG = {
+    essere:'stato', avere:'avuto', fare:'fatto', dire:'detto', prendere:'preso', mettere:'messo',
+    scrivere:'scritto', leggere:'letto', vedere:'visto', aprire:'aperto', chiudere:'chiuso',
+    rompere:'rotto', vincere:'vinto', scegliere:'scelto', venire:'venuto', rimanere:'rimasto',
+    giungere:'giunto', morire:'morto', nascere:'nato', offrire:'offerto', chiedere:'chiesto',
+    rispondere:'risposto', decidere:'deciso', succedere:'successo', vivere:'vissuto',
+    muovere:'mosso', perdere:'perso', spendere:'speso', correre:'corso', spegnere:'spento',
+    bere:'bevuto', conoscere:'conosciuto', crescere:'cresciuto', piacere:'piaciuto',
+    tradurre:'tradotto', produrre:'prodotto', condurre:'condotto', accendere:'acceso',
+    spingere:'spinto', piangere:'pianto', ridere:'riso', mordere:'morso', cogliere:'colto',
+    togliere:'tolto', raccogliere:'raccolto', stringere:'stretto', dipingere:'dipinto',
+    distruggere:'distrutto', esprimere:'espresso', discutere:'discusso', concludere:'concluso',
+    dividere:'diviso', nascondere:'nascosto', rendere:'reso', scendere:'sceso',
+    difendere:'difeso', correggere:'corretto', proteggere:'protetto', eleggere:'eletto',
+    struggersi:'strutto', premere:'premuto', porre:'posto', tenere:'tenuto', volere:'voluto',
+    potere:'potuto', dovere:'dovuto', sapere:'saputo', stare:'stato', dare:'dato'
+  };
+
+  /* Verbos que forman el passato prossimo con ESSERE (movimiento, estado, cambio). */
+  var AUX_ESSERE = ('andare venire arrivare partire uscire entrare salire scendere restare rimanere ' +
+    'stare tornare ritornare nascere morire diventare divenire essere piacere dispiacere succedere ' +
+    'accadere capitare cadere riuscire sembrare parere bastare mancare costare durare esistere ' +
+    'apparire scomparire sparire crescere dimagrire ingrassare invecchiare guarire fuggire scappare ' +
+    'giungere passare cambiare vivere').split(' ');
+
+  function participioDe(lema){
+    if (!lema) return null;
+    if (PART_IRREG[lema]) return PART_IRREG[lema];
+    var m = /^(.+?)(are|ere|ire|rsi|rci)$/.exec(lema);
+    if (!m) return null;
+    if (m[2] === 'are') return m[1] + 'ato';
+    if (m[2] === 'ere') return m[1] + 'uto';
+    if (m[2] === 'ire') return m[1] + 'ito';
+    return null;                                    // pronominales: se deja al usuario
+  }
+  /* El auxiliar NO se puede consultar (Wiktionary no tiene páginas de conjugación), se DEDUCE:
+     pronominal -> essere (seguro) · transitivo -> avere (fiable) · lista curada -> essere ·
+     resto -> avere, marcado como supuesto. */
+  function auxDe(lema, transitivo){
+    if (!lema) return null;
+    if (/(?:rsi|rci|rmi|rti|rvi)$/.test(lema)) return { aux:'essere', seguro:true };
+    if (AUX_ESSERE.indexOf(lema) >= 0)         return { aux:'essere', seguro:true };
+    if (transitivo === true)                   return { aux:'avere',  seguro:true };
+    return { aux:'avere', seguro:false };
+  }
+  // artículo determinado según género e inicial (lo/l' ante vocal, s+cons., gn, ps, x, z)
+  function articulo(gen, palabra){
+    var p = (palabra || '').toLowerCase();
+    if (gen === 'f') return /^[aeiou]/.test(p) ? "l'" : 'la';
+    if (/^[aeiou]/.test(p)) return "l'";
+    if (/^(s[bcdfglmnpqrtv]|gn|ps|pn|x|z|i[aeou])/.test(p)) return 'lo';
+    return 'il';
+  }
   // la descripción de una forma flexionada SIEMPRE lleva alguna de estas palabras; sirve de filtro
   // para no confundir una definición («…l'atto di espirazione») con un lema
   var DESC_FLEX = /(persona|singolare|plurale|maschile|femminile|participio|gerundio|indicativo|congiuntivo|condizionale|imperativo|presente|passato|imperfetto|futuro|remoto|infinito|diminutivo|accrescitivo|vezzeggiativo|peggiorativo|superlativo|comparativo)/i;
@@ -736,8 +819,15 @@ window.LEMA = (function(){
         var h = m[1].trim();
         if (/^italiano$/i.test(h)) { enItaliano = true; sec = null; return; }
         if (OTRAS_LENGUAS.test(h)) { enItaliano = false; sec = null; return; }
+        // «Transitivo»/«Intransitivo» cuelgan de «Verbo»: no abren bloque, marcan el actual.
+        // Solo se ENCIENDE: muchos verbos traen las dos secciones (premere) y si «Intransitivo»
+        // pudiera apagar la marca, se perdería el dato de que admite transitivo -> avere.
+        if (SUBVERBO.test(h) && bloques.length && sec){
+          if (/^transitivo$/i.test(h)) bloques[bloques.length - 1].trans = true;
+          return;
+        }
         sec = POS[h.toLowerCase()] ? h.toLowerCase() : null;
-        if (sec && enItaliano) bloques.push({ sec: sec, lineas: [] });
+        if (sec && enItaliano) bloques.push({ sec: sec, lineas: [], trans: null });
         return;
       }
       if (enItaliano && sec && bloques.length) bloques[bloques.length - 1].lineas.push(s);
@@ -746,7 +836,25 @@ window.LEMA = (function(){
     var out = [], vistos = {};
     bloques.forEach(function(b){
       var info = POS[b.sec], pos = info[0], esForma = info[1], lema = null, flex = null;
+      var genero = null, plural = null, registro = null;
       b.lineas.forEach(function(l){
+        // «battibecco m sing (pl.: battibecchi)» -> género y plural
+        if (!genero){
+          var g = /^\S+\s+([mf])\s+(?:sing|pl)\b(?:.*?\(pl\.?:?\s*([^)]+)\))?/.exec(l);
+          if (g){ genero = g[1]; if (g[2]) plural = g[2].trim().split(/[,;]/)[0].trim(); }
+        }
+        // marcas entre paréntesis al principio de una acepción: (gergale), (volgare)…
+        // Solo las PRIMERAS líneas: una acepción secundaria marcada «(raro)» no define el registro
+        // de la palabra (pasaba con «andare», que salía como «raro»).
+        if (!registro && b.lineas.indexOf(l) < 3){
+          var marcas = l.match(/^(?:\s*\([^)]+\))+/);
+          if (marcas){
+            marcas[0].split(/\)\s*\(?/).forEach(function(x){
+              var t = x.replace(/[()]/g, '').trim().toLowerCase();
+              if (!registro && REGISTRO[t]) registro = t;
+            });
+          }
+        }
         // SOLO en las secciones de forma flexionada se busca «… di <lema>». Si no, una línea de
         // DEFINICIÓN que acabe en «di algo» se colaría como lema (bug real: fiato -> «espirazione»,
         // de «…durante l'atto di espirazione»).
@@ -755,13 +863,66 @@ window.LEMA = (function(){
         if (mm && DESC_FLEX.test(mm[1])) { lema = mm[2]; flex = flexEs(mm[1]); }
       });
       if (!lema && !esForma) lema = palabra;      // la palabra ya ES el lema (p. ej. «rovesciato» adjetivo)
+      // Sección de forma flexionada SIN la línea «… di <lema>» (le pasa a «cosiddetti»): antes se
+      // descartaba y se perdía la categoría correcta. Se deduce la base por regla y se marca dudosa.
+      if (!lema && esForma){
+        var r = reglas(palabra)[0];
+        if (r && r.lema && r.lema !== palabra){ lema = r.lema; flex = flex || 'forma flexionada (base supuesta)'; }
+      }
       if (!lema) return;
       var k = pos + '|' + lema.toLowerCase();
       if (vistos[k]) return;
       vistos[k] = 1;
-      out.push({ lema: lema, pos: pos, flex: flex, fuente: 'wiktionary' });
+      var o = { lema: lema, pos: pos, flex: flex, fuente: 'wiktionary' };
+      if (registro) o.registro = registro;
+      if (pos === 'sustantivo' && !esForma){ if (genero) o.genero = genero; if (plural) o.plural = plural; }
+      if (pos === 'verbo'){
+        var a = auxDe(lema, b.trans);
+        if (a){ o.aux = a.aux; if (!a.seguro) o.auxSupuesto = true; }
+        var pp = participioDe(lema);
+        if (pp) o.part = pp;
+      }
+      out.push(o);
     });
-    return out;
+    return ordenar(out, palabra);
+  }
+
+  /* La PRIMERA lectura es la que se toma por defecto, así que debe ser la más probable.
+     Wiktionary lista antes «andare» como sustantivo (el infinitivo sustantivado) que como verbo. */
+  function ordenar(ls, palabra){
+    var esInf = /(?:are|ere|ire|rsi|rci|rmi|rti|rvi)$/.test(palabra || '');
+    function puntos(l){
+      var p = 0;
+      if (esInf && l.pos === 'verbo') p += 10;   // si la palabra es un infinitivo, manda el verbo
+      if (l.registro === 'raro') p -= 2;
+      return p;
+      // OJO: NO premiar «tiene flex». Lo probé y ascendía lecturas verbales marginales por encima
+      // de la principal: «fiato» (sustantivo) pasaba a ser 1ª persona de «fiatare».
+    }
+    return ls.slice().sort(function(a, b){ return puntos(b) - puntos(a); });   // sort estable
+  }
+
+  /* ¿Cuál de las lecturas encaja con TU frase? La pista ya estaba en el contexto guardado:
+     «Hai appena eseguito…» -> verbo · «è il compito peggiore» -> sustantivo.
+     Devuelve el índice elegido, o -1 si nada lo decide (entonces se marca para revisar). */
+  var AUXILIARES = /^(ho|hai|ha|abbiamo|avete|hanno|sono|sei|è|siamo|siete|ero|eri|era|eravamo|eravate|erano|avevo|avevi|aveva|avevamo|avevate|avevano|sia|siano|fosse|fossero|sarà|sarebbe|avrà|avrebbe|essere|avere|va|vanno|viene|vengono|venne|verrà|tenere|tiene|tengo|tenuto|resta|rimane)$/;
+  var DETERMINANTES = /^(il|lo|la|i|gli|le|un|uno|una|un'|l'|del|dello|della|dei|degli|delle|nel|nello|nella|nei|negli|nelle|al|allo|alla|ai|agli|alle|dal|dallo|dalla|dai|dagli|dalle|sul|sullo|sulla|sui|sugli|sulle|col|questo|questa|questi|queste|quel|quello|quella|quei|quegli|quelle|mio|mia|miei|mie|tuo|tua|suo|sua|nostro|nostra|vostro|vostra|ogni|altro|altra|altri|altre)$/;
+
+  function elegirPorContexto(lecturas, frase, palabra){
+    if (!lecturas || lecturas.length < 2 || !frase) return -1;
+    var toks = norm(frase).split(/\s+/);
+    var i = toks.indexOf(norm(palabra));
+    if (i < 0) return -1;
+    var prev1 = toks[i - 1] || '', prev2 = toks[i - 2] || '';
+    var quiero = null;
+    // La palabra INMEDIATAMENTE anterior manda. Si no, se mira una más atrás pero SOLO para el
+    // auxiliar («hai appena eseguito»). Al revés fallaba: en «è il compito», el «è» de prev2
+    // ganaba al artículo «il» de prev1 y lo daba por verbo.
+    if (DETERMINANTES.test(prev1)) quiero = 'sustantivo';
+    else if (AUXILIARES.test(prev1) || AUXILIARES.test(prev2)) quiero = 'verbo';
+    if (!quiero) return -1;
+    for (var k = 0; k < lecturas.length; k++) if (lecturas[k].pos === quiero) return k;
+    return -1;
   }
 
   /* Sin red o sin página (mucho slang no está en Wiktionary): reglas del italiano regular.
@@ -770,7 +931,12 @@ window.LEMA = (function(){
   function reglas(p){
     var out = [], m;
     // ya es infinitivo, incluido el pronominal (fottersi, beccarsi, riempirci): es su propio lema
-    if (/(?:are|ere|ire|rsi|rci|rmi|rti|rvi)$/.test(p)) return [{ lema: p, pos: 'verbo', flex: null, fuente: 'regla' }];
+    if (/(?:are|ere|ire|rsi|rci|rmi|rti|rvi)$/.test(p)){
+      var o = { lema: p, pos: 'verbo', flex: null, fuente: 'regla' };
+      var a = auxDe(p, null); if (a){ o.aux = a.aux; if (!a.seguro) o.auxSupuesto = true; }
+      var pp = participioDe(p); if (pp) o.part = pp;
+      return [o];
+    }
     if ((m = /^(.{2,})(ato|ata|ati|ate)$/.exec(p)))      out.push({ lema: m[1] + 'are', pos: 'verbo', flex: 'participio (supuesto)' });
     else if ((m = /^(.{2,})(uto|uta|uti|ute)$/.exec(p))) out.push({ lema: m[1] + 'ere', pos: 'verbo', flex: 'participio (supuesto)' });
     else if ((m = /^(.{2,})(ito|ita|iti|ite)$/.exec(p))) out.push({ lema: m[1] + 'ire', pos: 'verbo', flex: 'participio (supuesto)' });
@@ -782,6 +948,11 @@ window.LEMA = (function(){
   function analizar(palabra){
     var p = norm(palabra);
     if (!p) return Promise.resolve([]);
+    if (CURADO[p]){                       // lo curado a mano gana SIEMPRE (y no gasta red)
+      var c = {}; for (var k in CURADO[p]) c[k] = CURADO[p][k];
+      c.fuente = 'curado';
+      return Promise.resolve([c]);
+    }
     if (/\s/.test(p)) return Promise.resolve([{ lema: null, pos: 'locución', flex: null, fuente: 'local' }]);
     if (CACHE[p]) return Promise.resolve(CACHE[p]);
     var url = 'https://it.wiktionary.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&origin=*&titles=' + encodeURIComponent(p);
@@ -800,6 +971,27 @@ window.LEMA = (function(){
     if (!l.lema) return l.pos || '';
     return l.lema + ' · ' + l.pos + (l.flex ? ' (' + l.flex + ')' : '');
   }
+  /* Ficha para usar la palabra de verdad:
+     verbo      -> «avere · premuto»           (auxiliar + participio, lo que pide el passato prossimo)
+     sustantivo -> «il battibecco · pl. i battibecchi» */
+  function ficha(l){
+    if (!l) return '';
+    if (l.pos === 'verbo' && l.lema){
+      var p = [];
+      if (l.aux) p.push(l.aux + (l.auxSupuesto ? '?' : ''));
+      if (l.part) p.push(l.part);
+      return p.join(' · ');
+    }
+    if (l.pos === 'sustantivo' && l.lema && l.genero){
+      var s = articulo(l.genero, l.lema) + (/'$/.test(articulo(l.genero, l.lema)) ? '' : ' ') + l.lema;
+      if (l.plural) s += ' · pl. ' + l.plural;
+      return s;
+    }
+    return '';
+  }
+  function registroEs(r){ return r ? REGISTRO[r] || r : ''; }
+  function esVulgar(r){ return !!r && VULGAR.test(r); }
 
-  return { analizar: analizar, etiqueta: etiqueta, norm: norm, version: VERSION };
+  return { analizar: analizar, etiqueta: etiqueta, ficha: ficha, elegirPorContexto: elegirPorContexto,
+           registroEs: registroEs, esVulgar: esVulgar, norm: norm, version: VERSION };
 })();

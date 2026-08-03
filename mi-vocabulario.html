@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mi Vocabulario · Italiano</title>
-<link rel="stylesheet" href="assets/curso.css?v=20260801d">
-<script src="assets/vocab.js?v=20260801d"></script>
-<script src="assets/frases.js?v=20260801d"></script>
+<link rel="stylesheet" href="assets/curso.css?v=20260801e">
+<script src="assets/vocab.js?v=20260801e"></script>
+<script src="assets/frases.js?v=20260801e"></script>
 <style>
   body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:760px;margin:0 auto;padding:2.5rem 1.5rem 4rem;line-height:1.5}
   .top{border-left:4px solid #c79a3a;padding-left:1rem;margin-bottom:1.2rem}
@@ -69,8 +69,54 @@
   .word .lema.falta{color:#bbb;font-style:italic}
   .word .revisar{font-size:.66rem;font-weight:700;background:#fff4d6;color:#9a7d00;border:0;
                  border-radius:5px;padding:.12rem .45rem;margin-left:.35rem;cursor:pointer}
+  /* ---- barra de herramientas: buscar, filtrar, ordenar ---- */
+  .tools{position:sticky;top:0;z-index:20;background:#f5f7fa;padding:.6rem 0 .5rem;margin-bottom:.6rem;
+         border-bottom:1px solid #e3e8e3}
+  .tools .fila{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
+  .tools input[type=search]{flex:1;min-width:170px;border:1px solid #cfd8d2;border-radius:7px;
+         padding:.45rem .7rem;font:inherit;font-size:.9rem;background:#fff}
+  .tools select{border:1px solid #cfd8d2;border-radius:7px;padding:.42rem .5rem;font:inherit;font-size:.82rem;background:#fff;color:#444}
+  .chipf{background:#fff;border:1px solid #cfd8d2;border-radius:20px;padding:.32rem .7rem;font:inherit;
+         font-size:.78rem;cursor:pointer;color:#555}
+  .chipf.on{background:#2d6a4f;border-color:#2d6a4f;color:#fff;font-weight:700}
+  .chipf.rev.on{background:#c79a3a;border-color:#c79a3a}
+  .tools .cuenta{font-size:.78rem;color:#888;margin-left:auto}
+  /* ---- grupo por lema ---- */
+  .grupo{background:#fff;border:1px solid #dde5dd;border-radius:10px;margin:.5rem 0;overflow:hidden}
+  .grupo>.cab{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;padding:.5rem .8rem;
+              background:#fafcfa;border-bottom:1px solid #eef2ee;font-size:.85rem}
+  .grupo>.cab .base{font-weight:700;font-style:italic;color:#14392b}
+  .grupo>.cab .baseEs{color:#1a4d80;font-weight:600}
+  .grupo>.cab .ficha{color:#8a6d1f;font-size:.78rem}
+  .grupo>.cab .n{margin-left:auto;font-size:.72rem;color:#aaa}
+  /* ---- tarjeta compacta: una línea; el detalle se despliega ---- */
+  .w2{border-top:1px solid #f2f5f2}
+  .w2:first-child{border-top:0}
+  .w2 .linea{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;padding:.5rem .8rem;cursor:pointer}
+  .w2 .linea:hover{background:#fafcfa}
+  .w2.dominada .linea{opacity:.55}
+  .w2 .forma{font-weight:700;font-style:italic;color:#14392b;font-size:.95rem}
+  .w2 .sig{flex:1;min-width:110px;font-size:.88rem;color:#555}
+  .w2 .sig.vacia{color:#bbb;font-style:italic}
+  .cat-chip{font-size:.66rem;font-weight:700;border-radius:20px;padding:.1rem .5rem;text-transform:lowercase}
+  .c-verbo{background:#e7f0fb;color:#2c5aa0}
+  .c-sustantivo{background:#e3f3ea;color:#1a6e47}
+  .c-adjetivo{background:#fff4d6;color:#9a7d00}
+  .c-adverbio,.c-pronombre,.c-preposición,.c-conjunción,.c-artículo{background:#f0eef7;color:#5a4b8a}
+  .c-locución,.c-interjección{background:#fdecea;color:#b03a2e}
+  .reg-chip{font-size:.64rem;border-radius:20px;padding:.1rem .45rem;background:#f2f2f2;color:#777}
+  .reg-chip.vulgar{background:#fdecea;color:#b03a2e;font-weight:700}
+  .w2 .detalle{padding:.1rem .8rem .7rem;font-size:.83rem;color:#555;border-top:1px dashed #eef2ee}
+  .w2 .detalle .fila{margin:.35rem 0}
+  .w2 .detalle .et{color:#999;font-size:.74rem;text-transform:uppercase;letter-spacing:.04em;margin-right:.3rem}
+  .w2 .detalle .frase{font-style:italic;color:#888}
+  .w2 .acc{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.5rem}
+  .w2 .acc button{background:#fff;border:1px solid #cfd8d2;border-radius:6px;padding:.28rem .6rem;
+                  font:inherit;font-size:.75rem;cursor:pointer;color:#555}
+  .w2 .acc .del2{color:#c0392b;border-color:#f0d5d2}
+  .vacio2{text-align:center;color:#999;padding:2rem 1rem;background:#fff;border:1px dashed #ccc;border-radius:10px}
 </style>
-<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260801d"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260801e"></script>
 </head>
 <body>
 <div class="top">
@@ -110,6 +156,33 @@
 <p style="font-size:.82rem;color:#8a6d1f;background:#fffaf0;border:1px solid #e8d9b5;border-radius:8px;padding:.5rem .8rem;margin:-.6rem 0 1.4rem">💡 <strong>Verbos:</strong> guarda el <strong>infinitivo</strong> (ej. <em>scattare</em>) y pon la forma que viste (ej. <em>scattano</em>) en el campo de origen. Así aprendes el verbo completo.</p>
 
 <div class="stats" id="stats"></div>
+
+<div class="tools">
+  <div class="fila">
+    <input type="search" id="f-q" placeholder="Buscar en italiano, significado, base o contexto…">
+    <select id="f-cat">
+      <option value="">todas las categorías</option>
+      <option value="verbo">verbos</option>
+      <option value="sustantivo">sustantivos</option>
+      <option value="adjetivo">adjetivos</option>
+      <option value="adverbio">adverbios</option>
+      <option value="locución">locuciones</option>
+      <option value="interjección">interjecciones</option>
+    </select>
+    <select id="f-orden">
+      <option value="recientes">recientes primero</option>
+      <option value="alfabetico">alfabético</option>
+    </select>
+  </div>
+  <div class="fila" style="margin-top:.4rem">
+    <button class="chipf" id="f-todas">todas</button>
+    <button class="chipf" id="f-practica">en práctica</button>
+    <button class="chipf" id="f-dominadas">dominadas</button>
+    <button class="chipf rev" id="f-rev">⚠ por revisar</button>
+    <span class="cuenta" id="cuenta"></span>
+  </div>
+</div>
+
 <div id="lista"></div>
 
 <script>
@@ -151,59 +224,172 @@ function say(t){if(!('speechSynthesis'in window))return;speechSynthesis.cancel()
 
 /* Línea de la palabra base: «→ mangiare · verbo (3ª pers. sing. imperfecto)».
    Si viene de una regla local (supuesta) o falta, se marca para revisar. */
-function lemaHTML(w){
-  if(!w.lema&&!w.pos)return '<div class="lema falta" title="Clic para escribir la palabra base">＋ palabra base…</div>';
-  var dudoso=w.lemaFuente==='regla';
-  return '<div class="lema" title="Clic para corregir la palabra base">→ <b>'+(w.lema||'—')+'</b>'+
-    '<span class="cat"> · '+(w.pos||'')+(w.flex?' ('+w.flex+')':'')+'</span>'+
-    (dudoso?'<span class="revisar">revisar</span>':'')+'</div>';
-}
-function render(){
-  var l=load(), lista=document.getElementById('lista');
-  var prac=l.filter(function(w){return w.estado!=='dominada'}).length;
-  document.getElementById('stats').textContent=l.length+' palabras · '+prac+' en práctica · '+(l.length-prac)+' dominadas';
-  if(!l.length){lista.innerHTML='<div class="vacio">Aún no tienes palabras. Selecciona una palabra o frase en cualquier día y pulsa ★ Guardar, o agrégala aquí arriba.</div>';return;}
-  l.sort(function(a,b){return (b.t||0)-(a.t||0)});
-  lista.innerHTML='';
-  l.forEach(function(w,i){
-    var d=document.createElement('div');d.className='word'+(w.estado==='dominada'?' dominada':'');
-    d.innerHTML='<span class="it">'+w.it+'</span>'+
-      (w.itdef?'<span class="defit">'+w.itdef+'</span>':'')+
-      '<span class="es'+(w.es?'':' vacia')+'" title="Clic para corregir el significado">'+(w.itdef?'→ ':'')+(w.es||'…resolviendo…')+'</span>'+
-      '<button class="badge '+(w.estado==='dominada'?'dominada':'practica')+'">'+(w.estado==='dominada'?'dominada':'en práctica')+'</button>'+
-      '<button class="del" title="Borrar">✕</button>'+
-      lemaHTML(w)+
-      (w.ctx?'<div class="ctx">“'+w.ctx+'”</div>':'');
-    d.querySelector('.it').onclick=function(){say(w.it)};
-    var dfe=d.querySelector('.defit');if(dfe)dfe.onclick=function(){say(w.itdef)};
-    // editar el significado a mano: clic → input → guarda y PISA la traducción automática (caché)
-    var esEl=d.querySelector('.es');
-    if(esEl)esEl.onclick=function(){
-      if(esEl.querySelector('input'))return;
-      esEl.innerHTML='';
-      var inp=document.createElement('input');inp.className='es-edit';inp.value=w.es||'';
-      esEl.appendChild(inp);inp.focus();inp.select();
-      function commit(){var v=inp.value.trim();w.es=v;if(v)cacheSet(norm(w.it),v);save(l);render();}
-      inp.onblur=commit;
-      inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();inp.blur();}else if(e.key==='Escape'){render();}});
-    };
-    // corregir la palabra base a mano (tú mandas: Wiktionary solo propone)
-    var lemEl=d.querySelector('.lema');
-    if(lemEl)lemEl.onclick=function(){
-      if(lemEl.querySelector('input'))return;
-      lemEl.innerHTML='';
-      var inp=document.createElement('input');inp.className='es-edit';inp.value=w.lema||'';
-      inp.placeholder='palabra base (ej. mangiare)';
-      lemEl.appendChild(inp);inp.focus();inp.select();
-      function commit(){var v=inp.value.trim();w.lema=v;if(v)w.lemaFuente='manual';save(l);render();}
-      inp.onblur=commit;
-      inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();inp.blur();}else if(e.key==='Escape'){render();}});
-    };
-    d.querySelector('.badge').onclick=function(){w.estado=(w.estado==='dominada')?'practica':'dominada';save(l);render()};
-    d.querySelector('.del').onclick=function(){if(confirm('¿Borrar "'+w.it+'"?')){l.splice(l.indexOf(w),1);save(l);render()}};
-    lista.appendChild(d);
+/* ================= LISTA: buscar · filtrar · agrupar por lema · tarjeta compacta ================= */
+var F={q:'',cat:'',estado:'',rev:false,orden:'recientes'};
+function porRevisar(w){return w.lemaFuente==='regla'||(!w.lema&&!w.pos&&w.it&&!/\s/.test(w.it));}
+function esc2(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function filtrar(l){
+  var q=F.q.toLowerCase().trim();
+  return l.filter(function(w){
+    if(F.cat&&(w.pos||'')!==F.cat)return false;
+    if(F.estado==='practica'&&w.estado==='dominada')return false;
+    if(F.estado==='dominada'&&w.estado!=='dominada')return false;
+    if(F.rev&&!porRevisar(w))return false;
+    if(q){
+      var h=[(w.it||''),(w.es||''),(w.lema||''),(w.ctx||'')].join(' ').toLowerCase();
+      if(h.indexOf(q)<0)return false;
+    }
+    return true;
   });
 }
+// agrupa las formas de un mismo lema: «preme» y «premuto» caen bajo premere
+function agrupar(l){
+  var mapa={},orden=[];
+  l.forEach(function(w){
+    var k=norm(w.lema||w.it);
+    if(!mapa[k]){mapa[k]={base:w.lema||w.it,ref:w,items:[]};orden.push(k);}
+    mapa[k].items.push(w);
+    if(w.lema&&!mapa[k].ref.lema)mapa[k].ref=w;      // la que traiga ficha manda en la cabecera
+  });
+  return orden.map(function(k){return mapa[k]});
+}
+function chips(w){
+  var h='';
+  if(w.pos)h+='<span class="cat-chip c-'+w.pos+'">'+w.pos+'</span>';
+  if(w.registro&&window.LEMA)h+='<span class="reg-chip'+(LEMA.esVulgar(w.registro)?' vulgar':'')+'">'+
+      LEMA.registroEs(w.registro)+(LEMA.esVulgar(w.registro)?' 🔴':'')+'</span>';
+  return h;
+}
+function render(){
+  var todas=load(), lista=document.getElementById('lista');
+  var prac=todas.filter(function(w){return w.estado!=='dominada'}).length;
+  var rev=todas.filter(porRevisar).length;
+  document.getElementById('stats').textContent=
+    todas.length+' palabras · '+prac+' en práctica · '+(todas.length-prac)+' dominadas'+(rev?' · '+rev+' por revisar':'');
+  var btnRev=document.getElementById('f-rev');
+  if(btnRev)btnRev.textContent='⚠ por revisar'+(rev?' ('+rev+')':'');
+  if(!todas.length){lista.innerHTML='<div class="vacio">Aún no tienes palabras. Selecciona una palabra o frase en cualquier día y pulsa ★ Guardar, o agrégala aquí arriba.</div>';return;}
+
+  var l=filtrar(todas);
+  if(F.orden==='alfabetico')l.sort(function(a,b){return norm(a.it).localeCompare(norm(b.it))});
+  else l.sort(function(a,b){return (b.t||0)-(a.t||0)});
+  var cuenta=document.getElementById('cuenta');
+  if(cuenta)cuenta.textContent=l.length===todas.length?'':l.length+' de '+todas.length;
+  if(!l.length){lista.innerHTML='<div class="vacio2">Nada coincide con ese filtro.</div>';return;}
+
+  lista.innerHTML='';
+  agrupar(l).forEach(function(g){
+    var cont=document.createElement('div');cont.className='grupo';
+    var ficha=(window.LEMA?LEMA.ficha(g.ref):'')||'';
+    var trad=g.items.map(function(w){return w.lemaEs}).filter(Boolean)[0]||'';
+    cont.innerHTML='<div class="cab"><span class="base">'+esc2(g.base)+'</span>'+
+      (trad?'<span class="baseEs">= '+esc2(trad)+'</span>':'')+
+      (ficha?'<span class="ficha">'+esc2(ficha)+'</span>':'')+
+      (g.items.length>1?'<span class="n">'+g.items.length+' formas</span>':'')+'</div>';
+
+    g.items.forEach(function(w){
+      var d=document.createElement('div');d.className='w2'+(w.estado==='dominada'?' dominada':'');
+      d.innerHTML='<div class="linea">'+
+          '<span class="forma">'+esc2(w.it)+'</span>'+chips(w)+
+          '<span class="sig'+(w.es?'':' vacia')+'">'+esc2(w.es||'…sin significado')+'</span>'+
+          (porRevisar(w)?'<span class="revisar">revisar</span>':'')+
+        '</div><div class="detalle" hidden></div>';
+      var det=d.querySelector('.detalle');
+      d.querySelector('.linea').onclick=function(e){
+        if(e.target.classList.contains('revisar')){det.hidden=false;pintarDetalle(w,det,todas);return;}
+        det.hidden=!det.hidden;
+        if(!det.hidden)pintarDetalle(w,det,todas);
+      };
+      cont.appendChild(d);
+    });
+    lista.appendChild(cont);
+  });
+}
+
+/* Detalle desplegable: definición italiana, forma, contexto, acciones y —si está por revisar—
+   las lecturas posibles como botones para resolverla de un toque. */
+function pintarDetalle(w,det,l){
+  var h='';
+  if(w.itdef)h+='<div class="fila"><span class="et">it</span><i>'+esc2(w.itdef)+'</i></div>';
+  if(w.flex)h+='<div class="fila"><span class="et">forma</span>'+esc2(w.flex)+'</div>';
+  h+='<div class="fila"><span class="et">base</span><b class="ed-lema" style="cursor:text">'+esc2(w.lema||'— (toca para escribirla)')+'</b>'+
+     '<span class="ed-lemaes" style="cursor:text;color:#1a4d80"> = '+esc2(w.lemaEs||'—')+'</span></div>';
+  h+='<div class="fila"><span class="et">significado</span><span class="ed-es" style="cursor:text">'+esc2(w.es||'—')+'</span></div>';
+  if(w.ctx)h+='<div class="fila"><span class="et">contexto</span><span class="frase">“'+esc2(w.ctx)+'”</span></div>';
+  h+='<div class="lecturas"></div>';
+  h+='<div class="acc"><button class="oir">🔊 oír</button>'+
+     '<button class="dom">'+(w.estado==='dominada'?'↩ volver a práctica':'✅ ya la domino')+'</button>'+
+     '<button class="del2">✕ borrar</button></div>';
+  det.innerHTML=h;
+
+  det.querySelector('.oir').onclick=function(){say(w.it)};
+  det.querySelector('.dom').onclick=function(){w.estado=(w.estado==='dominada')?'practica':'dominada';save(l);render()};
+  det.querySelector('.del2').onclick=function(){if(confirm('¿Borrar "'+w.it+'"?')){l.splice(l.indexOf(w),1);save(l);render()}};
+  editable(det.querySelector('.ed-es'),w.es||'',function(v){w.es=v;if(v)cacheSet(norm(w.it),v);save(l);render();},'significado');
+  editable(det.querySelector('.ed-lema'),w.lema||'',function(v){w.lema=v;if(v)w.lemaFuente='manual';save(l);render();},'palabra base (ej. mangiare)');
+  editable(det.querySelector('.ed-lemaes'),w.lemaEs||'',function(v){w.lemaEs=v;if(v)w.lemaEsFuente='manual';save(l);render();},'traducción simple (ej. presionar)');
+
+  // panel de revisión: las lecturas posibles, para elegir la correcta
+  if(porRevisar(w)&&window.LEMA){
+    var caja=det.querySelector('.lecturas');
+    caja.innerHTML='<div class="fila"><span class="et">lecturas</span>buscando…</div>';
+    LEMA.analizar(w.it).then(function(ls){
+      if(!ls.length){caja.innerHTML='';return;}
+      var s='<div class="fila"><span class="et">¿cuál es?</span></div>';
+      ls.forEach(function(x,i){
+        s+='<button type="button" class="lema-op" data-i="'+i+'"><b>'+esc2(x.lema||'')+'</b>'+
+           '<span class="cat">'+esc2(x.pos||'')+(x.flex?' · '+esc2(x.flex):'')+'</span></button>';
+      });
+      caja.innerHTML=s;
+      [].slice.call(caja.querySelectorAll('.lema-op')).forEach(function(b){
+        b.onclick=function(){
+          var x=ls[+b.getAttribute('data-i')];
+          ['lema','pos','flex','aux','part','genero','plural','registro'].forEach(function(k){
+            if(x[k]!==undefined)w[k]=x[k];else delete w[k];
+          });
+          w.lemaFuente='manual';                 // resuelto por ti: ya no se vuelve a tocar
+          save(l);render();
+        };
+      });
+    });
+  }
+}
+function editable(el,valor,onSave,ph){
+  if(!el)return;
+  el.onclick=function(ev){
+    ev.stopPropagation();
+    if(el.querySelector('input'))return;
+    el.innerHTML='';
+    var inp=document.createElement('input');inp.className='es-edit';inp.value=valor;inp.placeholder=ph||'';
+    el.appendChild(inp);inp.focus();inp.select();
+    inp.onclick=function(e){e.stopPropagation()};
+    function commit(){onSave(inp.value.trim());}
+    inp.onblur=commit;
+    inp.addEventListener('keydown',function(e){
+      if(e.key==='Enter'){e.preventDefault();inp.blur();}else if(e.key==='Escape'){render();}
+    });
+  };
+}
+/* ---- barra de herramientas ---- */
+(function(){
+  var q=document.getElementById('f-q'), cat=document.getElementById('f-cat'), ord=document.getElementById('f-orden');
+  var estados={'f-todas':'','f-practica':'practica','f-dominadas':'dominada'};
+  var t; q.addEventListener('input',function(){clearTimeout(t);t=setTimeout(function(){F.q=q.value;render();},180);});
+  cat.onchange=function(){F.cat=cat.value;render();};
+  ord.onchange=function(){F.orden=ord.value;render();};
+  function marcarEstado(){
+    Object.keys(estados).forEach(function(id){
+      document.getElementById(id).classList.toggle('on',F.estado===estados[id]);
+    });
+  }
+  Object.keys(estados).forEach(function(id){
+    document.getElementById(id).onclick=function(){F.estado=estados[id];marcarEstado();render();};
+  });
+  var rv=document.getElementById('f-rev');
+  rv.onclick=function(){F.rev=!F.rev;rv.classList.toggle('on',F.rev);render();};
+  marcarEstado();
+})();
 document.getElementById('in-it').addEventListener('blur',autofill);
 document.getElementById('add-btn').onclick=function(){
   var it=document.getElementById('in-it').value.trim(), es=document.getElementById('in-es').value.trim();
@@ -248,6 +434,19 @@ function resolveMissing(){
   })(0);
   resolveLemas();
 }
+/* Traducción SIMPLE y fiel de la palabra base (premere = presionar), para entenderla de un vistazo.
+   No es una definición: es la palabra equivalente en español. El glosario curado gana al traductor. */
+function traducirLema(it){
+  var cur=load(), f=cur.filter(function(x){return norm(x.it)===norm(it)})[0];
+  if(!f||!f.lema||f.lemaEs||f.lemaEsFuente==='manual')return;
+  var loc=lookup(f.lema);                       // VOCAB curado / frases / caché
+  if(loc){f.lemaEs=loc;save(cur);render();return;}
+  translateOnline(f.lema).then(function(t){
+    if(!t)return;
+    var c2=load(), g=c2.filter(function(x){return norm(x.it)===norm(it)})[0];
+    if(g&&!g.lemaEs){g.lemaEs=t;cacheSet(norm(g.lema),t);save(c2);render();}
+  });
+}
 /* Relleno de la palabra base en las palabras que ya tenías. Va DESPACIO a propósito:
    Wikimedia responde 429 si se le piden muchas seguidas. Nunca toca `es` ni `ctx`. */
 function resolveLemas(){
@@ -266,11 +465,18 @@ function resolveLemas(){
       if(ls&&ls.length){
         var cur=load(), f=cur.filter(function(x){return norm(x.it)===norm(w.it)})[0];
         if(f&&f.lemaFuente!=='manual'){
-          var l=ls[0];
-          f.lema=l.lema||''; f.pos=l.pos||''; f.flex=l.flex||''; f.lemaV=V;
-          // si hay varias lecturas o vino de una regla, queda marcada para que la revises
-          f.lemaFuente=(ls.length>1?'regla':(l.fuente||''));
+          // TU FRASE decide cuál lectura es: «Hai eseguito» -> verbo · «il compito» -> sustantivo
+          // (ojo: NO llamar `i` a este índice, tapaba el del bucle y la cola no avanzaba)
+          var pick=LEMA.elegirPorContexto?LEMA.elegirPorContexto(ls,f.ctx||'',f.it):-1;
+          var l=ls[pick>=0?pick:0];
+          ['lema','pos','flex','aux','auxSupuesto','part','genero','plural','registro'].forEach(function(k){
+            if(l[k]!==undefined)f[k]=l[k];else delete f[k];
+          });
+          f.lemaV=V;
+          // resuelta por el contexto o única lectura -> vale; si no, queda marcada para que la revises
+          f.lemaFuente=(pick>=0||ls.length===1)?(l.fuente||''):'regla';
           save(cur); render();
+          traducirLema(f.it);      // traducción simple de la palabra base, para entenderla de un vistazo
         }
       }
       setTimeout(function(){step(i+1)},600);
