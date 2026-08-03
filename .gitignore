@@ -31,3 +31,4 @@ __pycache__/
 *.docx
 .DS_Store
 Thumbs.db
+tools/_vocab_*.py
