@@ -52,6 +52,11 @@
   var DKEY='italiano-dic-cache', DCACHE={};
   try{DCACHE=JSON.parse(localStorage.getItem(DKEY)||'{}')}catch(e){DCACHE={}}
   function cacheSet(n,es){if(!n||!es)return;DCACHE[n]=es;try{localStorage.setItem(DKEY,JSON.stringify(DCACHE))}catch(e){}}
+  // Palabras ya consultadas online que NO tienen traducción (nombres propios, interjecciones…):
+  // se recuerdan aparte para no volver a golpear el traductor con la misma palabra en cada carga.
+  var NKEY='italiano-notr-cache', NOTR={};
+  try{NOTR=JSON.parse(localStorage.getItem(NKEY)||'{}')}catch(e){NOTR={}}
+  function notrSet(n){if(!n)return;NOTR[n]=1;try{localStorage.setItem(NKEY,JSON.stringify(NOTR))}catch(e){}}
 
   // Fallback morfológico: reconocer flexiones (plurales / género) de palabras conocidas
   function morph(n){
@@ -81,7 +86,7 @@
 
   function makeSpan(cls,es,txt){var s=document.createElement('span');s.className=cls;s.setAttribute('data-es',es);s.textContent=txt;return s;}
 
-  function wrapTextNode(node){
+  function wrapTextNode(node,pend){
     var text=node.nodeValue;
     if(!/\S/.test(text))return;
     var segs=text.split(/(\s+)/);                 // alterna palabra/espacio
@@ -113,7 +118,18 @@
       // 2) palabra suelta
       var es=localLookup(seg);
       if(es){frag.appendChild(makeSpan('g',es,seg));changed=true;}
-      else frag.appendChild(document.createTextNode(seg));
+      else{
+        var tn=document.createTextNode(seg);
+        frag.appendChild(tn);
+        // no se conoce todavía: se apunta para traducirla sola en segundo plano (gratis, sin
+        // tokens — es una llamada del navegador). Se necesita el nodo YA insertado en el DOM
+        // (por eso se fuerza el reemplazo abajo) para poder sustituirlo por su glosa más tarde.
+        var n2=norm(seg);
+        if(pend&&n2&&/[a-zàèéìòù]/i.test(n2)&&!DCACHE[n2]&&!NOTR[n2]){
+          changed=true;
+          (pend[n2]=pend[n2]||{raw:seg,nodes:[]}).nodes.push(tn);
+        }
+      }
       i++;
     }
     if(changed)node.parentNode.replaceChild(frag,node);
@@ -131,9 +147,32 @@
       return /\S/.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
     }});
     var nodes=[],n;while(n=walker.nextNode())nodes.push(n);
-    nodes.forEach(wrapTextNode);
+    var pend={};                                   // {palabra_normalizada: {raw, nodes:[textNode,…]}}
+    nodes.forEach(function(nd){wrapTextNode(nd,pend)});
+    resolverPendientes(pend);
   }
   window.italianoGloss = autogloss; // para glosar contenido añadido después (ej. letra de canción en inmersión)
+
+  /* Traduce en segundo plano las palabras que el glosado local no reconoció (no cuesta tokens: es
+     una llamada del navegador a Google Translate). Una a la vez, con pausa, para no saturar el
+     traductor — mismo patrón que ya usa Mi Vocabulario para su propio relleno en segundo plano.
+     Una palabra puede repetirse muchas veces en el mismo texto (una canción, sobre todo): se pide
+     la traducción UNA sola vez por palabra y se aplica a TODAS sus apariciones a la vez. */
+  function resolverPendientes(pend){
+    var claves=Object.keys(pend);
+    (function step(i){
+      if(i>=claves.length)return;
+      var k=claves[i], p=pend[k];
+      translateOnline(p.raw).then(function(t){
+        if(t){
+          cacheSet(k,t);
+          p.nodes.forEach(function(tn){
+            if(tn.parentNode)tn.parentNode.replaceChild(makeSpan('g',t,tn.nodeValue),tn);
+          });
+        }else notrSet(k);
+      }).then(function(){setTimeout(function(){step(i+1)},180)});
+    })(0);
+  }
 
   /* ---------- 3. TRADUCTOR DE SELECCIÓN ---------- */
   var pop=document.createElement('div');pop.className='cb-pop';pop.style.display='none';

@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inmersión · Curso de Italiano</title>
-<link rel="stylesheet" href="assets/curso.css?v=20260801e">
+<link rel="stylesheet" href="assets/curso.css?v=20260803a">
 <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script defer src="assets/firebase.js?v=20260801e"></script>
-<script defer src="assets/vocab.js?v=20260801e"></script>
-<script defer src="assets/frases.js?v=20260801e"></script>
-<script defer src="assets/curso.js?v=20260801e"></script>
+<script defer src="assets/firebase.js?v=20260803a"></script>
+<script defer src="assets/vocab.js?v=20260803a"></script>
+<script defer src="assets/frases.js?v=20260803a"></script>
+<script defer src="assets/curso.js?v=20260803a"></script>
 <style>
   body{font-family:-apple-system,"Segoe UI",sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:800px;margin:0 auto;padding:2rem 1.5rem 6rem;line-height:1.6}
   h1{font-size:1.7rem;margin:.2rem 0}
@@ -98,8 +98,6 @@
   .quiz-q .q-write:focus{outline:none;border-color:#2d6a4f;box-shadow:0 0 0 2px #cfe3d8}
   .quiz-q .q-check{background:#2d6a4f;color:#fff;border:0;border-radius:7px;padding:.45rem .9rem;font:600 .82rem/1 sans-serif;cursor:pointer}
   .quiz-q .q-check:hover{background:#35835f}
-  .vclave{display:flex;align-items:center;gap:.5rem;background:#fff;border:1px solid #dde5dd;border-radius:7px;padding:.45rem .7rem;margin:.3rem 0;font-size:.9rem}
-  .vclave .it{font-weight:700}
   .toolbar{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin:.5rem 0}
 </style>
 </head>
@@ -532,17 +530,10 @@ function abrirCancion(id,c,v){
   renderDudasPanel();
   var cont=document.createElement('div');v.appendChild(cont);
   renderLetra(cont,c.letra||'',c.analisis,c.titulo,id);
-  if(c.analisis&&c.analisis.vocab&&c.analisis.vocab.length){
-    var h=document.createElement('h3');h.textContent='⭐ Vocabulario y formas clave';h.style.margin='1rem 0 .3rem';v.appendChild(h);
-    c.analisis.vocab.forEach(function(w){
-      var el=document.createElement('div');el.className='vclave';
-      el.innerHTML='<span class="it">'+w.it+'</span><span style="flex:1;color:#555">'+(w.es||'')+(w.nota?' · <i style="color:#888">'+w.nota+'</i>':'')+'</span>';
-      var b=document.createElement('button');b.className='mini b-fav';b.textContent='★';
-      b.onclick=function(){saveChunk(w.it,w.es,c.titulo);b.textContent='✓';b.disabled=true;};
-      el.appendChild(b);v.appendChild(el);
-      if(w.conjug){var ce=conjugEl(w.conjug);if(ce){ce.style.margin='-.1rem 0 .5rem 1rem';v.appendChild(ce);}}  // idea D
-    });
-  }
+  // «⭐ Vocabulario y formas clave» ELIMINADO (2026-08-03): costaba tokens generarla y el usuario
+  // entiende la mayoría de esas palabras; lo que no entienda lo agrega él mismo a Mi Vocabulario
+  // (que ya resuelve lema/categoría/auxiliar solo). El campo analisis.vocab de canciones viejas
+  // se queda en el JSON sin usarse — no hace falta tocar los datos.
   if(c.analisis&&c.analisis.quiz&&c.analisis.quiz.length){
     var hq=document.createElement('h3');hq.innerHTML='📝 Quiz della canzone <span style="font-weight:400;font-size:.78rem;color:#888">(in italiano · 3 a scelta + 2 da scrivere)</span>';hq.style.margin='1rem 0 .3rem';v.appendChild(hq);
     var qc=document.createElement('div');v.appendChild(qc);

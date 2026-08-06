@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mi Vocabulario · Italiano</title>
-<link rel="stylesheet" href="assets/curso.css?v=20260801e">
-<script src="assets/vocab.js?v=20260801e"></script>
-<script src="assets/frases.js?v=20260801e"></script>
+<link rel="stylesheet" href="assets/curso.css?v=20260803a">
+<script src="assets/vocab.js?v=20260803a"></script>
+<script src="assets/frases.js?v=20260803a"></script>
 <style>
   body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:760px;margin:0 auto;padding:2.5rem 1.5rem 4rem;line-height:1.5}
   .top{border-left:4px solid #c79a3a;padding-left:1rem;margin-bottom:1.2rem}
@@ -116,7 +116,7 @@
   .w2 .acc .del2{color:#c0392b;border-color:#f0d5d2}
   .vacio2{text-align:center;color:#999;padding:2rem 1rem;background:#fff;border:1px dashed #ccc;border-radius:10px}
 </style>
-<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260801e"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260803a"></script>
 </head>
 <body>
 <div class="top">
@@ -261,6 +261,11 @@ function chips(w){
       LEMA.registroEs(w.registro)+(LEMA.esVulgar(w.registro)?' 🔴':'')+'</span>';
   return h;
 }
+/* Qué detalles tiene el usuario abiertos (por palabra, normalizada). Sobrevive a los re-renders:
+   varios procesos de fondo (resolveLemas, traducirLema, resolveMissing) llaman a render() cada vez
+   que resuelven una palabra más, y render() reconstruye TODA la lista — sin esto, el detalle que el
+   usuario acababa de abrir se cerraba solo mientras la página seguía cargando en segundo plano. */
+var ABIERTOS={};
 function render(){
   var todas=load(), lista=document.getElementById('lista');
   var prac=todas.filter(function(w){return w.estado!=='dominada'}).length;
@@ -295,10 +300,12 @@ function render(){
           '<span class="sig'+(w.es?'':' vacia')+'">'+esc2(w.es||'…sin significado')+'</span>'+
           (porRevisar(w)?'<span class="revisar">revisar</span>':'')+
         '</div><div class="detalle" hidden></div>';
-      var det=d.querySelector('.detalle');
+      var det=d.querySelector('.detalle'), clave=norm(w.it);
+      if(ABIERTOS[clave]){det.hidden=false;pintarDetalle(w,det,todas);}   // seguía abierto: se respeta
       d.querySelector('.linea').onclick=function(e){
-        if(e.target.classList.contains('revisar')){det.hidden=false;pintarDetalle(w,det,todas);return;}
+        if(e.target.classList.contains('revisar')){det.hidden=false;ABIERTOS[clave]=true;pintarDetalle(w,det,todas);return;}
         det.hidden=!det.hidden;
+        ABIERTOS[clave]=!det.hidden;
         if(!det.hidden)pintarDetalle(w,det,todas);
       };
       cont.appendChild(d);
@@ -325,7 +332,7 @@ function pintarDetalle(w,det,l){
 
   det.querySelector('.oir').onclick=function(){say(w.it)};
   det.querySelector('.dom').onclick=function(){w.estado=(w.estado==='dominada')?'practica':'dominada';save(l);render()};
-  det.querySelector('.del2').onclick=function(){if(confirm('¿Borrar "'+w.it+'"?')){l.splice(l.indexOf(w),1);save(l);render()}};
+  det.querySelector('.del2').onclick=function(){if(confirm('¿Borrar "'+w.it+'"?')){delete ABIERTOS[norm(w.it)];l.splice(l.indexOf(w),1);save(l);render()}};
   editable(det.querySelector('.ed-es'),w.es||'',function(v){w.es=v;if(v)cacheSet(norm(w.it),v);save(l);render();},'significado');
   editable(det.querySelector('.ed-lema'),w.lema||'',function(v){w.lema=v;if(v)w.lemaFuente='manual';save(l);render();},'palabra base (ej. mangiare)');
   editable(det.querySelector('.ed-lemaes'),w.lemaEs||'',function(v){w.lemaEs=v;if(v)w.lemaEsFuente='manual';save(l);render();},'traducción simple (ej. presionar)');

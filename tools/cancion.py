@@ -20,7 +20,6 @@ USO (crear tools/_song_<id>.py y ejecutarlo):
     igual(24, 0)                          # estribillo repetido: COPIA la línea 0
     rango(58, 65, desde=24)               # bloque repetido entero: 58..65 <- 24..31
 
-    vocab("mica", "qué va, para nada", "negación enfática")
     resumen("…")
     guardar()                             # valida, audita y escribe (falla si algo no cuadra)
 
@@ -29,8 +28,14 @@ REGLAS QUE ESTE MOTOR IMPONE SOLO (no hace falta recordarlas):
   · 'es' no vacía ni placeholder
   · 'tipo' de nota dentro de los 7 válidos
   · 'frag' debe existir LITERALMENTE en su línea italiana (anclaje, como §7.1)
-  · vocab sin duplicados
   · escritura atómica (temp + os.replace) y UTF-8 con acentos verbatim
+
+vocab() SIGUE DISPONIBLE pero ya NO es parte del flujo estándar (2026-08-03): generar la lista
+"⭐ Vocabulario y formas clave" costaba tokens sin rendir — el usuario entiende la mayoría de esas
+palabras y agrega manualmente a Mi Vocabulario lo poco que no entienda. NO llamar vocab() por
+rutina; el vocabulario de cobertura general ahora lo resuelve solo el glosado automático del
+curso (traducción en línea gratuita, sin tokens). Sigue disponible por si algún caso puntual lo
+justifica de verdad.
 """
 import json, os, io, sys, unicodedata
 
@@ -173,6 +178,9 @@ def auditar(cid=None, verbose=True):
             if fr and _norm(fr) not in _norm(it):
                 fallos.append('línea %s: frag NO ANCLADO -> «%s» no está en «%s»' % (k, fr, it))
 
+    # vocab() ya NO es obligatorio (2026-08-03): la lista "⭐ Vocabulario y formas clave" se quitó
+    # de la app. Si de todos modos se usó vocab() para algún caso puntual, se sigue validando que
+    # no tenga duplicados; una lista vacía ya no es un fallo.
     vistos, dup = set(), []
     for e in V:
         key = _norm(e.get('it', ''))
@@ -181,8 +189,6 @@ def auditar(cid=None, verbose=True):
         vistos.add(key)
     if dup:
         fallos.append('vocab duplicado: %s' % dup)
-    if not V:
-        fallos.append('vocab vacío')
 
     if verbose:
         print('--- AUDITORÍA %s ---' % (cid or _st['id'] or ''))
