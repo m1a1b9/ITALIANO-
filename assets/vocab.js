@@ -260,6 +260,10 @@ window.VOCAB = {
   "essere al verde":"estar sin un peso / pelado","piove sul bagnato":"al que tiene, más le llega",
   "acqua in bocca":"¡ni una palabra! / es un secreto",
 
+  /* — Día 21: comprensione orale — */
+  "ma dai":"¡no me digas! / ¡venga ya!","ammazza":"¡caray! / ¡madre mía!",
+  "mah":"mmm... / sepa / vaya uno a saber","non ci ho capito un tubo":"no entendí ni pepino",
+
   /* ====== Hallazgos externos (canciones, etc.) ====== */
   /* — Canción «Non metterci becco» (Sfera Ebbasta + Shiva) — */
   "metterci becco":"meter las narices / opinar donde no te llaman","mettere becco":"meter las narices",
@@ -617,6 +621,11 @@ window.DEF_IT = {
   "essere al verde":"non avere più soldi",
   "piove sul bagnato":"a chi ha già (fortuna o sfortuna) ne arriva ancora",
   "acqua in bocca":"non dire niente a nessuno, è un segreto",
+  /* — Giorno 21 — */
+  "ma dai":"esclamazione di incredulità o sorpresa",
+  "ammazza":"esclamazione di stupore, spesso romana/centro-Italia (senza violenza)",
+  "mah":"interiezione di dubbio, indifferenza o scetticismo",
+  "non ci ho capito un tubo":"non ho capito assolutamente niente",
   /* — Canción «Non metterci becco» — */
   "metterci becco":"intromettersi, dire la propria dove non si è chiamati",
   "lo vede anche un cieco":"è evidentissimo, salta agli occhi",

@@ -13,6 +13,10 @@ datos/*
 # La maquinaria (tools/cancion.py, tools/sync.py) SÍ se publica; el contenido NO.
 tools/_song_*.py
 
+# Scripts de corrección de días: llevan las respuestas VERBATIM del usuario (campo "tuvo")
+# → son DATOS PERSONALES. Mismo criterio que _song_*.py: la maquinaria sí, el contenido no.
+tools/_corr_*.py
+
 # Secretos (claves de servicio Firebase Admin, credenciales)
 *serviceAccount*.json
 *firebase-adminsdk*.json

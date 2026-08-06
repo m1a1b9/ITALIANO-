@@ -1,110 +1,273 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="it">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Día 21 — Italiano</title>
+<title>Giorno 21 — Italiano</title>
 <style>
   body { font-family: -apple-system, sans-serif; background: #f5f7fa; color: #1c1c1e; max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 4rem; line-height: 1.7; }
-  .header { border-left: 4px solid #2d6a4f; padding-left: 1rem; margin-bottom: 1.5rem; }
+  .header { border-left: 4px solid #2d6a4f; padding-left: 1rem; margin-bottom: 2.5rem; }
   .header .dia { font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #2d6a4f; margin-bottom: .3rem; }
   .header h1 { font-size: 1.7rem; font-weight: 700; margin: 0; }
   .header p { color: #666; font-size: .9rem; margin: .3rem 0 0; }
-  .ruta { display: flex; gap: .4rem; margin: 1.2rem 0 2rem; flex-wrap: wrap; }
-  .ruta div { flex: 1; min-width: 120px; background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: .5rem .7rem; font-size: .78rem; }
-  .ruta div .n { font-weight: 700; color: #2d6a4f; font-size: .7rem; text-transform: uppercase; letter-spacing: .05em; }
-  .ruta div .t { color: #999; font-size: .72rem; }
-  .fase { border-radius: 10px; padding: 1.2rem 1.4rem; margin: 1.5rem 0; }
-  .fase.teoria { background: #fff; border: 1px solid #dde5dd; }
-  .fase.input { background: #eef5f1; border: 1px solid #cfe3d8; }
-  .fase.anki { background: #fdf6ec; border: 1px solid #f0e0c4; }
-  .fase.output { background: #1c1c1e; color: #f0f0f0; }
-  .fase .badge { display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .2rem .6rem; border-radius: 20px; margin-bottom: .6rem; }
-  .fase.teoria .badge, .fase.input .badge { background: #2d6a4f; color: #fff; }
-  .fase.anki .badge { background: #c08a2e; color: #fff; }
-  .fase.output .badge { background: #52b788; color: #1c1c1e; }
-  .fase h2 { font-size: 1.05rem; font-weight: 700; margin: 0 0 .6rem; color: inherit; letter-spacing: 0; text-transform: none; }
-  .fase.output h2 { color: #fff; }
-  .fase.output em { color: #aaa; }
-  h3 { font-size: .95rem; font-weight: 700; margin: 1.1rem 0 .4rem; }
-  .bloque { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: .9rem 1.1rem; margin: .7rem 0; font-size: .9rem; }
-  .nota { background: #f0f7f4; border-left: 3px solid #2d6a4f; padding: .6rem 1rem; border-radius: 0 6px 6px 0; font-size: .86rem; color: #1a4731; margin: .7rem 0; }
-  .slang { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: .9rem 1.1rem; margin: .6rem 0; }
-  .slang strong { color: #2d6a4f; font-size: 1.02rem; }
+  h2 { font-size: .7rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: #2d6a4f; margin: 2rem 0 .8rem; }
+  h3 { font-size: .95rem; font-weight: 700; margin: 1.2rem 0 .5rem; }
+  table { width: 100%; border-collapse: collapse; margin: .5rem 0 1rem; font-size: .92rem; }
+  th { background: #1c1c1e; color: #fff; text-align: left; padding: .5rem .8rem; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
+  td { padding: .55rem .8rem; border-bottom: 1px solid #dde5dd; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #eef2ee; }
+  .slang { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: 1rem 1.2rem; margin: .5rem 0 1rem; }
+  .slang strong { color: #2d6a4f; font-size: 1.05rem; }
   .slang .uso { font-size: .82rem; color: #888; margin-top: .2rem; }
-  .slang .ejemplo { font-size: .86rem; font-style: italic; color: #444; margin-top: .4rem; background: #f5f7fa; padding: .3rem .6rem; border-radius: 4px; }
-  .tarea { background: rgba(45,106,79,.08); border-radius: 6px; padding: .6rem .9rem; margin: .6rem 0; font-size: .88rem; }
-  .tarea strong { color: #2d6a4f; }
-  .fase.output .tarea { background: rgba(82,183,136,.15); }
-  .fase.output .tarea strong { color: #52b788; }
-  ul { font-size: .9rem; padding-left: 1.2rem; margin: .4rem 0; }
-  li { margin: .25rem 0; }
-  .it { font-weight: 600; font-style: italic; }
+  .slang .ejemplo { font-size: .88rem; font-style: italic; color: #444; margin-top: .4rem; background: #f5f7fa; padding: .3rem .6rem; border-radius: 4px; }
+  .ejercicio { counter-reset: ej; padding-left: 0; }
+  .ejercicio li { list-style: none; counter-increment: ej; padding: .6rem 0 .6rem 2.4rem; position: relative; border-bottom: 1px solid #dde5dd; font-size: .92rem; }
+  .ejercicio li:last-child { border-bottom: none; }
+  .ejercicio li::before { content: counter(ej); position: absolute; left: 0; top: .65rem; background: #2d6a4f; color: #fff; font-size: .65rem; font-weight: 700; width: 1.5rem; height: 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .nota { background: #f0f7f4; border-left: 3px solid #2d6a4f; padding: .7rem 1rem; border-radius: 0 6px 6px 0; font-size: .88rem; color: #1a4731; margin: .8rem 0; }
+  .alerta { background: #fdf0ef; border-left: 3px solid #c0392b; padding: .7rem 1rem; border-radius: 0 6px 6px 0; font-size: .88rem; color: #922b21; margin: .8rem 0; }
+  .bloque { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .92rem; }
   .tiempo { text-align: right; font-size: .8rem; color: #999; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #dde5dd; }
+  .it { font-weight: 600; font-style: italic; }
   p { font-size: .92rem; }
+  ul { font-size: .92rem; padding-left: 1.2rem; }
+  .ascolto { background: #eef5ff; border: 1px solid #bcd4ea; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; }
+  .ascolto button.say-frase { background: #1a4d80; color: #fff; border: 0; border-radius: 6px; padding: .5rem .9rem; font-size: .85rem; cursor: pointer; margin: .3rem 0; }
+  .ascolto details { margin-top: .5rem; }
+  .ascolto summary { cursor: pointer; color: #1a4d80; font-size: .82rem; }
 </style>
-<link rel="stylesheet" href="assets/curso.css?v=20260803a"><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260803a"></script><script defer src="assets/vocab.js?v=20260803a"></script><script defer src="assets/frases.js?v=20260803a"></script><script defer src="assets/curso.js?v=20260803a"></script><script defer src="assets/respuestas.js?v=20260803a"></script>
+<link rel="stylesheet" href="assets/curso.css?v=20260806a"><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260806a"></script><script defer src="assets/vocab.js?v=20260806a"></script><script defer src="assets/frases.js?v=20260806a"></script><script defer src="assets/curso.js?v=20260806a"></script><script defer src="assets/respuestas.js?v=20260806a"></script>
 </head>
 <body>
 
 <div class="header">
-  <div class="dia">Semana 3 · Día 21 · Nivel B1→B2</div>
-  <h1>Comprensione orale — día de oído</h1>
-  <p>Hoy el protagonista es escuchar: la habilidad que más cuesta y más vale</p>
+  <div class="dia">Settimana 4 · Giorno 21 · Livello B2</div>
+  <h1>Comprensione orale — entender sin leer</h1>
+  <p>Estrategias de escucha activa: palabras clave, elisioni, y las trampas del oído (e/è, sonno/sono)</p>
 </div>
 
-<div class="ruta">
-  <div><span class="n">1 · Estrategia</span><br><span class="t">~10 min</span></div>
-  <div><span class="n">2 · Escucha activa</span><br><span class="t">~35 min</span></div>
-  <div><span class="n">3 · Anki</span><br><span class="t">~10 min</span></div>
-  <div><span class="n">4 · Output</span><br><span class="t">~15 min</span></div>
+<div class="bloque" style="background:#eef5ff;border-color:#bcd4ea"><strong>🎯 Obiettivo di oggi</strong> — al terminar podrás: ① entender un audio en italiano SIN leer la transcripción · ② reconocer palabras "comidas" por elisiones y apócopes · ③ distinguir pares de sonido engañosos (sonno/sono, sete/sette) · ④ usar frases de rescate cuando no entiendas algo.</div>
+
+<h2>Ripasso veloce (5 min)</h2>
+<p>Del día 20: ¿cómo respondes a «In bocca al lupo!»? Y del día 18: completa «Non ___ niente a che fare con me» (avere, no essere).</p>
+
+<h2>Strategie di ascolto</h2>
+<p><span class="it">Capire l'italiano parlato NON significa capire ogni singola parola.</span> → Entender italiano hablado no significa entender cada palabra.</p>
+<div class="nota">🔑 <strong>HACK — le 3 regole dell'ascolto:</strong>
+<ol style="margin:.4rem 0 0 1rem">
+<li><span class="it">Cerca le PAROLE CHIAVE</span> (nomi, numeri, verbi principali) e lascia perdere il resto. <span class="cuad">a tu cuaderno</span></li>
+<li><span class="it">L'italiano parlato "mangia" i suoni</span>: le vocali si elidono ('sti, fra', dov'è) e le parole si attaccano (vado a casa → "vadoacasa").</li>
+<li><span class="it">Ascolta PRIMA senza leggere, POI controlla con la trascrizione.</span> Leggere e ascoltare insieme non allena l'orecchio.</li>
+</ol>
 </div>
 
-<div class="fase teoria">
-  <span class="badge">Fase 1 · Estrategia</span>
-  <h2>Primero: ¿por qué un día solo de escuchar?</h2>
-  <p>Porque entender de oído es lo último que llega y lo que más se entrena con horas, no con reglas. Puedes saber toda la gramática y aun así "no agarrar" una conversación rápida. Hoy entrenas eso a propósito.</p>
+<div class="alerta">⚠️ <strong>Trampas del oído:</strong> ① <span class="it">e / è</span> suenan CASI IGUAL al hablar rápido — solo el contexto decide, nunca el sonido. ② Las consonantes dobles SÍ cambian la palabra (ver tabla abajo), aunque al oído hispanohablante parezcan "casi lo mismo": es EL error de escucha más caro. ③ Muchos artículos y preposiciones se funden con la palabra siguiente en el habla rápida.</div>
 
-  <h3>3 técnicas que vas a usar</h3>
-  <div class="bloque">
-    <strong>1. Escucha global → detalle:</strong> primero capta de qué va (idea general). Recién en la 2ª pasada busca detalles.<br>
-    <strong>2. Dictado parcial:</strong> pausa y escribe lo que oíste. Comparar con la transcripción revela exactamente qué sonidos se te escapan.<br>
-    <strong>3. Predicción:</strong> pausa antes de que la persona termine la frase e intenta adivinar cómo sigue. Entrena el "anticipar" que hacen los nativos.
+<h3>Coppie minime — una consonante cambia todo</h3>
+<p>El español no distingue consonantes dobles, así que tu oído no las oye "solas": hay que entrenarlas. La doble se pronuncia <strong>alargando</strong> la consonante, con una micro-pausa. <span class="cuad">a tu cuaderno</span></p>
+<table>
+  <tr><th>Doble</th><th>Simple</th><th>Cómo distinguirlas</th></tr>
+  <tr><td class="it">no<b>nn</b>o = abuelo</td><td class="it">nono = noveno</td><td>«mio nonno» (persona) vs «il nono piso» (número)</td></tr>
+  <tr><td class="it">se<b>tt</b>e = siete</td><td class="it">sete = sed</td><td>número vs «ho sete» (tengo sed)</td></tr>
+  <tr><td class="it">di<b>tt</b>a = empresa</td><td class="it">dita = dedos</td><td>«lavoro per una ditta» vs «le dita della mano»</td></tr>
+  <tr><td class="it">ca<b>pp</b>ello = sombrero</td><td class="it">capello = cabello (un pelo)</td><td>te lo pones vs te crece</td></tr>
+  <tr><td class="it">so<b>nn</b>o = sueño (ganas de dormir)</td><td class="it">sono = soy/son</td><td>«ho sonno» vs «sono stanco»</td></tr>
+  <tr><td class="it">pa<b>ll</b>a = pelota</td><td class="it">pala = pala</td><td>contexto: deporte vs herramienta</td></tr>
+</table>
+
+<h3>Parole "mangiate" — lo que el oído no encuentra en el diccionario</h3>
+<p>En el habla real muchas palabras se acortan o se pegan. Si no reconoces la forma hablada, la buscas en el diccionario y no existe. Estas son las de altísima frecuencia:</p>
+<table>
+  <tr><th>Lo que oyes</th><th>Forma completa</th><th>Significado</th></tr>
+  <tr><td class="it">fra'</td><td class="it">fratello</td><td>hermano, bro (vocativo entre amigos)</td></tr>
+  <tr><td class="it">ce l'hai?</td><td class="it">ci hai (averCELa)</td><td>¿lo/la tienes (encima)?</td></tr>
+  <tr><td class="it">che ne so</td><td class="it">che ne so io / che cosa ne so</td><td>¡yo qué sé! (con el pronombre NE)</td></tr>
+  <tr><td class="it">'sti, 'sto, 'sta</td><td class="it">questi, questo, questa</td><td>estos, este, esta</td></tr>
+  <tr><td class="it">dov'è?</td><td class="it">dove è</td><td>¿dónde está? (elisión)</td></tr>
+  <tr><td class="it">boh</td><td class="it">non lo so</td><td>ni idea, quién sabe</td></tr>
+  <tr><td class="it">mah</td><td class="it">(interiezione)</td><td>mmm… duda o indiferencia</td></tr>
+  <tr><td class="it">"nonloso"</td><td class="it">non lo so</td><td>las 3 palabras se pegan en una</td></tr>
+</table>
+<div class="nota">🔑 <strong>HACK:</strong> si oyes algo que "no existe", prueba a <strong>devolverle la vocal</strong> (fra' → fratello) o a <strong>separar las palabras</strong> (nonloso → non lo so). Casi siempre es una de las dos. <span class="cuad">a tu cuaderno</span></div>
+
+<h2>Esempio guidato — così si caccia il senso</h2>
+<div class="bloque">
+  <p><strong>Paso a paso.</strong> Escucha esta frase y NO intentes entenderlo todo:</p>
+  <button class="say-frase" data-frase="Senti, domani non ce la faccio a venire, ho un casino di roba da fare in ufficio.">🔊 Frase di esempio</button>
+  <ol style="margin:.5rem 0 0 1rem;font-size:.9rem">
+    <li><strong>Cazo los nombres y los verbos principales:</strong> <span class="it">domani</span> · <span class="it">venire</span> · <span class="it">roba da fare</span> · <span class="it">ufficio</span>.</li>
+    <li><strong>Con eso ya tengo el esqueleto:</strong> mañana — venir — cosas que hacer — oficina.</li>
+    <li><strong>Deduzco el sentido sin entender el resto:</strong> «mañana no puede venir porque tiene trabajo».</li>
+    <li><strong>Lo que "sobraba"</strong> (<span class="it">non ce la faccio</span> = no puedo/no me da la vida; <span class="it">un casino di</span> = un montón de) lo aprendo DESPUÉS, no durante.</li>
+  </ol>
+  <p style="margin-top:.7rem"><strong>Ahora tú, a medias.</strong> Escucha y completa solo los dos primeros pasos:</p>
+  <button class="say-frase" data-frase="Guarda, ti richiamo dopo perché adesso sto guidando e non ti sento bene.">🔊 Frase da completare</button>
+  <p style="font-size:.88rem;color:#555">① Palabras clave que cazo: ___ · ② Esqueleto de sentido: ___<br>(la solución está en el solucionario, ejercicio «esempio guidato»)</p>
+</div>
+
+<h2>🧱 Frasi di salvataggio</h2>
+<ul>
+  <li><span class="it">Puoi ripetere, per favore?</span> → ¿Puedes repetir, por favor?</li>
+  <li><span class="it">Più lentamente, per favore.</span> → Más lento, por favor.</li>
+  <li><span class="it">Non ho capito bene, cosa hai detto?</span> → No entendí bien, ¿qué dijiste?</li>
+  <li><span class="it">Come si scrive?</span> → ¿Cómo se escribe?</li>
+  <li><span class="it">Cosa vuol dire «___»?</span> → ¿Qué significa «___»?</li>
+</ul>
+
+<h2>📖 In contesto — usando le frasi di salvataggio</h2>
+<div class="bloque">
+  <span class="it">— Allora, ci becchiamo domani sera per la festa di Marco, no?<br>
+  — Scusa, puoi ripetere? Non ho capito bene, c'era troppo rumore.<br>
+  — Dicevo: ci vediamo domani sera per la festa di Marco!<br>
+  — Ah, ok! A che ora, più o meno?<br>
+  — Verso le nove, ma se fai tardi non è un problema.<br>
+  — Perfetto, allora ci sto. Come si scrive il tuo indirizzo, me lo mandi per messaggio?<br>
+  — Certo, te lo scrivo subito!</span><br>
+  <span style="color:#666;font-size:.86rem">→ "¿Nos vemos mañana en la noche para la fiesta de Marco?" — "Perdona, ¿puedes repetir? No entendí bien, había mucho ruido." — "Decía: ¡nos vemos mañana en la noche!" — "¿A qué hora, más o menos?" — "Hacia las nueve, pero si llegas tarde no hay problema." — "Perfecto, entonces ahí estaré. ¿Cómo se escribe tu dirección, me la mandas por mensaje?" — "Claro, te la escribo ahora mismo."</span>
+</div>
+
+<h2>🗣️ Cultura &amp; Strada</h2>
+<div class="slang">
+  <strong>Ma dai!</strong> <span class="reg amari">medio</span> <span style="font-size:.78rem;color:#888;font-weight:400">[ma DAI]</span><br>
+  <span class="it">esclamazione di incredulità o sorpresa</span> <span style="color:#666">→ ¡no me digas! / ¡venga ya!</span>
+  <div class="uso">Reacción espontánea al escuchar algo sorprendente o difícil de creer. Muy frecuente en conversación real.</div>
+  <div class="ejemplo"><span class="it">Ma dai! Non ci credo, davvero è successo?</span> → ¡No me digas! No lo puedo creer, ¿de verdad pasó?</div>
+</div>
+<div class="slang">
+  <strong>Ammazza!</strong> <span class="reg amari">medio</span> <span style="font-size:.78rem;color:#888;font-weight:400">[am-MAZ-za]</span><br>
+  <span class="it">esclamazione di stupore, spesso romana/centro-Italia</span> <span style="color:#666">→ ¡caray! / ¡madre mía!</span>
+  <div class="uso">Literalmente "mata" (de ammazzare), pero como interjección es puro asombro, sin violencia. Se oye mucho en el centro de Italia.</div>
+  <div class="ejemplo"><span class="it">Ammazza, quanto hai capito bene questo podcast!</span> → ¡Caray, qué bien entendiste este podcast!</div>
+</div>
+<div class="slang">
+  <strong>Mah</strong> <span class="reg verde">suave</span> <span style="font-size:.78rem;color:#888;font-weight:400">[ma, alargado]</span><br>
+  <span class="it">interiezione di dubbio, indifferenza o scetticismo</span> <span style="color:#666">→ mmm... / sepa / vaya uno a saber</span>
+  <div class="uso">Cuando no estás seguro de algo o te da igual. Se dice solo, a veces alargando el sonido. No confundir con "ma" (pero).</div>
+  <div class="ejemplo"><span class="it">— Verrà alla festa? — Mah, chi lo sa.</span> → "¿Vendrá a la fiesta?" — "Mmm, quién sabe."</div>
+</div>
+<div class="slang">
+  <strong>Non ci ho capito un tubo</strong> <span class="reg amari">medio</span> <span style="font-size:.78rem;color:#888;font-weight:400">[non chi o ka-PI-to un TU-bo]</span><br>
+  <span class="it">non ho capito assolutamente niente</span> <span style="color:#666">→ no entendí ni pepino</span>
+  <div class="uso">Perfecta para hoy: cuando un audio va demasiado rápido y no entiendes nada. "Un tubo" es un intensificador coloquial de la negación, como "un cazzo" pero sin ser vulgar. <span class="cuad">a tu cuaderno</span></div>
+  <div class="ejemplo"><span class="it">Il podcast andava troppo veloce, non ci ho capito un tubo.</span> → El podcast iba demasiado rápido, no entendí ni pepino.</div>
+</div>
+
+<h2>☕ Cultura — di che parlare con un italiano</h2>
+<div class="cultura">
+  <span class="tipo">Dal capitolo 21 — Le Olimpiadi di Roma 1960</span>
+  <h3>Descalzo por la Vía Apia: la maratón que parecía cine</h3>
+  <div class="ctx"><span class="it">Le Olimpiadi di Roma 1960 sono state le prime trasmesse in diretta in tutta Europa, e la città ha usato i suoi monumenti antichi come scenografia: la lotta si è svolta alle Terme di Caracalla, e la maratona è partita dal Campidoglio ed è arrivata di notte all'Arco di Costantino. Un giovane Cassius Clay, futuro Muhammad Ali, ha vinto l'oro nel pugilato a soli diciotto anni. L'etiope Abebe Bikila ha corso i 42 chilometri scalzo — le scarpe non gli andavano bene — diventando il primo atleta africano campione olimpico.</span> <span style="color:#666;font-size:.85rem">→ Roma 1960 fue la primera Olimpiada transmitida en vivo en toda Europa; se usaron monumentos antiguos como escenario; Cassius Clay (futuro Alí) ganó el oro a los 18; Abebe Bikila corrió descalzo y ganó, primer campeón olímpico africano.</span></div>
+  <div class="frasi">
+    <div class="lbl">💬 Per parlarne</div>
+    <div class="f"><span class="it">La maratona è partita dal Campidoglio ed è arrivata di notte.</span> <span class="es">→ La maratón partió del Capitolio y llegó de noche.</span></div>
+    <div class="f"><span class="it">Ha corso scalzo perché le scarpe non gli andavano bene.</span> <span class="es">→ Corrió descalzo porque los zapatos no le quedaban bien.</span></div>
+    <div class="f"><span class="it">Anni dopo ha buttato la medaglia nel fiume, perché gli avevano rifiutato un hamburger.</span> <span class="es">→ Años después tiró la medalla al río, porque le habían negado una hamburguesa.</span></div>
   </div>
-  <div class="nota">No subtítulos en español hoy. Italiano o nada — si lees la traducción, tu oído se apaga.</div>
+  <div class="spunto">🗣️ <b>Lo spunto:</b> <span class="it">Riascolta la capsula col pulsante audio e raccontala a voce, senza rileggere. Se ti sfugge un dato (l'anno, il nome dell'atleta, il fiume), usa una frase di salvataggio di oggi: «Scusa, come si chiamava?», «Puoi ripetere l'anno?», «Cosa vuol dire scalzo?».</span></div>
+  <div class="puente">🇲🇽 México también fue sede olímpica (1968) y tuvo su propio momento histórico con trasfondo racial: el puño en alto de Tommie Smith y John Carlos en el podio. Dos ciudades, dos Juegos, la misma mezcla de deporte e historia.</div>
+</div>
 
-  <h3>Slang del día — Norte</h3>
-  <div class="slang">
-    <strong>Sbocciare</strong> <span style="font-size:.78rem;color:#888;font-weight:400">[zboc-CHÁ-re] · "sb"→"zb"; "ci"="ch"</span> — Irse de reventón / celebrar a lo grande
-    <div class="uso">Jerga nocturna milanesa (de "descorchar"). Salir de fiesta fuerte.</div>
-    <div class="ejemplo">Stasera si sboccia! → ¡Esta noche hay reventón!</div>
+<h2>✍️ Dettato — scrivi quello che senti</h2>
+<div class="bloque">
+  <button class="say-frase" data-frase="Fra', ce l'hai un accendino?">Frase 1</button>
+  <button class="say-frase" data-frase="Non ci ho capito un tubo, puoi ripetere?">Frase 2</button>
+  <button class="say-frase" data-frase="Mah, boh, magari domani ci vediamo.">Frase 3</button>
+  <textarea class="resp" data-ej="dettato" rows="3" placeholder="1. … 2. … 3. …"></textarea>
+</div>
+
+<h2>Esercizi</h2>
+<ol class="ejercicio">
+  <li><strong>Ascolto 1 (SIN leer)</strong> — escucha SOLO con el botón, sin abrir la transcripción, y responde en italiano:
+    <div class="ascolto">
+      <button class="say-frase" data-frase="Allora, senti, il weekend è stato un casino pazzesco. Sabato mattina dovevo svegliarmi presto per andare in palestra, ma mi sono alzato tardissimo e ho dovuto correre come un pazzo. Poi il pomeriggio sono uscito con Marco e Giulia, siamo andati al mare anche se faceva un freddo cane, e alla fine ci siamo fermati a mangiare una pizza vicino al porto. Domenica invece sono stato a casa tutto il giorno, ho dormito fino a mezzogiorno e ho guardato tre film di fila. Diciamo che mi serviva proprio riposare un po'.">🔊 Ascolta il racconto del weekend</button>
+      <details><summary>Ver transcripción (después de intentarlo)</summary><p style="font-size:.85rem;color:#555">Allora, senti, il weekend è stato un casino pazzesco. Sabato mattina dovevo svegliarmi presto per andare in palestra, ma mi sono alzato tardissimo e ho dovuto correre come un pazzo. Poi il pomeriggio sono uscito con Marco e Giulia, siamo andati al mare anche se faceva un freddo cane, e alla fine ci siamo fermati a mangiare una pizza vicino al porto. Domenica invece sono stato a casa tutto il giorno, ho dormito fino a mezzogiorno e ho guardato tre film di fila. Diciamo che mi serviva proprio riposare un po'.</p></details>
+    </div>
+    a) Perché sabato ha dovuto correre come un pazzo? b) Con chi è uscito sabato pomeriggio? c) Che tempo faceva al mare? d) Cosa ha fatto domenica?
+    <textarea class="resp" data-ej="e1" rows="4" placeholder="a) … b) … c) … d) …"></textarea></li>
+  <li><strong>Parole "mangiate"</strong> — ¿qué forma completa hay detrás de cada una? a) fra' b) ce l'hai c) che ne so d) boh e) "nonloso"
+    <textarea class="resp" data-ej="e2" rows="2" placeholder="a) … b) … c) … d) … e) …"></textarea></li>
+  <li><strong>Trappole del suono</strong> — escucha y elige la palabra correcta:
+    <div class="ascolto">
+      <button class="say-frase" data-frase="Mio nonno ha novant'anni.">🔊 1</button>
+      <button class="say-frase" data-frase="Ho una sete tremenda, dammi dell'acqua.">🔊 2</button>
+      <button class="say-frase" data-frase="Lavoro per una ditta italiana.">🔊 3</button>
+      <button class="say-frase" data-frase="Mettiti il cappello, fa freddo.">🔊 4</button>
+    </div>
+    a) nonno / nono b) sete / sette c) ditta / dita d) cappello / capello
+    <textarea class="resp" data-ej="e3" rows="2" placeholder="a) … b) … c) … d) …"></textarea></li>
+  <li><strong>e o è? (por CONTEXTO, no por sonido — ripasso tuo)</strong> — completa: Il mio amico ___ arrivato ___ ha portato il cane.
+    <textarea class="resp" data-ej="e4" rows="1" placeholder="è … e"></textarea></li>
+  <li><strong>Solo con el oído</strong> — escucha SIN mirar y escribe qué se dijo. Ojo: en cada frase hay una palabra de la tabla de coppie minime, y el pronombre que oigas decide el resto <em>(ripasso: diretto/indiretto)</em>:
+    <div class="ascolto">
+      <button class="say-frase" data-frase="Ho un sonno tremendo, stasera la chiamo e le dico che non vengo.">🔊 1</button>
+      <button class="say-frase" data-frase="Lavoro per una ditta di Milano, gli telefono io domani.">🔊 2</button>
+      <button class="say-frase" data-frase="Mettiti il cappello, fuori fa freddo.">🔊 3</button>
+    </div>
+    a) ¿«sonno» o «sono»? ¿y a quién se refieren «la» y «le»? b) ¿«ditta» o «dita»? ¿por qué «gli» y no «lo»? c) ¿«cappello» o «capello»?
+    <textarea class="resp" data-ej="e5" rows="3" placeholder="a) … b) … c) …"></textarea></li>
+  <li><strong>Reggenze (ripasso tuo)</strong> — completa: Provo ___ capire tutto · Mi vergogno ___ non capire · Continuo ___ ascoltare senza sottotitoli.
+    <textarea class="resp" data-ej="e6" rows="2" placeholder="a … di … a"></textarea></li>
+  <li><strong>Clítici (ripasso tuo)</strong> — reescribe con el pronombre pegado donde corresponda: a) «Dammi il numero» (con pronombre). b) «Non dire questo a me» (con pronombre).
+    <textarea class="resp" data-ej="e7" rows="2" placeholder="a) … b) …"></textarea></li>
+  <li><strong>Congiuntivo con soggetto esplicito (ripasso tuo)</strong> — aclara el sujeto: «Spero che riposi» puede ser tu/lui/lei. Reescribe aclarando con TU.
+    <textarea class="resp" data-ej="e8" rows="1" placeholder="Spero che TU riposi"></textarea></li>
+  <li><strong>Palabras pegadas</strong> — escucha y SEPARA en palabras lo que oyes como un bloque. Después corrige la concordancia de la frase (c) <em>(ripasso: concordanza di numero)</em>:
+    <div class="ascolto">
+      <button class="say-frase" data-frase="Non lo so.">🔊 a</button>
+      <button class="say-frase" data-frase="Ce l'ho io.">🔊 b</button>
+      <button class="say-frase" data-frase="Gli esami sono difficili e le parole chiave sono importanti.">🔊 c</button>
+    </div>
+    a) ___ (3 palabras) b) ___ (3 palabras) c) escríbela entera y di por qué es «difficili» y no «difficile».
+    <textarea class="resp" data-ej="e9" rows="3" placeholder="a) … b) … c) …"></textarea></li>
+  <li><strong>Ascolto 2 — resume</strong> — vuelve a escuchar el audio del ejercicio 1 y ahora RESÚMELO en 2-3 frases propias en italiano (no copies literal).
+    <textarea class="resp" data-ej="e10" rows="3" placeholder="…"></textarea></li>
+  <li><strong>Il tuo vocabolario</strong> — 2 frases sobre algo que escuchaste/viste esta semana con → <strong class="mis-palabras">(abre tu Vocabulario ★)</strong>.
+    <textarea class="resp" data-ej="e11" rows="3" placeholder="…"></textarea></li>
+  <li><strong>Frasi di salvataggio</strong> — completa el diálogo con la frase de rescate correcta: «— …il tuo indirizzo? — Certo, te lo scrivo. — Scusa, ___? C'era rumore e non ho sentito bene.»
+    <textarea class="resp" data-ej="e12" rows="2" placeholder="Puoi ripetere? / Come si scrive?"></textarea></li>
+  <li><strong>Caccia all'errore (transcripción)</strong> — esta transcripción tiene 3 cosas que NO se dijeron en el audio del ejercicio 1: «Allora, senti, il weekend è stato un casino tremendo. Sabato mattina dovevo svegliarmi presto per andare al lavoro, ma mi sono alzato prestissimo.» Vuelve a escucharlo, encuéntralas y corrígelas.
+    <textarea class="resp" data-ej="e13" rows="2" placeholder="…"></textarea></li>
+  <li><strong>Ascolto de cifras</strong> — escucha y anota el dato exacto:
+    <div class="ascolto">
+      <button class="say-frase" data-frase="L'appuntamento è alle diciassette e trenta, il dodici settembre.">🔊 Ascolta</button>
+    </div>
+    ¿A qué hora y qué día es la cita?
+    <textarea class="resp" data-ej="e14" rows="1" placeholder="Hora: … Fecha: …"></textarea></li>
+  <li><strong>Produzione libera (grabación)</strong> — grábate ~1 minuto hablando de tu fin de semana, usando al menos 3 collocazioni (fare/prendere/avere/dare) y 1 slang de hoy. Aquí escribe lo que dijiste.
+    <textarea class="resp" data-ej="e15" rows="5" placeholder="…"></textarea></li>
+</ol>
+
+<details class="solu">
+  <summary>Soluzioni / Soluciones (ábrelas después de intentarlo)</summary>
+  <div class="body">
+    <p><strong>Dettato:</strong> 1) <span class="it">Fra', ce l'hai un accendino?</span> 2) <span class="it">Non ci ho capito un tubo, puoi ripetere?</span> 3) <span class="it">Mah, boh, magari domani ci vediamo.</span></p>
+    <p><strong>1.</strong> a) Perché si è alzato tardissimo. b) Con Marco e Giulia. c) Faceva freddo (un freddo cane). d) È stato a casa, ha dormito fino a mezzogiorno e ha guardato tre film.</p>
+    <p><strong>Esempio guidato (frase a completar):</strong> ① palabras clave: <span class="it">richiamo · dopo · sto guidando · non ti sento</span>. ② esqueleto: «te vuelvo a llamar luego, ahora conduzco y no te oigo bien».</p>
+    <p><strong>2.</strong> a) <span class="it">fratello</span> b) <span class="it">ci hai</span> (de «avercela»: ce l'hai = ¿la tienes?) c) <span class="it">che ne so io / che cosa ne so</span> d) <span class="it">non lo so</span> e) <span class="it">non lo so</span> (tres palabras pegadas).</p>
+    <p><strong>3.</strong> a) <span class="it">nonno</span> (abuelo) b) <span class="it">sete</span> (sed) c) <span class="it">ditta</span> (empresa) d) <span class="it">cappello</span> (sombrero).</p>
+    <p><strong>4.</strong> Il mio amico <span class="it">è</span> arrivato <span class="it">e</span> ha portato il cane.</p>
+    <p><strong>5.</strong> a) <span class="it">sonno</span> («ho un sonno tremendo» = tengo un sueño tremendo). «La chiamo» = objeto DIRECTO (chiamare); «le dico» = INDIRECTO (dire a qualcuno) — las dos se refieren a la misma mujer. b) <span class="it">ditta</span> (empresa). «Gli telefono» porque <em>telefonare</em> rige indirecto (telefonare A qualcuno). c) <span class="it">cappello</span> (sombrero; «capello» sería un solo pelo).</p>
+    <p><strong>6.</strong> Provo <span class="it">a</span> · Mi vergogno <span class="it">di</span> · Continuo <span class="it">a</span>.</p>
+    <p><strong>7.</strong> a) <span class="it">Dammelo</span> (dammi + lo). b) <span class="it">Non dirmi questo</span> (o "non dirlo a me" con énfasis).</p>
+    <p><strong>8.</strong> <span class="it">Spero che TU riposi.</span></p>
+    <p><strong>9.</strong> a) <span class="it">Non lo so.</span> b) <span class="it">Ce l'ho io.</span> c) <span class="it">Gli esami sono difficili e le parole chiave sono importanti.</span> Es «difficili» porque concuerda con «gli esami» (masculino PLURAL): el adjetivo copia el número del sustantivo.</p>
+    <p><strong>12.</strong> <span class="it">Come si scrive</span> il tuo indirizzo? … Scusa, <span class="it">puoi ripetere?</span> (también vale «non ho capito bene, cosa hai detto?»).</p>
+    <p><strong>13.</strong> Las 3: "casino tremendo" → <span class="it">casino pazzesco</span>; "andare al lavoro" → <span class="it">andare in palestra</span>; "mi sono alzato prestissimo" → <span class="it">mi sono alzato tardissimo</span> (¡justo lo contrario!).</p>
+    <p><strong>14.</strong> Hora: <span class="it">17:30 (diciassette e trenta)</span>. Fecha: <span class="it">12 de septiembre (dodici settembre)</span>.</p>
+    <p><strong>10, 11 y 15:</strong> respuesta libre — dime "ya terminé el día 21" y te las corrijo.</p>
   </div>
-</div>
+</details>
 
-<div class="fase input">
-  <span class="badge">Fase 2 · Escucha activa (el corazón de hoy)</span>
-  <h2>35 minutos, 3 rondas</h2>
-  <div class="tarea"><strong>Ronda 1 — global (10 min):</strong> elige un episodio de <em>Easy Italian</em> (entrevistas de calle, con velocidad real). Escúchalo entero una vez. Solo responde: ¿de qué hablaban? Nada de detalles.</div>
-  <div class="tarea"><strong>Ronda 2 — dictado parcial (15 min):</strong> toma 1 minuto del audio. Pausa cada frase y escribe lo que oíste. Luego compara con los subtítulos italianos. Apunta los sonidos/palabras que se te escaparon.</div>
-  <div class="tarea"><strong>Ronda 3 — predicción (10 min):</strong> otro fragmento. Pausa a media frase e intenta adivinar el final antes de reproducir.</div>
-  <div class="nota">Si los acentos del norte te cuestan, busca creadores de Milán/Torino — entrenas justo el acento de tu objetivo.</div>
-</div>
+<div class="bloque" style="background:#f3faf6;border-color:#9bd3b4"><strong>✅ Autocontrollo</strong> — ¿ya puedes…? ① entender un audio sin leer · ② reconocer palabras "comidas" · ③ distinguir sonno/sono, sete/sette · ④ usar una frase de rescate cuando no entiendas. Si algo tambalea, márcalo 🔁.</div>
 
-<div class="fase anki">
-  <span class="badge">Fase 3 · Anki</span>
-  <h2>Tarjetas de hoy</h2>
-  <p>Añade las palabras que <strong>no reconociste de oído</strong> en el dictado (suelen ser distintas de las que no sabes leer). Mínimo 6. Más <em>sbocciare</em>.</p>
-  <div class="tarea"><strong>Repaso:</strong> idioms del día 20 + vencidas. 10 min.</div>
-</div>
+<h2>Riflessione del giorno</h2>
+<ul>
+  <li>Escuchar es la habilidad que más se descuida. Repite el audio del ejercicio 1 una vez más mañana, sin leer: notarás que entiendes más.</li>
+  <li>🎧 Bonus: 10 min de <a href="inmersion.html">Inmersión</a> — escucha una canción sin ver la letra la primera vez.</li>
+</ul>
 
-<div class="fase output">
-  <span class="badge">Fase 4 · Output</span>
-  <h2>Producir</h2>
-  <div class="tarea"><strong>Resumen hablado (8 min):</strong> grábate resumiendo en italiano de qué trató el audio de hoy. 1 minuto seguido, sin guion.</div>
-  <div class="tarea"><strong>Shadowing (7 min):</strong> el fragmento del dictado — repítelo imitando velocidad y entonación hasta que te salga sin trabarte.</div>
-</div>
-
-<div class="tiempo">⏱ Tiempo total: ~70 min &nbsp;·&nbsp; Mañana: repaso B2 + roleplay + chat conmigo</div>
+<div class="tiempo">⏱ Tempo stimato: 45–55 min &nbsp;·&nbsp; Domani: Repaso + Medición</div>
 
 </body>
 </html>
