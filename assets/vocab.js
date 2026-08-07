@@ -264,6 +264,17 @@ window.VOCAB = {
   "ma dai":"¡no me digas! / ¡venga ya!","ammazza":"¡caray! / ¡madre mía!",
   "mah":"mmm... / sepa / vaya uno a saber","non ci ho capito un tubo":"no entendí ni pepino",
 
+  /* — Días 24-26: condizionale composto, futuro anteriore, causativi — */
+  "meno male":"menos mal / qué bueno que","al posto tuo":"yo en tu lugar / si yo fuera tú",
+  "al posto suo":"en su lugar","chi l'avrebbe mai detto":"¡quién lo hubiera dicho!",
+  "boh":"ni idea / sepa / quién sabe","che ne dici":"¿qué te parece? / ¿cómo ves?",
+  "mannaggia":"¡rayos! / ¡qué lata!","lascia perdere":"déjalo / olvídalo",
+  "lascia stare":"déjalo / no le muevas","fammi sapere":"avísame / me cuentas",
+  "roba da matti":"cosa de locos / una locura","fammelo vedere":"enséñamelo",
+  "far vedere":"enseñar / mostrar","farsi":"hacerse (que le hagan algo)",
+  "far sapere":"avisar / hacer saber","acconto":"anticipo","caparra":"depósito / enganche",
+  "imprevisto":"imprevisto","scatto":"toma / disparo (foto)","dimagrire":"adelgazar",
+
   /* — Ambigüedades de lugar (el italiano no distingue «en» de «a») — */
   "a casa":"en casa / a casa (el italiano no las distingue)",
   "scrivere a casa":"escribir a la familia (desde lejos)",
@@ -644,6 +655,16 @@ window.DEF_IT = {
   "essere al verde":"non avere più soldi",
   "piove sul bagnato":"a chi ha già (fortuna o sfortuna) ne arriva ancora",
   "acqua in bocca":"non dire niente a nessuno, è un segreto",
+  /* — Giorni 24-26 — */
+  "meno male":"per fortuna; esclamazione di sollievo: «meno male che sei arrivato»",
+  "al posto tuo":"se fossi in te, nella tua situazione; regge quasi sempre un condizionale",
+  "boh":"non lo so, non ne ho idea (si dice da solo, stringendosi nelle spalle)",
+  "mannaggia":"esclamazione di fastidio non volgare, dal napoletano «male ne aggia»",
+  "lascia perdere":"non insistere, non vale la pena occuparsene",
+  "fammi sapere":"tienimi aggiornato; formula di commiato frequentissima",
+  "roba da matti":"una cosa assurda, da non crederci",
+  "farsi":"far fare a qualcun altro qualcosa a proprio vantaggio: mi sono fatto tagliare i capelli",
+  "acconto":"parte del pagamento versata prima della consegna",
   /* — Giorno 23 — */
   "fregarsene":"(colloquiale) non interessarsi affatto di qualcosa",
   "piantala":"smettila subito; da 'piantare', letteralmente piantare",

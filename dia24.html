@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giorno 24 — Italiano</title>
+<style>
+  body { font-family: -apple-system, sans-serif; background: #f5f7fa; color: #1c1c1e; max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 4rem; line-height: 1.7; }
+  .header { border-left: 4px solid #2d6a4f; padding-left: 1rem; margin-bottom: 2.5rem; }
+  .header .dia { font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #2d6a4f; margin-bottom: .3rem; }
+  .header h1 { font-size: 1.7rem; font-weight: 700; margin: 0; }
+  .header p { color: #666; font-size: .9rem; margin: .3rem 0 0; }
+  h2 { font-size: .7rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: #2d6a4f; margin: 2rem 0 .8rem; }
+  h3 { font-size: .95rem; font-weight: 700; margin: 1.2rem 0 .5rem; }
+  table { width: 100%; border-collapse: collapse; margin: .5rem 0 1rem; font-size: .92rem; }
+  th { background: #1c1c1e; color: #fff; text-align: left; padding: .5rem .8rem; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
+  td { padding: .55rem .8rem; border-bottom: 1px solid #dde5dd; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #eef2ee; }
+  .slang { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: 1rem 1.2rem; margin: .5rem 0 1rem; }
+  .slang strong { color: #2d6a4f; font-size: 1.05rem; }
+  .slang .uso { font-size: .82rem; color: #888; margin-top: .2rem; }
+  .slang .ejemplo { font-size: .88rem; font-style: italic; color: #444; margin-top: .4rem; background: #f5f7fa; padding: .3rem .6rem; border-radius: 4px; }
+  .ejercicio { counter-reset: ej; padding-left: 0; }
+  .ejercicio li { list-style: none; counter-increment: ej; padding: .6rem 0 .6rem 2.4rem; position: relative; border-bottom: 1px solid #dde5dd; font-size: .92rem; }
+  .ejercicio li:last-child { border-bottom: none; }
+  .ejercicio li::before { content: counter(ej); position: absolute; left: 0; top: .65rem; background: #2d6a4f; color: #fff; font-size: .65rem; font-weight: 700; width: 1.5rem; height: 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .esame { counter-reset: ex; padding-left: 0; }
+  .esame li { list-style: none; counter-increment: ex; padding: .7rem 0 .7rem 2.4rem; position: relative; border-bottom: 1px solid #e0d0d0; font-size: .92rem; }
+  .esame li:last-child { border-bottom: none; }
+  .esame li::before { content: "X" counter(ex); position: absolute; left: 0; top: .65rem; background: #922b21; color: #fff; font-size: .58rem; font-weight: 700; width: 1.7rem; height: 1.5rem; border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+  .nota { background: #f0f7f4; border-left: 3px solid #2d6a4f; padding: .7rem 1rem; border-radius: 0 6px 6px 0; font-size: .88rem; color: #1a4731; margin: .8rem 0; }
+  .alerta { background: #fdf0ef; border-left: 3px solid #c0392b; padding: .7rem 1rem; border-radius: 0 6px 6px 0; font-size: .88rem; color: #922b21; margin: .8rem 0; }
+  .bloque { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .92rem; }
+  .tiempo { text-align: right; font-size: .8rem; color: #999; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #dde5dd; }
+  .it { font-weight: 600; font-style: italic; }
+  p { font-size: .92rem; }
+  ul { font-size: .92rem; padding-left: 1.2rem; }
+  .guiado { background: #fffdf3; border: 1px solid #e6d9a8; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .92rem; }
+  .guiado h3 { margin-top: 0; color: #8a6d1f; }
+  .paso { background: #fff; border-left: 3px solid #b8860b; padding: .4rem .8rem; margin: .4rem 0; border-radius: 0 4px 4px 0; }
+  .big { font-size: 1.15rem; font-weight: 700; color: #2d6a4f; letter-spacing: .02em; text-align: center; }
+  .ascolto { background: #eef5ff; border: 1px solid #bcd4ea; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; }
+  .ascolto button.say-frase { background: #1a4d80; color: #fff; border: 0; border-radius: 6px; padding: .5rem .9rem; font-size: .85rem; cursor: pointer; margin: .3rem 0; }
+  .fosil { background: #fff4f2; border: 2px solid #c0392b; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; }
+  .fosil h3 { color: #922b21; margin-top: 0; }
+  .rubrica { background: #f4f0fa; border: 1px solid #cfc0e8; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .88rem; }
+</style>
+<link rel="stylesheet" href="assets/curso.css?v=20260807b"><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260807b"></script><script defer src="assets/vocab.js?v=20260807b"></script><script defer src="assets/frases.js?v=20260807b"></script><script defer src="assets/curso.js?v=20260807b"></script><script defer src="assets/respuestas.js?v=20260807b"></script>
+</head>
+<body>
+
+<div class="header">
+  <div class="dia">Settimana 4 · Giorno 24 · Livello B2</div>
+  <h1>Condizionale composto — avrei fatto</h1>
+  <p>El arrepentimiento, y el futuro que se ve desde el pasado</p>
+</div>
+
+<div class="bloque" style="background:#eef5ff;border-color:#bcd4ea"><strong>🎯 Obiettivo di oggi</strong> — al terminar podrás: ① formar <span class='it'>avrei fatto</span> con los dos auxiliares · ② expresar arrepentimiento y reproche · ③ usar el <strong>futuro nel passato</strong>, que el español no comparte · ④ cerrar el periodo ipotetico de 3er tipo.</div>
+
+<h2>Ripasso veloce (5 min)</h2>
+<p>Del día 23: junta los pronombres — Do il libro a Marco → ___ · Mando le foto a voi → ___ · Y del 22, tu punto flojo: Provo ___ capire · Parto ___ Roma.</p>
+
+<h2>Come si forma</h2>
+
+<p><span class='it'>Condizionale di ESSERE o AVERE + participio passato.</span> Nada nuevo: es el condizionale que ya sabes, pero del auxiliar. Lo demás lo pone el participio.</p>
+
+<table>
+  <tr><th></th><th>Con AVERE (la mayoría)</th><th>Con ESSERE (movimiento, pronominali)</th></tr>
+  <tr><td>io</td><td>avrei detto</td><td>sarei andato / andata</td></tr><tr><td>tu</td><td>avresti detto</td><td>saresti andato / andata</td></tr><tr><td>lui/lei</td><td>avrebbe detto</td><td>sarebbe andato / andata</td></tr><tr><td>noi</td><td>avremmo detto</td><td>saremmo andati / andate</td></tr><tr><td>voi</td><td>avreste detto</td><td>sareste andati / andate</td></tr><tr><td>loro</td><td>avrebbero detto</td><td>sarebbero andati / andate</td></tr>
+</table>
+
+<div class="nota">🔑 <strong>HACK</strong> — el auxiliar es el MISMO que en el passato prossimo. Si dices <span class='it'>ho detto</span> → <span class='it'>avrei detto</span>; si dices <span class='it'>sono andato</span> → <span class='it'>sarei andato</span>. Y con ESSERE el participio CONCUERDA: <span class='it'>sarei andatA</span> si habla una mujer. <span class="cuad">a tu cuaderno</span></div>
+
+<h2>Los 3 usos</h2>
+
+<h3>1. Arrepentimiento y reproche — lo que no hiciste</h3>
+
+<p>Es el uso más frecuente, y ya lo tienes en el oído: <span class='it'>«Non avremmo mai dovuto lasciarci»</span> es el estribillo entero de <em>Stavo pensando a te</em>.</p>
+
+<table>
+  <tr><th>Italiano</th><th>Español</th><th>Matiz</th></tr>
+  <tr><td><span class='it'>Avrei dovuto dirtelo</span></td><td>Debería habértelo dicho</td><td>me arrepiento</td></tr><tr><td><span class='it'>Non avresti dovuto farlo</span></td><td>No deberías haberlo hecho</td><td>te reprocho</td></tr><tr><td><span class='it'>Avrei voluto essere lì</span></td><td>Habría querido estar ahí</td><td>deseo imposible</td></tr><tr><td><span class='it'>Sarei potuto venire</span></td><td>Habría podido venir</td><td>posibilidad perdida</td></tr>
+</table>
+
+<div class="nota">Con los modales (dovere, potere, volere) el auxiliar lo elige el verbo que va DETRÁS: <span class='it'>sarei potuto VENIRE</span> (venire va con essere) pero <span class='it'>avrei potuto FARLO</span> (fare va con avere).</div>
+
+<h3>2. Futuro nel passato — EL uso que el español no comparte</h3>
+
+<p>Cuando cuentas desde el pasado algo que <em>entonces</em> era futuro. Aquí el italiano y el español se separan, y es el error más caro del tema.</p>
+
+<table>
+  <tr><th>Español</th><th>Italiano</th><th></th></tr>
+  <tr><td>Dijo que <b>vendría</b></td><td><span class='it'>Ha detto che <b>sarebbe venuto</b></span></td><td>✅ compuesto</td></tr><tr><td>Dijo que vendría</td><td><s>Ha detto che verrebbe</s></td><td>❌ el simple NO vale</td></tr><tr><td>Sabía que no <b>lo lograría</b></td><td><span class='it'>Sapevo che non <b>ce l'avrebbe fatta</b></span></td><td>✅</td></tr><tr><td>Prometió que me <b>escribiría</b></td><td><span class='it'>Ha promesso che mi <b>avrebbe scritto</b></span></td><td>✅</td></tr>
+</table>
+
+<div class="alerta">⚠️ <strong>La regla en una línea:</strong> si el verbo principal está en PASADO (ha detto, sapevo, ha promesso), el futuro que viene detrás va en condizionale <strong>COMPUESTO</strong>, no simple. El español usa el simple («dijo que vendría») y por eso lo calcamos mal. Truco para acordarte: el italiano mira ese futuro <em>desde hoy</em>, y desde hoy ya pasó — por eso lo pone en pasado.</div>
+
+<h3>3. Cierre del periodo ipotetico de 3er tipo</h3>
+
+<p>Es la mitad derecha de la estructura que ya viste en <em>Alta Marea</em>: <span class='it'>«non ti avessi avuto attorno / SAREI CADUTO sul fondo»</span>.</p>
+
+<table>
+  <tr><th>Si (condición)</th><th>→ Resultado</th></tr>
+  <tr><td><span class='it'>Se avessi studiato</span> (cong. trapassato)</td><td><span class='it'>avrei superato l'esame</span> (cond. composto)</td></tr><tr><td><span class='it'>Se fossi partito prima</span></td><td><span class='it'>non avrei perso il treno</span></td></tr>
+</table>
+
+<div class="guiado">
+  <h3>📐 Esempio guidato — paso a paso</h3>
+  <div class="paso"><strong>1. ¿Qué quiero decir?</strong> «Dijo que me llamaría».</div>
+  <div class="paso"><strong>2. ¿El verbo principal está en pasado?</strong> «ha detto» → sí. Entonces toca condizionale COMPUESTO.</div>
+  <div class="paso"><strong>3. ¿Qué auxiliar pide <span class='it'>chiamare</span>?</strong> «ho chiamato» → AVERE → <span class='it'>avrebbe chiamato</span>.</div>
+  <div class="paso"><strong>4. Monto la frase:</strong> <span class='it'>Ha detto che mi avrebbe chiamato.</span> ✅</div>
+  <p style="margin-top:.8rem"><strong>Ahora tú, a medias.</strong> Parte de: «Prometió que vendría a la fiesta». ① ¿principal en pasado? ___ ② ¿auxiliar de <span class='it'>venire</span>? ___ ③ Frase final: ___</p>
+  <p style="font-size:.86rem;color:#666">(la solución está en el solucionario, «esempio guidato»)</p>
+</div>
+
+<h2>🧱 Frasi pronte</h2>
+<ul>
+  <li><span class="it">Avrei dovuto dirtelo prima</span> → Debería habértelo dicho antes</li>
+  <li><span class="it">Non avresti dovuto farlo</span> → No deberías haberlo hecho</li>
+  <li><span class="it">Ha detto che sarebbe arrivato tardi</span> → Dijo que llegaría tarde</li>
+  <li><span class="it">Al posto tuo non l'avrei fatto</span> → Yo en tu lugar no lo habría hecho</li>
+  <li><span class="it">Chi l'avrebbe mai detto!</span> → ¡Quién lo hubiera dicho!</li>
+</ul>
+
+<h2>📖 In contesto</h2>
+<div class="bloque">
+  <span class="it">— Allora, il cliente ha confermato?<br>
+  — Mi ha scritto ieri: ha detto che <b>avrebbe mandato</b> l'acconto entro venerdì, ma non è arrivato niente.<br>
+  — Mah. <b>Avresti dovuto</b> chiedergli una caparra prima di cominciare.<br>
+  — Lo so, <b>avrei dovuto</b>. Al posto tuo cosa <b>avresti fatto</b>?<br>
+  — Io gliel'<b>avrei chiesta</b> subito. Comunque non ti preoccupare: se non paga entro lunedì, gli scrivi tu.<br>
+  — Meno male che me l'hai detto. <b>Sarei stato</b> zitto un altro mese.</span><br>
+  <span style="color:#666;font-size:.86rem">→ «¿El cliente confirmó?» — «Me escribió ayer: dijo que mandaría el anticipo antes del viernes, pero no llegó nada.» — «Mmm. Deberías haberle pedido un depósito antes de empezar.» — «Lo sé, debería. En tu lugar, ¿qué habrías hecho?» — «Yo se lo habría pedido enseguida. De todos modos no te preocupes: si no paga el lunes, le escribes tú.» — «Menos mal que me lo dijiste. Me habría quedado callado otro mes.»</span>
+</div>
+
+<h2>🗣️ Cultura &amp; Strada</h2>
+
+<div class="slang">
+  <strong>Meno male</strong> <span class="reg verde">suave</span> <span style="font-size:.78rem;color:#888;font-weight:400">[ME-no MA-le]</span><br>
+  <span class="it">per fortuna; è andata bene</span> <span style="color:#666">→ menos mal / qué bueno que</span>
+  <div class="uso">Literalmente «menos mal», igualito que en español. Se usa sola como reacción de alivio, o con «che»: «meno male che sei arrivato». De las expresiones más frecuentes del día a día.</div>
+  <div class="ejemplo"><span class="it">Meno male che me l'hai detto, non ci avevo pensato.</span> → Menos mal que me lo dijiste, no lo había pensado.</div>
+</div>
+
+<div class="slang">
+  <strong>Chi l'avrebbe mai detto!</strong> <span class="reg verde">suave</span> <span style="font-size:.78rem;color:#888;font-weight:400">[ki la-VREB-be MAI DET-to]</span><br>
+  <span class="it">espressione di sorpresa per qualcosa di inaspettato</span> <span style="color:#666">→ ¡quién lo hubiera dicho! / ¡quién iba a decirlo!</span>
+  <div class="uso">Justo el tiempo de hoy, cristalizado en exclamación. Fíjate: es un condizionale composto puro, y se dice tal cual. Apréndetela entera y ya tienes el tiempo metido en la boca.</div>
+  <div class="ejemplo"><span class="it">Si sono sposati? Chi l'avrebbe mai detto!</span> → ¿Se casaron? ¡Quién lo hubiera dicho!</div>
+</div>
+
+<div class="slang">
+  <strong>Al posto tuo</strong> <span class="reg verde">suave</span> <span style="font-size:.78rem;color:#888;font-weight:400">[al PO-sto TU-o]</span><br>
+  <span class="it">se fossi in te; nella tua situazione</span> <span style="color:#666">→ yo en tu lugar / si yo fuera tú</span>
+  <div class="uso">Abre consejos y reproches, y casi siempre arrastra un condizionale detrás: «al posto tuo non l'avrei fatto». Variantes: al posto suo, al posto loro.</div>
+  <div class="ejemplo"><span class="it">Al posto tuo gliel'avrei chiesto subito.</span> → Yo en tu lugar se lo habría pedido enseguida.</div>
+</div>
+
+<h2>☕ Cultura — di che parlare con un italiano</h2>
+<div class="cultura">
+  <span class="tipo">Dal capitolo 24 — Caterina de' Medici</span>
+  <h3>La florentina de catorce años que acabó gobernando Francia treinta</h3>
+  <div class="ctx"><span class="it">Caterina de' Medici è arrivata in Francia nel 1533, a quattordici anni, per sposare il figlio del re. Non parlava francese, non aveva amici a corte e non era amata: la vedevano come un'italiana di banchieri, senza sangue blu. Per vent'anni è stata quasi invisibile, mentre suo marito amava apertamente Diane de Poitiers. Ha aspettato, ha imparato il francese alla perfezione, ha coltivato i nobili — e alla fine ha governato la Francia per trent'anni. Portò con sé cuochi e pasticcieri fiorentini che cambiarono per sempre la cucina francese.</span> <span style="color:#666;font-size:.85rem">→ Llegó a Francia a los 14 años sin hablar francés y sin aliados; la despreciaban por ser hija de banqueros. Esperó veinte años en silencio mientras su marido amaba a otra, y acabó gobernando Francia tres décadas. Se llevó cocineros florentinos que cambiaron la cocina francesa.</span></div>
+  <div class="frasi">
+    <div class="lbl">💬 Per parlarne</div>
+    <div class="f"><span class="it">Aveva solo quattordici anni e non parlava una parola di francese.</span> <span class="es">→ Tenía solo catorce años y no hablaba una palabra de francés.</span></div>
+    <div class="f"><span class="it">Nessuno avrebbe scommesso su di lei, eppure ha governato trent'anni.</span> <span class="es">→ Nadie habría apostado por ella, y sin embargo gobernó treinta años.</span></div>
+    <div class="f"><span class="it">La cucina francese le deve più di quanto i francesi ammettano.</span> <span class="es">→ La cocina francesa le debe más de lo que los franceses admiten.</span></div>
+  </div>
+  <div class="spunto">🗣️ <b>Lo spunto:</b> <span class="it">Usa il condizionale composto di oggi per parlare di lei: «Al posto suo, io <b>me ne sarei andato</b> subito», «<b>Avrei reagito</b> diversamente», «Chi <b>l'avrebbe mai detto</b> che sarebbe finita così?». E tu, <b>avresti resistito</b> vent'anni in silenzio?</span></div>
+  <div class="puente">🇲🇽 El paralelo mexicano es Sor Juana: también la juzgaron por su origen y su condición antes que por su cabeza, y también ganó por dentro — con la pluma en vez de con la corte. Dos mujeres que esperaron, aprendieron y acabaron marcando el siglo.</div>
+</div>
+
+<h2>✍️ Dettato — scrivi quello che senti</h2>
+<div class="bloque">
+  <button class="say-frase" data-frase="Avrei dovuto dirtelo prima, scusa.">Frase 1</button>
+  <button class="say-frase" data-frase="Ha detto che sarebbe arrivato alle otto.">Frase 2</button>
+  <button class="say-frase" data-frase="Meno male che me l'hai chiesto, al posto tuo non l'avrei fatto.">Frase 3</button>
+  <textarea class="resp" data-ej="dettato" rows="3" placeholder="1. … 2. … 3. …"></textarea>
+</div>
+
+<h2>Esercizi</h2>
+<ol class="ejercicio">
+<li><strong><strong>Forma il condizionale composto</strong> — pon el auxiliar correcto: io ___ (dire) · lei ___ (andare) · noi ___ (fare) · loro ___ (partire) · tu ___ (scrivere)</strong>
+    <textarea class="resp" data-ej="e1" rows="2" placeholder="avrei detto, sarebbe andata…"></textarea></li>
+<li><strong><strong>Arrepentimiento</strong> — traduce: a) Debería haberte llamado. b) No deberías haber bebido tanto. c) Habría querido ayudarte.</strong>
+    <textarea class="resp" data-ej="e2" rows="3" placeholder="a) Avrei dovuto chiamarti…"></textarea></li>
+<li><strong><strong>Futuro nel passato</strong> — pasa al pasado: «Dice che verrà» → «Ha detto che ___». «So che mi scriverà» → «Sapevo che mi ___». «Promette che lo farà» → «Ha promesso che lo ___».</strong>
+    <textarea class="resp" data-ej="e3" rows="3" placeholder="sarebbe venuto…"></textarea></li>
+<li><strong><strong>Caccia all'errore</strong> — corrige: a) «Ha detto che verrebbe domani». b) «Sarei dovuto andare» (habla una mujer). c) «Avrei andato al mare».</strong>
+    <textarea class="resp" data-ej="e4" rows="3" placeholder="…"></textarea></li>
+<li><strong><strong>Periodo ipotetico di 3° tipo</strong> — completa: Se ___ (studiare) di più, ___ (superare) l'esame. · Se ___ (partire) prima, non ___ (perdere) il treno.</strong>
+    <textarea class="resp" data-ej="e5" rows="2" placeholder="avessi studiato, avrei superato…"></textarea></li>
+<li><strong><strong>Reggenze</strong> — completa y luego mete un condizionale composto: Provo ___ spiegarglielo → «___ dovuto provare ___ spiegarglielo». · Cerco ___ capire · Parto ___ Roma.</strong> <em>(ripasso tuo)</em>
+    <textarea class="resp" data-ej="e6" rows="3" placeholder="a … Avrei dovuto provare a … di … per"></textarea></li>
+<li><strong><strong>Pronomi combinati + condizionale</strong> — traduce: a) Se lo habría dicho (a él). b) Te las habría mandado ayer. c) Me lo deberías haber dicho.</strong> <em>(ripasso tuo)</em>
+    <textarea class="resp" data-ej="e7" rows="3" placeholder="a) Gliel'avrei detto…"></textarea></li>
+<li><strong><strong>Al posto tuo…</strong> — da un consejo con condizionale composto para cada situación: a) Un amigo no cobró un trabajo. b) Alguien llegó tarde a una cita importante.</strong>
+    <textarea class="resp" data-ej="e8" rows="3" placeholder="a) Al posto tuo gli avrei chiesto…"></textarea></li>
+<li><strong><strong>Concordanza del participio</strong> — habla una mujer: a) «Sarei ___ (andare) volentieri». b) «Ci saremmo ___ (divertire)» (dos amigas). c) «Avrei ___ (fare) lo stesso».</strong>
+    <textarea class="resp" data-ej="e9" rows="2" placeholder="andata, divertite, fatto"></textarea></li>
+<li><strong><strong>Il tuo vocabolario</strong> — 2 frases con → <strong class='mis-palabras'>(abre tu Vocabulario ★)</strong>, una de arrepentimiento y otra de futuro nel passato.</strong>
+    <textarea class="resp" data-ej="e10" rows="3" placeholder="…"></textarea></li>
+<li><strong><strong>Ascolto</strong> — escucha y escribe la frase; luego di qué uso del condizionale es (arrepentimiento / futuro nel passato / hipotético): <div class="ascolto"><button class="say-frase" data-frase="Avrei dovuto ascoltarti.">🔊 1</button><button class="say-frase" data-frase="Mi ha detto che sarebbe passato più tardi.">🔊 2</button><button class="say-frase" data-frase="Se l'avessi saputo, non sarei venuto.">🔊 3</button></div></strong> <em>(ripasso tuo)</em>
+    <textarea class="resp" data-ej="e11" rows="3" placeholder="1. … (uso: …)"></textarea></li>
+<li><strong><strong>Del español, sin calcar</strong> — traduce cuidando el tiempo: «Me dijo que me escribiría, pero nunca lo hizo. Yo en su lugar habría avisado.»</strong>
+    <textarea class="resp" data-ej="e12" rows="3" placeholder="Mi ha detto che mi avrebbe scritto…"></textarea></li>
+<li><strong><strong>Modales</strong> — elige el auxiliar y explica por qué: «Sarei/Avrei potuto venire» · «Sarei/Avrei dovuto farlo» · «Sarei/Avrei voluto restare».</strong>
+    <textarea class="resp" data-ej="e13" rows="3" placeholder="…"></textarea></li>
+<li><strong><strong>Chi l'avrebbe mai detto</strong> — escribe 3 cosas sorprendentes de tu año usando esa fórmula o «meno male che…».</strong>
+    <textarea class="resp" data-ej="e14" rows="3" placeholder="Chi l'avrebbe mai detto che…"></textarea></li>
+<li><strong><strong>Produzione libera</strong> — escribe 6-8 líneas contando <em>un trabajo del estudio que no salió como esperabas</em>: qué te dijeron que pasaría, qué pasó, y qué habrías hecho distinto. Obligatorio: 2 arrepentimientos (avrei dovuto…), 1 futuro nel passato (ha detto che sarebbe…) y 1 «al posto tuo/suo».</strong>
+    <textarea class="resp" data-ej="e15" rows="7" placeholder="Il mese scorso un cliente…"></textarea></li>
+</ol>
+
+<details class="solu">
+  <summary>Soluzioni / Soluciones (ábrelas después de intentarlo)</summary>
+  <div class="body">
+    <p><strong>Esempio guidato:</strong> ① sí, «ha promesso» está en pasado · ② venire → ESSERE → sarebbe venuto · ③ <span class='it'>Ha promesso che sarebbe venuto alla festa.</span></p>
+    <p><strong>Dettato:</strong> 1) <span class="it">Avrei dovuto dirtelo prima, scusa.</span> 2) <span class="it">Ha detto che sarebbe arrivato alle otto.</span> 3) <span class="it">Meno male che me l'hai chiesto, al posto tuo non l'avrei fatto.</span></p>
+    <p><strong>1.</strong> <span class='it'>avrei detto · sarebbe andata · avremmo fatto · sarebbero partiti · avresti scritto</span>. El auxiliar es el mismo del passato prossimo.</p>
+    <p><strong>2.</strong> a) <span class='it'>Avrei dovuto chiamarti.</span> b) <span class='it'>Non avresti dovuto bere così tanto.</span> c) <span class='it'>Avrei voluto aiutarti.</span></p>
+    <p><strong>3.</strong> <span class='it'>sarebbe venuto · avrebbe scritto · avrebbe fatto</span>. Verbo principal en pasado → condizionale COMPUESTO, nunca el simple.</p>
+    <p><strong>4.</strong> a) <span class='it'>Ha detto che sarebbe venuto</span> (futuro nel passato = compuesto). b) <span class='it'>Sarei dovuta andare</span> (con essere el participio concuerda). c) <span class='it'>Sarei andato/a</span> (andare va con essere, no con avere).</p>
+    <p><strong>5.</strong> <span class='it'>Se avessi studiato di più, avrei superato l'esame. Se fossi partito prima, non avrei perso il treno.</span> Cong. trapassato → condizionale composto.</p>
+    <p><strong>6.</strong> Provo <span class='it'>a</span> → «<span class='it'>Avrei dovuto provare a spiegarglielo</span>» · Cerco <span class='it'>di</span> capire · Parto <span class='it'>per</span> Roma.</p>
+    <p><strong>7.</strong> a) <span class='it'>Gliel'avrei detto.</span> b) <span class='it'>Te le avrei mandate ieri</span> (concordancia: mandatE). c) <span class='it'>Me lo avresti dovuto dire</span> / <span class='it'>Avresti dovuto dirmelo.</span></p>
+    <p><strong>8.</strong> Respuesta abierta, pero debe llevar condizionale composto. Ej.: a) <span class='it'>Al posto tuo gli avrei chiesto un acconto.</span> b) <span class='it'>Avrebbe dovuto avvisare prima.</span></p>
+    <p><strong>9.</strong> a) <span class='it'>andata</span> b) <span class='it'>divertite</span> c) <span class='it'>fatto</span> — con AVERE el participio NO concuerda con el sujeto.</p>
+    <p><strong>11.</strong> 1) <span class='it'>Avrei dovuto ascoltarti</span> — arrepentimiento. 2) <span class='it'>Mi ha detto che sarebbe passato più tardi</span> — futuro nel passato. 3) <span class='it'>Se l'avessi saputo, non sarei venuto</span> — hipotético de 3er tipo.</p>
+    <p><strong>12.</strong> <span class='it'>Mi ha detto che mi avrebbe scritto, ma non l'ha mai fatto. Al posto suo avrei avvisato.</span></p>
+    <p><strong>13.</strong> <span class='it'>SAREI potuto venire</span> (venire→essere) · <span class='it'>AVREI dovuto farlo</span> (fare→avere) · <span class='it'>SAREI voluto restare</span> (restare→essere). Con los modales manda el auxiliar del verbo de DETRÁS.</p>
+    <p><strong>14.</strong> Respuesta abierta. Debe usar <span class='it'>chi l'avrebbe mai detto che…</span> (+ indicativo o congiuntivo) o <span class='it'>meno male che…</span></p>
+    <p><strong>10, 15:</strong> respuesta libre — dime «ya terminé el día 24» y te las corrijo.</p>
+  </div>
+</details>
+
+<div class="bloque" style="background:#f3faf6;border-color:#9bd3b4"><strong>✅ Autocontrollo</strong> — ¿ya puedes…? ① formar avrei fatto / sarei andato sin dudar · ② usar «ha detto che sarebbe venuto» y NO «verrebbe» · ③ elegir el auxiliar con los modales · ④ hacer concordar el participio con essere. Si algo tambalea, márcalo 🔁.</div>
+
+<h2>Riflessione del giorno</h2>
+<ul>
+  <li>Este tiempo es el que convierte un relato plano en uno con capas: lo que pasó, lo que iba a pasar y lo que habría podido pasar. Es el salto de B1 a B2 en narración.</li>
+  <li>Vuelve a oír el estribillo de <em>Stavo pensando a te</em>: <span class='it'>«non avremmo mai dovuto lasciarci»</span>. Ya no es una frase suelta, ahora sabes exactamente qué tiempo es y por qué.</li>
+  <li>🎧 Bonus: 10 min de <a href="inmersion.html">Inmersión</a>.</li>
+</ul>
+<div class="tiempo">⏱ Tempo stimato: 50-60 min &nbsp;·&nbsp; Domani: Futuro anteriore</div>
+
+</body>
+</html>

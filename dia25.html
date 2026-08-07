@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giorno 25 — Italiano</title>
+<style>
+  body { font-family: -apple-system, sans-serif; background: #f5f7fa; color: #1c1c1e; max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 4rem; line-height: 1.7; }
+  .header { border-left: 4px solid #2d6a4f; padding-left: 1rem; margin-bottom: 2.5rem; }
+  .header .dia { font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #2d6a4f; margin-bottom: .3rem; }
+  .header h1 { font-size: 1.7rem; font-weight: 700; margin: 0; }
+  .header p { color: #666; font-size: .9rem; margin: .3rem 0 0; }
+  h2 { font-size: .7rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: #2d6a4f; margin: 2rem 0 .8rem; }
+  h3 { font-size: .95rem; font-weight: 700; margin: 1.2rem 0 .5rem; }
+  table { width: 100%; border-collapse: collapse; margin: .5rem 0 1rem; font-size: .92rem; }
+  th { background: #1c1c1e; color: #fff; text-align: left; padding: .5rem .8rem; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
+  td { padding: .55rem .8rem; border-bottom: 1px solid #dde5dd; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #eef2ee; }
+  .slang { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: 1rem 1.2rem; margin: .5rem 0 1rem; }
+  .slang strong { color: #2d6a4f; font-size: 1.05rem; }
+  .slang .uso { font-size: .82rem; color: #888; margin-top: .2rem; }
+  .slang .ejemplo { font-size: .88rem; font-style: italic; color: #444; margin-top: .4rem; background: #f5f7fa; padding: .3rem .6rem; border-radius: 4px; }
+  .ejercicio { counter-reset: ej; padding-left: 0; }
+  .ejercicio li { list-style: none; counter-increment: ej; padding: .6rem 0 .6rem 2.4rem; position: relative; border-bottom: 1px solid #dde5dd; font-size: .92rem; }
+  .ejercicio li:last-child { border-bottom: none; }
+  .ejercicio li::before { content: counter(ej); position: absolute; left: 0; top: .65rem; background: #2d6a4f; color: #fff; font-size: .65rem; font-weight: 700; width: 1.5rem; height: 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .esame { counter-reset: ex; padding-left: 0; }
+  .esame li { list-style: none; counter-increment: ex; padding: .7rem 0 .7rem 2.4rem; position: relative; border-bottom: 1px solid #e0d0d0; font-size: .92rem; }
+  .esame li:last-child { border-bottom: none; }
+  .esame li::before { content: "X" counter(ex); position: absolute; left: 0; top: .65rem; background: #922b21; color: #fff; font-size: .58rem; font-weight: 700; width: 1.7rem; height: 1.5rem; border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+  .nota { background: #f0f7f4; border-left: 3px solid #2d6a4f; padding: .7rem 1rem; border-radius: 0 6px 6px 0; font-size: .88rem; color: #1a4731; margin: .8rem 0; }
+  .alerta { background: #fdf0ef; border-left: 3px solid #c0392b; padding: .7rem 1rem; border-radius: 0 6px 6px 0; font-size: .88rem; color: #922b21; margin: .8rem 0; }
+  .bloque { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .92rem; }
+  .tiempo { text-align: right; font-size: .8rem; color: #999; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #dde5dd; }
+  .it { font-weight: 600; font-style: italic; }
+  p { font-size: .92rem; }
+  ul { font-size: .92rem; padding-left: 1.2rem; }
+  .guiado { background: #fffdf3; border: 1px solid #e6d9a8; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .92rem; }
+  .guiado h3 { margin-top: 0; color: #8a6d1f; }
+  .paso { background: #fff; border-left: 3px solid #b8860b; padding: .4rem .8rem; margin: .4rem 0; border-radius: 0 4px 4px 0; }
+  .big { font-size: 1.15rem; font-weight: 700; color: #2d6a4f; letter-spacing: .02em; text-align: center; }
+  .ascolto { background: #eef5ff; border: 1px solid #bcd4ea; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; }
+  .ascolto button.say-frase { background: #1a4d80; color: #fff; border: 0; border-radius: 6px; padding: .5rem .9rem; font-size: .85rem; cursor: pointer; margin: .3rem 0; }
+  .fosil { background: #fff4f2; border: 2px solid #c0392b; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; }
+  .fosil h3 { color: #922b21; margin-top: 0; }
+  .rubrica { background: #f4f0fa; border: 1px solid #cfc0e8; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .88rem; }
+</style>
+<link rel="stylesheet" href="assets/curso.css?v=20260807b"><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260807b"></script><script defer src="assets/vocab.js?v=20260807b"></script><script defer src="assets/frases.js?v=20260807b"></script><script defer src="assets/curso.js?v=20260807b"></script><script defer src="assets/respuestas.js?v=20260807b"></script>
+</head>
+<body>
+
+<div class="header">
+  <div class="dia">Settimana 4 · Giorno 25 · Livello B2</div>
+  <h1>Futuro anteriore — avrò fatto</h1>
+  <p>Lo que habrá pasado antes… y la suposición que el español no tiene</p>
+</div>
+
+<div class="bloque" style="background:#eef5ff;border-color:#bcd4ea"><strong>🎯 Obiettivo di oggi</strong> — al terminar podrás: ① formar <span class='it'>avrò fatto</span> con los dos auxiliares · ② ordenar dos futuros: qué pasa antes y qué después · ③ usar el <strong>futuro di probabilità</strong> para suponer · ④ distinguir los tres futuros del italiano.</div>
+
+<h2>Ripasso veloce (5 min)</h2>
+<p>Del día 24: pasa al pasado — «Dice che verrà» → «Ha detto che ___». Y forma: io ___ (fare) en condizionale composto.</p>
+
+<h2>Come si forma</h2>
+
+<p><span class='it'>Futuro semplice di ESSERE o AVERE + participio passato.</span> Otra vez lo mismo: cambia el auxiliar, el participio no se mueve.</p>
+
+<table>
+  <tr><th></th><th>Con AVERE</th><th>Con ESSERE</th></tr>
+  <tr><td>io</td><td>avrò finito</td><td>sarò arrivato / arrivata</td></tr><tr><td>tu</td><td>avrai finito</td><td>sarai arrivato / arrivata</td></tr><tr><td>lui/lei</td><td>avrà finito</td><td>sarà arrivato / arrivata</td></tr><tr><td>noi</td><td>avremo finito</td><td>saremo arrivati / arrivate</td></tr><tr><td>voi</td><td>avrete finito</td><td>sarete arrivati / arrivate</td></tr><tr><td>loro</td><td>avranno finito</td><td>saranno arrivati / arrivate</td></tr>
+</table>
+
+<div class="nota">🔑 <strong>HACK</strong> — los tres tiempos compuestos que ya conoces se construyen IGUAL — solo cambia en qué tiempo pones el auxiliar: <span class='it'>HO finito</span> (passato prossimo) · <span class='it'>AVREI finito</span> (condizionale composto, ayer) · <span class='it'>AVRÒ finito</span> (futuro anteriore, hoy). Aprendes uno y tienes los tres. <span class="cuad">a tu cuaderno</span></div>
+
+<h2>Los 2 usos</h2>
+
+<h3>1. Anterioridad — lo que pasa ANTES de otro futuro</h3>
+
+<p>Dos cosas van a pasar; la que ocurre primero va en futuro anteriore.</p>
+
+<table>
+  <tr><th>Italiano</th><th>Español</th><th>Orden</th></tr>
+  <tr><td><span class='it'>Quando <b>avrò finito</b>, ti chiamo</span></td><td>Cuando <b>termine</b>, te llamo</td><td>1º terminar, 2º llamar</td></tr><tr><td><span class='it'>Dopo che <b>sarà arrivato</b>, mangiamo</span></td><td>Después de que <b>llegue</b>, comemos</td><td>1º llegar, 2º comer</td></tr><tr><td><span class='it'>Appena <b>avrò capito</b>, ti spiego</span></td><td>En cuanto <b>entienda</b>, te explico</td><td>1º entender, 2º explicar</td></tr>
+</table>
+
+<div class="alerta">⚠️ <strong>Aquí el español usa SUBJUNTIVO, el italiano usa FUTURO.</strong> «Cuando termine» (subjuntivo) = <span class='it'>quando avrò finito</span> (futuro anteriore). No traduzcas «cuando termine» por <s>«quando finisca»</s>: en italiano, tras <span class='it'>quando, dopo che, appena, non appena</span> con valor de futuro, va FUTURO. Ya lo viste en <em>Hollywood</em>: <span class='it'>«finché non sarà nero»</span>.</div>
+
+<h3>2. Futuro di probabilità — suponer, y esto el español NO lo tiene</h3>
+
+<p>El uso más divertido y el que más te va a servir hablando: el futuro anteriore sirve para <strong>suponer sobre el pasado</strong>. No habla del futuro en absoluto.</p>
+
+<table>
+  <tr><th>Italiano</th><th>Español</th><th>Qué expresa</th></tr>
+  <tr><td><span class='it'>Sarà stato il vento</span></td><td>Habrá sido el viento</td><td>supongo que fue</td></tr><tr><td><span class='it'>Avrà perso il treno</span></td><td>Se le habrá perdido el tren</td><td>deduzco</td></tr><tr><td><span class='it'>Non avrà capito</span></td><td>No habrá entendido</td><td>me imagino</td></tr><tr><td><span class='it'>Quanti anni avrà?</span></td><td>¿Cuántos años tendrá?</td><td>cálculo aproximado</td></tr>
+</table>
+
+<div class="nota">El futuro SIMPLE hace lo mismo pero sobre el presente: <span class='it'>«Dov'è Marco?» «Sarà a casa»</span> = «estará en casa» (supongo). Y el ANTERIORE lo hace sobre el pasado: <span class='it'>«Sarà andato a casa»</span> = «se habrá ido a casa». Español e italiano coinciden aquí más de lo que parece — «habrá sido» es exactamente eso.</div>
+
+<h2>Los tres futuros, en una tabla</h2>
+
+<table>
+  <tr><th>Tiempo</th><th>Forma</th><th>Para qué</th><th>Ejemplo</th></tr>
+  <tr><td>Futuro semplice</td><td><span class='it'>finirò</span></td><td>futuro normal / suposición sobre el presente</td><td><span class='it'>Domani finirò · Sarà stanco</span></td></tr><tr><td>Futuro anteriore</td><td><span class='it'>avrò finito</span></td><td>anterioridad / suposición sobre el pasado</td><td><span class='it'>Quando avrò finito · Avrà perso il treno</span></td></tr><tr><td>Futuro nel passato</td><td><span class='it'>avrei finito</span></td><td>futuro visto desde el pasado (día 24)</td><td><span class='it'>Ha detto che avrebbe finito</span></td></tr>
+</table>
+
+<div class="guiado">
+  <h3>📐 Esempio guidato — paso a paso</h3>
+  <div class="paso"><strong>1. ¿Qué quiero decir?</strong> «Cuando haya mandado las fotos, te aviso».</div>
+  <div class="paso"><strong>2. ¿Hay dos futuros?</strong> Sí: mandar (primero) y avisar (después).</div>
+  <div class="paso"><strong>3. El PRIMERO va en futuro anteriore.</strong> mandare → «ho mandato» → AVERE → <span class='it'>avrò mandato</span>.</div>
+  <div class="paso"><strong>4. Monto:</strong> <span class='it'>Quando avrò mandato le foto, ti avviso.</span> ✅ (el segundo puede ir en presente, como en español)</div>
+  <p style="margin-top:.8rem"><strong>Ahora tú, a medias.</strong> Parte de: «En cuanto haya llegado a casa, te llamo». ① ¿cuál pasa primero? ___ ② ¿auxiliar de <span class='it'>arrivare</span>? ___ ③ Frase final: ___</p>
+  <p style="font-size:.86rem;color:#666">(la solución está en el solucionario, «esempio guidato»)</p>
+</div>
+
+<h2>🧱 Frasi pronte</h2>
+<ul>
+  <li><span class="it">Quando avrò finito, ti faccio sapere</span> → Cuando termine, te aviso</li>
+  <li><span class="it">Appena sarò arrivato ti scrivo</span> → En cuanto llegue te escribo</li>
+  <li><span class="it">Sarà stato il vento</span> → Habrá sido el viento</li>
+  <li><span class="it">Avrà avuto un imprevisto</span> → Le habrá surgido un imprevisto</li>
+  <li><span class="it">Boh, si sarà dimenticato</span> → Ni idea, se habrá olvidado</li>
+</ul>
+
+<h2>📖 In contesto</h2>
+<div class="bloque">
+  <span class="it">— Il fotografo non è ancora arrivato, sono le dieci passate.<br>
+  — <b>Avrà trovato</b> traffico, o <b>si sarà dimenticato</b>. Gli hai scritto?<br>
+  — Sì, ma non risponde. <b>Sarà rimasto</b> senza batteria.<br>
+  — Senti, appena <b>sarà arrivato</b> gli spieghi tutto tu, che io devo uscire.<br>
+  — Va bene. Quando <b>avrò sistemato</b> le luci, comincio comunque.<br>
+  — Perfetto. E quando <b>avrete finito</b>, mandatemi due scatti su WhatsApp.</span><br>
+  <span style="color:#666;font-size:.86rem">→ «El fotógrafo no llega, ya pasaron las diez.» — «Habrá agarrado tráfico, o se habrá olvidado. ¿Le escribiste?» — «Sí, pero no contesta. Se habrá quedado sin batería.» — «Oye, en cuanto llegue le explicas tú, que yo tengo que salir.» — «Va. Cuando haya acomodado las luces, empiezo de todos modos.» — «Perfecto. Y cuando hayan terminado, mándenme dos tomas por WhatsApp.»</span>
+</div>
+
+<h2>🗣️ Cultura &amp; Strada</h2>
+
+<div class="slang">
+  <strong>Boh</strong> <span class="reg verde">suave</span> <span style="font-size:.78rem;color:#888;font-weight:400">[bo, corto y seco]</span><br>
+  <span class="it">non lo so, non ne ho idea</span> <span style="color:#666">→ ni idea / sepa / quién sabe</span>
+  <div class="uso">La respuesta italiana por excelencia cuando no sabes algo, y encaja perfecto con las suposiciones de hoy: «boh, sarà stato il vento». Se dice sola, encogiendo los hombros. No confundir con «mah» (duda o escepticismo).</div>
+  <div class="ejemplo"><span class="it">— Perché non risponde? — Boh, avrà il telefono spento.</span> → «¿Por qué no contesta?» — «Ni idea, tendrá el teléfono apagado.»</div>
+</div>
+
+<div class="slang">
+  <strong>Che ne dici?</strong> <span class="reg verde">suave</span> <span style="font-size:.78rem;color:#888;font-weight:400">[ke ne DI-chi]</span><br>
+  <span class="it">cosa ne pensi? sei d'accordo?</span> <span style="color:#666">→ ¿qué te parece? / ¿cómo ves?</span>
+  <div class="uso">Para proponer algo o pedir opinión. Fíjate en el <span class='it'>ne</span>, el mismo pronombre de «non me ne frega». Formal: «che ne pensa?». Variante: «che ne dici di + infinito» = ¿qué tal si…?</div>
+  <div class="ejemplo"><span class="it">Che ne dici di rimandare a domani?</span> → ¿Qué te parece si lo dejamos para mañana?</div>
+</div>
+
+<div class="slang">
+  <strong>Mannaggia!</strong> <span class="reg amari">medio</span> <span style="font-size:.78rem;color:#888;font-weight:400">[man-NAD-ja]</span><br>
+  <span class="it">esclamazione di fastidio o delusione, senza volgarità</span> <span style="color:#666">→ ¡rayos! / ¡qué lata!</span>
+  <div class="uso">Del napolitano «male ne aggia» (que le venga mal). Es la palabrota que NO es palabrota: puedes decirla delante de cualquiera. Muy usada con «a…»: «mannaggia a me!» = ¡qué tonto soy!</div>
+  <div class="ejemplo"><span class="it">Mannaggia, avrò lasciato le chiavi in ufficio!</span> → ¡Rayos, habré dejado las llaves en la oficina!</div>
+</div>
+
+<h2>☕ Cultura — di che parlare con un italiano</h2>
+<div class="cultura">
+  <span class="tipo">Dal capitolo 25 — Donatello</span>
+  <h3>Michelangelo dijo que era el más grande — y hoy suena a tortuga ninja</h3>
+  <div class="ctx"><span class="it">Michelangelo — il più grande scultore che il mondo abbia conosciuto, secondo quasi tutti — diceva che Donatello era superiore a lui. Non per modestia: perché era vero. Donatello ha aperto ogni porta che Michelangelo ha poi attraversato. Figlio di un lavorante tessile, è andato a Roma con l'amico Brunelleschi verso il 1404 e insieme hanno passato mesi a misurare e disegnare le rovine antiche. Eppure oggi, nella coscienza popolare, il suo nome è associato soprattutto a una tartaruga ninja.</span> <span style="color:#666;font-size:.85rem">→ Miguel Ángel decía que Donatello era superior a él, y no por modestia. Hijo de un obrero textil, fue a Roma con Brunelleschi hacia 1404 y pasaron meses midiendo y dibujando ruinas antiguas. Hoy su nombre suena, sobre todo, a tortuga ninja.</span></div>
+  <div class="frasi">
+    <div class="lbl">💬 Per parlarne</div>
+    <div class="f"><span class="it">Michelangelo diceva che Donatello era più grande di lui.</span> <span class="es">→ Miguel Ángel decía que Donatello era más grande que él.</span></div>
+    <div class="f"><span class="it">È andato a Roma con Brunelleschi a misurare le rovine.</span> <span class="es">→ Fue a Roma con Brunelleschi a medir las ruinas.</span></div>
+    <div class="f"><span class="it">Oggi lo conoscono più per la tartaruga ninja che per le sue sculture.</span> <span class="es">→ Hoy lo conocen más por la tortuga ninja que por sus esculturas.</span></div>
+  </div>
+  <div class="spunto">🗣️ <b>Lo spunto:</b> <span class="it">Usa le supposizioni di oggi: «Quanti anni <b>avrà avuto</b> quando è andato a Roma?», «<b>Avrà passato</b> mesi a disegnare», «Chi <b>avrà scelto</b> i nomi delle tartarughe?». Prova a fare tre ipotesi su di lui, ad alta voce, senza cercare i dati.</span></div>
+  <div class="puente">🇲🇽 Pasa igual con Tamayo frente a Rivera: uno llenó los muros y las portadas, el otro abrió caminos que hoy se dan por hechos. La fama y la importancia rara vez van del brazo — y a veces una caricatura pesa más que un museo.</div>
+</div>
+
+<h2>✍️ Dettato — scrivi quello che senti</h2>
+<div class="bloque">
+  <button class="say-frase" data-frase="Quando avrò finito, ti faccio sapere.">Frase 1</button>
+  <button class="say-frase" data-frase="Boh, sarà rimasto senza batteria.">Frase 2</button>
+  <button class="say-frase" data-frase="Mannaggia, avrà perso il treno un'altra volta.">Frase 3</button>
+  <textarea class="resp" data-ej="dettato" rows="3" placeholder="1. … 2. … 3. …"></textarea>
+</div>
+
+<h2>Esercizi</h2>
+<ol class="ejercicio">
+<li><strong><strong>Forma il futuro anteriore</strong>: io ___ (finire) · tu ___ (arrivare) · noi ___ (capire) · lei ___ (partire) · loro ___ (mangiare)</strong>
+    <textarea class="resp" data-ej="e1" rows="2" placeholder="avrò finito, sarai arrivato…"></textarea></li>
+<li><strong><strong>Anterioridad</strong> — une con el tiempo correcto: a) Quando ___ (io, finire) il lavoro, esco. b) Appena ___ (tu, arrivare), chiamami. c) Dopo che ___ (loro, mangiare), andiamo.</strong>
+    <textarea class="resp" data-ej="e2" rows="3" placeholder="avrò finito…"></textarea></li>
+<li><strong><strong>El español dice subjuntivo, el italiano futuro</strong> — traduce: a) Cuando termine, te aviso. b) En cuanto llegues, escríbeme. c) Después de que lo haya visto, te digo.</strong>
+    <textarea class="resp" data-ej="e3" rows="3" placeholder="a) Quando avrò finito, ti avviso…"></textarea></li>
+<li><strong><strong>Futuro di probabilità</strong> — convierte la certeza en suposición: a) «Ha perso il treno» → ___. b) «È andato a casa» → ___. c) «Non ha capito» → ___.</strong>
+    <textarea class="resp" data-ej="e4" rows="3" placeholder="a) Avrà perso il treno…"></textarea></li>
+<li><strong><strong>Semplice o anteriore?</strong> — suposición sobre el PRESENTE o sobre el PASADO: a) ¿Dónde estará ahora? b) ¿Dónde habrá estado ayer? c) Tendrá unos cuarenta años. d) Habrá tenido un problema.</strong>
+    <textarea class="resp" data-ej="e5" rows="3" placeholder="a) Dove sarà adesso?…"></textarea></li>
+<li><strong><strong>Los tres futuros</strong> — completa con el correcto: a) Domani ___ (io, partire) presto. b) Quando ___ (io, partire), ti scrivo. c) Ha detto che ___ (lui, partire) presto.</strong>
+    <textarea class="resp" data-ej="e6" rows="3" placeholder="a) partirò b) sarò partito c) sarebbe partito"></textarea></li>
+<li><strong><strong>Clitici</strong> — pon el pronombre y conjuga en futuro anteriore: a) Quando ___ (mandare, le foto a lui) → «Quando ___ ___». b) Appena ___ (dire, la verità a me) → «Appena ___ ___».</strong> <em>(ripasso tuo)</em>
+    <textarea class="resp" data-ej="e7" rows="3" placeholder="Quando gliele avrò mandate…"></textarea></li>
+<li><strong><strong>Reggenze</strong> — completa: Appena ___ (io, riuscire) ___ finire, ti chiamo · Quando ___ (io, smettere) ___ lavorare, usciamo · Dopo che ___ (io, provare) ___ farlo, ti dico.</strong> <em>(ripasso tuo)</em>
+    <textarea class="resp" data-ej="e8" rows="3" placeholder="sarò riuscito a … avrò smesso di … avrò provato a"></textarea></li>
+<li><strong><strong>Concordanza</strong> — habla una mujer o un grupo: a) «___ (io, arrivare) tardi». b) «Quando ___ (noi, finire) — dos amigas». c) «___ (loro, partire) senza di noi».</strong>
+    <textarea class="resp" data-ej="e9" rows="2" placeholder="Sarò arrivata…"></textarea></li>
+<li><strong><strong>Il tuo vocabolario</strong> — 2 frases con → <strong class='mis-palabras'>(abre tu Vocabulario ★)</strong>, una con anterioridad y otra con suposición.</strong>
+    <textarea class="resp" data-ej="e10" rows="3" placeholder="…"></textarea></li>
+<li><strong><strong>Ascolto</strong> — escucha y di si es anterioridad o suposición: <div class="ascolto"><button class="say-frase" data-frase="Quando avrò finito il progetto, mi prendo una settimana.">🔊 1</button><button class="say-frase" data-frase="Non risponde, avrà il telefono spento.">🔊 2</button><button class="say-frase" data-frase="Appena sarà arrivata, cominciamo.">🔊 3</button></div></strong> <em>(ripasso tuo)</em>
+    <textarea class="resp" data-ej="e11" rows="3" placeholder="1. … (uso: …)"></textarea></li>
+<li><strong><strong>Caccia all'errore</strong> — corrige: a) «Quando finisca, ti chiamo». b) «Sarò finito il lavoro» (yo termino el trabajo). c) «Avrà andato a casa».</strong>
+    <textarea class="resp" data-ej="e12" rows="3" placeholder="…"></textarea></li>
+<li><strong><strong>Suposiciones en cadena</strong> — alguien no llegó a una cita. Escribe 3 hipótesis distintas con futuro anteriore, empezando una con «boh».</strong>
+    <textarea class="resp" data-ej="e13" rows="3" placeholder="Boh, avrà…"></textarea></li>
+<li><strong><strong>Che ne dici?</strong> — propón 2 planes usando «che ne dici di + infinito» y responde a cada uno suponiendo un obstáculo con futuro anteriore.</strong>
+    <textarea class="resp" data-ej="e14" rows="3" placeholder="— Che ne dici di…? — Mah, avrà…"></textarea></li>
+<li><strong><strong>Produzione libera</strong> — escribe 6-8 líneas sobre <em>un día de trabajo que todavía no ha pasado</em>: qué harás cuando hayas terminado cada cosa, y qué supones que habrá pasado con un cliente que no contesta. Obligatorio: 3 de anterioridad (quando/appena + futuro anteriore), 2 suposiciones y 1 slang de hoy.</strong>
+    <textarea class="resp" data-ej="e15" rows="7" placeholder="Domani, appena sarò arrivato in studio…"></textarea></li>
+</ol>
+
+<details class="solu">
+  <summary>Soluzioni / Soluciones (ábrelas después de intentarlo)</summary>
+  <div class="body">
+    <p><strong>Esempio guidato:</strong> ① llegar pasa primero · ② arrivare → ESSERE → sarò arrivato · ③ <span class='it'>Appena sarò arrivato a casa, ti chiamo.</span></p>
+    <p><strong>Dettato:</strong> 1) <span class="it">Quando avrò finito, ti faccio sapere.</span> 2) <span class="it">Boh, sarà rimasto senza batteria.</span> 3) <span class="it">Mannaggia, avrà perso il treno un'altra volta.</span></p>
+    <p><strong>1.</strong> <span class='it'>avrò finito · sarai arrivato/a · avremo capito · sarà partita · avranno mangiato</span></p>
+    <p><strong>2.</strong> a) <span class='it'>avrò finito</span> b) <span class='it'>sarai arrivato</span> c) <span class='it'>avranno mangiato</span></p>
+    <p><strong>3.</strong> a) <span class='it'>Quando avrò finito, ti avviso.</span> b) <span class='it'>Appena sarai arrivato, scrivimi.</span> c) <span class='it'>Dopo che l'avrò visto, ti dico.</span> Nunca «quando finisca».</p>
+    <p><strong>4.</strong> a) <span class='it'>Avrà perso il treno.</span> b) <span class='it'>Sarà andato a casa.</span> c) <span class='it'>Non avrà capito.</span></p>
+    <p><strong>5.</strong> a) <span class='it'>Dove sarà adesso?</span> (semplice) b) <span class='it'>Dove sarà stato ieri?</span> (anteriore) c) <span class='it'>Avrà una quarantina d'anni.</span> (semplice) d) <span class='it'>Avrà avuto un problema.</span> (anteriore)</p>
+    <p><strong>6.</strong> a) <span class='it'>partirò</span> (semplice) b) <span class='it'>sarò partito</span> (anteriore) c) <span class='it'>sarebbe partito</span> (futuro nel passato, día 24)</p>
+    <p><strong>7.</strong> a) <span class='it'>Quando gliele avrò mandate…</span> (concordancia: mandatE) b) <span class='it'>Appena me l'avrai detta…</span></p>
+    <p><strong>8.</strong> <span class='it'>sarò riuscito A · avrò smesso DI · avrò provato A</span>. Riuscire A, smettere DI, provare A.</p>
+    <p><strong>9.</strong> a) <span class='it'>Sarò arrivata</span> b) <span class='it'>saremo finite</span>… ojo: <em>finire</em> aquí es transitivo → <span class='it'>avremo finito</span> (con avere no concuerda) c) <span class='it'>Saranno partiti/e</span></p>
+    <p><strong>11.</strong> 1) anterioridad 2) suposición (aquí futuro semplice, sobre el presente) 3) anterioridad.</p>
+    <p><strong>12.</strong> a) <span class='it'>Quando avrò finito</span> (futuro, no subjuntivo) b) <span class='it'>Avrò finito il lavoro</span> (finire transitivo → avere) c) <span class='it'>Sarà andato</span> (andare → essere)</p>
+    <p><strong>13.</strong> Respuesta abierta. Deben ser futuro anteriore: <span class='it'>avrà perso il treno · si sarà dimenticato · sarà rimasto bloccato nel traffico</span>.</p>
+    <p><strong>14.</strong> Respuesta abierta. Estructura: <span class='it'>Che ne dici di uscire stasera? — Boh, Marco avrà già altri piani.</span></p>
+    <p><strong>10, 15:</strong> respuesta libre — dime «ya terminé el día 25» y te las corrijo.</p>
+  </div>
+</details>
+
+<div class="bloque" style="background:#f3faf6;border-color:#9bd3b4"><strong>✅ Autocontrollo</strong> — ¿ya puedes…? ① formar avrò finito / sarò arrivato · ② decir «quando avrò finito» y NO «quando finisca» · ③ suponer con «sarà stato il vento» · ④ distinguir los tres futuros. Si algo tambalea, márcalo 🔁.</div>
+
+<h2>Riflessione del giorno</h2>
+<ul>
+  <li>El <em>futuro di probabilità</em> es de lo más útil que te llevas: te permite opinar sin comprometerte, que es medio arte de la conversación italiana. Y no tiene traducción directa — el español lo hace, pero mucho menos.</li>
+  <li>Con el día de ayer ya tienes los tres futuros del italiano. Vuelve a la tabla comparativa cuando dudes: es el mapa entero en cuatro filas.</li>
+  <li>🎧 Bonus: 10 min de <a href="inmersion.html">Inmersión</a>.</li>
+</ul>
+<div class="tiempo">⏱ Tempo stimato: 50-60 min &nbsp;·&nbsp; Domani: Verbi causativi</div>
+
+</body>
+</html>
