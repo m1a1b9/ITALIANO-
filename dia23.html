@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giorno 23 — Italiano</title>
+<style>
+  body { font-family: -apple-system, sans-serif; background: #f5f7fa; color: #1c1c1e; max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 4rem; line-height: 1.7; }
+  .header { border-left: 4px solid #2d6a4f; padding-left: 1rem; margin-bottom: 2.5rem; }
+  .header .dia { font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #2d6a4f; margin-bottom: .3rem; }
+  .header h1 { font-size: 1.7rem; font-weight: 700; margin: 0; }
+  .header p { color: #666; font-size: .9rem; margin: .3rem 0 0; }
+  h2 { font-size: .7rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: #2d6a4f; margin: 2rem 0 .8rem; }
+  h3 { font-size: .95rem; font-weight: 700; margin: 1.2rem 0 .5rem; }
+  table { width: 100%; border-collapse: collapse; margin: .5rem 0 1rem; font-size: .92rem; }
+  th { background: #1c1c1e; color: #fff; text-align: left; padding: .5rem .8rem; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
+  td { padding: .55rem .8rem; border-bottom: 1px solid #dde5dd; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #eef2ee; }
+  .slang { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: 1rem 1.2rem; margin: .5rem 0 1rem; }
+  .slang strong { color: #2d6a4f; font-size: 1.05rem; }
+  .slang .uso { font-size: .82rem; color: #888; margin-top: .2rem; }
+  .slang .ejemplo { font-size: .88rem; font-style: italic; color: #444; margin-top: .4rem; background: #f5f7fa; padding: .3rem .6rem; border-radius: 4px; }
+  .ejercicio { counter-reset: ej; padding-left: 0; }
+  .ejercicio li { list-style: none; counter-increment: ej; padding: .6rem 0 .6rem 2.4rem; position: relative; border-bottom: 1px solid #dde5dd; font-size: .92rem; }
+  .ejercicio li:last-child { border-bottom: none; }
+  .ejercicio li::before { content: counter(ej); position: absolute; left: 0; top: .65rem; background: #2d6a4f; color: #fff; font-size: .65rem; font-weight: 700; width: 1.5rem; height: 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .nota { background: #f0f7f4; border-left: 3px solid #2d6a4f; padding: .7rem 1rem; border-radius: 0 6px 6px 0; font-size: .88rem; color: #1a4731; margin: .8rem 0; }
+  .alerta { background: #fdf0ef; border-left: 3px solid #c0392b; padding: .7rem 1rem; border-radius: 0 6px 6px 0; font-size: .88rem; color: #922b21; margin: .8rem 0; }
+  .bloque { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .92rem; }
+  .tiempo { text-align: right; font-size: .8rem; color: #999; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #dde5dd; }
+  .it { font-weight: 600; font-style: italic; }
+  p { font-size: .92rem; }
+  ul { font-size: .92rem; padding-left: 1.2rem; }
+  .guiado { background: #fffdf3; border: 1px solid #e6d9a8; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .92rem; }
+  .guiado h3 { margin-top: 0; color: #8a6d1f; }
+  .paso { background: #fff; border-left: 3px solid #b8860b; padding: .4rem .8rem; margin: .4rem 0; border-radius: 0 4px 4px 0; }
+  .big { font-size: 1.15rem; font-weight: 700; color: #2d6a4f; letter-spacing: .02em; }
+</style>
+<link rel="stylesheet" href="assets/curso.css?v=20260806a"><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260806a"></script><script defer src="assets/vocab.js?v=20260806a"></script><script defer src="assets/frases.js?v=20260806a"></script><script defer src="assets/curso.js?v=20260806a"></script><script defer src="assets/respuestas.js?v=20260806a"></script>
+</head>
+<body>
+
+<div class="header">
+  <div class="dia">Settimana 4 · Giorno 23 · Livello B2</div>
+  <h1>Pronomi combinati — glielo, me lo, gliene</h1>
+  <p>Cuando dos pronombres chocan en la misma frase: quién va primero y qué le pasa a cada uno</p>
+</div>
+
+<div class="bloque" style="background:#eef5ff;border-color:#bcd4ea"><strong>🎯 Obiettivo di oggi</strong> — al terminar podrás: ① juntar dos pronombres sin pensarlo (<span class="it">me lo dai?</span>) · ② usar <span class="it">glielo</span> para él, ella Y ellos · ③ colocarlos bien con infinitivo, imperativo y passato prossimo · ④ decir <span class="it">gliene</span> y <span class="it">me ne</span> sin bloquearte.</div>
+
+<h2>Ripasso veloce (5 min)</h2>
+<p>Del día 22, tu punto flojo: completa sin mirar — Provo ___ capire · Cerco ___ imparare · Parto ___ Roma · Non ha niente ___ che fare con me.</p>
+
+<h2>Il meccanismo</h2>
+<p><span class="it">Quando in una frase ci sono DUE pronomi — uno indiretto (a chi) e uno diretto (che cosa) — si uniscono in un blocco unico.</span> → Cuando hay dos pronombres, se funden en un bloque.</p>
+
+<div class="nota">🔑 <strong>HACK — las 2 reglas que lo explican todo:</strong>
+<ol style="margin:.4rem 0 0 1rem">
+<li><strong>Orden: primero A QUIÉN, después QUÉ.</strong> Igual que en español («me lo das» = <span class="it">me lo dai</span>). En esto no tienes que cambiar nada. <span class="cuad">a tu cuaderno</span></li>
+<li><strong>La -i final se vuelve -E:</strong> mi → <b>me</b>, ti → <b>te</b>, ci → <b>ce</b>, vi → <b>ve</b>. Y <strong>gli/le → GLIE-</strong>, que además se pega en UNA sola palabra.</li>
+</ol>
+</div>
+
+<h3>La tabla completa</h3>
+<table>
+  <tr><th>+</th><th>lo</th><th>la</th><th>li</th><th>le</th><th>ne</th></tr>
+  <tr><td><b>mi</b> (a mí)</td><td class="it">me lo</td><td class="it">me la</td><td class="it">me li</td><td class="it">me le</td><td class="it">me ne</td></tr>
+  <tr><td><b>ti</b> (a ti)</td><td class="it">te lo</td><td class="it">te la</td><td class="it">te li</td><td class="it">te le</td><td class="it">te ne</td></tr>
+  <tr><td><b>gli / le</b> (a él/ella/ellos)</td><td class="it">glielo</td><td class="it">gliela</td><td class="it">glieli</td><td class="it">gliele</td><td class="it">gliene</td></tr>
+  <tr><td><b>ci</b> (a nosotros)</td><td class="it">ce lo</td><td class="it">ce la</td><td class="it">ce li</td><td class="it">ce le</td><td class="it">ce ne</td></tr>
+  <tr><td><b>vi</b> (a ustedes)</td><td class="it">ve lo</td><td class="it">ve la</td><td class="it">ve li</td><td class="it">ve le</td><td class="it">ve ne</td></tr>
+</table>
+<p class="big" style="text-align:center">me · te · GLIE · ce · ve &nbsp;+&nbsp; lo · la · li · le · ne</p>
+
+<div class="guiado">
+  <h3>📐 Esempio guidato — paso a paso</h3>
+  <p>Partimos de: <span class="it">Do il libro a Marco.</span> (Le doy el libro a Marco.)</p>
+  <div class="paso"><strong>1. ¿Qué cosa?</strong> «il libro» → masculino singular → pronombre directo <span class="it"><b>lo</b></span>.</div>
+  <div class="paso"><strong>2. ¿A quién?</strong> «a Marco» → él → pronombre indirecto <span class="it"><b>gli</b></span>.</div>
+  <div class="paso"><strong>3. Los junto en orden (a quién + qué):</strong> gli + lo → la -i se vuelve -e y se pegan → <span class="it"><b>glielo</b></span>.</div>
+  <div class="paso"><strong>4. Lo pongo delante del verbo conjugado:</strong> <span class="it">Glielo do.</span> ✅</div>
+  <p style="margin-top:.8rem"><strong>Ahora tú, a medias.</strong> Parte de: <span class="it">Mando le foto ai clienti.</span></p>
+  <div class="paso">① ¿Qué cosa? «le foto» = femenino plural → ___ · ② ¿A quién? «ai clienti» = a ellos → ___ · ③ Junto: ___ · ④ Frase final: ___</div>
+  <p style="font-size:.86rem;color:#666">(la solución está en el solucionario, «esempio guidato»)</p>
+</div>
+
+<h3>Dónde se colocan</h3>
+<table>
+  <tr><th>Situación</th><th>Dónde va</th><th>Ejemplo</th></tr>
+  <tr><td>Verbo conjugado</td><td>DELANTE, separado</td><td class="it">Me lo dai.</td></tr>
+  <tr><td>Infinitivo</td><td>PEGADO al final (el verbo pierde la -e)</td><td class="it">Voglio dartelo. / Te lo voglio dare.</td></tr>
+  <tr><td>Imperativo tú/nosotros/ustedes</td><td>PEGADO</td><td class="it">Dammelo! Diteglielo!</td></tr>
+  <tr><td>Imperativo negativo</td><td>pegado al infinitivo O delante</td><td class="it">Non darmelo! / Non me lo dare!</td></tr>
+  <tr><td>Gerundio</td><td>PEGADO</td><td class="it">Dandoglielo, ho risolto tutto.</td></tr>
+  <tr><td>Imperativo formale (Lei)</td><td>DELANTE, separado</td><td class="it">Me lo dia, per favore.</td></tr>
+</table>
+
+<h3>Con el passato prossimo: el participio CONCUERDA</h3>
+<p>Cuando el pronombre directo va delante, el participio copia su género y número. Y <span class="it">lo/la</span> se eliden ante vocal:</p>
+<table>
+  <tr><th>Frase</th><th>Qué pasó</th></tr>
+  <tr><td class="it">Me l'ha dato.</td><td>el libro (masc. sing.) → dat<b>o</b>; me lo ha → me l'ha</td></tr>
+  <tr><td class="it">Me l'ha data.</td><td>la foto (fem. sing.) → dat<b>a</b></td></tr>
+  <tr><td class="it">Me li ha dati.</td><td>i libri (masc. pl.) → dat<b>i</b> (li NO se elide)</td></tr>
+  <tr><td class="it">Gliele ho mandate.</td><td>le foto (fem. pl.) → mandat<b>e</b></td></tr>
+</table>
+
+<div class="alerta">⚠️ <strong>Las 4 trampas del hispanohablante:</strong>
+<br>① <strong>El español dice «SE lo» — el italiano NUNCA.</strong> «Se lo di a Marco» = <span class="it">GLIELO ho dato</span>, no «se lo». Ese «se» español no existe aquí.
+<br>② <strong><span class="it">glielo</span> sirve para ÉL, ELLA y ELLOS.</strong> Una sola forma para los tres (a lui, a lei, a loro). Es la buena noticia del día.
+<br>③ <strong>Se escribe TODO JUNTO:</strong> glielo, gliela, gliene — una palabra. Pero <span class="it">me lo, te la, ce ne</span> van separados. Solo «glie-» se pega.
+<br>④ <strong>No te comas el pronombre.</strong> En español puedes decir «¿me lo puedes repetir?» o «¿puedes repetírmelo?»; en italiano también las dos, pero NUNCA «puoi ripetere?» a secas si te refieres a algo concreto.</div>
+
+<h2>🧱 Frasi pronte</h2>
+<ul>
+  <li><span class="it">Me lo puoi ripetere, per favore?</span> → ¿Me lo puedes repetir, por favor?</li>
+  <li><span class="it">Te lo giuro!</span> → ¡Te lo juro!</li>
+  <li><span class="it">Gliel'ho già detto.</span> → Ya se lo dije (a él/ella).</li>
+  <li><span class="it">Dammelo un attimo.</span> → Dámelo un momento.</li>
+  <li><span class="it">Non me ne parlare!</span> → ¡No me hables de eso! (queja cómplice)</li>
+</ul>
+
+<h2>📖 In contesto — al lavoro</h2>
+<div class="bloque">
+  <span class="it">— Senti, i clienti hanno chiesto le foto del matrimonio. Gliele hai mandate?<br>
+  — Non ancora, gliele mando stasera. Me le hai passate tu, vero?<br>
+  — Sì, te le ho messe nella cartella condivisa ieri.<br>
+  — Perfetto. E il preventivo? Glielo devo mandare io o glielo mandi tu?<br>
+  — Mandaglielo tu, che ci hai preso la mano. Io non me ne intendo di prezzi.<br>
+  — Va bene, glielo scrivo adesso e te lo faccio vedere prima di inviarlo.</span><br>
+  <span style="color:#666;font-size:.86rem">→ "Los clientes pidieron las fotos de la boda. ¿Se las mandaste?" — "Todavía no, se las mando en la noche. Me las pasaste tú, ¿verdad?" — "Sí, te las puse en la carpeta compartida ayer." — "Perfecto. ¿Y el presupuesto? ¿Se lo mando yo o se lo mandas tú?" — "Mándaselo tú, que ya le agarraste el modo. Yo no sé de precios." — "Va, se lo escribo ahora y te lo enseño antes de enviarlo."</span>
+</div>
+
+<h2>🗣️ Cultura &amp; Strada</h2>
+<div class="slang">
+  <strong>Non me ne frega niente</strong> <span class="reg amari" style="background:#fdeaea;color:#c0392b">🔴 light</span> <span style="font-size:.78rem;color:#888;font-weight:400">[non me ne FRE-ga NIEN-te]</span><br>
+  <span class="it">non mi interessa per niente</span> <span style="color:#666">→ me vale madres / me da igual</span>
+  <div class="uso">Justo el tema del día: <span class="it">me + ne</span>. De «fregarsene» (pasar de algo). Más suave: «non me ne importa». Más fuerte y vulgar: «non me ne fotte». <span class="cuad">a tu cuaderno</span></div>
+  <div class="ejemplo"><span class="it">Non me ne frega niente di quello che dicono.</span> → Me vale madres lo que digan.</div>
+</div>
+<div class="slang">
+  <strong>Piantala! / Smettila!</strong> <span class="reg amari">medio</span> <span style="font-size:.78rem;color:#888;font-weight:400">[PIAN-ta-la / SMET-ti-la]</span><br>
+  <span class="it">smetti subito di fare quella cosa</span> <span style="color:#666">→ ¡ya párale! / ¡córtale!</span>
+  <div class="uso">Otro guiño al día: imperativo + <span class="it">la</span> pegada, donde esa «la» no sustituye nada concreto — es parte fija de la expresión. «Piantare» es literalmente «plantar».</div>
+  <div class="ejemplo"><span class="it">Piantala di lamentarti!</span> → ¡Ya deja de quejarte!</div>
+</div>
+<div class="slang">
+  <strong>Figurati!</strong> <span class="reg verde">suave</span> <span style="font-size:.78rem;color:#888;font-weight:400">[fi-GU-ra-ti]</span><br>
+  <span class="it">non c'è di che; ma certo che no</span> <span style="color:#666">→ ¡no hay de qué! / ¡para nada!</span>
+  <div class="uso">Dos usos: respuesta a «grazie» (= de nada) y para quitarle importancia a algo («¿te molesto?» — «¡figurati!»). Formal: <span class="it">si figuri</span>.</div>
+  <div class="ejemplo"><span class="it">— Scusa il disturbo. — Ma figurati!</span> → "Perdona la molestia." — "¡Para nada!"</div>
+</div>
+
+<h2>☕ Cultura — di che parlare con un italiano</h2>
+<div class="cultura">
+  <span class="tipo">Dal capitolo 23 — Dante Alighieri</span>
+  <h3>Un desterrado rencoroso inventó el idioma que hablas</h3>
+  <div class="ctx"><span class="it">Prima di Dante l'italiano non esisteva: c'erano solo dialetti — fiorentino, veneziano, napoletano — spesso incomprensibili tra loro, e i testi seri si scrivevano in latino. Dante ha scritto la Commedia in fiorentino volgare, e quel dialetto è diventato la base dell'italiano moderno. Nel 1302 è stato condannato in absentia per corruzione: era una vendetta politica, non aveva fatto niente. Non è mai tornato a Firenze. Ha passato gli ultimi vent'anni in esilio, e quel rancore si sente ancora in ogni pagina del poema.</span> <span style="color:#666;font-size:.85rem">→ Antes de Dante no existía el italiano, solo dialectos; lo serio se escribía en latín. Escribió la Comedia en florentino vulgar y ese dialecto se volvió la base del italiano. Lo condenaron en 1302 por venganza política; murió en el exilio sin volver nunca a Florencia.</span></div>
+  <div class="frasi">
+    <div class="lbl">💬 Per parlarne</div>
+    <div class="f"><span class="it">Prima di Dante, in Italia non esisteva l'italiano: c'erano solo i dialetti.</span> <span class="es">→ Antes de Dante no existía el italiano: solo había dialectos.</span></div>
+    <div class="f"><span class="it">È stato condannato per una vendetta politica, non aveva fatto niente.</span> <span class="es">→ Lo condenaron por una venganza política, no había hecho nada.</span></div>
+    <div class="f"><span class="it">Non è mai tornato a Firenze: è morto in esilio a Ravenna.</span> <span class="es">→ Nunca volvió a Florencia: murió exiliado en Rávena.</span></div>
+  </div>
+  <div class="spunto">🗣️ <b>Lo spunto:</b> <span class="it">Immagina che un amico non sappia chi è Dante e tu debba spiegarglielo in tre frasi. Usa i pronomi combinati di oggi: «Glielo spiego così…», «Te lo racconto in breve…», «Se non lo sai, te ne parlo io». Provaci davvero, ad alta voce.</span></div>
+  <div class="puente">🇲🇽 Es el mismo papel que jugó Nebrija con el castellano, pero al revés: Nebrija escribió la gramática <em>para</em> fijar la lengua; Dante simplemente escribió tan bien en su dialecto que los demás lo adoptaron. Y hoy el español de México le debe su base a esa misma decisión de escribir en lengua vulgar y no en latín.</div>
+</div>
+
+<h2>✍️ Dettato — scrivi quello che senti</h2>
+<div class="bloque">
+  <button class="say-frase" data-frase="Gliel'ho già detto, ma non me ne frega niente.">Frase 1</button>
+  <button class="say-frase" data-frase="Me le puoi mandare stasera? Te le rimando domani.">Frase 2</button>
+  <button class="say-frase" data-frase="Dammelo un attimo, glielo faccio vedere.">Frase 3</button>
+  <textarea class="resp" data-ej="dettato" rows="3" placeholder="1. … 2. … 3. …"></textarea>
+</div>
+
+<h2>Esercizi</h2>
+<ol class="ejercicio">
+  <li><strong>Sostituisci</strong> — cambia lo subrayado por el pronombre combinado: a) Do <u>il libro a Marco</u>. b) Mando <u>le foto a te</u>. c) Presto <u>la macchina a mia sorella</u>. d) Spiego <u>la regola a voi</u>.
+    <textarea class="resp" data-ej="e1" rows="3" placeholder="a) Glielo do. …"></textarea></li>
+  <li><strong>Completa la tabla</strong> — di la forma combinada: mi + la = ___ · ti + ne = ___ · gli + le = ___ · ci + lo = ___ · le + li = ___.
+    <textarea class="resp" data-ej="e2" rows="2" placeholder="me la, te ne, …"></textarea></li>
+  <li><strong>Diretto o indiretto? (ripasso tuo)</strong> — antes de combinar hay que saber cuál es cuál. Marca D o I y luego combina: a) Telefono <u>a Marco</u> + il numero. b) Chiamo <u>Maria</u>. c) Rispondo <u>al cliente</u> + la mail.
+    <textarea class="resp" data-ej="e3" rows="3" placeholder="a) a Marco = I …"></textarea></li>
+  <li><strong>Posizione</strong> — escribe las DOS formas posibles: a) «Voglio dare il libro a te» b) «Devo mandare le foto a lui».
+    <textarea class="resp" data-ej="e4" rows="2" placeholder="a) Te lo voglio dare / Voglio dartelo. …"></textarea></li>
+  <li><strong>Imperativo</strong> — pega los pronombres: a) Dai il libro a me → ___! b) Manda le foto a lui → ___! c) NO dar el libro a él → ___!
+    <textarea class="resp" data-ej="e5" rows="2" placeholder="a) Dammelo! …"></textarea></li>
+  <li><strong>Passato prossimo + concordanza</strong> — completa el participio: a) Le foto? Gliele ho mandat___. b) Il preventivo? Me l'ha dat___. c) I documenti? Ce li ha portat___.
+    <textarea class="resp" data-ej="e6" rows="2" placeholder="a) mandate …"></textarea></li>
+  <li><strong>Reggenze (tu punto flojo — ripasso tuo)</strong> — completa y luego mete un pronombre combinado: Provo ___ spiegare la regola a Marco → «Provo ___ ___». · Cerco ___ mandare le foto a voi → «Cerco ___ ___».
+    <textarea class="resp" data-ej="e7" rows="3" placeholder="Provo a spiegargliela …"></textarea></li>
+  <li><strong>El «se lo» español NO existe</strong> — traduce sin calcar: a) Se lo dije ayer (a él). b) Se las mandé esta mañana (a ella). c) Ya se lo expliqué (a ellos).
+    <textarea class="resp" data-ej="e8" rows="3" placeholder="a) Gliel'ho detto ieri. …"></textarea></li>
+  <li><strong>NE combinado</strong> — traduce: a) Me hablas de eso mañana. b) ¿Me das dos (de esos)? c) No me hables de eso.
+    <textarea class="resp" data-ej="e9" rows="3" placeholder="a) Me ne parli domani. …"></textarea></li>
+  <li><strong>Il tuo vocabolario</strong> — 2 frases con → <strong class="mis-palabras">(abre tu Vocabulario ★)</strong>, cada una con un pronombre combinado.
+    <textarea class="resp" data-ej="e10" rows="3" placeholder="…"></textarea></li>
+  <li><strong>Congiuntivo con soggetto esplicito (ripasso tuo)</strong> — aclara el sujeto y combina: «Spero che ___ (tu) me lo dica prima di venerdì» · «Penso che ___ (lui) gliel'abbia già mandato».
+    <textarea class="resp" data-ej="e11" rows="2" placeholder="…"></textarea></li>
+  <li><strong>Caccia all'errore</strong> — corrige: a) «Se lo ho dato ieri». b) «Glie lo mando domani». c) «Me la ha data». d) «Dai mi lo!»
+    <textarea class="resp" data-ej="e12" rows="3" placeholder="…"></textarea></li>
+  <li><strong>Dal dialogo al reale</strong> — reescribe estas frases de tu estudio usando pronombres combinados: a) «Mando il contratto al cliente». b) «Faccio vedere le prove a te». c) «Consegno le stampe ai signori Rossi».
+    <textarea class="resp" data-ej="e13" rows="3" placeholder="a) Glielo mando. …"></textarea></li>
+  <li><strong>Ascolto (ripasso del día 21)</strong> — escucha y escribe qué combinación oyes:
+    <div class="bloque" style="background:#eef5ff;border-color:#bcd4ea;padding:.6rem">
+      <button class="say-frase" data-frase="Gliene ho parlato ieri sera.">🔊 1</button>
+      <button class="say-frase" data-frase="Me l'hanno detta stamattina.">🔊 2</button>
+      <button class="say-frase" data-frase="Ve li mandiamo la settimana prossima.">🔊 3</button>
+    </div>
+    <textarea class="resp" data-ej="e14" rows="2" placeholder="1. … 2. … 3. …"></textarea></li>
+  <li><strong>Produzione libera</strong> — escribe 6-8 líneas: un día en tu estudio en el que tuviste que pasarle cosas a varias personas (fotos, presupuesto, contrato, pruebas). Usa <strong>al menos 5 pronombres combinados distintos</strong>, uno con <span class="it">gliene</span> o <span class="it">me ne</span>, y un slang de hoy.
+    <textarea class="resp" data-ej="e15" rows="6" placeholder="Stamattina il cliente mi ha chiesto le foto…"></textarea></li>
+</ol>
+
+<details class="solu">
+  <summary>Soluzioni / Soluciones (ábrelas después de intentarlo)</summary>
+  <div class="body">
+    <p><strong>Dettato:</strong> 1) <span class="it">Gliel'ho già detto, ma non me ne frega niente.</span> 2) <span class="it">Me le puoi mandare stasera? Te le rimando domani.</span> 3) <span class="it">Dammelo un attimo, glielo faccio vedere.</span></p>
+    <p><strong>Esempio guidato:</strong> ① le foto = fem. plural → <span class="it">le</span> · ② ai clienti = a ellos → <span class="it">gli</span> · ③ gli + le → <span class="it">gliele</span> · ④ <span class="it">Gliele mando.</span></p>
+    <p><strong>1.</strong> a) <span class="it">Glielo do.</span> b) <span class="it">Te le mando.</span> c) <span class="it">Gliela presto.</span> d) <span class="it">Ve la spiego.</span></p>
+    <p><strong>2.</strong> <span class="it">me la · te ne · gliele · ce lo · glieli</span> (ojo: «le» indirecto femenino también se vuelve GLIE-).</p>
+    <p><strong>3.</strong> a) «a Marco» = Indirecto, «il numero» = Directo → <span class="it">Glielo telefono</span> (mejor: <span class="it">Gli telefono per dirglielo</span>). b) «Maria» = Directo → <span class="it">La chiamo.</span> c) «al cliente» = I, «la mail» = D → <span class="it">Gliela rispondo.</span> Recuerda: <em>telefonare/rispondere</em> piden indirecto; <em>chiamare</em> pide directo.</p>
+    <p><strong>4.</strong> a) <span class="it">Te lo voglio dare</span> / <span class="it">Voglio dartelo.</span> b) <span class="it">Gliele devo mandare</span> / <span class="it">Devo mandargliele.</span></p>
+    <p><strong>5.</strong> a) <span class="it">Dammelo!</span> b) <span class="it">Mandagliele!</span> c) <span class="it">Non darglielo!</span> / <span class="it">Non glielo dare!</span></p>
+    <p><strong>6.</strong> a) mandat<span class="it">e</span> (le foto, fem. pl.) b) dat<span class="it">o</span> (il preventivo, masc. sing.) c) portat<span class="it">i</span> (i documenti, masc. pl.).</p>
+    <p><strong>7.</strong> Provo <span class="it">a</span> spiegare… → <span class="it">Provo a spiegargliela.</span> · Cerco <span class="it">di</span> mandare… → <span class="it">Cerco di mandarvele.</span></p>
+    <p><strong>8.</strong> a) <span class="it">Gliel'ho detto ieri.</span> b) <span class="it">Gliele ho mandate stamattina.</span> c) <span class="it">Gliel'ho già spiegato.</span> (En los tres, el español «se» desaparece: es GLIE-.)</p>
+    <p><strong>9.</strong> a) <span class="it">Me ne parli domani.</span> b) <span class="it">Me ne dai due?</span> c) <span class="it">Non me ne parlare!</span> / <span class="it">Non parlarmene!</span></p>
+    <p><strong>11.</strong> <span class="it">Spero che TU me lo dica prima di venerdì</span> · <span class="it">Penso che LUI gliel'abbia già mandato.</span> (Sin el pronombre no se sabe de quién hablas: el congiuntivo tiene la misma forma para varias personas.)</p>
+    <p><strong>12.</strong> a) <span class="it">Gliel'ho dato ieri</span> (el «se lo» español no existe). b) <span class="it">Glielo mando domani</span> (todo junto, sin espacio). c) <span class="it">Me l'ha data</span> (elisión + concordancia). d) <span class="it">Dammelo!</span> (pegado, con la doble m).</p>
+    <p><strong>13.</strong> a) <span class="it">Glielo mando.</span> b) <span class="it">Te le faccio vedere.</span> c) <span class="it">Gliele consegno.</span></p>
+    <p><strong>14.</strong> 1) <span class="it">Gliene</span> ho parlato ieri sera. 2) <span class="it">Me l'</span>hanno detta stamattina. 3) <span class="it">Ve li</span> mandiamo la settimana prossima.</p>
+    <p><strong>10 y 15:</strong> respuesta libre — dime "ya terminé el día 23" y te las corrijo.</p>
+  </div>
+</details>
+
+<div class="bloque" style="background:#f3faf6;border-color:#9bd3b4"><strong>✅ Autocontrollo</strong> — ¿ya puedes…? ① decir <span class="it">me lo, te la, ce ne</span> sin pensar · ② usar <span class="it">glielo</span> para él, ella y ellos · ③ pegarlos en imperativo e infinitivo · ④ hacer concordar el participio (<span class="it">me l'ha data</span>). Si algo tambalea, márcalo 🔁.</div>
+
+<h2>Riflessione del giorno</h2>
+<ul>
+  <li>Este es el tema que más separa al hispanohablante que "se defiende" del que suena natural. La buena noticia: el <strong>orden es el mismo que en español</strong>, solo cambian las formas.</li>
+  <li>Truco de fijación: repite en voz alta la cadena <span class="it">me · te · glie · ce · ve</span> hasta que salga sola. El resto se arma solo.</li>
+  <li>🎧 Bonus: 10 min de <a href="inmersion.html">Inmersión</a> — en las canciones de Frah Quintale hay pronombres pegados por todas partes (<span class="it">dartela, metterteli, raccontartelo</span>).</li>
+</ul>
+
+<div class="tiempo">⏱ Tempo stimato: 50–60 min &nbsp;·&nbsp; Domani: Condizionale composto</div>
+
+</body>
+</html>

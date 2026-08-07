@@ -1,112 +1,221 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="it">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Día 22 — Italiano</title>
+<title>Giorno 22 — Italiano</title>
 <style>
   body { font-family: -apple-system, sans-serif; background: #f5f7fa; color: #1c1c1e; max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 4rem; line-height: 1.7; }
-  .header { border-left: 4px solid #2d6a4f; padding-left: 1rem; margin-bottom: 1.5rem; }
-  .header .dia { font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #2d6a4f; margin-bottom: .3rem; }
+  .header { border-left: 4px solid #b8860b; padding-left: 1rem; margin-bottom: 2.5rem; }
+  .header .dia { font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #b8860b; margin-bottom: .3rem; }
   .header h1 { font-size: 1.7rem; font-weight: 700; margin: 0; }
   .header p { color: #666; font-size: .9rem; margin: .3rem 0 0; }
-  h2 { font-size: .7rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: #2d6a4f; margin: 2rem 0 .8rem; }
-  h3 { font-size: .95rem; font-weight: 700; margin: 1.1rem 0 .4rem; }
-  .check { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: 1rem 1.2rem; margin: .5rem 0; }
-  .check-item { display: flex; align-items: flex-start; gap: .7rem; padding: .4rem 0; border-bottom: 1px solid #eef2ee; font-size: .9rem; }
-  .check-item:last-child { border-bottom: none; }
-  .box { width: 1.1rem; height: 1.1rem; border: 2px solid #2d6a4f; border-radius: 3px; flex-shrink: 0; margin-top: .2rem; }
-  .slang { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: .8rem 1rem; margin: .4rem 0; }
-  .slang strong { color: #2d6a4f; }
-  .slang .ejemplo { font-size: .84rem; font-style: italic; color: #555; margin-top: .25rem; background: #f5f7fa; padding: .25rem .5rem; border-radius: 4px; }
-  .roleplay { background: #fff; border: 2px dashed #2d6a4f; border-radius: 8px; padding: 1rem 1.2rem; margin: .7rem 0; font-size: .9rem; }
-  .roleplay strong { color: #2d6a4f; }
-  .medicion { background: #fdf6ec; border: 1px solid #f0e0c4; border-radius: 10px; padding: 1.1rem 1.3rem; margin: 1.2rem 0; font-size: .9rem; }
-  .medicion h2 { color: #c08a2e; margin-top: 0; }
-  .nota { background: #f0f7f4; border-left: 3px solid #2d6a4f; padding: .6rem 1rem; border-radius: 0 6px 6px 0; font-size: .86rem; color: #1a4731; margin: .7rem 0; }
+  h2 { font-size: .7rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: #b8860b; margin: 2rem 0 .8rem; }
+  h3 { font-size: .95rem; font-weight: 700; margin: 1.2rem 0 .5rem; }
+  table { width: 100%; border-collapse: collapse; margin: .5rem 0 1rem; font-size: .92rem; }
+  th { background: #1c1c1e; color: #fff; text-align: left; padding: .5rem .8rem; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
+  td { padding: .55rem .8rem; border-bottom: 1px solid #e5dcc5; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #faf6ec; }
+  .slang { background: #fff; border: 1px solid #e5dcc5; border-radius: 8px; padding: 1rem 1.2rem; margin: .5rem 0 1rem; }
+  .slang strong { color: #b8860b; font-size: 1.05rem; }
+  .slang .uso { font-size: .82rem; color: #888; margin-top: .2rem; }
+  .slang .ejemplo { font-size: .88rem; font-style: italic; color: #444; margin-top: .4rem; background: #f5f7fa; padding: .3rem .6rem; border-radius: 4px; }
   .ejercicio { counter-reset: ej; padding-left: 0; }
-  .ejercicio li { list-style: none; counter-increment: ej; padding: .6rem 0 .6rem 2.4rem; position: relative; border-bottom: 1px solid #dde5dd; font-size: .92rem; }
+  .ejercicio li { list-style: none; counter-increment: ej; padding: .6rem 0 .6rem 2.4rem; position: relative; border-bottom: 1px solid #e5dcc5; font-size: .92rem; }
   .ejercicio li:last-child { border-bottom: none; }
-  .ejercicio li::before { content: counter(ej); position: absolute; left: 0; top: .65rem; background: #2d6a4f; color: #fff; font-size: .65rem; font-weight: 700; width: 1.5rem; height: 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-  .preview { background: #eef2ee; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .88rem; }
-  .preview strong { display: block; margin-bottom: .4rem; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: #2d6a4f; }
-  .chat-reminder { background: #1c1c1e; color: #f9f6f1; border-radius: 8px; padding: 1.1rem 1.3rem; margin: 1.5rem 0 1rem; font-size: .9rem; line-height: 1.6; }
-  .chat-reminder strong { color: #52b788; }
-  .chat-reminder em { color: #aaa; font-style: italic; }
-  .tiempo { text-align: right; font-size: .8rem; color: #999; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #dde5dd; }
+  .ejercicio li::before { content: counter(ej); position: absolute; left: 0; top: .65rem; background: #b8860b; color: #fff; font-size: .65rem; font-weight: 700; width: 1.5rem; height: 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .esame { counter-reset: ex; padding-left: 0; }
+  .esame li { list-style: none; counter-increment: ex; padding: .7rem 0 .7rem 2.4rem; position: relative; border-bottom: 1px solid #e0d0d0; font-size: .92rem; }
+  .esame li:last-child { border-bottom: none; }
+  .esame li::before { content: "X" counter(ex); position: absolute; left: 0; top: .65rem; background: #922b21; color: #fff; font-size: .58rem; font-weight: 700; width: 1.7rem; height: 1.5rem; border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+  .nota { background: #fdf8ec; border-left: 3px solid #b8860b; padding: .7rem 1rem; border-radius: 0 6px 6px 0; font-size: .88rem; color: #6b4e0a; margin: .8rem 0; }
+  .alerta { background: #fdf0ef; border-left: 3px solid #c0392b; padding: .7rem 1rem; border-radius: 0 6px 6px 0; font-size: .88rem; color: #922b21; margin: .8rem 0; }
+  .bloque { background: #fff; border: 1px solid #e5dcc5; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .92rem; }
+  .tiempo { text-align: right; font-size: .8rem; color: #999; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5dcc5; }
   .it { font-weight: 600; font-style: italic; }
   p { font-size: .92rem; }
+  ul { font-size: .92rem; padding-left: 1.2rem; }
+  .fosil { background: #fff4f2; border: 2px solid #c0392b; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; }
+  .fosil h3 { color: #922b21; margin-top: 0; }
+  .rubrica { background: #f4f0fa; border: 1px solid #cfc0e8; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .88rem; }
 </style>
 <link rel="stylesheet" href="assets/curso.css?v=20260806a"><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260806a"></script><script defer src="assets/vocab.js?v=20260806a"></script><script defer src="assets/frases.js?v=20260806a"></script><script defer src="assets/curso.js?v=20260806a"></script><script defer src="assets/respuestas.js?v=20260806a"></script>
 </head>
 <body>
 
 <div class="header">
-  <div class="dia">Semana 3 · Día 22 · Repaso + Medición</div>
-  <h1>Cierre de semana 3 + balance del mes</h1>
-  <p>Consolidas hacia B2 y mides tu progreso real — sin material nuevo</p>
+  <div class="dia">Settimana 3 · Giorno 22 · Ripasso + Esame</div>
+  <h1>Chiusura della settimana — dove sei davvero</h1>
+  <p>Repaso de los días 16-21 + examen integrador. Más exigente que la semana: aquí se mide.</p>
 </div>
 
-<h2>Checklist de la semana 3</h2>
-<div class="check">
-  <div class="check-item"><div class="box"></div><span><strong>Congiuntivo independiente:</strong> deseos, dudas, exhortaciones sin "che"</span></div>
-  <div class="check-item"><div class="box"></div><span><strong>Relativi e implicite:</strong> che / cui / il quale + participio/gerundio</span></div>
-  <div class="check-item"><div class="box"></div><span><strong>Collocazioni:</strong> hablar por bloques (prendere una decisione, fare caso...)</span></div>
-  <div class="check-item"><div class="box"></div><span><strong>Registri:</strong> cambiar entre formal, informal y norteño</span></div>
-  <div class="check-item"><div class="box"></div><span><strong>Espressioni idiomatiche del norte</strong> reconocidas y usadas</span></div>
-  <div class="check-item"><div class="box"></div><span><strong>Comprensione orale:</strong> escucha global, dictado y predicción</span></div>
-  <div class="check-item"><div class="box"></div><span><strong>Mazo de Anki</strong> al día (repaso diario hecho)</span></div>
+<div class="bloque" style="background:#eef5ff;border-color:#bcd4ea"><strong>🎯 Obiettivo di oggi</strong> — al terminar podrás: ① usar sin dudar las <strong>reggenze</strong> que llevas fallando (es la mini-lección de hoy) · ② encadenar congiuntivo + relativos + registro en una sola frase · ③ producir un texto largo evaluado con rúbrica CEFR · ④ saber en qué nivel estás de verdad, con evidencia.</div>
+
+<h2>Ripasso veloce — la settimana in 6 righe</h2>
+<table>
+  <tr><th>Giorno</th><th>Tema</th><th>Lo que tienes que poder hacer</th></tr>
+  <tr><td>16</td><td class="it">Congiuntivo indipendente</td><td>magari + imperfetto · che dubbio · órdenes 3ª pers.</td></tr>
+  <tr><td>17</td><td class="it">Pronomi relativi</td><td>che / cui / il cui / quello che + forme implicite</td></tr>
+  <tr><td>18</td><td class="it">Collocazioni</td><td>fare/prendere/avere/dare + sostantivo</td></tr>
+  <tr><td>19</td><td class="it">Registri</td><td>tu ↔ Lei, email formal ↔ chat</td></tr>
+  <tr><td>20</td><td class="it">Espressioni idiomatiche</td><td>12 modismos, literal ≠ real</td></tr>
+  <tr><td>21</td><td class="it">Comprensione orale</td><td>coppie minime · parole mangiate · frasi di salvataggio</td></tr>
+</table>
+
+<div class="fosil">
+  <h3>🔴 Mini-lezione: LE REGGENZE — tu punto de fosilización</h3>
+  <p>De tus 12 errores reales de esta semana, <strong>5 fueron reggenze</strong>. No es casualidad ni descuido: es el hueco que hay que cerrar hoy. El problema es siempre el mismo — <strong>calcas la preposición del español</strong>, y en italiano es otra.</p>
+  <table>
+    <tr><th>Escribiste</th><th>Correcto</th><th>Por qué se te escapa</th></tr>
+    <tr><td>Provo <b>di</b> capire</td><td class="it">Provo <b>A</b> capire</td><td>«tratar DE» en español → pero <em>provare</em> pide <b>A</b></td></tr>
+    <tr><td>Non <b>c'è</b> niente a che fare</td><td class="it">Non <b>ha</b> niente a che fare</td><td>la fórmula es <em>AVERE a che fare con</em>, siempre</td></tr>
+    <tr><td>Sono <b>in</b> fretta</td><td class="it">Ho fretta / Sono <b>DI</b> fretta</td><td><em>in fretta</em> = deprisa (adverbio), no «tener prisa»</td></tr>
+    <tr><td>Spostarla <b>per</b> dopodomani</td><td class="it">Spostarla <b>A</b> dopodomani</td><td>«para el jueves» → mover <b>A</b> una fecha</td></tr>
+    <tr><td>Partire <b>a</b> Roma</td><td class="it">Partire <b>PER</b> Roma</td><td>«partir A» → el destino de <em>partire</em> va con <b>PER</b></td></tr>
+  </table>
+  <div class="nota">🔑 <strong>HACK — la regla que los ordena:</strong> el italiano marca <b>A</b> = movimiento hacia un punto o meta (provare A, riuscire A, andare A, spostare A) · <b>DI</b> = punto de partida, tema o contenido (cercare DI, finire DI, parlare DI, dipende DA…) · <b>PER</b> = finalidad o destino de un viaje (partire PER, studiare PER). Cuando dudes: <em>¿es un intento hacia algo?</em> → A. <em>¿es un viaje?</em> → PER. <span class="cuad">a tu cuaderno</span></div>
+  <p style="font-size:.88rem"><strong>Las 12 que más vas a usar</strong> — apréndetelas como bloque, con el verbo pegado a su preposición:</p>
+  <table>
+    <tr><th>Con A</th><th>Con DI</th><th>Con otra</th></tr>
+    <tr><td class="it">provare a · riuscire a · continuare a · cominciare a · aiutare a</td><td class="it">cercare di · finire di · smettere di · avere voglia di · sperare di</td><td class="it">partire PER · dipendere DA · pensare A · soffrire DI</td></tr>
+  </table>
 </div>
 
-<h3>Slang del norte — semana 3</h3>
-<div class="check">
-  <div class="check-item"><div class="box"></div><span>Bella lì · Beccarsi · Che menata · Cotto · Tranqui · Socio · Farsi le pare · In canna · Sbocciare</span></div>
+<div class="alerta">⚠️ <strong>Los otros 3 que reincidieron:</strong> ① <span class="it">e</span> (y) vs <span class="it">è</span> (es) — te falló otra vez en el día 17; el sonido no decide, decide el sentido. ② el <strong>gerundio NO sirve de relativo</strong>: «un uomo <s>portando</s> i bagagli» → <span class="it">che porta</span>. ③ <span class="it">sembra che</span> + <strong>congiuntivo</strong> (piova, no piove).</div>
+
+<h2>🗣️ Cultura &amp; Strada</h2>
+<div class="slang">
+  <strong>Prenderci la mano</strong> <span class="reg verde">suave</span> <span style="font-size:.78rem;color:#888;font-weight:400">[PREN-der-chi la MA-no]</span><br>
+  <span class="it">imparare a fare bene qualcosa con la pratica</span> <span style="color:#666">→ agarrarle el modo / agarrar el truco</span>
+  <div class="uso">Justo lo de hoy: al principio cuesta y de repente te sale solo. Fíjate en el «ci», que es parte fija de la expresión. <span class="cuad">a tu cuaderno</span></div>
+  <div class="ejemplo"><span class="it">All'inizio sbagliavo tutte le preposizioni, ora ci ho preso la mano.</span> → Al principio fallaba todas las preposiciones, ahora ya le agarré el modo.</div>
+</div>
+<div class="slang">
+  <strong>Andare a gonfie vele</strong> <span class="reg verde">suave</span> <span style="font-size:.78rem;color:#888;font-weight:400">[an-DA-re a GON-fie VE-le]</span><br>
+  <span class="it">procedere benissimo, senza problemi</span> <span style="color:#666">→ ir viento en popa</span>
+  <div class="uso">Literalmente «ir con las velas hinchadas» (de barco). Igualito que nuestro «viento en popa»: las dos lenguas sacaron el modismo del mar.</div>
+  <div class="ejemplo"><span class="it">Il corso va a gonfie vele, sei quasi a metà.</span> → El curso va viento en popa, ya casi vas a la mitad.</div>
+</div>
+<div class="slang">
+  <strong>Alla grande</strong> <span class="reg amari">medio</span> <span style="font-size:.78rem;color:#888;font-weight:400">[AL-la GRAN-de]</span><br>
+  <span class="it">molto bene, alla perfezione</span> <span style="color:#666">→ de pelos / a todo dar</span>
+  <div class="uso">Respuesta habitual a «come va?». También «me la sono cavata alla grande» = me fue de pelos.</div>
+  <div class="ejemplo"><span class="it">— Com'è andato l'esame? — Alla grande!</span> → "¿Cómo te fue el examen?" — "¡De pelos!"</div>
 </div>
 
-<h2>Roleplay — situaciones reales (en voz alta o en el chat)</h2>
-<div class="roleplay"><strong>Escena 1 — Quedar con un compa (informal/norte):</strong> organiza dónde y cuándo verse usando <em>beccarsi, tranqui</em> y futuro/presente.</div>
-<div class="roleplay"><strong>Escena 2 — Pedir un favor en el trabajo (formal):</strong> usa registro formal (Lei, condizionale): <em>"Potrebbe…?", "Le dispiacerebbe…?"</em></div>
-<div class="roleplay"><strong>Escena 3 — Contar un chisme (collocazioni + idioms):</strong> narra algo que pasó usando <em>prendere in giro, farsi le pare</em> y un relativo.</div>
-
-<div class="medicion">
-  <h2>📊 Medición de progreso (fin de las primeras 3 semanas)</h2>
-  <p>Cada ~mes mides para saber si avanzas de verdad, no por sensación:</p>
-  <ul>
-    <li><strong>Grabación libre (2 min):</strong> habla de tu semana en italiano. Compárala con la grabación del día 2. ¿Más fluidez? ¿Menos errores de los que cazaste?</li>
-    <li><strong>Mini-test escrito:</strong> traduce 5 frases que mezclen congiuntivo, periodo ipotetico, passiva y un relativo. Cuenta aciertos.</li>
-    <li><strong>Autoevaluación CEFR:</strong> busca "test livello italiano online" y haz uno rápido. Apunta el resultado para comparar dentro de un mes.</li>
-    <li><strong>Conversación real:</strong> si ya hiciste una sesión de italki/Tandem, anota cómo te sentiste vs la primera.</li>
-  </ul>
+<h2>☕ Cultura — di che parlare con un italiano</h2>
+<div class="cultura">
+  <span class="tipo">Dal capitolo 22 — La prospettiva</span>
+  <h3>Antes de 1420, lo importante se pintaba grande — no lo cercano</h3>
+  <div class="ctx"><span class="it">Nell'arte medievale lo spazio seguiva una logica simbolica, non visiva: Cristo era grande perché era importante, non perché era vicino. I donatori che avevano pagato il quadro erano minuscoli, in un angolo. Non era ignoranza tecnica, era una scelta filosofica. Poi, verso il 1420, Brunelleschi — lo stesso della cupola — ha fatto un esperimento davanti al Battistero di Firenze, e in pochi decenni il modo di rappresentare il mondo è cambiato per sempre: lo spazio del quadro doveva diventare uno specchio dello spazio reale.</span> <span style="color:#666;font-size:.85rem">→ En el arte medieval el tamaño expresaba importancia, no distancia; los donantes salían diminutos. No era torpeza, era filosofía. Hacia 1420 Brunelleschi hizo su experimento ante el Baptisterio y en pocas décadas cambió para siempre la forma de representar el mundo.</span></div>
+  <div class="frasi">
+    <div class="lbl">💬 Per parlarne</div>
+    <div class="f"><span class="it">Prima della prospettiva, le dimensioni esprimevano importanza, non distanza.</span> <span class="es">→ Antes de la perspectiva, el tamaño expresaba importancia, no distancia.</span></div>
+    <div class="f"><span class="it">Brunelleschi è lo stesso che ha costruito la cupola di Firenze.</span> <span class="es">→ Brunelleschi es el mismo que construyó la cúpula de Florencia.</span></div>
+    <div class="f"><span class="it">Non era ignoranza tecnica: era una scelta filosofica.</span> <span class="es">→ No era torpeza técnica: era una elección filosófica.</span></div>
+  </div>
+  <div class="spunto">🗣️ <b>Lo spunto:</b> <span class="it">Oggi è giorno di bilancio, quindi usa il congiuntivo del giorno 16 e i relativi del 17: «Penso che questa settimana sia andata…», «La cosa di cui sono più contento è…», «Magari riuscissi a…». Raccontami come è andata la tua settimana con almeno una di queste tre.</span></div>
+  <div class="puente">🇲🇽 El mismo salto ocurrió al revés en el muralismo mexicano: Rivera y Siqueiros recuperaron a propósito la escala simbólica —el campesino gigante, el patrón pequeño— para que el tamaño volviera a decir quién importa. Cinco siglos después, deshacer la perspectiva también fue una decisión política.</div>
 </div>
 
-<h2>Ejercicios de cierre</h2>
+<h2>✍️ Dettato — scrivi quello che senti</h2>
+<div class="bloque">
+  <button class="say-frase" data-frase="Provo a capire, ma dipende dal contesto.">Frase 1</button>
+  <button class="say-frase" data-frase="La ringrazio per la Sua disponibilità, resto in attesa.">Frase 2</button>
+  <button class="say-frase" data-frase="Sembra che ne valga la pena, non ci piove.">Frase 3</button>
+  <textarea class="resp" data-ej="dettato" rows="3" placeholder="1. … 2. … 3. …"></textarea>
+</div>
+
+<h2>Ripasso — consolidación (10)</h2>
 <ol class="ejercicio">
-  <li><strong>Texto integrador:</strong> escribe 12 líneas sobre "cómo sería mi vida ideal" — mezcla periodo ipotetico, congiuntivo, un relativo y 2 collocazioni.</li>
-  <li><strong>Registro doble:</strong> escribe el mismo mensaje (cancelar una cita) en versión formal y en versión norteña informal.</li>
-  <li><strong>Idioms:</strong> usa 4 expresiones de la semana en 4 situaciones distintas.</li>
-  <li><strong>Reflexión:</strong> ¿qué tema de B2 ya sientes tuyo y cuál necesita otra semana?</li>
+  <li><strong>Reggenze — la tanda que fallaste</strong> — completa: Provo ___ capire · Cerco ___ imparare · Non ha niente ___ che fare con me · Parto ___ Roma · Sposto la riunione ___ giovedì · Ho fretta / Sono ___ fretta.
+    <textarea class="resp" data-ej="e1" rows="2" placeholder="a … di … a … per … a … di"></textarea></li>
+  <li><strong>Congiuntivo indipendente (día 16)</strong> — traduce: a) ¡Ojalá pudiera ir! b) ¡Que pase el siguiente! c) Cueste lo que cueste.
+    <textarea class="resp" data-ej="e2" rows="2" placeholder="a) Magari potessi …"></textarea></li>
+  <li><strong>Relativi (día 17)</strong> — une con el relativo correcto: a) L'uomo ___ macchina è rossa (cuyo). b) La città ___ vivo (en la que). c) ___ che dici non ha senso (lo que).
+    <textarea class="resp" data-ej="e3" rows="2" placeholder="a) il cui … b) in cui … c) Quello/Ciò"></textarea></li>
+  <li><strong>Collocazioni (día 18)</strong> — elige el verbo: ___ una domanda · ___ una decisione · ___ ragione · ___ una mano · ___ due chiacchiere · ___ un'occhiata.
+    <textarea class="resp" data-ej="e4" rows="2" placeholder="fare, prendere, avere, dare…"></textarea></li>
+  <li><strong>Registri (día 19)</strong> — pasa a formal: «Ciao, mi dai una mano? Scrivimi quando puoi, grazie mille!»
+    <textarea class="resp" data-ej="e5" rows="2" placeholder="Buongiorno, …"></textarea></li>
+  <li><strong>Modismi (día 20)</strong> — completa: In bocca al ___! · Costa un ___ della testa · Non ci ___ · Essere al ___ · Non vedo l'___ di partire.
+    <textarea class="resp" data-ej="e6" rows="2" placeholder="lupo, occhio, piove, verde, ora"></textarea></li>
+  <li><strong>Ascolto (día 21)</strong> — escucha y escribe qué palabra de la pareja se dijo:
+    <div class="bloque" style="background:#eef5ff;border-color:#bcd4ea;padding:.6rem">
+      <button class="say-frase" data-frase="Ho un sonno terribile.">🔊 1</button>
+      <button class="say-frase" data-frase="Lavoro in una ditta piccola.">🔊 2</button>
+      <button class="say-frase" data-frase="Mio nonno ha ottant'anni.">🔊 3</button>
+    </div>
+    a) sonno/sono b) ditta/dita c) nonno/nono
+    <textarea class="resp" data-ej="e7" rows="1" placeholder="a) … b) … c) …"></textarea></li>
+  <li><strong>e o è?</strong> — completa: Marco ___ arrivato ___ ha portato il vino; la casa ___ grande ___ luminosa.
+    <textarea class="resp" data-ej="e8" rows="1" placeholder="è … e … è … e"></textarea></li>
+  <li><strong>Gerundio o relativo?</strong> — corrige lo que esté mal: a) «Una ragazza cantando in strada». b) «Ho visto Marco uscendo di casa» (¿quién salía?).
+    <textarea class="resp" data-ej="e9" rows="2" placeholder="a) … b) …"></textarea></li>
+  <li><strong>Il tuo vocabolario</strong> — 2 frases con → <strong class="mis-palabras">(abre tu Vocabulario ★)</strong>, una con un modismo del día 20.
+    <textarea class="resp" data-ej="e10" rows="3" placeholder="…"></textarea></li>
 </ol>
 
-<h2>Lo que viene en la semana 4</h2>
-<div class="preview">
-  <strong>Semana 4 — B2 en profundidad</strong>
-  Día 23: Congiuntivo imperfetto y trapassato en uso real<br>
-  Día 24: Connettivi avanzati e coesione del testo<br>
-  Día 25: Verbi + preposizione (reggenze)<br>
-  Día 26: Lessico tematico (lavoro / attualità)<br>
-  Día 27: Espressioni con verbi (mettere, fare, dare...)<br>
-  Día 28: Comprensione di un testo lungo<br>
-  Día 29: Repaso + roleplay B2
-</div>
+<h2>📝 Esame della settimana (10)</h2>
+<p style="font-size:.88rem;color:#666">Más exigente que los ejercicios de arriba: cada ítem mezcla <strong>2 o 3 temas</strong>. Hazlo de corrido, sin mirar los días. Al terminar, dime «ya terminé el día 22» y te lo califico con rúbrica.</p>
+<ol class="esame">
+  <li><strong>3 en 1 — reggenza + congiuntivo + relativo.</strong> Traduce: «El profesor <em>al que</em> le escribí espera <em>que yo consiga</em> terminar antes del jueves.»
+    <textarea class="resp" data-ej="x1" rows="2" placeholder="Il professore a cui …"></textarea></li>
+  <li><strong>2 en 1 — registro + cortesía.</strong> Escribe la MISMA petición (mover una cita al viernes) en dos líneas: una a un amigo por chat, otra a un cliente con Lei + condizionale. Ojo con la preposición de «mover a».
+    <textarea class="resp" data-ej="x2" rows="3" placeholder="Informal: … / Formale: …"></textarea></li>
+  <li><strong>Caccia all'errore integradora.</strong> Hay 4 errores. Corrígelos y di brevemente por qué: «Le ringrazio per la Sua disponibilità. Provo di spostare la riunione per venerdì, ma sembra che è difficile.»
+    <textarea class="resp" data-ej="x3" rows="3" placeholder="1) Le → La porque… 2) …"></textarea></li>
+  <li><strong>Collocazione + modismo.</strong> Escribe una frase que use un verbo de apoyo (fare/prendere/avere/dare) Y un modismo del día 20 en la misma oración.
+    <textarea class="resp" data-ej="x4" rows="2" placeholder="…"></textarea></li>
+  <li><strong>Relativo implícito.</strong> Acorta usando una forma implícita: a) «Le persone che sono arrivate tardi non sono entrate.» b) «I libri che devo leggere sono tre.»
+    <textarea class="resp" data-ej="x5" rows="2" placeholder="a) Le persone arrivate … b) I libri da …"></textarea></li>
+  <li><strong>Congiuntivo tras gatillo débil.</strong> Completa con la forma correcta y di por qué: Sembra che ___ (piovere) · Penso che ___ (valere) la pena · Spero che tu ___ (riuscire) a venire.
+    <textarea class="resp" data-ej="x6" rows="2" placeholder="piova / valga / riesca — porque…"></textarea></li>
+  <li><strong>Ascolto + trascrizione.</strong> Escucha una sola vez y escribe la frase completa; luego di qué dos "trampas del oído" contiene:
+    <div class="bloque" style="background:#eef5ff;border-color:#bcd4ea;padding:.6rem">
+      <button class="say-frase" data-frase="Fra', ce l'hai sette euro? Ho una sete tremenda e non lo so dove ho messo il portafoglio.">🔊 Ascolta (una volta sola)</button>
+    </div>
+    <textarea class="resp" data-ej="x7" rows="3" placeholder="Frase: … / Trampas: …"></textarea></li>
+  <li><strong>Del español al italiano, sin calcar.</strong> Traduce cuidando TODAS las preposiciones: «Intenté llamarla, pero no lo conseguí. Depende de ella: si sale bien, vale la pena; si no, me da igual.»
+    <textarea class="resp" data-ej="x8" rows="3" placeholder="Ho provato a chiamarla, ma …"></textarea></li>
+  <li><strong>Autoevaluación honesta.</strong> De los 6 temas de la semana (congiuntivo indipendente, relativi, collocazioni, registri, modismi, ascolto): ¿cuál sientes más firme y cuál más flojo? Escríbelo <em>en italiano</em> usando «Penso che…» o «La cosa di cui…».
+    <textarea class="resp" data-ej="x9" rows="3" placeholder="Penso che il tema più solido sia … mentre quello di cui non sono sicuro è …"></textarea></li>
+  <li><strong>Produzione lunga (evaluada con rúbrica CEFR).</strong> Escribe <strong>10-14 líneas</strong> en italiano contando <em>una semana tuya de trabajo en el estudio de fotografía</em>: qué pasó, algo que salió mal y cómo lo resolviste. Requisitos obligatorios: ① al menos <strong>3 collocazioni</strong> · ② al menos <strong>2 relativos</strong> (uno con <span class="it">cui</span>) · ③ al menos <strong>1 congiuntivo</strong> · ④ al menos <strong>2 modismos</strong> · ⑤ un cambio de registro (una frase que le dirías a un cliente y otra a un amigo).
+    <textarea class="resp" data-ej="x10" rows="12" placeholder="Questa settimana in studio…"></textarea></li>
+</ol>
 
-<div class="chat-reminder">
-  💬 <strong>Hoy toca chat conmigo.</strong> Abre Claude Code y dime:<br>
-  <em>"Quiero hacer la conversación de cierre de semana 3 de italiano."</em><br>
-  Roleplay de las 3 escenas + repaso hablado. Al final: lista de errores con la regla exacta y tu "nivel sentido".<br><br>
-  <strong>+ Recordatorio:</strong> si no has probado una sesión con tutor real (italki) o intercambio (Tandem/HelloTalk), esta semana es buen momento. Es lo que más acelera.
-</div>
+<div class="rubrica"><strong>📐 Cómo voy a calificar el x10 (rúbrica CEFR)</strong><br>
+① <strong>Contenido y tarea</strong> — ¿cumple los 5 requisitos y se entiende la historia? · ② <strong>Gramática</strong> — reggenze, concordancias, tiempos, congiuntivo · ③ <strong>Riqueza</strong> — variedad de léxico, collocazioni y modismos usados con naturalidad, no forzados · ④ <strong>Cohesión</strong> — conectores, párrafo que fluye en vez de frases sueltas.<br>
+Cada uno de 1 a 4. Te daré el desglose y el nivel aproximado (B1 / B1+ / B2 / B2+) con la evidencia concreta que lo sostiene.</div>
 
-<div class="tiempo">⏱ Tiempo total: ~60 min &nbsp;·&nbsp; Semana 3 de italiano completada ✓</div>
+<details class="solu">
+  <summary>Soluzioni del RIPASSO (el examen NO lleva soluciones — te lo corrijo yo)</summary>
+  <div class="body">
+    <p><strong>Dettato:</strong> 1) <span class="it">Provo a capire, ma dipende dal contesto.</span> 2) <span class="it">La ringrazio per la Sua disponibilità, resto in attesa.</span> 3) <span class="it">Sembra che ne valga la pena, non ci piove.</span></p>
+    <p><strong>1.</strong> Provo <span class="it">a</span> · Cerco <span class="it">di</span> · Non ha niente <span class="it">a</span> che fare · Parto <span class="it">per</span> Roma · Sposto <span class="it">a</span> giovedì · Sono <span class="it">di</span> fretta.</p>
+    <p><strong>2.</strong> a) <span class="it">Magari potessi andarci!</span> b) <span class="it">Che passi il prossimo!</span> c) <span class="it">Costi quel che costi.</span></p>
+    <p><strong>3.</strong> a) <span class="it">il cui</span> b) <span class="it">in cui</span> c) <span class="it">Quello che / Ciò che</span>.</p>
+    <p><strong>4.</strong> <span class="it">fare</span> una domanda · <span class="it">prendere</span> una decisione · <span class="it">avere</span> ragione · <span class="it">dare</span> una mano · <span class="it">fare</span> due chiacchiere · <span class="it">dare</span> un'occhiata.</p>
+    <p><strong>5.</strong> <span class="it">Buongiorno, potrebbe darmi una mano? Mi scriva quando può, La ringrazio.</span></p>
+    <p><strong>6.</strong> lupo · occhio · piove · verde · ora.</p>
+    <p><strong>7.</strong> a) <span class="it">sonno</span> b) <span class="it">ditta</span> c) <span class="it">nonno</span>.</p>
+    <p><strong>8.</strong> Marco <span class="it">è</span> arrivato <span class="it">e</span> ha portato il vino; la casa <span class="it">è</span> grande <span class="it">e</span> luminosa.</p>
+    <p><strong>9.</strong> a) mal → <span class="it">Una ragazza che canta in strada</span> (el gerundio no hace de relativo de sujeto). b) es ambigua: si sale él, <span class="it">«Ho visto Marco mentre uscivo di casa»</span>; si salía Marco, <span class="it">«Ho visto Marco che usciva di casa»</span>. El gerundio exige mismo sujeto, por eso conviene evitarlo aquí.</p>
+    <p><strong>10 y todo el examen (x1-x10):</strong> te los corrijo yo — dime «ya terminé el día 22».</p>
+  </div>
+</details>
+
+<div class="bloque" style="background:#f3faf6;border-color:#9bd3b4"><strong>✅ Autocontrollo</strong> — ¿ya puedes…? ① decir las 12 reggenze sin pensarlas · ② mezclar congiuntivo + relativo + registro en una frase · ③ escribir 10-14 líneas seguidas sin bloquearte · ④ decir en qué tema estás flojo. Si algo tambalea, márcalo 🔁 y lo sembramos la semana que viene.</div>
+
+<h2>Riflessione del giorno</h2>
+<ul>
+  <li>Cierras la semana 3 y con ella el <strong>bloque B1→B2</strong>. La semana que viene empieza lo que de verdad te falta de la base: pronomi combinati, condizionale composto, futuro anteriore, causativi.</li>
+  <li>🎙️ <strong>Medición mensual:</strong> grábate 2 minutos hablando libre (puede ser el mismo tema del x10) y guarda el audio. Compáralo con la grabación del mes pasado — es la prueba más honesta de que avanzas.</li>
+  <li>🎧 Bonus: 10 min de <a href="inmersion.html">Inmersión</a>.</li>
+</ul>
+
+<div class="tiempo">⏱ Tempo stimato: 70–85 min &nbsp;·&nbsp; Domani: Settimana 4 — Pronomi combinati</div>
 
 </body>
 </html>

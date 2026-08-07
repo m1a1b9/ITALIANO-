@@ -66,17 +66,27 @@ def auditar(nn, verbose=True):
     fallos, avisos = [], []
 
     # ---- 1. ejercicios ----------------------------------------------------
+    # Los días 8/15/22/30 son REPASO+EXAMEN: 10 eN + 10 xN (§5), no 15 eN.
+    repaso = int(nn) in (8, 15, 22, 30)
     ejs = re.findall(r'data-ej="(\w+)"', html)
     nums = [e for e in ejs if re.fullmatch(r'e\d+', e)]
-    esperados = ['e%d' % i for i in range(1, 16)]
-    faltan = [e for e in esperados if e not in nums]
-    dups = {e for e in nums if nums.count(e) > 1}
+    xs = [e for e in ejs if re.fullmatch(r'x\d+', e)]
+    if repaso:
+        esperados = ['e%d' % i for i in range(1, 11)] + ['x%d' % i for i in range(1, 11)]
+        presentes = nums + xs
+    else:
+        esperados = ['e%d' % i for i in range(1, 16)]
+        presentes = nums
+    faltan = [e for e in esperados if e not in presentes]
+    dups = {e for e in presentes if presentes.count(e) > 1}
     if faltan:
         fallos.append('faltan ejercicios: %s' % ', '.join(faltan))
     if dups:
         fallos.append('data-ej duplicados: %s' % ', '.join(sorted(dups)))
     if 'dettato' not in ejs:
         fallos.append('falta el dettato')
+    if repaso and not re.search(r'rubrica|rúbrica|CEFR', html, re.I):
+        fallos.append('día de repaso sin RÚBRICA CEFR para la producción larga (§5)')
 
     # ---- 2. solucionario cubre lo auto-verificable ------------------------
     m = re.search(r'<details class="solu">(.*?)</details>', html, re.S)
@@ -87,9 +97,12 @@ def auditar(nn, verbose=True):
         sol_txt = m.group(1)
         con_sol = set(int(x) for x in re.findall(r'<strong>(\d+)\.', sol_txt))
         libres = set()
-        for gr in re.findall(r'<strong>([\d,\sy]+):</strong>\s*respuesta libre', sol_txt):
-            libres |= set(int(x) for x in re.findall(r'\d+', gr))
-        huerfanos = [i for i in range(1, 16) if i not in con_sol and i not in libres]
+        for gr in re.findall(r'<strong>([\d,\sxXy]+)[:y]', sol_txt):
+            if re.search(r'respuesta libre|te los corrijo|te las corrijo|corrijo yo', sol_txt):
+                libres |= set(int(x) for x in re.findall(r'\d+', gr))
+        # en día de repaso el EXAMEN (xN) no lleva soluciones a propósito: solo se auditan los eN
+        tope = 11 if repaso else 16
+        huerfanos = [i for i in range(1, tope) if i not in con_sol and i not in libres]
         if huerfanos:
             fallos.append('ejercicios sin solución NI declarados libres: %s'
                           % ', '.join(str(i) for i in huerfanos))
@@ -125,7 +138,13 @@ def auditar(nn, verbose=True):
             avisos.append('siembra %d%% (%d/%d) — el tema del día queda justo' % (pct, siembra, len(lis)))
 
     # ---- 5. bloques de §4 -------------------------------------------------
+    # Un día de REPASO no enseña material nuevo, así que no le aplican los bloques de
+    # presentación: "in contesto" (input i+1 con la estructura del día) ni "frasi pronte".
+    # Convención establecida por el día 15, ya aprobado.
+    EXENTOS_REPASO = {'in contesto', 'frasi pronte', 'ripasso veloce'}
     for nombre, pat in BLOQUES:
+        if repaso and nombre in EXENTOS_REPASO:
+            continue
         if not re.search(pat, html, re.I):
             fallos.append('falta el bloque: %s' % nombre)
 

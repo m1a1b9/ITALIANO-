@@ -264,6 +264,23 @@ window.VOCAB = {
   "ma dai":"¡no me digas! / ¡venga ya!","ammazza":"¡caray! / ¡madre mía!",
   "mah":"mmm... / sepa / vaya uno a saber","non ci ho capito un tubo":"no entendí ni pepino",
 
+  /* — Día 23: pronomi combinati — */
+  "non me ne frega niente":"me vale madres / me da igual 🔴","non me ne frega":"me vale / me da igual 🔴",
+  "fregarsene":"pasar de algo / valerle a uno 🔴","non me ne importa":"no me importa",
+  "piantala":"¡ya párale! / ¡córtale!","smettila":"¡ya párale! / ¡déjalo ya!",
+  "piantare":"plantar; dejar plantado","figurati":"¡no hay de qué! / ¡para nada!",
+  "si figuri":"no hay de qué (formal)","glielo":"se lo (a él/ella/ellos)","gliela":"se la (a él/ella/ellos)",
+  "glieli":"se los (a él/ella/ellos)","gliele":"se las (a él/ella/ellos)","gliene":"de eso, a él/ella/ellos",
+  "me lo":"me lo","me la":"me la","me ne":"de eso (a mí)","te lo":"te lo","te ne":"de eso (a ti)",
+  "ce lo":"nos lo","ce ne":"de eso (a nosotros)","ve lo":"se lo (a ustedes)",
+  "dammelo":"dámelo","preventivo":"presupuesto","cartella condivisa":"carpeta compartida",
+
+  /* — Día 22: repaso + examen — */
+  "prenderci la mano":"agarrarle el modo / agarrar el truco",
+  "andare a gonfie vele":"ir viento en popa","a gonfie vele":"viento en popa",
+  "alla grande":"de pelos / a todo dar","reggenza":"régimen (verbo + preposición)",
+  "reggenze":"regímenes (verbo + preposición)",
+
   /* ====== Hallazgos externos (canciones, etc.) ====== */
   /* — Canción «Non metterci becco» (Sfera Ebbasta + Shiva) — */
   "metterci becco":"meter las narices / opinar donde no te llaman","mettere becco":"meter las narices",
@@ -621,6 +638,17 @@ window.DEF_IT = {
   "essere al verde":"non avere più soldi",
   "piove sul bagnato":"a chi ha già (fortuna o sfortuna) ne arriva ancora",
   "acqua in bocca":"non dire niente a nessuno, è un segreto",
+  /* — Giorno 23 — */
+  "fregarsene":"(colloquiale) non interessarsi affatto di qualcosa",
+  "piantala":"smettila subito; da 'piantare', letteralmente piantare",
+  "figurati":"formula di cortesia: non c'è di che; oppure 'ma certo che no'",
+  "glielo":"unione di 'gli/le' (a lui, a lei, a loro) + 'lo'; si scrive tutto attaccato",
+  "gliene":"unione di 'gli/le' + 'ne' (di quella cosa)",
+  "preventivo":"documento che indica quanto costerà un lavoro prima di farlo",
+  /* — Giorno 22 — */
+  "prenderci la mano":"imparare a fare bene qualcosa con la pratica",
+  "andare a gonfie vele":"procedere benissimo, senza nessun problema",
+  "alla grande":"molto bene, alla perfezione: «come va?» «alla grande!»",
   /* — Giorno 21 — */
   "ma dai":"esclamazione di incredulità o sorpresa",
   "ammazza":"esclamazione di stupore, spesso romana/centro-Italia (senza violenza)",
