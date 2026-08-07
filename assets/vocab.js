@@ -264,6 +264,12 @@ window.VOCAB = {
   "ma dai":"¡no me digas! / ¡venga ya!","ammazza":"¡caray! / ¡madre mía!",
   "mah":"mmm... / sepa / vaya uno a saber","non ci ho capito un tubo":"no entendí ni pepino",
 
+  /* — Ambigüedades de lugar (el italiano no distingue «en» de «a») — */
+  "a casa":"en casa / a casa (el italiano no las distingue)",
+  "scrivere a casa":"escribir a la familia (desde lejos)",
+  "in casa":"dentro de la casa (más físico que «a casa»)",
+  "ai miei":"a los míos / a mi familia",
+
   /* — Día 23: pronomi combinati — */
   "non me ne frega niente":"me vale madres / me da igual 🔴","non me ne frega":"me vale / me da igual 🔴",
   "fregarsene":"pasar de algo / valerle a uno 🔴","non me ne importa":"no me importa",
