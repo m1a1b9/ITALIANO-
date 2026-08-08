@@ -2,41 +2,108 @@
 (function(){
   var VOCAB = window.VOCAB || {};
 
-  /* ---------- 1. VOZ ITALIANA (sin archivos) ---------- */
-  var itVoice=null, itVoices=[];
+  /* ---------- 1. VOZ ITALIANA (sin archivos) ----------
+     ROBUSTEZ (2026-08-08): en un dispositivo SIN voz italiana instalada el audio salía MUDO.
+     Antes se dejaba u.voice sin asignar confiando en que el motor sustituyera por lang='it-IT':
+     unos navegadores sustituyen y otros simplemente no emiten nada. Ahora, si no hay voz
+     italiana, se asigna EXPLÍCITAMENTE una voz de respaldo (mala pronunciación, pero se oye)
+     y se avisa al usuario de cómo instalar la italiana. */
+  var itVoice=null, itVoices=[], fallbackVoice=null, allVoices=[];
   function isItalian(v){return /^it([-_]|$)/i.test(v.lang) && !/pt|por|bra/i.test(v.lang+v.name);}
   function score(v){var n=v.name.toLowerCase();var s=0;
     if(/google/.test(n))s+=5; if(/(elsa|isabella|cosimo|bianca|natural|online)/.test(n))s+=4;
     if(/microsoft/.test(n))s+=2; if(/it-it/i.test(v.lang))s+=1; return s;}
   function pickVoice(){
     var vs=speechSynthesis.getVoices();
+    allVoices=vs;
     itVoices=vs.filter(isItalian).sort(function(a,b){return score(b)-score(a)});
     var saved=localStorage.getItem('italiano-voz');
     itVoice=(saved&&itVoices.find(function(v){return v.name===saved}))||itVoices[0]||null;
+    // respaldo: preferimos una lengua romance (suena menos raro leyendo italiano) y si no, la default
+    fallbackVoice=vs.filter(function(v){return /^(es|pt|fr|ro|ca)/i.test(v.lang)})[0]
+               || vs.filter(function(v){return v.default})[0] || vs[0] || null;
   }
-  if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=function(){pickVoice();buildVoiceSelect();};}
+  if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=function(){pickVoice();buildVoiceSelect();avisoVoz();};}
+
+  // Prepara la utterance de forma segura en cualquier navegador.
+  function nuevaUtt(txt,rate){
+    var u=new SpeechSynthesisUtterance(txt);
+    u.lang='it-IT';
+    // SIEMPRE asignamos una voz concreta: sin esto, los motores que no tienen it-IT enmudecen.
+    if(itVoice)u.voice=itVoice; else if(fallbackVoice)u.voice=fallbackVoice;
+    u.rate=rate||.9;
+    return u;
+  }
+  // cancel() justo antes de speak() rompe la reproducción en iOS y en algún Android:
+  // solo se cancela si de verdad hay algo sonando.
+  function pararSiSuena(){
+    try{ if(speechSynthesis.speaking||speechSynthesis.pending)speechSynthesis.cancel(); }catch(e){}
+  }
   function say(txt,el){
     if(!('speechSynthesis' in window)||!txt)return;
-    speechSynthesis.cancel();
-    var u=new SpeechSynthesisUtterance(txt);u.lang='it-IT';if(itVoice)u.voice=itVoice;u.rate=.9;
-    if(el){el.classList.add('cb-speaking');u.onend=function(){el.classList.remove('cb-speaking')};}
+    if(!itVoices.length&&!fallbackVoice)pickVoice();   // por si las voces cargaron tarde
+    pararSiSuena();
+    var u=nuevaUtt(txt,.9);
+    if(el){el.classList.add('cb-speaking');
+      u.onend=function(){el.classList.remove('cb-speaking')};
+      u.onerror=function(){el.classList.remove('cb-speaking');avisoVoz(true);};}
     speechSynthesis.speak(u);
   }
   // Voz italiana para otros módulos (inmersión: velocidad y loop por línea)
   window.italianoSay=function(txt,opts){
     opts=opts||{};
     if(!('speechSynthesis' in window)||!txt)return;
-    speechSynthesis.cancel();
-    var u=new SpeechSynthesisUtterance(txt);u.lang='it-IT';if(itVoice)u.voice=itVoice;
-    u.rate=opts.rate||.9;
+    if(!itVoices.length&&!fallbackVoice)pickVoice();
+    pararSiSuena();
+    var u=nuevaUtt(txt,opts.rate);
     if(opts.onend)u.onend=opts.onend;
     speechSynthesis.speak(u);
   };
   window.italianoStop=function(){if('speechSynthesis' in window)speechSynthesis.cancel();};
 
+  /* Aviso VISIBLE cuando no hay voz italiana: antes solo se veía «⚠ sin voz italiana» dentro de
+     un <select> de la barra, que pasa desapercibido y no dice cómo arreglarlo. */
+  function avisoVoz(forzar){
+    if(!('speechSynthesis' in window))return;
+    if(itVoices.length&&!forzar)return;
+    if(document.getElementById('cb-voz-aviso'))return;
+    if(!forzar&&localStorage.getItem('italiano-voz-aviso-ok'))return;
+    var d=document.createElement('div');
+    d.id='cb-voz-aviso';
+    d.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#fff4e5;'+
+      'border-top:2px solid #d68910;color:#7d4b06;padding:.7rem 1rem;font-size:.85rem;'+
+      'font-family:-apple-system,Segoe UI,sans-serif;line-height:1.5;box-shadow:0 -4px 14px rgba(0,0,0,.12)';
+    d.innerHTML='<b>🔇 Este dispositivo no tiene voz italiana instalada.</b> El audio suena con una '+
+      'voz de otro idioma (o no suena). Para arreglarlo: <b>Windows</b> → Configuración › Hora e '+
+      'idioma › Idioma › Agregar «Italiano» y marcar «Voz». <b>Android</b> → Ajustes › '+
+      'Administración general › Texto a voz › descargar italiano. <b>iPhone</b> → Ajustes › '+
+      'Accesibilidad › Contenido hablado › Voces › Italiano.'+
+      '<button id="cb-voz-ok" style="margin-left:.8rem;background:#d68910;color:#fff;border:0;'+
+      'border-radius:6px;padding:.35rem .8rem;cursor:pointer;font-size:.82rem">Entendido</button>';
+    document.body.appendChild(d);
+    document.getElementById('cb-voz-ok').onclick=function(){
+      localStorage.setItem('italiano-voz-aviso-ok','1'); d.remove();
+    };
+  }
+  if('speechSynthesis' in window)setTimeout(function(){avisoVoz();},2500);
+
   function buildVoiceSelect(){
     var sel=document.getElementById('cb-voice'); if(!sel)return;
-    if(!itVoices.length){sel.innerHTML='<option>⚠ sin voz italiana</option>';sel.disabled=true;return;}
+    if(!itVoices.length){
+      // Antes se deshabilitaba el select y no había NADA que hacer. Ahora al menos se puede
+      // elegir entre las voces que sí existen, para oír algo mientras se instala la italiana.
+      sel.disabled=!allVoices.length;
+      sel.innerHTML='<option value="">⚠ sin voz italiana — instálala</option>'+
+        allVoices.map(function(v){return '<option value="'+v.name+'"'+
+          (fallbackVoice&&v.name===fallbackVoice.name?' selected':'')+'>🔉 '+
+          v.name.replace(/microsoft|google/i,'').trim()+' ('+v.lang+')</option>'}).join('');
+      sel.onchange=function(){
+        if(!sel.value){avisoVoz(true);return;}
+        fallbackVoice=allVoices.find(function(v){return v.name===sel.value})||fallbackVoice;
+        say('Ciao, sono la tua voce italiana.');
+      };
+      return;
+    }
     sel.disabled=false;
     sel.innerHTML=itVoices.map(function(v){return '<option value="'+v.name+'"'+(itVoice&&v.name===itVoice.name?' selected':'')+'>🔊 '+v.name.replace(/microsoft|google/i,'').trim()+'</option>'}).join('');
     sel.onchange=function(){itVoice=itVoices.find(function(v){return v.name===sel.value});localStorage.setItem('italiano-voz',sel.value);say('Ciao, sono la tua voce italiana.');};
