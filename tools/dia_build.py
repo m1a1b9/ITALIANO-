@@ -48,7 +48,7 @@ except Exception:
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # ── La versión de caché vive AQUÍ. Cambiarla aquí basta para los días que se generen. ──────
-VERSION = '20260808b'
+VERSION = '20260808c'
 
 FIREBASE = ('<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>'
             '<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>'
@@ -297,6 +297,15 @@ def _validar():
         f.append('slang: %d entradas (§4 pide 2-4)' % _['n_slang'])
     if not any('class="alerta"' in c for c in _['cuerpo']):
         f.append('falta alguna alerta contrastiva')
+    # Audios demasiado largos: Chrome/Edge fallan EN SILENCIO por encima de ~300 chars y además
+    # atascan la cola, dejando muda toda la página (pasó en el día 21 con un audio de 512).
+    # curso.js ya trocea, pero conviene no depender solo de eso: mejor varios botones cortos.
+    for fr in re.findall(r'data-frase="([^"]*)"', ' '.join(_['cuerpo']) +
+                         (_['dettato'] or '') + ' '.join(h for _n, h, _r in _['ejs'])):
+        if len(fr) > 300:
+            f.append('audio de %d caracteres («%s…») — pártelo en varios botones: por encima de '
+                     '~300 Chrome/Edge enmudecen' % (len(fr), fr[:45]))
+
     n_siembra = sum(1 for _n, _h, r in _['ejs'] if r)
     if nums:
         pct = 100 * n_siembra // len(nums)

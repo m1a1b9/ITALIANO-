@@ -39,27 +39,72 @@
   function pararSiSuena(){
     try{ if(speechSynthesis.speaking||speechSynthesis.pending)speechSynthesis.cancel(); }catch(e){}
   }
-  function say(txt,el){
+
+  /* ---- TEXTOS LARGOS (bug real del día 21, 2026-08-08) ----------------------------
+     Chrome y Edge fallan EN SILENCIO con locuciones largas (a partir de ~200-300
+     caracteres): aceptan speak(), no lanzan error… y no suena nada. Peor aún, la
+     locución fallida ATASCA LA COLA y deja muda toda la página hasta recargar.
+     El día 21 tenía un audio de 512 caracteres (los demás días no pasan de 90), y por
+     eso «ese día no funcionaba» aunque el resto sí. Solución: trocear por frases y
+     encadenarlas. */
+  var MAX_CHARS=180;
+  function trocear(txt){
+    txt=String(txt).trim();
+    if(txt.length<=MAX_CHARS)return [txt];
+    var trozos=[], resto=txt;
+    while(resto.length>MAX_CHARS){
+      var corte=-1;
+      // 1º intentar cortar en final de frase, 2º en coma, 3º en el último espacio
+      [/[.!?]\s/g, /[,;:]\s/g, /\s/g].some(function(re){
+        var m, ult=-1; re.lastIndex=0;
+        while((m=re.exec(resto))&&m.index<MAX_CHARS)ult=m.index+m[0].length;
+        if(ult>40){corte=ult;return true;}
+        return false;
+      });
+      if(corte<0)corte=MAX_CHARS;
+      trozos.push(resto.slice(0,corte).trim());
+      resto=resto.slice(corte);
+    }
+    if(resto.trim())trozos.push(resto.trim());
+    return trozos;
+  }
+  // Chrome/Edge también cortan la locución a los ~15 s: mantenerla viva con resume().
+  var keepAlive=null;
+  function vigilar(on){
+    clearInterval(keepAlive);
+    if(on)keepAlive=setInterval(function(){
+      if(speechSynthesis.speaking){try{speechSynthesis.resume();}catch(e){}}
+      else clearInterval(keepAlive);
+    },9000);
+  }
+  function hablar(txt,rate,el,onend){
     if(!('speechSynthesis' in window)||!txt)return;
     if(!itVoices.length&&!fallbackVoice)pickVoice();   // por si las voces cargaron tarde
     pararSiSuena();
-    var u=nuevaUtt(txt,.9);
-    if(el){el.classList.add('cb-speaking');
-      u.onend=function(){el.classList.remove('cb-speaking')};
-      u.onerror=function(){el.classList.remove('cb-speaking');avisoVoz(true);};}
-    speechSynthesis.speak(u);
+    var trozos=trocear(txt), i=0;
+    if(el)el.classList.add('cb-speaking');
+    function fin(){ if(el)el.classList.remove('cb-speaking'); vigilar(false); if(onend)onend(); }
+    function siguiente(){
+      if(i>=trozos.length){fin();return;}
+      var u=nuevaUtt(trozos[i++],rate);
+      u.onend=siguiente;
+      u.onerror=function(e){
+        // 'interrupted'/'canceled' = lo paró el usuario, no es un fallo del motor
+        if(e&&/interrupted|canceled/.test(e.error||'')){fin();return;}
+        fin(); avisoVoz(true);
+      };
+      speechSynthesis.speak(u);
+    }
+    vigilar(true);
+    siguiente();
   }
+  function say(txt,el){ hablar(txt,.9,el); }
   // Voz italiana para otros módulos (inmersión: velocidad y loop por línea)
   window.italianoSay=function(txt,opts){
     opts=opts||{};
-    if(!('speechSynthesis' in window)||!txt)return;
-    if(!itVoices.length&&!fallbackVoice)pickVoice();
-    pararSiSuena();
-    var u=nuevaUtt(txt,opts.rate);
-    if(opts.onend)u.onend=opts.onend;
-    speechSynthesis.speak(u);
+    hablar(txt,opts.rate,null,opts.onend);
   };
-  window.italianoStop=function(){if('speechSynthesis' in window)speechSynthesis.cancel();};
+  window.italianoStop=function(){vigilar(false);if('speechSynthesis' in window)speechSynthesis.cancel();};
 
   /* Aviso VISIBLE cuando no hay voz italiana: antes solo se veía «⚠ sin voz italiana» dentro de
      un <select> de la barra, que pasa desapercibido y no dice cómo arreglarlo. */

@@ -168,6 +168,13 @@ def auditar(nn, verbose=True):
             if w not in ense:
                 avisos.append('se pregunta «%s» pero no aparece en el material de estudio' % w)
 
+    # ---- 6-bis. audios demasiado largos ----------------------------------
+    # Chrome/Edge enmudecen sin error por encima de ~300 chars y atascan la cola (día 21: 512).
+    for fr in re.findall(r'data-frase="([^"]*)"', html):
+        if len(fr) > 300:
+            avisos.append('audio de %d caracteres («%s…») — mejor partirlo en varios botones'
+                          % (len(fr), fr[:40]))
+
     # ---- 7. versión ?v= coherente ----------------------------------------
     vs = set(re.findall(r'\?v=(\d{8}[a-z])', html))
     if len(vs) > 1:
