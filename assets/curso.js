@@ -77,16 +77,39 @@
       else clearInterval(keepAlive);
     },9000);
   }
+  /* El motor de voz de Chrome/Edge puede quedarse COLGADO (típico tras una locución larga
+     fallida): speak() no lanza error, pero no arranca nunca, y a partir de ahí enmudece TODA la
+     web — recargar la página no lo arregla porque el servicio es del proceso del navegador.
+     Vigilante: si a los 600 ms no ha arrancado, se hace cancel() y se reintenta UNA vez; si
+     tampoco, se avisa al usuario de que cierre y reabra el navegador. */
+  function avisoAtasco(){
+    if(document.getElementById('cb-voz-atasco'))return;
+    var d=document.createElement('div');
+    d.id='cb-voz-atasco';
+    d.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:10000;background:#fdeaea;'+
+      'border-top:2px solid #c0392b;color:#7b241c;padding:.7rem 1rem;font-size:.85rem;'+
+      'font-family:-apple-system,Segoe UI,sans-serif;line-height:1.5;box-shadow:0 -4px 14px rgba(0,0,0,.12)';
+    d.innerHTML='<b>🔇 El motor de voz del navegador se quedó colgado.</b> Es un fallo conocido de '+
+      'Chrome/Edge y no se arregla recargando la página: <b>cierra el navegador POR COMPLETO '+
+      '(todas las ventanas) y vuelve a abrirlo</b>. Después funcionará normal.'+
+      '<button id="cb-atasco-ok" style="margin-left:.8rem;background:#c0392b;color:#fff;border:0;'+
+      'border-radius:6px;padding:.35rem .8rem;cursor:pointer;font-size:.82rem">Entendido</button>';
+    document.body.appendChild(d);
+    document.getElementById('cb-atasco-ok').onclick=function(){d.remove();};
+  }
+
   function hablar(txt,rate,el,onend){
     if(!('speechSynthesis' in window)||!txt)return;
     if(!itVoices.length&&!fallbackVoice)pickVoice();   // por si las voces cargaron tarde
     pararSiSuena();
-    var trozos=trocear(txt), i=0;
+    var trozos=trocear(txt), i=0, reintentado=false;
     if(el)el.classList.add('cb-speaking');
     function fin(){ if(el)el.classList.remove('cb-speaking'); vigilar(false); if(onend)onend(); }
     function siguiente(){
       if(i>=trozos.length){fin();return;}
-      var u=nuevaUtt(trozos[i++],rate);
+      var texto=trozos[i++], arranco=false;
+      var u=nuevaUtt(texto,rate);
+      u.onstart=function(){arranco=true;};
       u.onend=siguiente;
       u.onerror=function(e){
         // 'interrupted'/'canceled' = lo paró el usuario, no es un fallo del motor
@@ -94,6 +117,15 @@
         fin(); avisoVoz(true);
       };
       speechSynthesis.speak(u);
+      // vigilante del arranque
+      setTimeout(function(){
+        if(arranco||speechSynthesis.speaking)return;
+        if(!reintentado){                       // reintento único: descolgar y repetir el trozo
+          reintentado=true;
+          try{speechSynthesis.cancel();}catch(e){}
+          setTimeout(function(){ i--; siguiente(); },250);
+        }else{ fin(); avisoAtasco(); }
+      },600);
     }
     vigilar(true);
     siguiente();
