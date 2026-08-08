@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Práctica · Italiano</title>
-<link rel="stylesheet" href="assets/curso.css?v=20260807b">
+<link rel="stylesheet" href="assets/curso.css?v=20260808a">
 <style>
   body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:720px;margin:0 auto;padding:2rem 1.5rem 4rem;line-height:1.5}
   .top{border-left:4px solid #2d6a4f;padding-left:1rem;margin-bottom:1.2rem}
@@ -56,6 +56,8 @@
   .fb.warn{background:#fff8e8;border-left:4px solid #c79a3a;color:#7a5c12}
   .fb.ko{background:#fdf0ef;border-left:4px solid #c0392b;color:#922b21}
   .fb .sol{font-size:1.05rem;font-weight:700;font-style:italic}
+  .d-mal{background:#fdd;color:#922b21;border-radius:3px;padding:0 .12rem}
+  .d-bien{background:#d6f0e0;color:#1a4731;border-radius:3px;padding:0 .12rem}
   .fb .why{margin-top:.3rem;color:inherit;opacity:.85}
   .controls{display:flex;gap:.5rem;margin-top:1rem}
   .controls button{flex:1;border:0;border-radius:9px;padding:.8rem;font:700 .85rem/1 inherit;cursor:pointer;color:#fff}
@@ -69,7 +71,7 @@
   .vacio .big{font-size:2rem}
   .resta{font-size:.78rem;color:#999;text-align:right;margin-top:.5rem}
 </style>
-<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260807b"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260808a"></script>
 </head>
 <body>
 <div class="top">
@@ -150,18 +152,65 @@ function checkAgainst(input,targets){
   return best==='no'?{r:'no'}:best;
 }
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+/* Cuando la respuesta estuvo CERCA, marca la parte divergente en vez de decir solo «no exactamente»:
+   «av·este» vs «f·oste». Devuelve null si son demasiado distintas (ahí no aporta nada). */
+function marcarDiferencia(tuyo,bueno){
+  var a=baseNorm(tuyo),b=baseNorm(bueno);
+  if(!a||!b||a===b)return null;
+  if(Math.abs(a.length-b.length)>4)return null;
+  var ini=0;while(ini<a.length&&ini<b.length&&a[ini]===b[ini])ini++;
+  var fin=0;while(fin<a.length-ini&&fin<b.length-ini&&a[a.length-1-fin]===b[b.length-1-fin])fin++;
+  var difA=a.length-ini-fin, difB=b.length-ini-fin;
+  if(difA>Math.max(4,a.length*0.6)&&difB>Math.max(4,b.length*0.6))return null;   // no se parecen
+  function pinta(s,cls){
+    return '<b>'+esc(s.slice(0,ini))+'<span class="'+cls+'">'+esc(s.slice(ini,s.length-fin))+'</span>'+esc(s.slice(s.length-fin))+'</b>';
+  }
+  return {tuyo:pinta(a,'d-mal'),bueno:pinta(b,'d-bien')};
+}
 
 /* ---------- fuentes ---------- */
 var errSrc={},examSrc={},drillSrc={},perfilSrc={};
 function vocabList(){try{return JSON.parse(localStorage.getItem('italiano-vocab-activo')||'[]')}catch(e){return[]}}
 
+/* Un significado SIRVE si no es un marcador de posición. Sin esto se colaba «…» como respuesta
+   correcta de una tarjeta (caso real: «giunto», cuyas 3 opciones eran «piel/cascara», «…» y
+   «acabas hacer empate» — ninguna respondía la pregunta). */
+function sirveEs(s){
+  s=(s||'').trim();
+  if(!s)return false;
+  return !/^[.…\-–—?¿*_\s]+$/.test(s);
+}
+/* El significado que se usa para preguntar: el tuyo si sirve; si no, la traducción simple de la
+   palabra base (lemaEs), que ya está guardada. Para giunto/eseguito/preme/azzeccato eso da
+   llegar/ejecutar/apretar/atinar en vez de basura. */
+function esUtil(w){
+  if(sirveEs(w.es))return w.es.trim();
+  if(sirveEs(w.lemaEs))return w.lemaEs.trim();
+  return '';
+}
 function vocabItems(){
   return vocabList().map(function(w){
     // ojo: el campo guardado siempre ha sido `ctx` (antes decía w.contexto, así que la frase de
     // contexto nunca llegaba a la tarjeta). `lema`/`pos`/`flex` se muestran al corregir.
-    return {id:'v:'+baseNorm(w.it),deck:'vocab',prio:4,tipo:'vocab',it:w.it,es:w.es||'',nota:w.ctx||'',
-            estado:w.estado,lema:w.lema||'',pos:w.pos||'',flex:w.flex||''};
-  }).filter(function(w){return w.it&&w.es});
+    return {id:'v:'+baseNorm(w.it),deck:'vocab',prio:4,tipo:'vocab',it:w.it,es:esUtil(w),ctx:w.ctx||'',nota:w.ctx||'',
+            estado:w.estado,lema:w.lema||'',pos:w.pos||'',flex:w.flex||'',lemaEs:w.lemaEs||''};
+  }).filter(function(w){return w.it&&w.es});   // sin significado utilizable no se genera tarjeta
+}
+/* Rescata la oración modelo de las notas ya escritas (los errores viejos no tienen campo `frase`).
+   Ej.: «venire → essere (foste, no aveste). En tipo 3: Se foste venuti, vi sareste divertiti.»
+   Se busca el trozo que CONTENGA la forma correcta y tenga pinta de oración; si no, se devuelve ''. */
+function fraseDeNota(nota,correcto){
+  if(!nota||!correcto)return '';
+  var trozos=String(nota).split(/(?:^|[.;:])\s*/);
+  for(var i=0;i<trozos.length;i++){
+    var t=trozos[i].trim().replace(/^[«"']|[»"'.]$/g,'').trim();
+    if(t.length<8||t.length>140)continue;
+    if(t.indexOf(correcto)<0)continue;
+    if(t.split(/\s+/).length<4)continue;                 // debe aportar contexto, no ser la forma sola
+    if(/→|->/.test(t))continue;                          // es una explicación, no una oración
+    return t;
+  }
+  return '';
 }
 function errorItems(){
   var out=[];
@@ -169,8 +218,10 @@ function errorItems(){
     (errSrc[dia].errores||[]).forEach(function(e,i){
       if(e.repasar!==true)return; // solo errores reales (no dedazos ni matices)
       if(!e.correcto)return;
+      // `frase` = oración modelo completa (habilita el hueco resoluble); `acepta` = variantes válidas
       out.push({id:'e:'+dia+':'+i,deck:'error',prio:6,tipo:'error',dia:dia,
-        tema:e.tema||'',tuvo:e.tuvo||'',correcto:e.correcto,nota:e.nota||''});
+        tema:e.tema||'',tuvo:e.tuvo||'',correcto:e.correcto,nota:e.nota||'',
+        frase:e.frase||fraseDeNota(e.nota,e.correcto),acepta:e.acepta||e.accettate||[]});
     });
   });
   return out;
@@ -235,11 +286,30 @@ function renderPanel(){
 
 /* ---------- cola SRS ---------- */
 var currentDeck='todo',queue=[],current=null,contKey=null;
+var SESION_MAX=15;                                  // sesión con final, en vez de «quedan 143»
+var sesion={total:0,hechas:0,aciertos:0,t0:0,pendientes:0};
 function isDue(c){var s=state[c.id];if(!s)return true;return s.due<=today0()+DAY-1;}
+/* No encadenar tarjetas del mismo tema: se reparten alternando temas distintos. */
+function intercalar(l){
+  var porTema={},orden=[];
+  l.forEach(function(c){
+    var k=c.tema||c.rasgo||c.deck;
+    if(!porTema[k]){porTema[k]=[];orden.push(k);}
+    porTema[k].push(c);
+  });
+  var out=[],quedan=true;
+  while(quedan){
+    quedan=false;
+    orden.forEach(function(k){if(porTema[k].length){out.push(porTema[k].shift());quedan=true;}});
+  }
+  return out;
+}
 function buildQueue(){
   var pool=currentDeck==='todo'?allItems():allItems().filter(function(c){return c.deck===currentDeck});
-  queue=pool.filter(isDue);
-  queue.sort(function(a,b){return (b.prio-a.prio)||(reps(a.id)-reps(b.id));});
+  var due=pool.filter(isDue);
+  due.sort(function(a,b){return (b.prio-a.prio)||(reps(a.id)-reps(b.id));});
+  queue=intercalar(due).slice(0,SESION_MAX);
+  sesion={total:queue.length,hechas:0,aciertos:0,t0:Date.now(),pendientes:Math.max(0,due.length-queue.length)};
 }
 function schedule(c,grade){
   logAct();
@@ -265,6 +335,27 @@ function clozeOf(tuvo,correcto){
   if(!gap.length||gap.length===B.length)return null;
   return {pre:B.slice(0,i).join(' '),gap:gap.join(' '),post:B.slice(B.length-j).join(' ')};
 }
+/* La palabra dentro de TU propia frase de contexto (dato que ya guardas y no se usaba).
+   Solo si aparece literalmente en la frase y la frase aporta algo más que la palabra sola. */
+function clozeCtx(c){
+  var frase=(c.ctx||'').trim();
+  if(!frase||!c.it)return null;
+  if(frase.split(/\s+/).length<4)return null;                 // demasiado corta para dar contexto
+  var re=new RegExp('(^|[^\\wàèéìòù])('+c.it.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')(?![\\wàèéìòù])','i');
+  var m=re.exec(frase);
+  if(!m)return null;
+  var pos=m.index+m[1].length;
+  return {pre:frase.slice(0,pos).trim(), gap:frase.substr(pos,m[2].length), post:frase.slice(pos+m[2].length).trim()};
+}
+/* ¿Se puede acertar este hueco? Una forma verbal conjugada NO se deduce si en el trozo visible no
+   hay sujeto: «Se ___ venuti» admite fossi/foste/fossero. Caso real reportado por el usuario. */
+var PRON_SUJ=/\b(io|tu|lui|lei|noi|voi|loro|egli|ella|essi)\b/i;
+function huecoAmbiguo(cz){
+  if(!cz)return false;
+  if(cz.gap.split(/\s+/).length>1)return false;               // varias palabras: suele bastar
+  if(!/^(sono|sei|è|siamo|siete|ero|eri|era|eravamo|eravate|erano|fossi|fosse|fossimo|foste|fossero|sarei|saresti|sarebbe|saremmo|sareste|sarebbero|ho|hai|ha|abbiamo|avete|hanno|avevo|avevi|aveva|avevamo|avevate|avevano|avessi|avesse|avessimo|aveste|avessero|avrei|avresti|avrebbe|avremmo|avreste|avrebbero)$/i.test(baseNorm(cz.gap)))return false;
+  return !PRON_SUJ.test(cz.pre+' '+cz.post);                  // sin sujeto visible → irresoluble
+}
 /* «de mangiare · verbo (3ª pers. sing. imperfecto)» — se enseña al CORREGIR, no en la pregunta:
    la tarjeta sigue preguntando por la forma que guardaste. */
 function lemaTxt(c){
@@ -277,12 +368,29 @@ function buildExercise(c){
   if(c.tipo==='vocab'){
     var vs=vocabItems();
     var nota=[lemaTxt(c),c.nota].filter(Boolean).join(' — ');
-    var mode=(r===0&&vs.length>=4)?'mc':(r%2===1?'dict':'write');
+    // Distractores: se prefiere la traducción LIMPIA del lema (lemaEs) sobre el significado propio,
+    // porque el propio puede ser una traducción contextual mala («acabas hacer empate») y como
+    // distractor no ayuda a nadie. Distintos entre sí y distintos de la respuesta.
+    var others=[],vistos={};vistos[baseNorm(c.es)]=1;
+    shuffle(vs.filter(function(v){return v.id!==c.id})).forEach(function(v){
+      var t=sirveEs(v.lemaEs)?v.lemaEs.trim():v.es;
+      var k=baseNorm(t);
+      if(others.length>=2||!sirveEs(t)||vistos[k])return;
+      vistos[k]=1;others.push(t);
+    });
+    var puedeMC=(r===0&&others.length===2);      // sin 2 distractores válidos NO se ofrecen opciones
+    var mode=puedeMC?'mc':(r%2===1?'dict':(clozeCtx(c)?'ctx':'write'));
     if(mode==='mc'){
-      var others=shuffle(vs.filter(function(v){return v.id!==c.id}).map(function(v){return v.es})).slice(0,2);
       var ops=shuffle([{t:c.es,ok:true}].concat(others.map(function(o){return {t:o,ok:false}})));
       return {kind:'mc',tag:'Vocabulario ★',modo:'¿Qué significa?',q:'<span style="font-style:italic;font-weight:700">'+esc(c.it)+'</span> <span style="color:#999;font-size:.85rem">(toca 🔊 para oír)</span>',
         ops:ops,say:c.it,explica:nota};
+    }
+    if(mode==='ctx'){                            // la palabra dentro de TU propia frase
+      var cz2=clozeCtx(c);
+      return {kind:'write',tag:'Vocabulario ★',modo:'Complétala en tu frase',
+        q:'<i>'+esc(cz2.pre)+' <span class="gap">___</span> '+esc(cz2.post)+'</i>'+
+          '<div class="es" style="margin-top:.4rem">significa: «'+esc(c.es)+'»</div>',
+        targets:[cz2.gap],say:c.it,explica:nota,full:c.it};
     }
     if(mode==='dict'){
       return {kind:'write',tag:'Vocabulario ★',modo:'Al oído: escribe lo que escuchas',q:'🔊 Escucha y escribe la palabra/frase en italiano <span class="es">(significa: «'+esc(c.es)+'»)</span>',
@@ -303,13 +411,25 @@ function buildExercise(c){
         ops:ops,say:c.correcto,explica:c.nota};
     }
     if(r===1){
-      var cz=clozeOf(c.tuvo,c.correcto);
-      if(cz)return {kind:'write',tag:tagE,modo:'Completa el hueco (donde caíste)',
-        q:'<i>'+esc(cz.pre)+' <span class="gap">___</span> '+esc(cz.post)+'</i>',
-        targets:[cz.gap],say:c.correcto,explica:c.nota,full:c.correcto};
+      // Hueco SOLO si se puede acertar: con la frase modelo completa detrás, o con sujeto visible.
+      // Si el trozo no permite deducir la persona, se cae al modo de escribir la corrección.
+      var cz=clozeOf(c.tuvo,c.correcto), completa=c.frase&&c.frase.indexOf(c.correcto)>=0?c.frase:'';
+      if(cz&&(completa||!huecoAmbiguo(cz))){
+        var pre=cz.pre,post=cz.post;
+        if(completa){                              // se enseña la oración entera, con el hueco dentro
+          var k=completa.indexOf(c.correcto);
+          pre=(completa.slice(0,k)+cz.pre).trim();
+          post=(cz.post+completa.slice(k+c.correcto.length)).replace(/\s+/g,' ').trimEnd();
+        }
+        return {kind:'write',tag:tagE,modo:'Completa el hueco (donde caíste)',
+          q:'<i>'+esc(pre)+' <span class="gap">___</span> '+esc(post)+'</i>',
+          targets:[cz.gap].concat(c.acepta||[]),say:c.correcto,explica:c.nota,full:c.correcto};
+      }
     }
-    return {kind:'write',tag:tagE,modo:'Corrige tu error',q:'Tú escribiste: <span class="mal">«'+esc(c.tuvo)+'»</span> — escríbelo bien:',
-      targets:[c.correcto],say:c.correcto,explica:c.nota};
+    return {kind:'write',tag:tagE,modo:'Corrige tu error',
+      q:(c.frase?'<div class="es" style="margin-bottom:.4rem">'+esc(c.frase)+'</div>':'')+
+        'Tú escribiste: <span class="mal">«'+esc(c.tuvo)+'»</span> — escríbelo bien:',
+      targets:[c.correcto].concat(c.acepta||[]),say:c.correcto,explica:c.nota};
   }
   /* drill curado (scrivi / scelta) */
   var d=c.drill,tagD='Drill fresco · '+esc(c.rasgo);
@@ -327,6 +447,19 @@ function render(){
   var z=document.getElementById('zona');
   if(!current){
     var any=allItems().length;
+    if(sesion.total){                                  // acabas de terminar una sesión: resumen
+      var min=Math.max(1,Math.round((Date.now()-sesion.t0)/60000));
+      var pct=sesion.hechas?Math.round(100*sesion.aciertos/sesion.hechas):0;
+      z.innerHTML='<div class="vacio"><div class="big">🎉</div>'+
+        '<div style="font-size:1.1rem;color:#1a4731;margin:.4rem 0"><b>'+sesion.aciertos+' de '+sesion.hechas+'</b> a la primera ('+pct+'%)</div>'+
+        '<div style="font-size:.85rem;color:#888">'+min+' min · sesión terminada</div>'+
+        (sesion.pendientes?'<button class="b-check" id="otra" style="margin-top:1rem;border:0;border-radius:9px;padding:.7rem 1.4rem;color:#fff;font:700 .85rem/1 inherit;cursor:pointer">Otra sesión ('+sesion.pendientes+' pendientes)</button>'
+                          :'<div style="margin-top:.8rem;color:#2d6a4f;font-weight:700">¡Al día! Vuelve mañana.</div>')+
+        '</div>';
+      var ob=document.getElementById('otra');
+      if(ob)ob.onclick=function(){buildQueue();next();};
+      renderPanel();return;
+    }
     z.innerHTML='<div class="vacio"><div class="big">✅</div>'+
       (any?'¡Al día! No hay repasos pendientes en este mazo. Vuelve mañana.':
            'Aún no tienes material. Guarda palabras con ★ en los días, o termina ejercicios para generar errores que practicar.')+'</div>';
@@ -342,7 +475,7 @@ function render(){
     h+='<div class="opts" id="opts">'+ex.ops.map(function(o,i){return '<button data-i="'+i+'">'+esc(o.t)+'</button>'}).join('')+'</div>';
     h+='<div class="controls"><button class="b-say" id="btn-say">🔊</button></div>';
   }
-  h+='<div id="fb"></div><div class="resta">quedan '+(queue.length+1)+' en este mazo</div></div>';
+  h+='<div id="fb"></div><div class="resta">'+(sesion.hechas+1)+' / '+sesion.total+' de esta sesión</div></div>';
   z.innerHTML=h;
 
   var btnSay=document.getElementById('btn-say');
@@ -350,6 +483,8 @@ function render(){
   if(ex.autoSay)setTimeout(function(){say(ex.say)},300);
 
   function finish(gradeButtons,fbHtml,cls){
+    sesion.hechas++;                                  // para el resumen de cierre
+    if(cls==='ok')sesion.aciertos++;
     document.getElementById('fb').innerHTML='<div class="fb '+cls+'">'+fbHtml+'</div>'+
       '<div class="controls">'+gradeButtons+'</div>';
     var bn=document.getElementById('b-next');if(bn)bn.onclick=function(){schedule(c,'good');renderPanel();next();};
@@ -374,7 +509,12 @@ function render(){
       if(res.r==='exact'){finish(GOOD,'✅ <b>Esatto!</b> '+solu,'ok');}
       else if(res.r==='acc'&&!ex.accenti){finish(GOOD,'🔸 <b>Casi perfecto</b> — solo los acentos: '+solu,'warn');}
       else if(res.r==='acc'&&ex.accenti){finish(BAD,'❌ <b>Los acentos eran justo el punto:</b> '+solu,'ko');}
-      else{finish(BAD,'❌ <b>No exactamente.</b> La respuesta era: '+solu,'ko');}
+      else{
+        // si estuvo CERCA, señalar la parte exacta que falló en vez de un «no exactamente» seco
+        var dif=marcarDiferencia(v,ex.targets[0]);
+        finish(BAD,'❌ '+(dif?'<b>Casi:</b> escribiste '+dif.tuyo+' y era '+dif.bueno+'<br>'
+                             :'<b>No exactamente.</b> La respuesta era: ')+solu,'ko');
+      }
     }
     document.getElementById('btn-check').onclick=check;
     inp.addEventListener('keydown',function(e){if(e.key==='Enter')check();});

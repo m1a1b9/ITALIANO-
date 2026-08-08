@@ -5,114 +5,787 @@
     "ausiliare_pronominali_riflessivi": {
       "etiqueta": "Auxiliar ESSERE: pronominales, recíprocos y movimiento en tiempos compuestos",
       "drills": [
-        { "id": "auxpr_1", "tipo": "scrivi", "q": "Completa con l'ausiliare: «Ci ___ visti al bar, ma non ci siamo parlati.»", "soluzione": "siamo", "accettate": [], "explica": "vedersi (recíproco) → essere: ci siamo visti." },
-        { "id": "auxpr_2", "tipo": "scrivi", "q": "Traduci: «Se habrían conocido antes.»", "soluzione": "si sarebbero conosciuti prima", "accettate": ["si sarebbero conosciute prima"], "explica": "conoscersi (recíproco) → essere: sarebbero, no avrebbero." },
-        { "id": "auxpr_3", "tipo": "scelta", "q": "Quale è corretta?", "op": ["Ve ne avete andati presto", "Ve ne siete andati presto", "Ve ne avete andato presto"], "c": 1, "explica": "andarsene (pronominale) → SEMPRE essere: ve ne siete andati." },
-        { "id": "auxpr_4", "tipo": "scelta", "q": "«Nonostante ci ___ scritti per mesi, non ci siamo mai visti.»", "op": ["avessimo", "fossimo", "saremmo"], "c": 1, "explica": "scriversi (recíproco) → essere; congiuntivo trapassato: ci fossimo scritti." }
+        {
+          "id": "auxpr_1",
+          "tipo": "scrivi",
+          "q": "Completa con l'ausiliare: «Ci ___ visti al bar, ma non ci siamo parlati.»",
+          "soluzione": "siamo",
+          "accettate": [],
+          "explica": "vedersi (recíproco) → essere: ci siamo visti."
+        },
+        {
+          "id": "auxpr_2",
+          "tipo": "scrivi",
+          "q": "Traduci: «Se habrían conocido antes.»",
+          "soluzione": "si sarebbero conosciuti prima",
+          "accettate": [
+            "si sarebbero conosciute prima"
+          ],
+          "explica": "conoscersi (recíproco) → essere: sarebbero, no avrebbero."
+        },
+        {
+          "id": "auxpr_3",
+          "tipo": "scelta",
+          "q": "Quale è corretta?",
+          "op": [
+            "Ve ne avete andati presto",
+            "Ve ne siete andati presto",
+            "Ve ne avete andato presto"
+          ],
+          "c": 1,
+          "explica": "andarsene (pronominale) → SEMPRE essere: ve ne siete andati."
+        },
+        {
+          "id": "auxpr_4",
+          "tipo": "scelta",
+          "q": "«Nonostante ci ___ scritti per mesi, non ci siamo mai visti.»",
+          "op": [
+            "avessimo",
+            "fossimo",
+            "saremmo"
+          ],
+          "c": 1,
+          "explica": "scriversi (recíproco) → essere; congiuntivo trapassato: ci fossimo scritti."
+        }
       ]
     },
     "pronome_scelta_diretto_indiretto": {
       "etiqueta": "Directo vs indirecto según el verbo (chiamare/vedere = directo; telefonare/rispondere = indirecto)",
       "drills": [
-        { "id": "dirind_1", "tipo": "scelta", "q": "«Ho visto Marco e ___ ho salutato.»", "op": ["gli", "lo", "le"], "c": 1, "explica": "salutare = directo → lo. 'Gli' sería para verbos con A (telefonare a, rispondere a)." },
-        { "id": "dirind_2", "tipo": "scelta", "q": "«I tuoi amici? ___ telefono stasera.»", "op": ["Li", "Gli", "Ne"], "c": 1, "explica": "telefonare A qualcuno → indirecto → gli (a ellos)." },
-        { "id": "dirind_3", "tipo": "scrivi", "q": "Traduci: «¿Tus hermanas? Las llamo mañana.»", "soluzione": "le chiamo domani", "accettate": ["le mie sorelle le chiamo domani", "le chiamerò domani"], "explica": "chiamare = directo → le (las). No 'gli chiamo'." }
+        {
+          "id": "dirind_1",
+          "tipo": "scelta",
+          "q": "«Ho visto Marco e ___ ho salutato.»",
+          "op": [
+            "gli",
+            "lo",
+            "le"
+          ],
+          "c": 1,
+          "explica": "salutare = directo → lo. 'Gli' sería para verbos con A (telefonare a, rispondere a)."
+        },
+        {
+          "id": "dirind_2",
+          "tipo": "scelta",
+          "q": "«I tuoi amici? ___ telefono stasera.»",
+          "op": [
+            "Li",
+            "Gli",
+            "Ne"
+          ],
+          "c": 1,
+          "explica": "telefonare A qualcuno → indirecto → gli (a ellos)."
+        },
+        {
+          "id": "dirind_3",
+          "tipo": "scrivi",
+          "q": "Traduci: «¿Tus hermanas? Las llamo mañana.»",
+          "soluzione": "le chiamo domani",
+          "accettate": [
+            "le mie sorelle le chiamo domani",
+            "le chiamerò domani"
+          ],
+          "explica": "chiamare = directo → le (las). No 'gli chiamo'."
+        }
       ]
     },
     "clitici_forma_presenza": {
       "etiqueta": "Clíticos: no omitirlos y pegarlos al imperativo (dammi, dimmi)",
       "drills": [
-        { "id": "clit_1", "tipo": "scrivi", "q": "Traduci: «¡Dame las llaves!»", "soluzione": "dammi le chiavi", "accettate": [], "explica": "dare (tu) = da' + mi → DAMMI (doble m). El clítico va pegado al imperativo." },
-        { "id": "clit_2", "tipo": "scrivi", "q": "Traduci: «¿Me lo puedes explicar?»", "soluzione": "me lo puoi spiegare", "accettate": ["puoi spiegarmelo"], "explica": "No sueltes los clíticos: ME LO puoi spiegare / puoi spiegarMELO." },
-        { "id": "clit_3", "tipo": "scelta", "q": "Suona naturale in italiano:", "op": ["Di' la verità a me!", "Dimmi la verità!", "Mi di' la verità!"], "c": 1, "explica": "di' + mi = DIMMI. El clítico se pega detrás del imperativo, nunca delante." }
+        {
+          "id": "clit_1",
+          "tipo": "scrivi",
+          "q": "Traduci: «¡Dame las llaves!»",
+          "soluzione": "dammi le chiavi",
+          "accettate": [],
+          "explica": "dare (tu) = da' + mi → DAMMI (doble m). El clítico va pegado al imperativo."
+        },
+        {
+          "id": "clit_2",
+          "tipo": "scrivi",
+          "q": "Traduci: «¿Me lo puedes explicar?»",
+          "soluzione": "me lo puoi spiegare",
+          "accettate": [
+            "puoi spiegarmelo"
+          ],
+          "explica": "No sueltes los clíticos: ME LO puoi spiegare / puoi spiegarMELO."
+        },
+        {
+          "id": "clit_3",
+          "tipo": "scelta",
+          "q": "Suona naturale in italiano:",
+          "op": [
+            "Di' la verità a me!",
+            "Dimmi la verità!",
+            "Mi di' la verità!"
+          ],
+          "c": 1,
+          "explica": "di' + mi = DIMMI. El clítico se pega detrás del imperativo, nunca delante."
+        }
       ]
     },
     "distinzione_e_è": {
       "etiqueta": "e (y) vs è (es/está)",
       "drills": [
-        { "id": "ee_1", "tipo": "scrivi", "accenti": true, "q": "Scrivi la frase con e / è al posto giusto: «Luca _ stanco _ affamato, _ non vuole cucinare.»", "soluzione": "luca è stanco e affamato, e non vuole cucinare", "accettate": ["è e e", "è, e, e"], "explica": "è = verbo essere (está); e = y. Aquí: È stanco E affamato, E non vuole…" },
-        { "id": "ee_2", "tipo": "scelta", "q": "«Il caffè ___ pronto ___ caldo.»", "op": ["è / e", "e / è", "è / è"], "c": 0, "explica": "Primero verbo (è pronto), luego conjunción (e caldo)." }
+        {
+          "id": "ee_1",
+          "tipo": "scrivi",
+          "accenti": true,
+          "q": "Scrivi la frase con e / è al posto giusto: «Luca _ stanco _ affamato, _ non vuole cucinare.»",
+          "soluzione": "luca è stanco e affamato, e non vuole cucinare",
+          "accettate": [
+            "è e e",
+            "è, e, e"
+          ],
+          "explica": "è = verbo essere (está); e = y. Aquí: È stanco E affamato, E non vuole…"
+        },
+        {
+          "id": "ee_2",
+          "tipo": "scelta",
+          "q": "«Il caffè ___ pronto ___ caldo.»",
+          "op": [
+            "è / e",
+            "e / è",
+            "è / è"
+          ],
+          "c": 0,
+          "explica": "Primero verbo (è pronto), luego conjunción (e caldo)."
+        }
       ]
     },
     "concordanza_participio_pron": {
       "etiqueta": "Concordancia del participio con li/le + avere (le ho viste)",
       "drills": [
-        { "id": "concp_1", "tipo": "scrivi", "q": "Rispondi col pronome: «Hai comprato le scarpe?» — Sì, ___", "soluzione": "le ho comprate", "accettate": ["sì, le ho comprate"], "explica": "Con li/le delante, el participio concuerda: le … compratE." },
-        { "id": "concp_2", "tipo": "scrivi", "q": "Rispondi col pronome: «Hai visto i ragazzi?» — Sì, ___", "soluzione": "li ho visti", "accettate": ["sì, li ho visti"], "explica": "li (masc. pl.) → vistI." },
-        { "id": "concp_3", "tipo": "scelta", "q": "«Le foto? Le ho ___ ieri.»", "op": ["stampato", "stampate", "stampati"], "c": 1, "explica": "le (fem. pl.) delante de avere → participio concuerda: stampatE." }
+        {
+          "id": "concp_1",
+          "tipo": "scrivi",
+          "q": "Rispondi col pronome: «Hai comprato le scarpe?» — Sì, ___",
+          "soluzione": "le ho comprate",
+          "accettate": [
+            "sì, le ho comprate"
+          ],
+          "explica": "Con li/le delante, el participio concuerda: le … compratE."
+        },
+        {
+          "id": "concp_2",
+          "tipo": "scrivi",
+          "q": "Rispondi col pronome: «Hai visto i ragazzi?» — Sì, ___",
+          "soluzione": "li ho visti",
+          "accettate": [
+            "sì, li ho visti"
+          ],
+          "explica": "li (masc. pl.) → vistI."
+        },
+        {
+          "id": "concp_3",
+          "tipo": "scelta",
+          "q": "«Le foto? Le ho ___ ieri.»",
+          "op": [
+            "stampato",
+            "stampate",
+            "stampati"
+          ],
+          "c": 1,
+          "explica": "le (fem. pl.) delante de avere → participio concuerda: stampatE."
+        }
       ]
     },
     "reggenza_verbo_prep": {
       "etiqueta": "Reggenze: provare A, cercare DI, pensare A, smettere DI, è necessario + inf",
       "drills": [
-        { "id": "regg_1", "tipo": "scrivi", "q": "Completa: «Penso spesso ___ mio futuro.»", "soluzione": "al", "accettate": [], "explica": "pensare A + il = AL. 'Pensare su' es calco del español." },
-        { "id": "regg_2", "tipo": "scrivi", "q": "Completa: «Prova ___ chiamarlo, magari risponde.»", "soluzione": "a", "accettate": ["ad"], "explica": "provare A + infinito." },
-        { "id": "regg_3", "tipo": "scelta", "q": "«È necessario ___ prenotare in anticipo.»", "op": ["di", "a", "— (niente)"], "c": 2, "explica": "è necessario + infinito directo, SIN preposición (no 'di')." },
-        { "id": "regg_4", "tipo": "scelta", "q": "«Ha smesso ___ piovere.»", "op": ["di", "a", "da"], "c": 0, "explica": "smettere DI + infinito." }
+        {
+          "id": "regg_1",
+          "tipo": "scrivi",
+          "q": "Completa: «Penso spesso ___ mio futuro.»",
+          "soluzione": "al",
+          "accettate": [],
+          "explica": "pensare A + il = AL. 'Pensare su' es calco del español."
+        },
+        {
+          "id": "regg_2",
+          "tipo": "scrivi",
+          "q": "Completa: «Prova ___ chiamarlo, magari risponde.»",
+          "soluzione": "a",
+          "accettate": [
+            "ad"
+          ],
+          "explica": "provare A + infinito."
+        },
+        {
+          "id": "regg_3",
+          "tipo": "scelta",
+          "q": "«È necessario ___ prenotare in anticipo.»",
+          "op": [
+            "di",
+            "a",
+            "— (niente)"
+          ],
+          "c": 2,
+          "explica": "è necessario + infinito directo, SIN preposición (no 'di')."
+        },
+        {
+          "id": "regg_4",
+          "tipo": "scelta",
+          "q": "«Ha smesso ___ piovere.»",
+          "op": [
+            "di",
+            "a",
+            "da"
+          ],
+          "c": 0,
+          "explica": "smettere DI + infinito."
+        }
       ]
     },
     "articolo_uno_lo": {
       "etiqueta": "LO ante s+cons/z/ps también en las articuladas (allo, con lo, nello)",
       "drills": [
-        { "id": "unolo_1", "tipo": "scrivi", "q": "Completa con (con + lo): «Ho parlato ___ psicologo.»", "soluzione": "con lo", "accettate": [], "explica": "ps- → lo → con lo psicologo (con y lo no se fusionan)." },
-        { "id": "unolo_2", "tipo": "scrivi", "q": "Completa con (a + lo): «Pensavo ___ stesso problema.»", "soluzione": "allo", "accettate": [], "explica": "st- → lo → ALLO stesso problema (tu clásico 'al stesso' ✗)." },
-        { "id": "unolo_3", "tipo": "scelta", "q": "Quale è corretta?", "op": ["nel zaino", "nello zaino", "nei zaino"], "c": 1, "explica": "z- → lo → NELLO zaino." }
+        {
+          "id": "unolo_1",
+          "tipo": "scrivi",
+          "q": "Completa con (con + lo): «Ho parlato ___ psicologo.»",
+          "soluzione": "con lo",
+          "accettate": [],
+          "explica": "ps- → lo → con lo psicologo (con y lo no se fusionan)."
+        },
+        {
+          "id": "unolo_2",
+          "tipo": "scrivi",
+          "q": "Completa con (a + lo): «Pensavo ___ stesso problema.»",
+          "soluzione": "allo",
+          "accettate": [],
+          "explica": "st- → lo → ALLO stesso problema (tu clásico 'al stesso' ✗)."
+        },
+        {
+          "id": "unolo_3",
+          "tipo": "scelta",
+          "q": "Quale è corretta?",
+          "op": [
+            "nel zaino",
+            "nello zaino",
+            "nei zaino"
+          ],
+          "c": 1,
+          "explica": "z- → lo → NELLO zaino."
+        }
       ]
     },
     "comparativo_migliore_meglio": {
       "etiqueta": "migliore vs meglio + DI entre nombres",
       "drills": [
-        { "id": "migl_1", "tipo": "scelta", "q": "«Il gelato di qui è migliore ___ quello di ieri.»", "op": ["che", "di", "del"], "c": 1, "explica": "Comparación entre nombres/pronombres → DI: migliore DI quello." },
-        { "id": "migl_2", "tipo": "scrivi", "q": "Traduci: «Cocinas mejor que yo.»", "soluzione": "cucini meglio di me", "accettate": [], "explica": "Con verbo → MEGLIO (adverbio); ante pronombre → di me." }
+        {
+          "id": "migl_1",
+          "tipo": "scelta",
+          "q": "«Il gelato di qui è migliore ___ quello di ieri.»",
+          "op": [
+            "che",
+            "di",
+            "del"
+          ],
+          "c": 1,
+          "explica": "Comparación entre nombres/pronombres → DI: migliore DI quello."
+        },
+        {
+          "id": "migl_2",
+          "tipo": "scrivi",
+          "q": "Traduci: «Cocinas mejor que yo.»",
+          "soluzione": "cucini meglio di me",
+          "accettate": [],
+          "explica": "Con verbo → MEGLIO (adverbio); ante pronombre → di me."
+        }
       ]
     },
     "articolo_possessivo_famiglia": {
       "etiqueta": "Posesivo con familiares: singular SIN artículo, plural CON artículo",
       "drills": [
-        { "id": "possf_1", "tipo": "scelta", "q": "Quale è corretta?", "op": ["La mia sorella vive a Roma", "Mia sorella vive a Roma", "Mia la sorella vive a Roma"], "c": 1, "explica": "Familiar SINGULAR sin artículo: mia sorella (pero: le mie sorelle)." },
-        { "id": "possf_2", "tipo": "scrivi", "q": "Traduci: «Mis primos llegan mañana.»", "soluzione": "i miei cugini arrivano domani", "accettate": [], "explica": "PLURAL → CON artículo: I miei cugini." }
+        {
+          "id": "possf_1",
+          "tipo": "scelta",
+          "q": "Quale è corretta?",
+          "op": [
+            "La mia sorella vive a Roma",
+            "Mia sorella vive a Roma",
+            "Mia la sorella vive a Roma"
+          ],
+          "c": 1,
+          "explica": "Familiar SINGULAR sin artículo: mia sorella (pero: le mie sorelle)."
+        },
+        {
+          "id": "possf_2",
+          "tipo": "scrivi",
+          "q": "Traduci: «Mis primos llegan mañana.»",
+          "soluzione": "i miei cugini arrivano domani",
+          "accettate": [],
+          "explica": "PLURAL → CON artículo: I miei cugini."
+        }
       ]
     },
     "elisione_l_apostrofo": {
       "etiqueta": "Elisión l': ante vocal SÍ, ante consonante NO",
       "drills": [
-        { "id": "elis_1", "tipo": "scelta", "q": "Quale è corretta?", "op": ["l'esame", "il esame", "lo esame"], "c": 0, "explica": "Ante vocal se elide: L'esame." },
-        { "id": "elis_2", "tipo": "scelta", "q": "Quale è corretta?", "op": ["l'tedesco", "il tedesco", "lo tedesco"], "c": 1, "explica": "Ante consonante normal NO se elide: IL tedesco." }
+        {
+          "id": "elis_1",
+          "tipo": "scelta",
+          "q": "Quale è corretta?",
+          "op": [
+            "l'esame",
+            "il esame",
+            "lo esame"
+          ],
+          "c": 0,
+          "explica": "Ante vocal se elide: L'esame."
+        },
+        {
+          "id": "elis_2",
+          "tipo": "scelta",
+          "q": "Quale è corretta?",
+          "op": [
+            "l'tedesco",
+            "il tedesco",
+            "lo tedesco"
+          ],
+          "c": 1,
+          "explica": "Ante consonante normal NO se elide: IL tedesco."
+        }
       ]
     },
     "imperativo_irregolare_tu": {
       "etiqueta": "Imperativo tu irregular (sii, va', fa', di', da', sta')",
       "drills": [
-        { "id": "imptu_1", "tipo": "scrivi", "q": "Imperativo (tu) di ESSERE: «___ gentile!»", "soluzione": "sii", "accettate": [], "explica": "essere → SII (el único con doble i)." },
-        { "id": "imptu_2", "tipo": "scrivi", "q": "Imperativo (tu) di DARE: «___ una mano a Luca!»", "soluzione": "da'", "accettate": ["dai", "da"], "explica": "dare → da' / dai. Con clítico se dobla: dammi." }
+        {
+          "id": "imptu_1",
+          "tipo": "scrivi",
+          "q": "Imperativo (tu) di ESSERE: «___ gentile!»",
+          "soluzione": "sii",
+          "accettate": [],
+          "explica": "essere → SII (el único con doble i)."
+        },
+        {
+          "id": "imptu_2",
+          "tipo": "scrivi",
+          "q": "Imperativo (tu) di DARE: «___ una mano a Luca!»",
+          "soluzione": "da'",
+          "accettate": [
+            "dai",
+            "da"
+          ],
+          "explica": "dare → da' / dai. Con clítico se dobla: dammi."
+        }
       ]
     },
     "ausiliare_essere_movimento": {
       "etiqueta": "Essere con verbos de movimiento en compuestos",
       "drills": [
-        { "id": "auxmov_1", "tipo": "scelta", "q": "«Ieri Marco ___ arrivato tardi.»", "op": ["ha", "è", "aveva"], "c": 1, "explica": "arrivare (movimiento) → essere: è arrivato." },
-        { "id": "auxmov_2", "tipo": "scrivi", "q": "Traduci al passato prossimo: «Salimos a las ocho.»", "soluzione": "siamo usciti alle otto", "accettate": ["siamo uscite alle otto"], "explica": "uscire → essere: SIAMO usciti (y el participio concuerda)." }
+        {
+          "id": "auxmov_1",
+          "tipo": "scelta",
+          "q": "«Ieri Marco ___ arrivato tardi.»",
+          "op": [
+            "ha",
+            "è",
+            "aveva"
+          ],
+          "c": 1,
+          "explica": "arrivare (movimiento) → essere: è arrivato."
+        },
+        {
+          "id": "auxmov_2",
+          "tipo": "scrivi",
+          "q": "Traduci al passato prossimo: «Salimos a las ocho.»",
+          "soluzione": "siamo usciti alle otto",
+          "accettate": [
+            "siamo uscite alle otto"
+          ],
+          "explica": "uscire → essere: SIAMO usciti (y el participio concuerda)."
+        }
       ]
     },
     "concordanza_numero_art_agg": {
       "etiqueta": "Concordancia artículo + sustantivo + adjetivo",
       "drills": [
-        { "id": "concn_1", "tipo": "scelta", "q": "Quale è corretta?", "op": ["gli sport estremo", "gli sport estremi", "lo sport estremi"], "c": 1, "explica": "Toda la cadena en plural: GLI sport estremI (sport es invariable)." },
-        { "id": "concn_2", "tipo": "scrivi", "q": "Volgi al plurale: «il ragazzo simpatico»", "soluzione": "i ragazzi simpatici", "accettate": [], "explica": "il→i, -o→-i en sustantivo Y adjetivo." }
+        {
+          "id": "concn_1",
+          "tipo": "scelta",
+          "q": "Quale è corretta?",
+          "op": [
+            "gli sport estremo",
+            "gli sport estremi",
+            "lo sport estremi"
+          ],
+          "c": 1,
+          "explica": "Toda la cadena en plural: GLI sport estremI (sport es invariable)."
+        },
+        {
+          "id": "concn_2",
+          "tipo": "scrivi",
+          "q": "Volgi al plurale: «il ragazzo simpatico»",
+          "soluzione": "i ragazzi simpatici",
+          "accettate": [],
+          "explica": "il→i, -o→-i en sustantivo Y adjetivo."
+        }
       ]
     },
     "articolo_lingue": {
       "etiqueta": "Artículo con idiomas (l'italiano, il tedesco)",
       "drills": [
-        { "id": "artl_1", "tipo": "scelta", "q": "«Studio ___ russo da un mese.»", "op": ["il", "lo", "— (niente)"], "c": 0, "explica": "Los idiomas llevan artículo: IL russo (r- normal → il)." },
-        { "id": "artl_2", "tipo": "scrivi", "q": "Completa con l'articolo: «___ inglese è più facile ___ tedesco?»", "soluzione": "l' / del", "accettate": ["l' del", "l'inglese del tedesco"], "explica": "Ante vocal → L'inglese; comparación entre nombres → DI + il = DEL tedesco." }
+        {
+          "id": "artl_1",
+          "tipo": "scelta",
+          "q": "«Studio ___ russo da un mese.»",
+          "op": [
+            "il",
+            "lo",
+            "— (niente)"
+          ],
+          "c": 0,
+          "explica": "Los idiomas llevan artículo: IL russo (r- normal → il)."
+        },
+        {
+          "id": "artl_2",
+          "tipo": "scrivi",
+          "q": "Completa con l'articolo: «___ inglese è più facile ___ tedesco?»",
+          "soluzione": "l' / del",
+          "accettate": [
+            "l' del",
+            "l'inglese del tedesco"
+          ],
+          "explica": "Ante vocal → L'inglese; comparación entre nombres → DI + il = DEL tedesco."
+        }
       ]
     },
     "condizionale_loro_ebbero": {
       "etiqueta": "Condizionale de loro en -ebbero",
       "drills": [
-        { "id": "condl_1", "tipo": "scelta", "q": "«I miei amici ___ volentieri.» (venire, condizionale)", "op": ["verranno", "verrebbero", "vennero"], "c": 1, "explica": "Condizionale loro = -EBBERO: verrebbero. Verranno es futuro." },
-        { "id": "condl_2", "tipo": "scrivi", "q": "Condizionale, loro, AIUTARE: «Loro ci ___ di sicuro.»", "soluzione": "aiuterebbero", "accettate": [], "explica": "aiutare → aiuterebbero (las dobles del condizionale)." }
+        {
+          "id": "condl_1",
+          "tipo": "scelta",
+          "q": "«I miei amici ___ volentieri.» (venire, condizionale)",
+          "op": [
+            "verranno",
+            "verrebbero",
+            "vennero"
+          ],
+          "c": 1,
+          "explica": "Condizionale loro = -EBBERO: verrebbero. Verranno es futuro."
+        },
+        {
+          "id": "condl_2",
+          "tipo": "scrivi",
+          "q": "Condizionale, loro, AIUTARE: «Loro ci ___ di sicuro.»",
+          "soluzione": "aiuterebbero",
+          "accettate": [],
+          "explica": "aiutare → aiuterebbero (las dobles del condizionale)."
+        }
+      ]
+    },
+    "pronomi_combinati": {
+      "etiqueta": "Pronombres combinados (glielo, me lo, se ne, gliene)",
+      "drills": [
+        {
+          "id": "prcomb_1",
+          "tipo": "scrivi",
+          "q": "Sostituisci i pronomi: «Ho dato le chiavi a Marco» → «___ ho date».",
+          "soluzione": "gliele",
+          "accettate": [],
+          "explica": "a Marco = gli; le chiavi = le → gli+le = GLIELE (una sola parola). El participio concuerda: date."
+        },
+        {
+          "id": "prcomb_2",
+          "tipo": "scelta",
+          "q": "«Mi presti la macchina?» — «Sì, ___ presto volentieri.»",
+          "op": [
+            "te la",
+            "ti la",
+            "la ti"
+          ],
+          "c": 0,
+          "explica": "ti + la → TE LA: delante de otro pronombre, mi/ti/ci/vi cambian la -i en -e."
+        },
+        {
+          "id": "prcomb_3",
+          "tipo": "scrivi",
+          "q": "Traduci: «Se lo dije ayer» (a él, el secreto).",
+          "soluzione": "gliel'ho detto ieri",
+          "accettate": [
+            "glielo ho detto ieri",
+            "gliel ho detto ieri"
+          ],
+          "explica": "⚠️ TRAMPA del español: «se lo» aquí NO es «si lo». a lui + lo = GLIELO (→ gliel'ho ante vocal)."
+        },
+        {
+          "id": "prcomb_4",
+          "tipo": "scrivi",
+          "q": "Completa con se ne: «Non gli piaceva il lavoro e ___ è andato.»",
+          "soluzione": "se n'",
+          "accettate": [
+            "se ne"
+          ],
+          "explica": "andarsene = irse: si + ne → SE NE (se n'è andato). Muy frecuente en el habla."
+        }
+      ]
+    },
+    "soggetto_esplicito_congiuntivo": {
+      "etiqueta": "Decir el pronombre en congiuntivo (che TU riposi)",
+      "drills": [
+        {
+          "id": "sogcong_1",
+          "tipo": "scrivi",
+          "q": "Completa: «Il medico vuole che ___ riposi almeno tre giorni.» (tú)",
+          "soluzione": "tu",
+          "accettate": [],
+          "explica": "io/tu/lui comparten la forma «riposi»: sin el pronombre no se sabe quién. En congiuntivo el sujeto se DICE."
+        },
+        {
+          "id": "sogcong_2",
+          "tipo": "scelta",
+          "q": "Quale frase è chiara? (il soggetto è «tu»)",
+          "op": [
+            "Penso che tu abbia ragione",
+            "Penso che abbia ragione",
+            "Penso che ragione abbia"
+          ],
+          "c": 0,
+          "explica": "«abbia» vale para io/tu/lui: hay que decir «tu» para que se entienda."
+        },
+        {
+          "id": "sogcong_3",
+          "tipo": "scrivi",
+          "q": "Traduci: «Es necesario que tú vengas mañana.»",
+          "soluzione": "è necessario che tu venga domani",
+          "accettate": [
+            "bisogna che tu venga domani"
+          ],
+          "explica": "El español marca la persona en «vengas»; el italiano no (venga = io/tu/lui) → el pronombre es obligatorio."
+        }
+      ]
+    },
+    "par_vedere_vendere": {
+      "etiqueta": "Par engañoso vedere / vendere (una letra cambia el sentido)",
+      "drills": [
+        {
+          "id": "vedven_1",
+          "tipo": "scelta",
+          "q": "«L'ho riconosciuto ___ la sua faccia in TV.» (viéndola)",
+          "op": [
+            "vedendo",
+            "vendendo",
+            "vededo"
+          ],
+          "c": 0,
+          "explica": "vedere → VEDENDO (viendo). vendendo = vendiendo: una sola letra cambia todo."
+        },
+        {
+          "id": "vedven_2",
+          "tipo": "scrivi",
+          "q": "Traduci: «Está ganando dinero vendiendo su coche.»",
+          "soluzione": "sta guadagnando soldi vendendo la sua macchina",
+          "accettate": [
+            "sta guadagnando dei soldi vendendo la sua macchina",
+            "sta guadagnando soldi vendendo la macchina",
+            "sta guadagnando soldi vendendo la sua auto"
+          ],
+          "explica": "vendere → vendendo. Compáralo con vedere → vedendo (ver)."
+        },
+        {
+          "id": "vedven_3",
+          "tipo": "scrivi",
+          "q": "Completa con il gerundio di VEDERE: «___ che pioveva, ho preso l'ombrello.»",
+          "soluzione": "vedendo",
+          "accettate": [],
+          "explica": "vedendo = viendo. Si escribes «vendendo» dices «vendiendo»."
+        }
+      ]
+    },
+    "gerundio_non_relativo": {
+      "etiqueta": "El gerundio no sirve de relativo de sujeto (che porta, no «portando»)",
+      "drills": [
+        {
+          "id": "gernr_1",
+          "tipo": "scelta",
+          "q": "«Ho visto un uomo ___ i bagagli in albergo.» (un hombre que llevaba las maletas)",
+          "op": [
+            "che portava",
+            "portando",
+            "a portare"
+          ],
+          "c": 0,
+          "explica": "En español «llevando» puede describir al hombre; en italiano NO. Para describir un sustantivo se usa CHE + verbo."
+        },
+        {
+          "id": "gernr_2",
+          "tipo": "scrivi",
+          "q": "Correggi: «C'è una ragazza aspettandoti fuori.»",
+          "soluzione": "c'è una ragazza che ti aspetta fuori",
+          "accettate": [
+            "c'è una ragazza che ti sta aspettando fuori"
+          ],
+          "explica": "El gerundio no puede ser relativo de sujeto: che ti aspetta."
+        },
+        {
+          "id": "gernr_3",
+          "tipo": "scelta",
+          "q": "Quale è corretta?",
+          "op": [
+            "Le persone che arrivano tardi non entrano",
+            "Le persone arrivando tardi non entrano",
+            "Le persone arrivate tardi non entrano"
+          ],
+          "c": 0,
+          "explica": "Con CHE + presente. (La 3ª existe pero cambia el sentido: «las llegadas tarde», ya sucedido.)"
+        }
+      ]
+    },
+    "verbi_supporto_collocazioni": {
+      "etiqueta": "Collocazioni con verbi de apoyo (fare / prendere / avere / dare)",
+      "drills": [
+        {
+          "id": "vsupp_1",
+          "tipo": "scelta",
+          "q": "«Non voglio ___ niente a che fare con questa storia.»",
+          "op": [
+            "avere",
+            "fare",
+            "prendere"
+          ],
+          "c": 0,
+          "explica": "AVERE a che fare con = tener que ver con. Es fija: no «essere a che fare»."
+        },
+        {
+          "id": "vsupp_2",
+          "tipo": "scrivi",
+          "q": "Completa: «Prima di decidere voglio ___ una domanda al capo.»",
+          "soluzione": "fare",
+          "accettate": [],
+          "explica": "FARE una domanda = hacer una pregunta (no «chiedere una domanda»)."
+        },
+        {
+          "id": "vsupp_3",
+          "tipo": "scrivi",
+          "q": "Traduci: «Tomé una decisión difícil.»",
+          "soluzione": "ho preso una decisione difficile",
+          "accettate": [
+            "ho preso una difficile decisione"
+          ],
+          "explica": "PRENDERE una decisione. El verbo de apoyo cambia según el sustantivo: fare/prendere/avere/dare."
+        },
+        {
+          "id": "vsupp_4",
+          "tipo": "scelta",
+          "q": "«Mi ___ una mano con questi scatoloni?»",
+          "op": [
+            "dai",
+            "fai",
+            "prendi"
+          ],
+          "c": 0,
+          "explica": "DARE una mano = echar una mano."
+        }
+      ]
+    },
+    "calco_vale_la_pena": {
+      "etiqueta": "(ne) vale la pena — sin el «lo» del español",
+      "drills": [
+        {
+          "id": "valpena_1",
+          "tipo": "scelta",
+          "q": "«È un film lungo, ma ___ vale la pena.»",
+          "op": [
+            "ne",
+            "lo",
+            "si"
+          ],
+          "c": 0,
+          "explica": "⚠️ Calco del español: «lo vale» → en italiano NE vale la pena (ne = de eso)."
+        },
+        {
+          "id": "valpena_2",
+          "tipo": "scrivi",
+          "q": "Traduci: «El viaje es caro, pero vale la pena.»",
+          "soluzione": "il viaggio è caro, ma ne vale la pena",
+          "accettate": [
+            "il viaggio è caro però ne vale la pena",
+            "il viaggio costa caro, ma ne vale la pena"
+          ],
+          "explica": "NE vale la pena. Nunca «lo vale la pena»."
+        },
+        {
+          "id": "valpena_3",
+          "tipo": "scrivi",
+          "q": "Completa: «Studiare tanto stanca, ma alla fine ___ vale la pena.»",
+          "soluzione": "ne",
+          "accettate": [],
+          "explica": "El pronombre ne sustituye «di questo/di ciò»."
+        }
+      ]
+    },
+    "consecutio_scala": {
+      "etiqueta": "La escalera del pasado: pensavo/credevo che → imperfetto o trapassato",
+      "drills": [
+        {
+          "id": "escala_1",
+          "tipo": "scrivi",
+          "q": "Completa: «Credevo che tu ___ già a casa.» (essere, en ese momento)",
+          "soluzione": "fossi",
+          "accettate": [],
+          "explica": "Verbo principal en pasado + congiuntivo → IMPERFETTO (fossi) si es simultáneo."
+        },
+        {
+          "id": "escala_2",
+          "tipo": "scelta",
+          "q": "«Pensavo che voi ___ il treno.» (que ya lo habíais perdido, ANTES)",
+          "op": [
+            "aveste perso",
+            "perdeste",
+            "avete perso"
+          ],
+          "c": 0,
+          "explica": "Si la acción es ANTERIOR a la principal en pasado → congiuntivo TRAPASSATO (aveste perso)."
+        },
+        {
+          "id": "escala_3",
+          "tipo": "scrivi",
+          "q": "Traduci: «Creía que ellos venían con nosotros.»",
+          "soluzione": "credevo che loro venissero con noi",
+          "accettate": [
+            "credevo che venissero con noi"
+          ],
+          "explica": "credevo (pasado) → venissero (cong. imperfetto). La escalera baja un escalón."
+        }
+      ]
+    },
+    "concordanza_numero": {
+      "etiqueta": "Concordancia de número (più grande, il migliore ristorante)",
+      "drills": [
+        {
+          "id": "concnum_1",
+          "tipo": "scelta",
+          "q": "«Questi sono i problemi ___ del progetto.»",
+          "op": [
+            "principali",
+            "principale",
+            "principali i"
+          ],
+          "c": 0,
+          "explica": "problemi (pl.) → principali. Los adjetivos en -e hacen el plural en -i."
+        },
+        {
+          "id": "concnum_2",
+          "tipo": "scrivi",
+          "q": "Completa: «Sono le ___ pizzerie della città.» (migliore)",
+          "soluzione": "migliori",
+          "accettate": [],
+          "explica": "migliore → migliori en plural, aunque el español diga «mejores» igual en ambos géneros."
+        },
+        {
+          "id": "concnum_3",
+          "tipo": "scrivi",
+          "q": "Traduci: «Son las ciudades más grandes del país.»",
+          "soluzione": "sono le città più grandi del paese",
+          "accettate": [
+            "sono le più grandi città del paese"
+          ],
+          "explica": "grandi (pl.), no «grande». «città» es invariable, pero el adjetivo NO."
+        }
       ]
     }
   },
