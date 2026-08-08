@@ -335,6 +335,16 @@ function clozeOf(tuvo,correcto){
   if(!gap.length||gap.length===B.length)return null;
   return {pre:B.slice(0,i).join(' '),gap:gap.join(' '),post:B.slice(B.length-j).join(' ')};
 }
+/* Palabras de FUNCIÓN: lo único que se puede acertar en un hueco sin ver la oración entera,
+   porque lo determina la palabra siguiente (o una regla fija), no la persona ni el referente.
+   Lista BLANCA a propósito: la lista negra de auxiliares que usé antes siempre se quedaba corta
+   — se coló «gliel'avevo» en «se ___ detto». */
+var HUECO_FUNC=/^(il|lo|la|i|gli|le|l'|un|uno|una|un'|del|dello|della|dei|degli|delle|dell'|al|allo|alla|ai|agli|alle|all'|dal|dallo|dalla|dai|dagli|dalle|dall'|nel|nello|nella|nei|negli|nelle|nell'|sul|sullo|sulla|sui|sugli|sulle|sull'|col|coi|a|di|da|in|su|per|con|tra|fra|e|ed|o|od|ne|ci|che)$/i;
+function huecoJusto(cz){
+  var g=baseNorm(cz.gap).trim().replace(/\s+$/,'');
+  if(!g||g.split(/\s+/).length>1)return false;      // más de una palabra: necesita la oración
+  return HUECO_FUNC.test(g);
+}
 /* La palabra dentro de TU propia frase de contexto (dato que ya guardas y no se usaba).
    Solo si aparece literalmente en la frase y la frase aporta algo más que la palabra sola. */
 function clozeCtx(c){
@@ -346,15 +356,6 @@ function clozeCtx(c){
   if(!m)return null;
   var pos=m.index+m[1].length;
   return {pre:frase.slice(0,pos).trim(), gap:frase.substr(pos,m[2].length), post:frase.slice(pos+m[2].length).trim()};
-}
-/* ¿Se puede acertar este hueco? Una forma verbal conjugada NO se deduce si en el trozo visible no
-   hay sujeto: «Se ___ venuti» admite fossi/foste/fossero. Caso real reportado por el usuario. */
-var PRON_SUJ=/\b(io|tu|lui|lei|noi|voi|loro|egli|ella|essi)\b/i;
-function huecoAmbiguo(cz){
-  if(!cz)return false;
-  if(cz.gap.split(/\s+/).length>1)return false;               // varias palabras: suele bastar
-  if(!/^(sono|sei|è|siamo|siete|ero|eri|era|eravamo|eravate|erano|fossi|fosse|fossimo|foste|fossero|sarei|saresti|sarebbe|saremmo|sareste|sarebbero|ho|hai|ha|abbiamo|avete|hanno|avevo|avevi|aveva|avevamo|avevate|avevano|avessi|avesse|avessimo|aveste|avessero|avrei|avresti|avrebbe|avremmo|avreste|avrebbero)$/i.test(baseNorm(cz.gap)))return false;
-  return !PRON_SUJ.test(cz.pre+' '+cz.post);                  // sin sujeto visible → irresoluble
 }
 /* «de mangiare · verbo (3ª pers. sing. imperfecto)» — se enseña al CORREGIR, no en la pregunta:
    la tarjeta sigue preguntando por la forma que guardaste. */
@@ -411,12 +412,18 @@ function buildExercise(c){
         ops:ops,say:c.correcto,explica:c.nota};
     }
     if(r===1){
-      // Hueco SOLO si se puede acertar: con la frase modelo completa detrás, o con sujeto visible.
-      // Si el trozo no permite deducir la persona, se cae al modo de escribir la corrección.
-      var cz=clozeOf(c.tuvo,c.correcto), completa=c.frase&&c.frase.indexOf(c.correcto)>=0?c.frase:'';
-      if(cz&&(completa||!huecoAmbiguo(cz))){
+      /* El hueco solo se genera si se puede ACERTAR. Dos vías:
+         · hay oración modelo completa (`frase`) → se muestra entera, con el hueco dentro; o
+         · lo que falta es una palabra de función (artículo/preposición/clítico), que se deduce
+           de la palabra siguiente: «___ gnocco» → uno.
+         Todo lo demás (formas verbales, pronombres combinados) depende de persona/tiempo/referente
+         que NO se ven en un fragmento: «se ___ detto» pedía «gliel'avevo». Esos casos van al modo
+         de escribir la corrección, que siempre es respondible porque muestra lo que escribiste. */
+      var completa=c.frase&&c.frase.indexOf(c.correcto)>=0?c.frase:'';
+      var cz=clozeOf(c.tuvo,c.correcto);
+      if(cz&&(completa||huecoJusto(cz))){
         var pre=cz.pre,post=cz.post;
-        if(completa){                              // se enseña la oración entera, con el hueco dentro
+        if(completa){
           var k=completa.indexOf(c.correcto);
           pre=(completa.slice(0,k)+cz.pre).trim();
           post=(cz.post+completa.slice(k+c.correcto.length)).replace(/\s+/g,' ').trimEnd();
