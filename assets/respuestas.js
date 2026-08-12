@@ -80,7 +80,7 @@
     }
     var li=document.createElement('li');li.id='ej-vocabex';
     var prompt=document.createElement('div');
-    var ta=document.createElement('textarea');ta.className='resp';ta.setAttribute('data-ej','evocab');ta.rows=3;ta.placeholder='La tua risposta creativa…';
+    var ta=document.createElement('textarea');ta.className='resp';ta.setAttribute('data-ej','evocab');ta.rows=3;ta.placeholder='…';   // sin texto de ayuda dentro de la caja (2026-08-08)
     var hidden=document.createElement('textarea');hidden.className='resp';hidden.setAttribute('data-ej','evocab_q');hidden.style.display='none';hidden.readOnly=true;
     li.appendChild(prompt);li.appendChild(ta);li.appendChild(hidden);
     ol.appendChild(li);
