@@ -48,7 +48,7 @@ except Exception:
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # ── La versión de caché vive AQUÍ. Cambiarla aquí basta para los días que se generen. ──────
-VERSION = '20260808d'
+VERSION = '20260822a'
 
 FIREBASE = ('<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>'
             '<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>'

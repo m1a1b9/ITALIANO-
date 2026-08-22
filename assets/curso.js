@@ -458,7 +458,7 @@
       var prev=dia>1?'dia'+String(dia-1).padStart(2,'0')+'.html':'index.html';
       // ULTIMO_DIA = el día más alto cuyo diaNN.html YA EXISTE. Súbelo al crear un día nuevo
       // (index.html tiene su equivalente en PREP_DESDE = ULTIMO_DIA + 1).
-      var ULTIMO_DIA=26;
+      var ULTIMO_DIA=28;
       var next=dia<ULTIMO_DIA?'dia'+String(dia+1).padStart(2,'0')+'.html':'index.html';
       bar.innerHTML='<a href="index.html">⌂ Índice</a><a href="'+prev+'">‹ Anterior</a><a href="'+next+'">Siguiente ›</a><a href="mi-vocabulario.html">★ Vocabulario</a><a href="practica.html">🎯 Práctica</a><a href="inmersion.html">🎧 Inmersión</a>'+
         '<span class="sp"></span><select id="cb-voice" title="Voz italiana"></select>'+

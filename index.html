@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Curso de Italiano · A2 → C1</title>
-<link rel="stylesheet" href="assets/curso.css?v=20260808c">
+<link rel="stylesheet" href="assets/curso.css?v=20260822a">
 <style>
   body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:760px;margin:0 auto;padding:2.5rem 1.5rem 4rem;line-height:1.6}
   .top{border-left:4px solid #2d6a4f;padding-left:1rem;margin-bottom:1.5rem}
@@ -47,7 +47,7 @@
   .hoy .qh a:hover{border-color:#2d6a4f}
   .hoy .qh a b{color:#2d6a4f}
 </style>
-<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260808c"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260822a"></script>
 </head>
 <body>
 <div class="top">
@@ -116,7 +116,7 @@ var dias=[
 ["Alterati (-ino / -one / -accio)","Semana 4 · B1 · léxico y registro"],
 ["Repaso integral Mes 1 + medición","Semana 4 · Cierre + Medición"]
 ];
-var PREP_DESDE=27; // días cuyo archivo aún no existe (en preparación, no navegables). Al crear un día, súbelo aquí Y en ULTIMO_DIA de curso.js
+var PREP_DESDE=29; // días cuyo archivo aún no existe (en preparación, no navegables). Al crear un día, súbelo aquí Y en ULTIMO_DIA de curso.js
 var semanas=[[1,8,"Semana 1 · Bases A2 → B1"],[9,15,"Semana 2 · Núcleo B1"],[16,22,"Semana 3 · Hacia B2"],[23,30,"Semana 4 · Cierre Mes 1 → B1 completo"]];
 var done=JSON.parse(localStorage.getItem('italiano-progreso')||'{}');
 var lista=document.getElementById('lista');

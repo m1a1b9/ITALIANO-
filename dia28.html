@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giorno 28 — Italiano</title>
+<style>
+  body { font-family: -apple-system, sans-serif; background: #f5f7fa; color: #1c1c1e; max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 4rem; line-height: 1.7; }
+  .header { border-left: 4px solid #2d6a4f; padding-left: 1rem; margin-bottom: 2.5rem; }
+  .header .dia { font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #2d6a4f; margin-bottom: .3rem; }
+  .header h1 { font-size: 1.7rem; font-weight: 700; margin: 0; }
+  .header p { color: #666; font-size: .9rem; margin: .3rem 0 0; }
+  h2 { font-size: .7rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: #2d6a4f; margin: 2rem 0 .8rem; }
+  h3 { font-size: .95rem; font-weight: 700; margin: 1.2rem 0 .5rem; }
+  table { width: 100%; border-collapse: collapse; margin: .5rem 0 1rem; font-size: .92rem; }
+  th { background: #1c1c1e; color: #fff; text-align: left; padding: .5rem .8rem; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
+  td { padding: .55rem .8rem; border-bottom: 1px solid #dde5dd; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #eef2ee; }
+  .slang { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: 1rem 1.2rem; margin: .5rem 0 1rem; }
+  .slang strong { color: #2d6a4f; font-size: 1.05rem; }
+  .slang .uso { font-size: .82rem; color: #888; margin-top: .2rem; }
+  .slang .ejemplo { font-size: .88rem; font-style: italic; color: #444; margin-top: .4rem; background: #f5f7fa; padding: .3rem .6rem; border-radius: 4px; }
+  .ejercicio { counter-reset: ej; padding-left: 0; }
+  .ejercicio li { list-style: none; counter-increment: ej; padding: .6rem 0 .6rem 2.4rem; position: relative; border-bottom: 1px solid #dde5dd; font-size: .92rem; }
+  .ejercicio li:last-child { border-bottom: none; }
+  .ejercicio li::before { content: counter(ej); position: absolute; left: 0; top: .65rem; background: #2d6a4f; color: #fff; font-size: .65rem; font-weight: 700; width: 1.5rem; height: 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .esame { counter-reset: ex; padding-left: 0; }
+  .esame li { list-style: none; counter-increment: ex; padding: .7rem 0 .7rem 2.4rem; position: relative; border-bottom: 1px solid #e0d0d0; font-size: .92rem; }
+  .esame li:last-child { border-bottom: none; }
+  .esame li::before { content: "X" counter(ex); position: absolute; left: 0; top: .65rem; background: #922b21; color: #fff; font-size: .58rem; font-weight: 700; width: 1.7rem; height: 1.5rem; border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+  .nota { background: #f0f7f4; border-left: 3px solid #2d6a4f; padding: .7rem 1rem; border-radius: 0 6px 6px 0; font-size: .88rem; color: #1a4731; margin: .8rem 0; }
+  .alerta { background: #fdf0ef; border-left: 3px solid #c0392b; padding: .7rem 1rem; border-radius: 0 6px 6px 0; font-size: .88rem; color: #922b21; margin: .8rem 0; }
+  .bloque { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .92rem; }
+  .tiempo { text-align: right; font-size: .8rem; color: #999; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #dde5dd; }
+  .it { font-weight: 600; font-style: italic; }
+  p { font-size: .92rem; }
+  ul { font-size: .92rem; padding-left: 1.2rem; }
+  .guiado { background: #fffdf3; border: 1px solid #e6d9a8; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .92rem; }
+  .guiado h3 { margin-top: 0; color: #8a6d1f; }
+  .paso { background: #fff; border-left: 3px solid #b8860b; padding: .4rem .8rem; margin: .4rem 0; border-radius: 0 4px 4px 0; }
+  .big { font-size: 1.15rem; font-weight: 700; color: #2d6a4f; letter-spacing: .02em; text-align: center; }
+  .ascolto { background: #eef5ff; border: 1px solid #bcd4ea; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; }
+  .ascolto button.say-frase { background: #1a4d80; color: #fff; border: 0; border-radius: 6px; padding: .5rem .9rem; font-size: .85rem; cursor: pointer; margin: .3rem 0; }
+  .fosil { background: #fff4f2; border: 2px solid #c0392b; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; }
+  .fosil h3 { color: #922b21; margin-top: 0; }
+  .rubrica { background: #f4f0fa; border: 1px solid #cfc0e8; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .88rem; }
+</style>
+<link rel="stylesheet" href="assets/curso.css?v=20260822a"><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260822a"></script><script defer src="assets/vocab.js?v=20260822a"></script><script defer src="assets/frases.js?v=20260822a"></script><script defer src="assets/curso.js?v=20260822a"></script><script defer src="assets/respuestas.js?v=20260822a"></script>
+</head>
+<body>
+
+<div class="header">
+  <div class="dia">Settimana 4 · Giorno 28 · Livello B2</div>
+  <h1>Passato remoto — el tiempo de los libros</h1>
+  <p>No lo vas a usar hablando. Sin él no puedes leer nada</p>
+</div>
+
+<div class="bloque" style="background:#eef5ff;border-color:#bcd4ea"><strong>🎯 Obiettivo di oggi</strong> — al terminar podrás: ① reconocer un <span class='it'>passato remoto</span> y saber de qué infinitivo viene · ② aplicar el patrón <strong>1-3-3</strong> de los irregulares · ③ combinarlo con el <span class='it'>imperfetto</span> como ya haces en español · ④ saber cuándo se usa de verdad y en qué parte de Italia.</div>
+
+<h2>Ripasso veloce (5 min)</h2>
+<p>Del día 27: completa — Pensavo che me l'___ (tú, dire) già · Mi ha detto che ___ (venire) il giorno dopo · Mi sa che ___ (essere) tardi.</p>
+
+<h2>Para qué sirve, exactamente</h2>
+
+<p>Aquí hay que ser honesto contigo: <strong>este tema no es para hablar.</strong> En Milán o en Roma puedes pasarte un año sin decir un solo <span class='it'>passato remoto</span> y nadie lo notará. Pero es el tiempo de <em>todo lo que se lee</em>: novelas, cuentos, biografías y, sobre todo, <strong>libros de historia</strong> — que es justo lo que tú estás leyendo.</p>
+
+<div class="bloque">Abre cualquier página de historia italiana y vas a encontrar <span class='it'>fu, ebbe, prese, fece, morì, nacque, decise, cadde</span>. Si no reconoces esas formas, el texto se vuelve ilegible aunque conozcas todas las palabras. Hoy es un día de <strong>lectura</strong>, no de producción.</div>
+
+<h2>Las formas regulares</h2>
+
+<table>
+  <tr><th></th><th>-are (parlare)</th><th>-ere (credere)</th><th>-ire (finire)</th></tr>
+  <tr><td>io</td><td>parl<b>ai</b></td><td>cred<b>ei</b> / cred<b>etti</b></td><td>fin<b>ii</b></td></tr><tr><td>tu</td><td>parl<b>asti</b></td><td>cred<b>esti</b></td><td>fin<b>isti</b></td></tr><tr><td>lui/lei</td><td>parl<b>ò</b></td><td>cred<b>é</b> / cred<b>ette</b></td><td>fin<b>ì</b></td></tr><tr><td>noi</td><td>parl<b>ammo</b></td><td>cred<b>emmo</b></td><td>fin<b>immo</b></td></tr><tr><td>voi</td><td>parl<b>aste</b></td><td>cred<b>este</b></td><td>fin<b>iste</b></td></tr><tr><td>loro</td><td>parl<b>arono</b></td><td>cred<b>erono</b> / cred<b>ettero</b></td><td>fin<b>irono</b></td></tr>
+</table>
+
+<div class="nota">Fíjate en las que más te van a aparecer: la <b>tercera persona</b>. <span class='it'>parlò, credé, finì</span> y sus plurales <span class='it'>parlarono, finirono</span>. Un libro de historia habla de terceros casi todo el tiempo — «Mussolini <span class='it'>prese</span> il potere», «i romani <span class='it'>costruirono</span>». Si solo te llevas las terceras personas, ya lees. <span class="cuad">a tu cuaderno</span></div>
+
+<h2>El truco de los irregulares: 1-3-3</h2>
+
+<p>Aquí está el atajo que convierte una lista imposible en algo manejable. Los verbos irregulares en <span class='it'>passato remoto</span> lo son <strong>solo en tres casillas</strong>: primera del singular, tercera del singular y tercera del plural. Las otras tres son regulares, salen del infinitivo de siempre.</p>
+
+<table>
+  <tr><th>Persona</th><th>prendere</th><th>¿Irregular?</th></tr>
+  <tr><td>io</td><td><b>presi</b></td><td>✅ sí</td></tr><tr><td>tu</td><td>prend<b>esti</b></td><td>❌ regular</td></tr><tr><td>lui/lei</td><td><b>prese</b></td><td>✅ sí</td></tr><tr><td>noi</td><td>prend<b>emmo</b></td><td>❌ regular</td></tr><tr><td>voi</td><td>prend<b>este</b></td><td>❌ regular</td></tr><tr><td>loro</td><td><b>presero</b></td><td>✅ sí</td></tr>
+</table>
+
+<div class="nota">🔑 <strong>HACK</strong> — Aprende <strong>una sola forma por verbo</strong>: la tercera del singular (<span class='it'>prese</span>). De ahí sacas la primera quitando la -e (<span class='it'>presi</span>) y la tercera del plural añadiendo -ro (<span class='it'>presero</span>). Las otras tres las construyes del infinitivo. Un verbo = un dato, no seis. <span class="cuad">a tu cuaderno</span></div>
+
+<h3>Los que de verdad vas a encontrar</h3>
+
+<table>
+  <tr><th>Infinitivo</th><th>3ª sing.</th><th>Infinitivo</th><th>3ª sing.</th></tr>
+  <tr><td>essere</td><td><b>fu</b> (loro: furono)</td><td>avere</td><td><b>ebbe</b></td></tr><tr><td>fare</td><td><b>fece</b></td><td>dire</td><td><b>disse</b></td></tr><tr><td>vedere</td><td><b>vide</b></td><td>venire</td><td><b>venne</b></td></tr><tr><td>sapere</td><td><b>seppe</b></td><td>volere</td><td><b>volle</b></td></tr><tr><td>dare</td><td><b>diede</b> / dette</td><td>stare</td><td><b>stette</b></td></tr><tr><td>nascere</td><td><b>nacque</b></td><td>morire</td><td><b>morì</b> (regular)</td></tr><tr><td>scrivere</td><td><b>scrisse</b></td><td>leggere</td><td><b>lesse</b></td></tr><tr><td>mettere</td><td><b>mise</b></td><td>rimanere</td><td><b>rimase</b></td></tr><tr><td>chiedere</td><td><b>chiese</b></td><td>rispondere</td><td><b>rispose</b></td></tr><tr><td>decidere</td><td><b>decise</b></td><td>conoscere</td><td><b>conobbe</b></td></tr><tr><td>vivere</td><td><b>visse</b></td><td>cadere</td><td><b>cadde</b></td></tr>
+</table>
+
+<div class="alerta">⚠️ <strong>Ojo con dos parecidos peligrosos:</strong> <span class='it'>fu</span> (fue, passato remoto) contra <span class='it'>fa</span> (hace). Y <span class='it'>venne</span> (vino) contra <span class='it'>viene</span> (viene). En un texto de historia una letra te cambia el siglo. También: muchas terceras del plural duplican consonante — <span class='it'>ebbero, vennero, caddero, seppero, vollero</span>.</div>
+
+<h2>Y ahora la buena noticia: esto ya lo sabes</h2>
+
+<p>Ayer el español te traicionaba. Hoy te regala el tema entero. La pareja <span class='it'>passato remoto</span> + <span class='it'>imperfetto</span> funciona <strong>exactamente igual</strong> que tu pretérito + imperfecto:</p>
+
+<table>
+  <tr><th>Función</th><th>Italiano</th><th>Español</th></tr>
+  <tr><td>Lo que <b>avanza</b> el relato</td><td><span class='it'>passato remoto</span></td><td>pretérito — <em>llegó, dijo, salió</em></td></tr><tr><td>El <b>fondo</b>, la escena</td><td><span class='it'>imperfetto</span></td><td>imperfecto — <em>llovía, era tarde, había gente</em></td></tr>
+</table>
+
+<p class="big"><span class='it'>Pioveva</span> quando <span class='it'>arrivò</span>. — <em>Llovía</em> cuando <em>llegó</em>.</p>
+
+<p>Traducción casi mecánica. No tienes que aprender el concepto, solo las formas. Por eso este día es más ligero de lo que parece a primera vista.</p>
+
+<h2>¿Dónde se usa de verdad?</h2>
+
+<table>
+  <tr><th>Zona</th><th>Qué hacen</th><th>Ejemplo de ayer</th></tr>
+  <tr><td>Norte (Milán, Turín)</td><td>casi nunca; todo en passato prossimo</td><td><span class='it'>Ieri sono andato al mare</span></td></tr><tr><td>Centro / estándar escrito</td><td>remoto para lo cerrado y lejano</td><td><span class='it'>Nel 1922 Mussolini prese il potere</span></td></tr><tr><td>Sur (Sicilia, Napoli)</td><td>remoto <b>también</b> para ayer</td><td><span class='it'>Ieri andai al mare</span></td></tr>
+</table>
+
+<div class="nota">O sea: si un siciliano te dice <span class='it'>«ieri mangiai una cosa strana»</span>, no está hablando raro ni antiguo. Está hablando su italiano. En el sur el passato remoto está vivo para lo que terminó, aunque terminara hace dos horas.</div>
+
+<div class="fosil"><h3>🔴 Sigue pendiente: la elisión</h3>Ayer trabajaste <span class='it'>gliel'ho / me l'avessi</span> y hoy vuelve, porque es tu punto más pegajoso y aún no está fijado. En el ejercicio 8 y en el dictado. LO y LA se comen su vocal delante de otra vocal, <strong>también dentro del grupo combinado</strong>: <span class='it'>gliel'ho, me l'ha, te l'avevo, gliel'avessi</span>.</div>
+
+<div class="guiado">
+  <h3>📐 Esempio guidato — paso a paso</h3>
+  <div class="paso"><strong>1. Me topo con esto leyendo:</strong> «<span class='it'>Quando lo seppe, non rispose e uscì.</span>»</div>
+  <div class="paso"><strong>2. ¿Qué formas raras hay?</strong> <span class='it'>seppe</span>, <span class='it'>rispose</span>, <span class='it'>uscì</span>. Las tres son terceras del singular: alguien hizo algo.</div>
+  <div class="paso"><strong>3. ¿De qué infinitivos vienen?</strong> <span class='it'>seppe</span> → <span class='it'>sapere</span> · <span class='it'>rispose</span> → <span class='it'>rispondere</span> · <span class='it'>uscì</span> → <span class='it'>uscire</span> (regular).</div>
+  <div class="paso"><strong>4. Traduzco con pretérito:</strong> «Cuando lo supo, no contestó y salió.» ✅ Ni un solo «hubo de» ni nada raro: pretérito español y ya.</div>
+  <p style="margin-top:.8rem"><strong>Ahora tú, a medias.</strong> Parte de: «<span class='it'>Nacque a Palermo, visse a Roma e non tornò mai.</span>» ① ¿qué tres formas son passato remoto? ___ ② ¿de qué infinitivos? ___ ③ Traducción: ___</p>
+  <p style="font-size:.86rem;color:#666">(la solución está en el solucionario, «esempio guidato»)</p>
+</div>
+
+<h2>🧱 Frasi pronte</h2>
+<ul>
+  <li><span class="it">Nel 1922 prese il potere</span> → En 1922 tomó el poder</li>
+  <li><span class="it">Nacque a Palermo e morì a Roma</span> → Nació en Palermo y murió en Roma</li>
+  <li><span class="it">Pioveva quando arrivò</span> → Llovía cuando llegó</li>
+  <li><span class="it">Non disse niente e se ne andò</span> → No dijo nada y se marchó</li>
+  <li><span class="it">Fu allora che capii tutto</span> → Fue entonces cuando entendí todo</li>
+</ul>
+
+<h2>📖 In contesto</h2>
+<div class="bloque">
+  <span class="it">— Sto leggendo un libro di storia italiana, ma <b>mica</b> è facile.<br>
+  — Perché? Il vocabolario?<br>
+  — No, quello lo capisco. Sono i verbi: <b>fu, ebbe, prese, nacque</b>… all'inizio non capivo <b>manco</b> di che verbo si trattasse.<br>
+  — Ah, il passato remoto. Guarda, in Sicilia lo usiamo <b>tale e quale</b> anche per ieri. Mia nonna dice sempre <b>«ieri andai dal medico»</b>.<br>
+  — Davvero? Io pensavo che <b>fosse</b> solo dei libri.<br>
+  — <b>Mica</b> tanto. Al nord sì, non lo dicono mai. Ma qui è normalissimo.<br>
+  — Allora <b>me l'hai</b> risolto: leggo il libro e lo sento parlare a tua nonna.</span><br>
+  <span style="color:#666;font-size:.86rem">→ «Estoy leyendo un libro de historia italiana, pero no es nada fácil.» — «¿Por qué? ¿El vocabulario?» — «No, ese lo entiendo. Son los verbos: fu, ebbe, prese, nacque… al principio ni siquiera entendía de qué verbo se trataba.» — «Ah, el passato remoto. Mira, en Sicilia lo usamos igualito también para ayer. Mi abuela siempre dice “ayer fui al médico”.» — «¿En serio? Yo creía que era solo de los libros.» — «Qué va. En el norte sí, no lo dicen nunca. Pero aquí es normalísimo.» — «Entonces me lo has resuelto: leo el libro y se lo oigo hablar a tu abuela.»</span>
+</div>
+
+<h2>🗣️ Cultura &amp; Strada</h2>
+
+<div class="slang">
+  <strong>Mica</strong> <span class="reg verde">suave</span> <span style="font-size:.78rem;color:#888;font-weight:400">[MI-ka]</span><br>
+  <span class="it">per niente, affatto — rafforza la negazione</span> <span style="color:#666">→ para nada / qué va / ni de broma</span>
+  <div class="uso">Refuerza una negación, y muchas veces se come el <span class='it'>non</span>: <span class='it'>«Mica male!»</span> = ¡nada mal! Y <span class='it'>«Non è mica facile»</span> = no es nada fácil. Frecuentísimo hablando, y lo vas a encontrar también escrito en diálogos de novela.</div>
+  <div class="ejemplo"><span class="it">Mica male questa pizza!</span> → ¡Nada mal esta pizza!</div>
+</div>
+
+<div class="slang">
+  <strong>Manco</strong> <span class="reg amari">medio</span> <span style="font-size:.78rem;color:#888;font-weight:400">[MAN-ko]</span><br>
+  <span class="it">nemmeno, neanche — versione colloquiale</span> <span style="color:#666">→ ni / ni siquiera</span>
+  <div class="uso">Es <span class='it'>nemmeno</span> en versión de calle, muy del centro y del sur. <span class='it'>«Manco per sogno»</span> = ni en sueños, ni loco. Cuidado con el registro: en un correo de trabajo va <span class='it'>nemmeno</span>.</div>
+  <div class="ejemplo"><span class="it">Non l'ho manco visto.</span> → Ni siquiera lo vi.</div>
+</div>
+
+<div class="slang">
+  <strong>Tale e quale</strong> <span class="reg verde">suave</span> <span style="font-size:.78rem;color:#888;font-weight:400">[TA-le e KWA-le]</span><br>
+  <span class="it">identico, uguale preciso</span> <span style="color:#666">→ igualito / clavado / tal cual</span>
+  <div class="uso">Para decir que algo o alguien es idéntico a otra cosa. Muy usado con parecidos de familia: <span class='it'>«è tale e quale suo padre»</span> = es clavado a su padre. También <span class='it'>«tale quale»</span>, sin la e.</div>
+  <div class="ejemplo"><span class="it">Da piccolo era tale e quale suo nonno.</span> → De pequeño era igualito a su abuelo.</div>
+</div>
+
+<h2>☕ Cultura — di che parlare con un italiano</h2>
+<div class="cultura">
+  <span class="tipo">Dal capitolo 28 — La Sicilia</span>
+  <h3>Una isla que fue reino, y que se cuenta a sí misma en passato remoto</h3>
+  <div class="ctx"><span class="it">La Sicilia non è una regione qualsiasi: fu un regno indipendente per secoli. Ci passarono i greci, che vi costruirono templi meglio conservati di quelli in Grecia; poi i romani, i bizantini, gli arabi, i normanni. Nel XII secolo Palermo fu una delle città più ricche d'Europa, e alla corte di Federico II nacque la prima poesia in lingua italiana — prima ancora di Dante. Gli arabi lasciarono le arance, il cous cous, i sistemi di irrigazione e centinaia di parole. I normanni costruirono chiese con mosaici bizantini e iscrizioni in arabo sulla stessa parete. Il siciliano non è un dialetto dell'italiano: è una lingua sorella, con un suo vocabolario e una sua letteratura. E il passato remoto, che al nord è morto, lì è ancora la lingua di tutti i giorni.</span> <span style="color:#666;font-size:.85rem">→ Sicilia no es una región cualquiera: fue un reino independiente durante siglos. Pasaron los griegos, que levantaron templos mejor conservados que los de Grecia; después romanos, bizantinos, árabes, normandos. En el siglo XII Palermo fue una de las ciudades más ricas de Europa, y en la corte de Federico II nació la primera poesía en lengua italiana — antes incluso que Dante. Los árabes dejaron las naranjas, el cuscús, los sistemas de riego y cientos de palabras. Los normandos construyeron iglesias con mosaicos bizantinos e inscripciones en árabe en la misma pared. El siciliano no es un dialecto del italiano: es una lengua hermana, con vocabulario y literatura propios. Y el passato remoto, que en el norte está muerto, allí sigue siendo lengua de diario.</span></div>
+  <div class="frasi">
+    <div class="lbl">💬 Per parlarne</div>
+    <div class="f"><span class="it">La Sicilia fu un regno indipendente per secoli.</span> <span class="es">→ Sicilia fue un reino independiente durante siglos.</span></div>
+    <div class="f"><span class="it">I greci vi costruirono templi meglio conservati di quelli in Grecia.</span> <span class="es">→ Los griegos levantaron allí templos mejor conservados que los de Grecia.</span></div>
+    <div class="f"><span class="it">Alla corte di Federico II nacque la prima poesia in italiano.</span> <span class="es">→ En la corte de Federico II nació la primera poesía en italiano.</span></div>
+  </div>
+  <div class="spunto">🗣️ <b>Lo spunto:</b> <span class="it">Lee las tres frases en voz alta y localiza los cuatro passato remoto: <b>fu, passarono, costruirono, nacque</b>. Ese es exactamente el aspecto que tiene una página de historia. Luego prueba a contar en italiano, con <span class='it'>fu / nacque / arrivarono</span>, tres datos de un lugar que conozcas bien.</span></div>
+  <div class="puente">🇲🇽 El paralelo mexicano es Yucatán. También una península que funcionó aparte, con su propia historia larga antes de la nación, con una lengua que no es un dialecto del español sino otra lengua entera, y con gente que sigue diciendo «yo soy yucateco» antes que cualquier otra cosa. Igual que un siciliano dice <span class='it'>«sono siciliano»</span> y solo después «italiano». Y en los dos casos, la cocina es lo primero que te lo demuestra.</div>
+</div>
+
+<h2>✍️ Dettato — scrivi quello che senti</h2>
+<div class="bloque">
+  <button class="say-frase" data-frase="Nacque a Palermo e non tornò mai.">Frase 1</button>
+  <button class="say-frase" data-frase="Pioveva quando arrivò, ma non gliel'ho detto.">Frase 2</button>
+  <button class="say-frase" data-frase="Mica male: lo lesse tutto in due giorni.">Frase 3</button>
+  <textarea class="resp" data-ej="dettato" rows="3" placeholder="1. … 2. … 3. …"></textarea>
+</div>
+
+<h2>Esercizi</h2>
+<ol class="ejercicio">
+<li><strong><strong>¿De qué verbo viene?</strong> — di el infinitivo: a) fece b) seppe c) venne d) nacque e) disse f) rimase</strong>
+    <textarea class="resp" data-ej="e1" rows="3" placeholder="a) fare…"></textarea></li>
+<li><strong><strong>Regulares</strong> — pon la 3ª persona singular y plural: a) parlare b) credere c) finire d) costruire</strong>
+    <textarea class="resp" data-ej="e2" rows="3" placeholder="a) parlò / parlarono…"></textarea></li>
+<li><strong><strong>El patrón 1-3-3</strong> — te doy la 3ª singular, completa las seis: <span class='it'>mise</span> (mettere) → io ___ · tu ___ · lui ___ · noi ___ · voi ___ · loro ___</strong>
+    <textarea class="resp" data-ej="e3" rows="3" placeholder="misi, mettesti…"></textarea></li>
+<li><strong><strong>Traduce leyendo</strong> — son frases de libro de historia: a) <span class='it'>Nel 1861 l'Italia divenne un regno unito.</span> b) <span class='it'>I romani costruirono strade in tutta Europa.</span> c) <span class='it'>Dante scrisse la Commedia in esilio.</span></strong>
+    <textarea class="resp" data-ej="e4" rows="3" placeholder="a) En 1861…"></textarea></li>
+<li><strong><strong>Remoto o imperfetto</strong> — igual que en español: a) <span class='it'>___ (piovere) quando ___ (arrivare, lui).</span> b) <span class='it'>___ (essere) tardi e non ___ (esserci) nessuno.</span> c) <span class='it'>___ (aprire, lui) la porta e ___ (entrare).</span></strong>
+    <textarea class="resp" data-ej="e5" rows="3" placeholder="a) Pioveva / arrivò…"></textarea></li>
+<li><strong><strong>¿Quién lo diría?</strong> — di si es más de un milanés, de un texto escrito o de un siciliano: a) <span class='it'>Ieri sono andato al mare.</span> b) <span class='it'>Nel 1922 prese il potere.</span> c) <span class='it'>Ieri andai al mare.</span></strong>
+    <textarea class="resp" data-ej="e6" rows="3" placeholder="a) …"></textarea></li>
+<li><strong><strong>Pronomi combinati</strong> — sustituye: a) Ho mandato le foto a lui → ___. b) Ha raccontato la storia a noi → ___. c) Diede il libro a me → ___.</strong> <em>(ripasso tuo)</em>
+    <textarea class="resp" data-ej="e7" rows="3" placeholder="a) Gliele ho mandate…"></textarea></li>
+<li><strong><strong>Elisión (sigue pendiente)</strong> — escribe con apóstrofo: a) glielo ho letto → ___ b) me lo aveva detto → ___ c) te lo avevo mandato → ___ d) glielo avessi chiesto → ___</strong> <em>(ripasso tuo)</em>
+    <textarea class="resp" data-ej="e8" rows="3" placeholder="a) gliel'ho letto…"></textarea></li>
+<li><strong><strong>Diretto o indiretto?</strong> — marca D o I y pon el pronombre: a) Rispose ___ (a Marco). b) Chiamò ___ (Maria). c) Telefonò ___ (ai clienti). d) Vide ___ (i documenti).</strong> <em>(ripasso tuo)</em>
+    <textarea class="resp" data-ej="e9" rows="3" placeholder="a) I → gli…"></textarea></li>
+<li><strong><strong>Il tuo vocabolario</strong> — 2 frases con → <strong class='mis-palabras'>(abre tu Vocabulario ★)</strong>, contando algo en passato remoto como si fuera una novela.</strong>
+    <textarea class="resp" data-ej="e10" rows="3" placeholder="…"></textarea></li>
+<li><strong><strong>Caccia all'errore</strong> — hay CUATRO: a) «Nel 1922 <span class='it'>ha preso</span> il potere e lo <span class='it'>tenne</span> vent'anni». b) «<span class='it'>Gliele ho raccontato</span> la storia a loro». c) «<span class='it'>Pioveva</span> quando <span class='it'>arrivava</span>». d) «<span class='it'>Glielo avevo</span> già detto».</strong>
+    <textarea class="resp" data-ej="e11" rows="4" placeholder="a) …"></textarea></li>
+<li><strong><strong>Ascolto</strong> — escucha y escribe; luego di qué verbos están en passato remoto: <div class="ascolto"><button class="say-frase" data-frase="Nacque nel 1901 e morì a Roma.">🔊 1</button><button class="say-frase" data-frase="Pioveva quando arrivò, e non disse niente.">🔊 2</button><button class="say-frase" data-frase="Mica male: lo lesse tutto in due giorni.">🔊 3</button></div></strong> <em>(ripasso tuo)</em>
+    <textarea class="resp" data-ej="e12" rows="3" placeholder="1. … (remoto: …)"></textarea></li>
+<li><strong><strong>Lettura</strong> — traduce este fragmento, del tipo que te vas a encontrar: «<span class='it'>Arrivò a Palermo che era ancora buio. Non conosceva nessuno e non aveva un posto dove dormire, ma non gli importava. Si sedette sui gradini della stazione e aspettò. Quando il sole si alzò, capì che non sarebbe più tornato indietro.</span>»</strong>
+    <textarea class="resp" data-ej="e13" rows="5" placeholder="Llegó a Palermo cuando todavía…"></textarea></li>
+<li><strong><strong>Concordanza dei tempi (día 27)</strong> — completa: a) Pensavo che ___ (essere) più giovane. b) Mi disse che ___ (tornare) presto. c) Non sapevo che ___ (nascere) in Sicilia.</strong> <em>(ripasso tuo)</em>
+    <textarea class="resp" data-ej="e14" rows="3" placeholder="a) fosse…"></textarea></li>
+<li><strong><strong>Produzione libera</strong> — escribe 6-8 líneas contando <em>el día que abriste el estudio, o el primer trabajo grande que te tocó</em>, pero <strong>como lo escribiría una novela</strong>: en passato remoto. Obligatorio: 4 passato remoto (2 de ellos irregulares), 2 <span class='it'>imperfetto</span> de fondo, 1 elisión con apóstrofo y un slang de hoy.</strong>
+    <textarea class="resp" data-ej="e15" rows="7" placeholder="Quel giorno pioveva e non c'era nessuno in strada. Aprii…"></textarea></li>
+</ol>
+
+<details class="solu">
+  <summary>Soluzioni / Soluciones (ábrelas después de intentarlo)</summary>
+  <div class="body">
+    <p><strong>Esempio guidato:</strong> ① <span class='it'>nacque, visse, tornò</span> · ② <span class='it'>nascere, vivere, tornare</span> · ③ «Nació en Palermo, vivió en Roma y no volvió nunca.»</p>
+    <p><strong>Dettato:</strong> 1) <span class="it">Nacque a Palermo e non tornò mai.</span> 2) <span class="it">Pioveva quando arrivò, ma non gliel'ho detto.</span> 3) <span class="it">Mica male: lo lesse tutto in due giorni.</span></p>
+    <p><strong>1.</strong> a) <span class='it'>fare</span> b) <span class='it'>sapere</span> c) <span class='it'>venire</span> d) <span class='it'>nascere</span> e) <span class='it'>dire</span> f) <span class='it'>rimanere</span>.</p>
+    <p><strong>2.</strong> a) <span class='it'>parlò / parlarono</span> b) <span class='it'>credé (credette) / crederono (credettero)</span> c) <span class='it'>finì / finirono</span> d) <span class='it'>costruì / costruirono</span>.</p>
+    <p><strong>3.</strong> <span class='it'>misi · mettesti · mise · mettemmo · metteste · misero</span>. Irregulares solo la 1ª sing., la 3ª sing. y la 3ª plur.; las otras tres salen del infinitivo.</p>
+    <p><strong>4.</strong> a) «En 1861 Italia se convirtió en un reino unido.» b) «Los romanos construyeron carreteras en toda Europa.» c) «Dante escribió la Commedia en el exilio.» En los tres, pretérito español y punto.</p>
+    <p><strong>5.</strong> a) <span class='it'>Pioveva quando arrivò</span> (fondo + acción) b) <span class='it'>Era tardi e non c'era nessuno</span> (los dos fondo) c) <span class='it'>Aprì la porta ed entrò</span> (las dos avanzan). Idéntico a tu pretérito/imperfecto.</p>
+    <p><strong>6.</strong> a) milanés (y también estándar hablado en todo el norte y centro) b) texto escrito / historia c) siciliano — o napolitano. Ninguna de las tres está mal: cambia la zona.</p>
+    <p><strong>7.</strong> a) <span class='it'>Gliele ho mandate.</span> b) <span class='it'>Ce l'ha raccontata.</span> c) <span class='it'>Me lo diede.</span> Ojo a la concordancia del participio en a) y b).</p>
+    <p><strong>8.</strong> a) <span class='it'>gliel'ho letto</span> b) <span class='it'>me l'aveva detto</span> c) <span class='it'>te l'avevo mandato</span> d) <span class='it'>gliel'avessi chiesto</span>.</p>
+    <p><strong>9.</strong> a) I → <span class='it'>gli rispose</span> b) D → <span class='it'>la chiamò</span> c) I → <span class='it'>gli telefonò</span> d) D → <span class='it'>li vide</span>. Rispondere y telefonare piden indirecto; chiamare y vedere, directo.</p>
+    <p><strong>11.</strong> a) mezcla dos sistemas: o <span class='it'>prese… tenne</span> (narrativo) o <span class='it'>ha preso… ha tenuto</span>. b) doble falta: <span class='it'>gliele</span> repite «a loro» y no concuerda con «la storia» → <span class='it'>Gliel'ho raccontata</span> (o «Ho raccontato la storia a loro», pero no las dos). c) el segundo avanza el relato → <span class='it'>arrivò</span>. d) <span class='it'>Gliel'avevo</span>, con apóstrofo.</p>
+    <p><strong>12.</strong> 1) <span class='it'>Nacque nel 1901 e morì a Roma</span> — nacque, morì. 2) <span class='it'>Pioveva quando arrivò, e non disse niente</span> — arrivò, disse (<span class='it'>pioveva</span> es imperfetto). 3) <span class='it'>Mica male: lo lesse tutto in due giorni</span> — lesse.</p>
+    <p><strong>13.</strong> «Llegó a Palermo cuando todavía estaba oscuro. No conocía a nadie y no tenía dónde dormir, pero no le importaba. Se sentó en los escalones de la estación y esperó. Cuando el sol salió, entendió que ya no volvería atrás.» Cuenta los remotos: <span class='it'>arrivò, si sedette, aspettò, si alzò, capì</span> avanzan; <span class='it'>era, conosceva, aveva, importava</span> son el fondo. Y el último, <span class='it'>sarebbe tornato</span>, es la consecutio de ayer.</p>
+    <p><strong>14.</strong> a) <span class='it'>fosse</span> b) <span class='it'>sarebbe tornato</span> c) <span class='it'>fosse nato</span>. Principal en pasado → todo baja un escalón.</p>
+    <p><strong>10, 15:</strong> respuesta libre — dime «ya terminé el día 28» y te las corrijo.</p>
+  </div>
+</details>
+
+<div class="bloque" style="background:#f3faf6;border-color:#9bd3b4"><strong>✅ Autocontrollo</strong> — ¿ya puedes…? ① reconocer fu, ebbe, fece, disse, nacque sin pensarlo · ② sacar las seis formas de un verbo con el patrón 1-3-3 · ③ repartir remoto e imperfetto como pretérito e imperfecto · ④ saber que en Sicilia «ieri andai» es normal, no antiguo. Si algo tambalea, márcalo 🔁.</div>
+
+<h2>Riflessione del giorno</h2>
+<ul>
+  <li>Hoy pasó algo que conviene que notes: es el primer día del curso pensado para <strong>leer</strong>, no para hablar. Y llega justo cuando estás metido en libros de historia italiana. Sin el passato remoto esos libros se te resisten aunque conozcas todo el vocabulario; con él, se abren de golpe.</li>
+  <li>Fíjate también en la simetría con ayer. El día 27 el español te traicionaba y había que desconfiar de él. Hoy te regala el tema entero: remoto e imperfetto se reparten el trabajo igual que tu pretérito y tu imperfecto. Aprender un idioma cercano es esto — saber cuándo apoyarte en el que ya tienes y cuándo soltarlo.</li>
+  <li>🎧 Bonus: 10 min de <a href="inmersion.html">Inmersión</a>.</li>
+</ul>
+<div class="tiempo">⏱ Tempo stimato: 50-60 min &nbsp;·&nbsp; Domani: Alterati (-ino / -one / -accio)</div>
+
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giorno 27 — Italiano</title>
+<style>
+  body { font-family: -apple-system, sans-serif; background: #f5f7fa; color: #1c1c1e; max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 4rem; line-height: 1.7; }
+  .header { border-left: 4px solid #2d6a4f; padding-left: 1rem; margin-bottom: 2.5rem; }
+  .header .dia { font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #2d6a4f; margin-bottom: .3rem; }
+  .header h1 { font-size: 1.7rem; font-weight: 700; margin: 0; }
+  .header p { color: #666; font-size: .9rem; margin: .3rem 0 0; }
+  h2 { font-size: .7rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: #2d6a4f; margin: 2rem 0 .8rem; }
+  h3 { font-size: .95rem; font-weight: 700; margin: 1.2rem 0 .5rem; }
+  table { width: 100%; border-collapse: collapse; margin: .5rem 0 1rem; font-size: .92rem; }
+  th { background: #1c1c1e; color: #fff; text-align: left; padding: .5rem .8rem; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
+  td { padding: .55rem .8rem; border-bottom: 1px solid #dde5dd; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #eef2ee; }
+  .slang { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: 1rem 1.2rem; margin: .5rem 0 1rem; }
+  .slang strong { color: #2d6a4f; font-size: 1.05rem; }
+  .slang .uso { font-size: .82rem; color: #888; margin-top: .2rem; }
+  .slang .ejemplo { font-size: .88rem; font-style: italic; color: #444; margin-top: .4rem; background: #f5f7fa; padding: .3rem .6rem; border-radius: 4px; }
+  .ejercicio { counter-reset: ej; padding-left: 0; }
+  .ejercicio li { list-style: none; counter-increment: ej; padding: .6rem 0 .6rem 2.4rem; position: relative; border-bottom: 1px solid #dde5dd; font-size: .92rem; }
+  .ejercicio li:last-child { border-bottom: none; }
+  .ejercicio li::before { content: counter(ej); position: absolute; left: 0; top: .65rem; background: #2d6a4f; color: #fff; font-size: .65rem; font-weight: 700; width: 1.5rem; height: 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .esame { counter-reset: ex; padding-left: 0; }
+  .esame li { list-style: none; counter-increment: ex; padding: .7rem 0 .7rem 2.4rem; position: relative; border-bottom: 1px solid #e0d0d0; font-size: .92rem; }
+  .esame li:last-child { border-bottom: none; }
+  .esame li::before { content: "X" counter(ex); position: absolute; left: 0; top: .65rem; background: #922b21; color: #fff; font-size: .58rem; font-weight: 700; width: 1.7rem; height: 1.5rem; border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+  .nota { background: #f0f7f4; border-left: 3px solid #2d6a4f; padding: .7rem 1rem; border-radius: 0 6px 6px 0; font-size: .88rem; color: #1a4731; margin: .8rem 0; }
+  .alerta { background: #fdf0ef; border-left: 3px solid #c0392b; padding: .7rem 1rem; border-radius: 0 6px 6px 0; font-size: .88rem; color: #922b21; margin: .8rem 0; }
+  .bloque { background: #fff; border: 1px solid #dde5dd; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .92rem; }
+  .tiempo { text-align: right; font-size: .8rem; color: #999; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #dde5dd; }
+  .it { font-weight: 600; font-style: italic; }
+  p { font-size: .92rem; }
+  ul { font-size: .92rem; padding-left: 1.2rem; }
+  .guiado { background: #fffdf3; border: 1px solid #e6d9a8; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .92rem; }
+  .guiado h3 { margin-top: 0; color: #8a6d1f; }
+  .paso { background: #fff; border-left: 3px solid #b8860b; padding: .4rem .8rem; margin: .4rem 0; border-radius: 0 4px 4px 0; }
+  .big { font-size: 1.15rem; font-weight: 700; color: #2d6a4f; letter-spacing: .02em; text-align: center; }
+  .ascolto { background: #eef5ff; border: 1px solid #bcd4ea; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; }
+  .ascolto button.say-frase { background: #1a4d80; color: #fff; border: 0; border-radius: 6px; padding: .5rem .9rem; font-size: .85rem; cursor: pointer; margin: .3rem 0; }
+  .fosil { background: #fff4f2; border: 2px solid #c0392b; border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0; }
+  .fosil h3 { color: #922b21; margin-top: 0; }
+  .rubrica { background: #f4f0fa; border: 1px solid #cfc0e8; border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; font-size: .88rem; }
+</style>
+<link rel="stylesheet" href="assets/curso.css?v=20260822a"><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260822a"></script><script defer src="assets/vocab.js?v=20260822a"></script><script defer src="assets/frases.js?v=20260822a"></script><script defer src="assets/curso.js?v=20260822a"></script><script defer src="assets/respuestas.js?v=20260822a"></script>
+</head>
+<body>
+
+<div class="header">
+  <div class="dia">Settimana 4 · Giorno 27 · Livello B2</div>
+  <h1>Concordanza dei tempi — la consecutio temporum</h1>
+  <p>Cuando mueves el verbo principal al pasado, todo lo demás se mueve con él</p>
+</div>
+
+<div class="bloque" style="background:#eef5ff;border-color:#bcd4ea"><strong>🎯 Obiettivo di oggi</strong> — al terminar podrás: ① encajar el congiuntivo según el tiempo del verbo principal · ② usar <span class='it'>avessi fatto</span> y <span class='it'>sarebbe venuto</span> en su sitio · ③ pasar del discurso directo al indirecto sin que se desmonte · ④ saber qué verbos NO piden congiuntivo (que son más de los que crees).</div>
+
+<h2>Ripasso veloce (5 min)</h2>
+<p>Del día 26: completa — Il cliente vuole le prove → ___ (yo, hacérselas ver) stasera · Non ___ (dejarte) convincere. Y del 24: Ha detto che ___ (venire) più tardi.</p>
+
+<h2>El mecanismo: una escalera, no una lista</h2>
+
+<p>Esto no es memorizar veinte combinaciones. Es <strong>una sola idea</strong>: el verbo principal fija la planta del edificio, y el subordinado se coloca arriba, al mismo nivel o abajo, según sea <em>posterior, simultáneo o anterior</em>. Si mueves la planta baja al pasado, todo el edificio baja un piso.</p>
+
+<p class="big">Principal en PRESENTE → el edificio está arriba.<br>Principal en PASADO → todo baja un escalón.</p>
+
+<h3>① Principal en presente</h3>
+
+<table>
+  <tr><th>Relación</th><th>Qué va</th><th>Ejemplo</th></tr>
+  <tr><td>Simultáneo</td><td>congiuntivo <b>presente</b></td><td><span class='it'>Penso che <b>sia</b> stanco.</span> — Creo que está cansado.</td></tr><tr><td>Anterior</td><td>congiuntivo <b>passato</b></td><td><span class='it'>Penso che <b>sia stato</b> stanco.</span> — Creo que estuvo cansado.</td></tr><tr><td>Posterior</td><td>futuro o presente</td><td><span class='it'>Penso che <b>verrà</b>.</span> — Creo que vendrá.</td></tr>
+</table>
+
+<h3>② Principal en pasado — aquí se juega el partido</h3>
+
+<table>
+  <tr><th>Relación</th><th>Qué va</th><th>Ejemplo</th></tr>
+  <tr><td>Simultáneo</td><td>congiuntivo <b>imperfetto</b></td><td><span class='it'>Pensavo che <b>fosse</b> stanco.</span> — Creía que estaba cansado.</td></tr><tr><td>Anterior</td><td>congiuntivo <b>trapassato</b></td><td><span class='it'>Pensavo che <b>fosse stato</b> stanco.</span> — Creía que había estado cansado.</td></tr><tr><td>Posterior</td><td><b>condizionale composto</b></td><td><span class='it'>Pensavo che <b>sarebbe venuto</b>.</span> — Creía que vendría.</td></tr>
+</table>
+
+<div class="nota">🔑 <strong>HACK</strong> — Esa última casilla es el día 24 entero. El <span class='it'>condizionale composto</span> no era un tema suelto: es <strong>el escalón «posterior» de la consecutio</strong>. Por eso <span class='it'>«Ha detto che sarebbe venuto»</span> y nunca <span class='it'>«verrebbe»</span> — ya lo sabías hacer, hoy sabes por qué. <span class="cuad">a tu cuaderno</span></div>
+
+<h2>Dónde se rompe el español</h2>
+
+<p>El español tiene consecutio, así que el concepto no es nuevo. El problema es otro: hay verbos que en español van con indicativo y en italiano <strong>exigen congiuntivo</strong>, y ahí el oído no te avisa.</p>
+
+<table>
+  <tr><th>Español (indicativo)</th><th>Italiano (congiuntivo)</th><th></th></tr>
+  <tr><td>Creo que <b>es</b> tarde</td><td><span class='it'>Credo che <b>sia</b> tardi</span></td><td>credere</td></tr><tr><td>Pienso que <b>se aprende</b></td><td><span class='it'>Penso che si <b>impari</b></span></td><td>pensare</td></tr><tr><td>Parece que <b>está</b> bien</td><td><span class='it'>Sembra che <b>stia</b> bene</span></td><td>sembrare</td></tr><tr><td>Espero que <b>llega</b> a tiempo</td><td><span class='it'>Spero che <b>arrivi</b> in tempo</span></td><td>sperare</td></tr><tr><td>Aunque <b>es</b> difícil</td><td><span class='it'>Benché <b>sia</b> difficile</span></td><td>benché</td></tr>
+</table>
+
+<div class="alerta">⚠️ <strong>Y ahora el contrapeso, que importa igual:</strong> hay verbos que NO piden congiuntivo y donde meterlo suena mal. Van con <b>indicativo</b>: <span class='it'>so che, sono sicuro che, è vero che, dice che, mi sa che, siccome, perché</span> (causal). <span class='it'>«So che è tardi»</span>, no «<span class='it'>sia</span>». El congiuntivo es para lo que <em>filtras</em> por tu cabeza (opinión, duda, deseo); el indicativo, para lo que <em>das por hecho</em>.</div>
+
+<div class="fosil"><h3>🔴 Tu punto pegajoso: la elisión</h3>En los días 23 y 24 escribiste ocho veces <span class='it'>glielo ho</span>, <span class='it'>glielo avrei</span>, <span class='it'>me lo avresti</span>. Y sin embargo pusiste <span class='it'>Me l'ha data</span> y <span class='it'>non l'ho fatto</span> perfectos. O sea: la regla la tienes en el pronombre suelto y no la trasladas al combinado. <strong>LO y LA se eliden SIEMPRE ante vocal, también dentro del grupo:</strong> <span class='it'>gliel'ho detto, gliel'avrei dato, me l'avessi detto, te l'ho mandata</span>. Regla de bolsillo: si al leerlo en voz alta dices «glie-LO-ho», estás pronunciando dos vocales seguidas que el italiano no tolera. Hoy va en el ejercicio 7 y en el dictado.</div>
+
+<div class="guiado">
+  <h3>📐 Esempio guidato — paso a paso</h3>
+  <div class="paso"><strong>1. ¿Qué quiero decir?</strong> «Pensé que ya me lo habías dicho».</div>
+  <div class="paso"><strong>2. ¿En qué tiempo va el principal?</strong> «Pensé» → pasado (<span class='it'>pensavo / ho pensato</span>). Todo baja un escalón.</div>
+  <div class="paso"><strong>3. ¿Qué relación?</strong> «habías dicho» ocurre ANTES de «pensé» → anterior → congiuntivo <b>trapassato</b>: <span class='it'>avessi detto</span>.</div>
+  <div class="paso"><strong>4. ¿Pronombres?</strong> a mí = <span class='it'>mi</span>, eso = <span class='it'>lo</span> → <span class='it'>me lo</span> → y ante vocal se elide: <span class='it'>me l'</span>.</div>
+  <div class="paso"><strong>5. Frase final:</strong> <span class='it'>Pensavo che me l'avessi già detto.</span> ✅</div>
+  <p style="margin-top:.8rem"><strong>Ahora tú, a medias.</strong> Parte de: «Creía que ya se lo habían mandado (a él)». ① ¿tiempo del principal? ___ ② ¿anterior o simultáneo? ___ ③ ¿pronombres, con elisión? ___ ④ Frase final: ___</p>
+  <p style="font-size:.86rem;color:#666">(la solución está en el solucionario, «esempio guidato»)</p>
+</div>
+
+<h2>🧱 Frasi pronte</h2>
+<ul>
+  <li><span class="it">Pensavo che fosse più facile</span> → Creía que era más fácil</li>
+  <li><span class="it">Non sapevo che te l'avessero detto</span> → No sabía que te lo hubieran dicho</li>
+  <li><span class="it">Mi sa che è tardi</span> → Me late que es tarde</li>
+  <li><span class="it">Speravo che sarebbe andata meglio</span> → Esperaba que saliera mejor</li>
+  <li><span class="it">Non è che sia difficile, è che è lungo</span> → No es que sea difícil, es que es largo</li>
+</ul>
+
+<h2>📖 In contesto</h2>
+<div class="bloque">
+  <span class="it">— Allora? Il cliente ha firmato?<br>
+  — Mah. <b>Pensavo che avesse già deciso</b>, invece mi ha detto che <b>ci avrebbe pensato</b>.<br>
+  — <b>Mi sa che</b> vuole lo sconto.<br>
+  — Eh, <b>non è che sia</b> un problema, ma <b>gliel'avevo già detto</b> che il prezzo era quello.<br>
+  — <b>Chissà</b> cosa gli <b>avranno raccontato</b> gli altri studi.<br>
+  — Boh. <b>Speravo che si fidasse</b> di più, sinceramente.<br>
+  — Dai, aspetta. <b>Non sapevo che</b> fosse così indeciso, ma alla fine firmano quasi tutti.</span><br>
+  <span style="color:#666;font-size:.86rem">→ «¿Y bien? ¿El cliente firmó?» — «Uf. Creía que ya lo había decidido, y en cambio me dijo que lo pensaría.» — «Me late que quiere el descuento.» — «Sí, no es que sea un problema, pero ya se lo había dicho: el precio era ese.» — «Quién sabe qué le habrán contado los otros estudios.» — «Ni idea. Esperaba que confiara más, sinceramente.» — «Anda, espera. No sabía que fuera tan indeciso, pero al final casi todos firman.»</span>
+</div>
+
+<h2>🗣️ Cultura &amp; Strada</h2>
+
+<div class="slang">
+  <strong>Mi sa che</strong> <span class="reg verde">suave</span> <span style="font-size:.78rem;color:#888;font-weight:400">[mi sa ke]</span><br>
+  <span class="it">ho l'impressione che, credo proprio che</span> <span style="color:#666">→ me late que / me da que / se me hace que</span>
+  <div class="uso">Literalmente «me sabe que». Es la forma más italiana de decir «creo» — y aquí está lo bueno: <strong>va con INDICATIVO</strong>, no con congiuntivo. <span class='it'>«Mi sa che è tardi»</span>, nunca «sia». Sirve de contrapeso perfecto a <span class='it'>penso che</span>.</div>
+  <div class="ejemplo"><span class="it">Mi sa che non viene più.</span> → Me late que ya no viene.</div>
+</div>
+
+<div class="slang">
+  <strong>Non è che…</strong> <span class="reg verde">suave</span> <span style="font-size:.78rem;color:#888;font-weight:400">[non e ke]</span><br>
+  <span class="it">non è esattamente che…, usato per attenuare o per chiedere con delicatezza</span> <span style="color:#666">→ no es que… / ¿no será que…?</span>
+  <div class="uso">Dos usos. Para matizar: <span class='it'>«Non è che <b>sia</b> brutto, è che non mi convince»</span> — y ahí SÍ pide congiuntivo. Y para pedir sin sonar brusco: <span class='it'>«Non è che mi presti dieci euro?»</span>, que es «¿no me prestarías…?». Muy usado para suavizar.</div>
+  <div class="ejemplo"><span class="it">Non è che tu abbia visto le mie chiavi?</span> → ¿No habrás visto mis llaves?</div>
+</div>
+
+<div class="slang">
+  <strong>Chissà</strong> <span class="reg verde">suave</span> <span style="font-size:.78rem;color:#888;font-weight:400">[kis-SA]</span><br>
+  <span class="it">chi lo sa, non ho idea — ma detto con curiosità</span> <span style="color:#666">→ quién sabe / a saber / vaya usted a saber</span>
+  <div class="uso">Contracción de <span class='it'>chi sa</span>. A diferencia de <span class='it'>boh</span> (que cierra), <span class='it'>chissà</span> abre: invita a especular. Y encaja con el futuro de probabilidad del día 25: <span class='it'>«Chissà chi sarà stato»</span> = quién sabe quién habrá sido.</div>
+  <div class="ejemplo"><span class="it">Chissà cosa avrà pensato quando l'ha visto.</span> → Quién sabe qué habrá pensado cuando lo vio.</div>
+</div>
+
+<h2>☕ Cultura — di che parlare con un italiano</h2>
+<div class="cultura">
+  <span class="tipo">Dal capitolo 27 — Mussolini</span>
+  <h3>Cómo un país llega ahí, y por qué la lengua todavía lo arrastra</h3>
+  <div class="ctx"><span class="it">Benito Mussolini prese il potere nel 1922 e lo tenne per vent'anni. Il fascismo non arrivò con un colpo di stato improvviso: arrivò dopo anni di crisi economica, disoccupazione e violenza politica, e molti pensarono che sarebbe stato una parentesi breve. Non lo fu. Il regime controllò la stampa, sciolse i partiti, entrò in guerra a fianco della Germania nazista e nel 1938 promulgò le leggi razziali. Finì nel 1945. Il fascismo lavorò molto anche sulla lingua: vietò le parole straniere — il <i>bar</i> doveva diventare <i>qui si beve</i> — e impose il <i>voi</i> al posto del <i>Lei</i>, considerato servile e straniero. Quasi nulla di tutto questo sopravvisse.</span> <span style="color:#666;font-size:.85rem">→ Mussolini tomó el poder en 1922 y lo mantuvo veinte años. El fascismo no llegó con un golpe repentino: llegó tras años de crisis, desempleo y violencia política, y muchos pensaron que sería un paréntesis breve. No lo fue. El régimen controló la prensa, disolvió los partidos, entró en guerra junto a la Alemania nazi y en 1938 promulgó las leyes raciales. Terminó en 1945. El fascismo también intervino la lengua: prohibió los extranjerismos —el <i>bar</i> debía llamarse <i>qui si beve</i>— e impuso el <i>voi</i> en lugar del <i>Lei</i>, considerado servil y extranjero. Casi nada de eso sobrevivió.</span></div>
+  <div class="frasi">
+    <div class="lbl">💬 Per parlarne</div>
+    <div class="f"><span class="it">Molti pensarono che sarebbe stata una parentesi breve.</span> <span class="es">→ Muchos pensaron que sería un paréntesis breve.</span></div>
+    <div class="f"><span class="it">Il regime impose il «voi» al posto del «Lei».</span> <span class="es">→ El régimen impuso el «voi» en lugar del «Lei».</span></div>
+    <div class="f"><span class="it">Non tutti sapevano cosa stesse succedendo, ma molti preferirono non guardare.</span> <span class="es">→ No todos sabían qué estaba pasando, pero muchos prefirieron no mirar.</span></div>
+  </div>
+  <div class="spunto">🗣️ <b>Lo spunto:</b> <span class="it">Fíjate en las tres frases de arriba: <b>pensarono che sarebbe stata</b>, <b>cosa stesse succedendo</b>. Es la consecutio de hoy, funcionando en un texto real de historia — que es exactamente donde vas a encontrártela. Prueba a contar en voz alta, con <span class='it'>pensavo che…</span> y <span class='it'>non sapevo che…</span>, algo que creíste de un periodo histórico y luego resultó ser distinto.</span></div>
+  <div class="puente">🇲🇽 El paralelo mexicano más honesto no es un dictador militar sino el Porfiriato: treinta y cinco años de un gobierno que también empezó prometiendo orden y progreso tras décadas de caos, que también modernizó infraestructura, y que también acabó sosteniéndose con represión. Y el mismo eco incómodo: hay quien todavía dice «pero hizo cosas buenas», que es la frase con la que empiezan casi todas las conversaciones difíciles sobre este capítulo, en México y en Italia.</div>
+</div>
+
+<h2>✍️ Dettato — scrivi quello che senti</h2>
+<div class="bloque">
+  <button class="say-frase" data-frase="Pensavo che me l'avessi già detto.">Frase 1</button>
+  <button class="say-frase" data-frase="Mi sa che non gliel'hanno mandato.">Frase 2</button>
+  <button class="say-frase" data-frase="Non sapevo che sarebbe venuto anche lui.">Frase 3</button>
+  <textarea class="resp" data-ej="dettato" rows="3" placeholder="1. … 2. … 3. …"></textarea>
+</div>
+
+<h2>Esercizi</h2>
+<ol class="ejercicio">
+<li><strong><strong>Principal en presente</strong> — pon el congiuntivo que toca: a) Penso che lui ___ (essere) stanco adesso. b) Penso che ieri ___ (essere) stanco. c) Credo che domani ___ (venire).</strong>
+    <textarea class="resp" data-ej="e1" rows="3" placeholder="a) sia…"></textarea></li>
+<li><strong><strong>Principal en pasado</strong> — baja todo un escalón: a) Pensavo che ___ (essere) stanco. b) Pensavo che ___ (essere) stanco il giorno prima. c) Pensavo che ___ (venire) il giorno dopo.</strong>
+    <textarea class="resp" data-ej="e2" rows="3" placeholder="a) fosse…"></textarea></li>
+<li><strong><strong>El escalón «posterior»</strong> — traduce, y fíjate en que el español usa condicional simple donde el italiano usa compuesto: a) Dijo que llamaría. b) Sabía que no vendrían. c) Prometió que lo haría.</strong>
+    <textarea class="resp" data-ej="e3" rows="3" placeholder="a) Ha detto che avrebbe chiamato…"></textarea></li>
+<li><strong><strong>El español te traiciona</strong> — estos van con indicativo en español y con congiuntivo en italiano: a) Creo que es tarde. b) Pienso que de los errores se aprende. c) Parece que está bien.</strong>
+    <textarea class="resp" data-ej="e4" rows="3" placeholder="a) Credo che sia tardi…"></textarea></li>
+<li><strong><strong>Discorso indiretto</strong> — pásalo a indirecto en pasado, moviendo TODO: a) Mi ha detto: «Vengo domani». b) Mi ha chiesto: «Chi ti ha aiutato?» c) Ha detto: «Non l'ho mai visto».</strong>
+    <textarea class="resp" data-ej="e5" rows="3" placeholder="a) Mi ha detto che sarebbe venuto…"></textarea></li>
+<li><strong><strong>Reggenze</strong> — completa: Speravo ___ riuscirci · Non sapevo ___ chi rivolgermi · Ho cercato ___ spiegarglielo · Ha promesso ___ chiamare.</strong> <em>(ripasso tuo)</em>
+    <textarea class="resp" data-ej="e6" rows="2" placeholder="di … a … di … di"></textarea></li>
+<li><strong><strong>Elisión (tu punto pegajoso)</strong> — escríbelas bien, con apóstrofo: a) glielo ho detto → ___ b) me lo avresti dato → ___ c) glielo avrei mandato → ___ d) te lo ho già spiegato → ___</strong> <em>(ripasso tuo)</em>
+    <textarea class="resp" data-ej="e7" rows="3" placeholder="a) gliel'ho detto…"></textarea></li>
+<li><strong><strong>Sujeto explícito</strong> — el congiuntivo imperfetto es igual para io/tu/lui, así que sin pronombre no se entiende. Aclara el sujeto: a) Pensava che ___ (yo) fossi in ritardo. b) Credevo che ___ (tú) avessi capito.</strong> <em>(ripasso tuo)</em>
+    <textarea class="resp" data-ej="e8" rows="2" placeholder="a) io…"></textarea></li>
+<li><strong><strong>Falsi amici</strong> — corrige la palabra española infiltrada: a) «Il progetto è stato un <span class='it'>fracasso</span>». b) «<span class='it'>Mi sono sentito vergognato</span>». c) «<span class='it'>Ho una domanda in mente</span>» — ¿es correcta?</strong>
+    <textarea class="resp" data-ej="e9" rows="3" placeholder="a) un fiasco…"></textarea></li>
+<li><strong><strong>Il tuo vocabolario</strong> — 2 frases con → <strong class='mis-palabras'>(abre tu Vocabulario ★)</strong>, una con <span class='it'>pensavo che…</span> y otra con <span class='it'>mi sa che…</span>.</strong>
+    <textarea class="resp" data-ej="e10" rows="3" placeholder="…"></textarea></li>
+<li><strong><strong>Caccia all'errore</strong> — hay CUATRO: a) «Penso che dagli errori si impara». b) «Mi ha detto che verrebbe più tardi». c) «Non ci avrebbe lasciato tutti noi senza cibo». d) «Mi sa che sia tardi».</strong>
+    <textarea class="resp" data-ej="e11" rows="4" placeholder="a) …"></textarea></li>
+<li><strong><strong>Ascolto</strong> — escucha y escribe; luego di si el principal está en presente o en pasado: <div class="ascolto"><button class="say-frase" data-frase="Pensavo che me l'avessi già mandato.">🔊 1</button><button class="say-frase" data-frase="Mi sa che non gliel'hanno detto.">🔊 2</button><button class="say-frase" data-frase="Speravo che sarebbe andata meglio.">🔊 3</button></div></strong> <em>(ripasso tuo)</em>
+    <textarea class="resp" data-ej="e12" rows="3" placeholder="1. … (presente/pasado)"></textarea></li>
+<li><strong><strong>Congiuntivo SÍ o NO</strong> — decide y completa: a) So che ___ (essere) tardi. b) Credo che ___ (essere) tardi. c) È vero che ___ (avere) ragione. d) Non è che ___ (essere) difficile.</strong>
+    <textarea class="resp" data-ej="e13" rows="3" placeholder="a) è …"></textarea></li>
+<li><strong><strong>En tu estudio</strong> — traduce estas tres, que vas a decir de verdad: a) Creía que ya te lo había mandado. b) Me dijo que lo pensaría. c) No sabía que fuera tan urgente.</strong>
+    <textarea class="resp" data-ej="e14" rows="3" placeholder="a) Pensavo che te l'avessi…"></textarea></li>
+<li><strong><strong>Produzione libera</strong> — escribe 6-8 líneas sobre <em>algo que creíste que iba a pasar en el estudio y pasó distinto</em>. Obligatorio: 2 congiuntivo imperfetto o trapassato (<span class='it'>fosse, avessi, avesse detto</span>), 1 condizionale composto (<span class='it'>sarebbe / avrebbe</span>), 1 elisión con apóstrofo (<span class='it'>gliel'ho, me l'ha</span>) y un slang de hoy.</strong>
+    <textarea class="resp" data-ej="e15" rows="7" placeholder="Ero convinto che il lavoro di martedì…"></textarea></li>
+</ol>
+
+<details class="solu">
+  <summary>Soluzioni / Soluciones (ábrelas después de intentarlo)</summary>
+  <div class="body">
+    <p><strong>Esempio guidato:</strong> ① pasado (<span class='it'>credevo</span>) · ② anterior → trapassato (<span class='it'>avessero mandato</span>) · ③ a él = <span class='it'>glie</span>, eso = <span class='it'>lo</span> → <span class='it'>glielo</span> → ante vocal <span class='it'>gliel'</span> · ④ <span class='it'>Credevo che gliel'avessero già mandato.</span></p>
+    <p><strong>Dettato:</strong> 1) <span class="it">Pensavo che me l'avessi già detto.</span> 2) <span class="it">Mi sa che non gliel'hanno mandato.</span> 3) <span class="it">Non sapevo che sarebbe venuto anche lui.</span></p>
+    <p><strong>1.</strong> a) <span class='it'>sia</span> (simultáneo) b) <span class='it'>sia stato</span> (anterior) c) <span class='it'>verrà</span> (posterior — con futuro, no congiuntivo).</p>
+    <p><strong>2.</strong> a) <span class='it'>fosse</span> (imperfetto) b) <span class='it'>fosse stato</span> (trapassato) c) <span class='it'>sarebbe venuto</span> (condizionale composto — el día 24).</p>
+    <p><strong>3.</strong> a) <span class='it'>Ha detto che avrebbe chiamato.</span> b) <span class='it'>Sapevo che non sarebbero venuti.</span> c) <span class='it'>Ha promesso che l'avrebbe fatto.</span> Nunca «chiamerebbe», «verrebbero», «farebbe».</p>
+    <p><strong>4.</strong> a) <span class='it'>Credo che <b>sia</b> tardi.</span> b) <span class='it'>Penso che dagli errori si <b>impari</b>.</span> c) <span class='it'>Sembra che <b>stia</b> bene.</span> (La b) es literalmente tu frase del día 24 — ahí escribiste «si impara».)</p>
+    <p><strong>5.</strong> a) <span class='it'>Mi ha detto che sarebbe venuto il giorno dopo.</span> b) <span class='it'>Mi ha chiesto chi mi <b>avesse</b> aiutato.</span> c) <span class='it'>Ha detto che non l'aveva mai visto.</span> Fíjate en la b): es tu frase del examen del día 22.</p>
+    <p><strong>6.</strong> Speravo <span class='it'>di</span> · Non sapevo <span class='it'>a</span> chi · Ho cercato <span class='it'>di</span> · Ha promesso <span class='it'>di</span>.</p>
+    <p><strong>7.</strong> a) <span class='it'>gliel'ho detto</span> b) <span class='it'>me l'avresti dato</span> c) <span class='it'>gliel'avrei mandato</span> d) <span class='it'>te l'ho già spiegato</span>. En los cuatro, LO se come su vocal delante de otra vocal.</p>
+    <p><strong>8.</strong> a) <span class='it'>Pensava che <b>io</b> fossi in ritardo.</span> b) <span class='it'>Credevo che <b>tu</b> avessi capito.</span> Sin el pronombre, «fossi» vale para las dos personas.</p>
+    <p><strong>9.</strong> a) <span class='it'>un <b>fiasco</b></span> — <span class='it'>fracasso</span> existe, pero es <em>estruendo</em>. b) <span class='it'>mi sono <b>vergognato</b></span> — el verbo ya lo dice todo. c) Sí, es correcta: <span class='it'>domanda</span> es <em>pregunta</em> (la demanda judicial es <span class='it'>causa</span>). Las dos primeras son tuyas, del día 24.</p>
+    <p><strong>11.</strong> a) <span class='it'>si <b>impari</b></span> (penso che pide congiuntivo). b) <span class='it'>sarebbe venuto</span> (futuro nel passato, no condizionale simple). c) <span class='it'>non ci avrebbe <b>lasciati</b> senza cibo</span> — «ci» ya es «nosotros», sobra «tutti noi», y el participio concuerda. d) <span class='it'>Mi sa che <b>è</b> tardi</span> — <span class='it'>mi sa che</span> va con INDICATIVO. Las a) y c) son tuyas del día 24.</p>
+    <p><strong>12.</strong> 1) <span class='it'>Pensavo che me l'avessi già mandato</span> — pasado (trapassato). 2) <span class='it'>Mi sa che non gliel'hanno detto</span> — presente, e indicativo. 3) <span class='it'>Speravo che sarebbe andata meglio</span> — pasado (posterior).</p>
+    <p><strong>13.</strong> a) <span class='it'>è</span> (so che → indicativo) b) <span class='it'>sia</span> (credo che → congiuntivo) c) <span class='it'>ha</span> (è vero che → indicativo) d) <span class='it'>sia</span> (non è che → congiuntivo). Lo que das por hecho va en indicativo; lo que filtras por tu cabeza, en congiuntivo.</p>
+    <p><strong>14.</strong> a) <span class='it'>Pensavo di <b>avertelo</b> già mandato</span> (mismo sujeto → <span class='it'>di</span> + infinitivo) o <span class='it'>Pensavo che te l'avessero già mandato</span> si lo mandó otro. b) <span class='it'>Mi ha detto che ci avrebbe pensato.</span> c) <span class='it'>Non sapevo che fosse così urgente.</span> Truco de la a): si el sujeto es el mismo, el italiano prefiere <span class='it'>di</span> + infinitivo antes que «che».</p>
+    <p><strong>10, 15:</strong> respuesta libre — dime «ya terminé el día 27» y te las corrijo.</p>
+  </div>
+</details>
+
+<div class="bloque" style="background:#f3faf6;border-color:#9bd3b4"><strong>✅ Autocontrollo</strong> — ¿ya puedes…? ① bajar un escalón cuando el principal está en pasado · ② usar sarebbe venuto y no verrebbe para lo posterior · ③ distinguir penso che (congiuntivo) de mi sa che (indicativo) · ④ escribir gliel'ho y me l'avessi con apóstrofo. Si algo tambalea, márcalo 🔁.</div>
+
+<h2>Riflessione del giorno</h2>
+<ul>
+  <li>Hoy no aprendiste una regla nueva: ataste tres que ya tenías sueltas. El congiuntivo del día 12, el condizionale composto del día 24 y el discurso indirecto del examen eran <strong>la misma cosa vista por tres ventanas</strong>. Esto es lo que separa un B2 de un C1: no más temas, sino los temas encajando entre sí.</li>
+  <li>Y una cosa práctica: la mitad de los ejemplos de hoy son frases tuyas de los días 22 y 24. No te las puse para señalarte, te las puse porque una regla se fija mucho mejor sobre un error propio que sobre un ejemplo de libro.</li>
+  <li>🎧 Bonus: 10 min de <a href="inmersion.html">Inmersión</a>.</li>
+</ul>
+<div class="tiempo">⏱ Tempo stimato: 55-65 min &nbsp;·&nbsp; Domani: Passato remoto</div>
+
+</body>
+</html>
