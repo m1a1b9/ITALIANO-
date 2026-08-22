@@ -5,25 +5,108 @@
   var m=(location.pathname.match(/dia(\d+)/)||[])[1];
   if(!m)return;
   var dia=m;
-  // Inyecta tus palabras del Vocabulario ★ en los ejercicios marcados con .mis-palabras.
-  // FIJAS por día: se eligen una vez y se guardan (italiano-mispalabras-NN); cada F5 reutiliza
-  // las mismas para que no se muevan mientras trabajas. El enlace "🔄 otras" las rota a propósito.
+  /* ================= VOCABULARIO ★ EN LOS EJERCICIOS DEL DÍA =================
+     Antes: 2 ejercicios y elección aleatoria SIN memoria → con 69 palabras unas salían cinco veces
+     y otras nunca. Ahora: 3 ejercicios integrados en la lista y rotación por MENOS USADAS, con una
+     plaza reservada a algo que estés fallando en Práctica. */
+
+  // Qué gramática exige cada día (temario de index.html). `t` = lo que deben cumplir los verbos.
+  var GRAM={
+    1:{t:'passato prossimo o imperfetto'}, 3:{t:'futuro semplice o condizionale'},
+    4:{t:'un verbo modale (dovere/potere/volere) o l\'imperativo'}, 5:{t:'un pronome diretto o indiretto'},
+    6:{t:'un verbo pronominale o un comparativo'}, 7:{t:'congiuntivo presente'},
+    9:{t:'congiuntivo passato o trapassato'}, 10:{t:'un periodo ipotetico'},
+    11:{t:'la forma passiva'}, 12:{t:'il discorso indiretto'},
+    13:{t:'il gerundio o il participio'}, 14:{t:'una preposizione o un connettivo'},
+    16:{t:'congiuntivo in frase indipendente'}, 17:{t:'un pronome relativo'},
+    18:{t:'una collocazione (fare/prendere/avere + sostantivo)'}, 19:{t:'un registro formale'},
+    20:{t:'un\'espressione idiomatica'}, 23:{t:'un pronome combinato (glielo, me lo…)'},
+    24:{t:'condizionale composto'}, 25:{t:'futuro anteriore'},
+    26:{t:'un causativo (fare/lasciare + infinito)'}, 27:{t:'la concordanza dei tempi'},
+    28:{t:'il passato remoto'}, 29:{t:'un alterato (-ino / -one / -accio)'}
+  };
+  // Días sin foco verbal propio (fonética, oído, repasos): reciclan un tiempo ya visto.
+  var RECICLA={2:1, 8:7, 15:10, 21:13, 22:16, 30:9};
+  function gramDia(){
+    var n=parseInt(dia,10)||0;
+    var g=GRAM[n]||GRAM[RECICLA[n]];
+    return g?g.t:'el tiempo que quieras (repaso libre)';
+  }
+
+  // ---- lectura del vocabulario con sus metadatos ----
+  function vocabFull(){
+    var l;try{l=JSON.parse(localStorage.getItem('italiano-vocab-activo')||'[]')}catch(e){l=[]}
+    var pool=l.filter(function(w){return w&&w.it&&w.estado!=='dominada'});
+    if(!pool.length)pool=l.filter(function(w){return w&&w.it});
+    return pool;
+  }
+  function normP(s){return (s||'').toLowerCase().replace(/[«»"“”.,;:!¿?()…]/g,'').replace(/[’]/g,"'").trim();}
+  // Palabras que estás fallando en Práctica: el SRS guarda v:<palabra> con lapses/vencimiento.
+  function falladas(){
+    var st;try{st=JSON.parse(localStorage.getItem('italiano-srs')||'{}')}catch(e){st={}}
+    var hoy=new Date();hoy.setHours(0,0,0,0);
+    var out={};
+    Object.keys(st).forEach(function(k){
+      if(k.indexOf('v:')!==0)return;
+      var s=st[k]||{};
+      if((s.lapses||0)>0||(s.due||0)<=hoy.getTime())out[k.slice(2)]=1;
+    });
+    return out;
+  }
+  /* Elige N palabras: las MENOS usadas primero (desempate aleatorio) y, si hay, una plaza para una
+     que estés fallando. Devuelve los objetos completos (llevan lema/pos/es para los ejercicios). */
+  function elegir(n,excluir){
+    var pool=vocabFull().filter(function(w){return (excluir||[]).indexOf(w.it)<0});
+    if(!pool.length)return [];
+    var fall=falladas(), pick=[];
+    var pend=pool.filter(function(w){return fall[normP(w.it)]});
+    if(pend.length){                                   // 1 plaza para lo que fallas
+      pend.sort(function(a,b){return (a.usos||0)-(b.usos||0)||Math.random()-0.5;});
+      pick.push(pend[0]);
+    }
+    var resto=pool.filter(function(w){return pick.indexOf(w)<0});
+    resto.sort(function(a,b){return (a.usos||0)-(b.usos||0)||Math.random()-0.5;});
+    return pick.concat(resto).slice(0,n);
+  }
+  // Suma 1 al contador de cada palabra usada. Vive DENTRO de italiano-vocab-activo, que sí
+  // sincroniza entre dispositivos (la clave por día, no).
+  function marcarUso(nombres){
+    var l;try{l=JSON.parse(localStorage.getItem('italiano-vocab-activo')||'[]')}catch(e){return}
+    var tocado=false;
+    nombres.forEach(function(it){
+      var w=l.filter(function(x){return normP(x.it)===normP(it)})[0];
+      if(w){w.usos=(w.usos||0)+1;tocado=true;}
+    });
+    if(tocado)localStorage.setItem('italiano-vocab-activo',JSON.stringify(l));
+  }
+  /* Selección FIJA por día (no baila al recargar). Guarda solo los nombres; al fijarla por primera
+     vez incrementa el contador de usos. */
+  function seleccionDia(clave,n,excluir){
+    var KEY='italiano-'+clave+'-'+dia;
+    var pool=vocabFull().map(function(w){return w.it});
+    var s=null;try{s=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
+    if(s&&s.length)s=s.filter(function(w){return pool.indexOf(w)>-1});   // quita las que borraste
+    if(!s||!s.length){
+      s=elegir(n,excluir).map(function(w){return w.it});
+      if(s.length){localStorage.setItem(KEY,JSON.stringify(s));marcarUso(s);}
+    }
+    return s||[];
+  }
+  function objetoDe(it){return vocabFull().filter(function(w){return normP(w.it)===normP(it)})[0]||null;}
+  function rotar(clave,n,excluir){
+    var KEY='italiano-'+clave+'-'+dia;
+    var s=elegir(n,excluir).map(function(w){return w.it});
+    if(s.length){localStorage.setItem(KEY,JSON.stringify(s));marcarUso(s);}
+    return s;
+  }
+
+  // ---- A) el ejercicio que ya existe en el HTML: marcador .mis-palabras ----
   (function fillVocab(){
     var els=document.querySelectorAll('.mis-palabras'); if(!els.length)return;
     var KEY='italiano-mispalabras-'+dia;
-    function vocab(){var l;try{l=JSON.parse(localStorage.getItem('italiano-vocab-activo')||'[]')}catch(e){l=[]}
-      var pool=l.filter(function(w){return w&&w.it&&w.estado!=='dominada'});
-      if(!pool.length)pool=l.filter(function(w){return w&&w.it});
-      return pool.map(function(w){return w.it});}
-    function pickNew(){var p=vocab();p.sort(function(){return Math.random()-0.5});return p.slice(0,3);}
-    function saved(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}}
-    function resolve(){
-      var pool=vocab(), s=saved();
-      if(s&&s.length)s=s.filter(function(w){return pool.indexOf(w)>-1}); // descarta las que ya borraste
-      if(!s||!s.length)s=pickNew();
-      localStorage.setItem(KEY,JSON.stringify(s));
-      return s;
-    }
+    function vocab(){return vocabFull().map(function(w){return w.it});}
+    function pickNew(){return rotar('mispalabras',3,[]);}
+    function resolve(){return seleccionDia('mispalabras',3,[]);}
     function paint(pick){
       els.forEach(function(e){
         if(!pick.length){e.textContent='(agrega palabras en tu Vocabulario ★)';return;}
@@ -40,59 +123,75 @@
     paint(resolve());
   })();
 
-  // Ejercicio EXTRA de vocabulario activo (creativo, rota por día). Se inyecta al final de la
-  // lista de ejercicios de CADA día (así sale también en días futuros sin editarlos). Palabras
-  // fijas por día (italiano-vocabex-NN); "🔄 otras" las rota. Guarda la consigna (evocab_q) para
-  // que la corrección sepa qué se pidió. Complementa (no reemplaza) el «escribe una frase» (.mis-palabras).
-  (function addVocabExtra(){
+  /* B y C) dos ejercicios NUEVOS con tu vocabulario, INTERCALADOS dentro de la lista de los 15
+     (no al final): así se sienten parte del día y no un bloque pegado. Aplican la gramática del día.
+     El bloque creativo anterior (evocab) se retira: sus respuestas ya escritas siguen guardadas en
+     respuestas.json, solo deja de mostrarse. */
+  (function addVocabEjercicios(){
     var ols=document.querySelectorAll('ol.ejercicio'); if(!ols.length)return;
     var ol=ols[ols.length-1];
-    if(document.getElementById('ej-vocabex'))return;
-    var KEY='italiano-vocabex-'+dia;
-    var TPL=[
-      {n:2,t:'🎬 Inventa il titolo di un film e la sua trama in 2 righe, usando {W}.'},
-      {n:2,t:'💬 Scrivi un mini-dialogo (3-4 battute) tra due amici che contenga {W}.'},
-      {n:3,t:'📅 Racconta cosa hai fatto ieri (3-4 righe) infilando {W}.'},
-      {n:3,t:'❓ Scrivi 3 domande (una con ciascuna parola) usando {W}.'},
-      {n:3,t:'🔗 Collega TUTTE queste parole in UNA sola frase con senso: {W}.'},
-      {n:2,t:'😱 Inventa una scusa assurda per un ritardo, usando {W}.'},
-      {n:2,t:'📱 Scrivi la caption che metteresti su Instagram con {W}.'},
-      {n:2,t:'⭐ Consiglia a un amico un posto, un film o un piatto usando {W}.'}
-    ];
-    var tpl=TPL[(parseInt(dia,10)||0)%TPL.length];
-    function activePool(){var l;try{l=JSON.parse(localStorage.getItem('italiano-vocab-activo')||'[]')}catch(e){l=[]}
-      return l.filter(function(w){return w&&w.it&&w.estado!=='dominada'}).map(function(w){return w.it});}
-    function usedByMis(){try{return JSON.parse(localStorage.getItem('italiano-mispalabras-'+dia)||'[]')}catch(e){return[]}}
-    function pickWords(){
-      var pool=activePool(), used=usedByMis();
-      var pref=pool.filter(function(w){return used.indexOf(w)<0});
-      var base=(pref.length>=tpl.n?pref:pool).slice();
-      base.sort(function(){return Math.random()-0.5});
-      return base.slice(0,tpl.n);
+    if(document.getElementById('ej-voc-conj'))return;
+    var yaUsadas=[];try{yaUsadas=JSON.parse(localStorage.getItem('italiano-mispalabras-'+dia)||'[]')}catch(e){}
+
+    function caja(id,ej,rows){
+      var li=document.createElement('li');li.id=id;
+      var prompt=document.createElement('div');
+      var ta=document.createElement('textarea');ta.className='resp';ta.setAttribute('data-ej',ej);ta.rows=rows;ta.placeholder='…';
+      var hidden=document.createElement('textarea');hidden.className='resp';hidden.setAttribute('data-ej',ej+'_q');
+      hidden.style.display='none';hidden.readOnly=true;    // guarda la consigna, para corregir sabiendo qué se pidió
+      li.appendChild(prompt);li.appendChild(ta);li.appendChild(hidden);
+      return {li:li,prompt:prompt,hidden:hidden};
     }
-    function savedW(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}}
-    function resolveW(){
-      var pool=activePool(), s=savedW();
-      if(s&&s.length)s=s.filter(function(w){return pool.indexOf(w)>-1});
-      if(!s||!s.length)s=pickWords();
-      localStorage.setItem(KEY,JSON.stringify(s));
-      return s;
+    // insertar a ~1/3 y ~2/3 de la lista para que queden repartidos entre los ejercicios del día
+    function insertar(li,fraccion){
+      var items=ol.children, pos=Math.max(1,Math.round(items.length*fraccion));
+      if(pos>=items.length)ol.appendChild(li); else ol.insertBefore(li,items[pos]);
     }
-    var li=document.createElement('li');li.id='ej-vocabex';
-    var prompt=document.createElement('div');
-    var ta=document.createElement('textarea');ta.className='resp';ta.setAttribute('data-ej','evocab');ta.rows=3;ta.placeholder='…';   // sin texto de ayuda dentro de la caja (2026-08-08)
-    var hidden=document.createElement('textarea');hidden.className='resp';hidden.setAttribute('data-ej','evocab_q');hidden.style.display='none';hidden.readOnly=true;
-    li.appendChild(prompt);li.appendChild(ta);li.appendChild(hidden);
-    ol.appendChild(li);
-    function render(words){
-      if(!words.length){prompt.innerHTML='<strong>✨ Vocabolario extra:</strong> aún no tienes palabras ★ para jugar. Guarda algunas en las lecciones o canciones y aquí te reto a usarlas.';hidden.value='';return;}
-      var q=tpl.t.replace('{W}','<b>«'+words.join(', ')+'»</b>');
-      prompt.innerHTML='<strong>✨ Vocabolario attivo:</strong> '+q+' <a href="#" class="vx-otras" style="font-size:.72rem;color:#2d6a4f;text-decoration:none;margin-left:.3rem;white-space:nowrap">🔄 otras</a>';
-      hidden.value=q.replace(/<[^>]+>/g,'');
-      var lnk=prompt.querySelector('.vx-otras');
-      if(lnk)lnk.onclick=function(ev){ev.preventDefault();var nw=pickWords();localStorage.setItem(KEY,JSON.stringify(nw));render(nw);};
+    function link(el,fn){
+      var a=document.createElement('a');a.href='#';a.textContent=' 🔄 otra';
+      a.style.cssText='font-size:.72rem;color:#2d6a4f;text-decoration:none;margin-left:.3rem;white-space:nowrap';
+      a.onclick=function(ev){ev.preventDefault();fn();};
+      el.appendChild(a);
     }
-    render(resolveW());
+
+    // --- B) Conjuga TU verbo con el tiempo del día ---
+    var B=caja('ej-voc-conj','evoc_conj',3);
+    insertar(B.li,0.34);
+    function pintaConj(){
+      var verbos=vocabFull().filter(function(w){return w.pos==='verbo'&&w.lema;});
+      if(!verbos.length){B.prompt.innerHTML='<strong>🔧 Tu verbo:</strong> aún no tienes verbos en tu Vocabulario ★.';B.hidden.value='';return;}
+      var nombre=seleccionDia('vocconj',1,yaUsadas)[0];
+      var w=nombre?objetoDe(nombre):null;
+      if(!w||w.pos!=='verbo'||!w.lema){                       // la elección del día no era verbo: se busca uno
+        w=elegir(9,yaUsadas).filter(function(x){return x.pos==='verbo'&&x.lema;})[0]||verbos[0];
+        localStorage.setItem('italiano-vocconj-'+dia,JSON.stringify([w.it]));marcarUso([w.it]);
+      }
+      // OJO: se da el infinitivo (es la consigna) pero NUNCA el auxiliar ni el participio: eso es la respuesta.
+      var q='Coniuga <b>«'+w.lema+'»</b> ('+(w.lemaEs||w.es||'')+') usando <b>'+gramDia()+'</b> y escribe una frase tuya con esa forma.';
+      B.prompt.innerHTML='<strong>🔧 Tu verbo del día:</strong> '+q;
+      B.hidden.value=q.replace(/<[^>]+>/g,'');
+      link(B.prompt,function(){rotar('vocconj',1,yaUsadas);pintaConj();});
+    }
+    pintaConj();
+
+    // --- C) Dilo en italiano (producción ES→IT) ---
+    var C=caja('ej-voc-prod','evoc_prod',3);
+    insertar(C.li,0.7);
+    var SIT=['algo que te pasó esta semana','un plan con un amigo','algo del trabajo',
+             'una escena de una canción que escuchaste','algo que te dio risa',
+             'un recuerdo de tu infancia','algo que quieres cambiar','una comida que probaste'];
+    function pintaProd(){
+      var excl=yaUsadas.concat(JSON.parse(localStorage.getItem('italiano-vocconj-'+dia)||'[]'));
+      var nombre=seleccionDia('vocprod',1,excl)[0];
+      var w=nombre?objetoDe(nombre):null;
+      if(!w){C.prompt.innerHTML='<strong>🇪🇸→🇮🇹 Dilo en italiano:</strong> aún no tienes palabras en tu Vocabulario ★.';C.hidden.value='';return;}
+      var sit=SIT[((parseInt(dia,10)||0)+(w.it.length))%SIT.length];
+      var q='Cuéntalo en italiano usando <b>«'+w.it+'»</b> ('+(w.es||w.lemaEs||'')+') con <b>'+gramDia()+'</b> — sobre '+sit+'.';
+      C.prompt.innerHTML='<strong>🇪🇸→🇮🇹 Dilo en italiano:</strong> '+q;
+      C.hidden.value=q.replace(/<[^>]+>/g,'');
+      link(C.prompt,function(){rotar('vocprod',1,excl);pintaProd();});
+    }
+    pintaProd();
   })();
 
   function fields(){return [].slice.call(document.querySelectorAll('.resp'));}
