@@ -165,51 +165,51 @@ dettato(["Fammelo vedere un attimo, per favore.",
 # ── ejercicios ──────────────────────────────────────────────────────────────
 ej(1, "<strong>Fare o lasciare?</strong> — elige según el sentido: a) Mia madre mi ___ mangiare le "
       "verdure (me obliga). b) I miei mi ___ uscire fino a tardi (me lo permiten). c) Il film mi ___ "
-      "piangere.", rows=3, ph="a) fa mangiare…")
+      "piangere.", rows=3, ph="a) …")
 solu(1, "a) <span class='it'>fa mangiare</span> (obliga) b) <span class='it'>lasciano uscire</span> "
         "(permite) c) <span class='it'>ha fatto piangere</span>")
 
 ej(2, "<strong>Sin «che»</strong> — traduce sin calcar el subjuntivo español: a) Hago que venga. "
-      "b) Me hizo reír. c) Hicieron que esperáramos dos horas.", rows=3, ph="a) Lo faccio venire…")
+      "b) Me hizo reír. c) Hicieron que esperáramos dos horas.", rows=3, ph="a) …")
 solu(2, "a) <span class='it'>Lo faccio venire.</span> b) <span class='it'>Mi ha fatto ridere.</span> "
         "c) <span class='it'>Ci hanno fatto aspettare due ore.</span> Nunca «faccio che venga».")
 
 ej(3, "<strong>Pronombres delante</strong> — sustituye: a) Faccio vedere le foto a te → ___. "
       "b) Faccio sapere il prezzo a lui → ___. c) Fai vedere il contratto a noi → ___.", rows=3,
-   ph="a) Te le faccio vedere…", ripasso_tuo=True)
+   ph="a) …", ripasso_tuo=True)
 solu(3, "a) <span class='it'>Te le faccio vedere.</span> b) <span class='it'>Glielo faccio sapere.</span> "
         "c) <span class='it'>Ce lo fai vedere.</span>")
 
 ej(4, "<strong>Imperativo con doble M</strong> — pega los pronombres: a) Fa' vedere a me il libro → "
       "___! b) Fa' sapere a me la data → ___! c) Fa' vedere a lui le prove → ___!", rows=3,
-   ph="a) Fammelo vedere!…")
+   ph="a) …")
 solu(4, "a) <span class='it'>Fammelo vedere!</span> b) <span class='it'>Fammela sapere!</span> "
         "c) <span class='it'>Fagliele vedere!</span> (fa' + pronombre = doble consonante)")
 
 ej(5, "<strong>farsi + infinito</strong> — traduce: a) Me corté el pelo. b) Hago que me manden el "
-      "presupuesto. c) Se hizo ayudar por un amigo.", rows=3, ph="a) Mi sono fatto tagliare i capelli…")
+      "presupuesto. c) Se hizo ayudar por un amigo.", rows=3, ph="a) …")
 solu(5, "a) <span class='it'>Mi sono fatto/a tagliare i capelli.</span> b) <span class='it'>Mi faccio "
         "mandare il preventivo.</span> c) <span class='it'>Si è fatto/a aiutare da un amico.</span>")
 
 ej(6, "<strong>Reggenze</strong> — completa: Provo ___ farglielo capire · Cerco ___ farmi ascoltare · "
-      "Continuo ___ far finta di niente.", rows=2, ph="a … di … a", ripasso_tuo=True)
+      "Continuo ___ far finta di niente.", rows=2, ph="…", ripasso_tuo=True)
 solu(6, "Provo <span class='it'>a</span> · Cerco <span class='it'>di</span> · Continuo "
         "<span class='it'>a</span>.")
 
 ej(7, "<strong>Diretto o indiretto?</strong> — di quién ejecuta la acción y ponle la preposición: "
       "a) Faccio lavare la macchina ___ Marco. b) Faccio leggere il testo ___ gli studenti.", rows=2,
-   ph="a … a", ripasso_tuo=True)
+   ph="a) …", ripasso_tuo=True)
 solu(7, "a) <span class='it'>a Marco</span> b) <span class='it'>agli studenti</span>. Cuando hay dos "
         "personas, la que EJECUTA lleva A.")
 
 ej(8, "<strong>Passato prossimo</strong> — completa el participio: a) Le foto? Gliele ho ___ (fare) "
       "vedere. b) Mi sono ___ (fare) mandare il file — habla una mujer. c) Ci ha ___ (fare) "
-      "aspettare.", rows=2, ph="fatte / fatta / fatto")
+      "aspettare.", rows=2, ph="a) …")
 solu(8, "a) <span class='it'>fatte</span> (concuerda con <em>gliele</em>) b) <span class='it'>fatta</span> "
         "(farsi va con essere y concuerda) c) <span class='it'>fatto</span> (invariable con avere).")
 
 ej(9, "<strong>Caccia all'errore</strong> — corrige: a) «Faccio che lui venga». b) «Fai mi vedere!» "
-      "c) «Mi ho fatto tagliare i capelli».", rows=3, ph="…")
+      "c) «Mi ho fatto tagliare i capelli».", rows=3, ph="a) …")
 solu(9, "a) <span class='it'>Lo faccio venire</span> (sin «che»). b) <span class='it'>Fammi vedere!</span> "
         "(pegado, doble M). c) <span class='it'>Mi SONO fatto tagliare</span> (farsi → essere).")
 
@@ -221,14 +221,14 @@ libre(10)
 ej(11, "<strong>De las canciones</strong> — estos versos son causativos. Tradúcelos y di qué hace "
        "cada uno: a) <span class='it'>puoi far entrare tutte le persone</span> b) <span class='it'>"
        "per farmi volare lontano</span> c) <span class='it'>le corde che ti fanno stare meglio</span>",
-   rows=3, ph="a) … (hacer entrar)")
+   rows=3, ph="a) …")
 solu(11, "a) «puedes dejar entrar a todas las personas» — hacer entrar. b) «para hacerme volar lejos» "
          "— hacerme volar. c) «las cuerdas que te hacen sentir mejor» — hacer que estés.")
 
 ej(12, "<strong>Ascolto</strong> — escucha y escribe la frase; luego di si es fare o lasciare: " +
        audio([("1", "Fammi sapere come va a finire."),
               ("2", "Lascia perdere, non ne vale la pena."),
-              ("3", "Me lo sono fatto mandare per mail.")]), rows=3, ph="1. … (fare/lasciare)",
+              ("3", "Me lo sono fatto mandare per mail.")]), rows=3, ph="…",
    ripasso_tuo=True)
 solu(12, "1) <span class='it'>Fammi sapere come va a finire</span> — fare. 2) <span class='it'>Lascia "
          "perdere, non ne vale la pena</span> — lasciare. 3) <span class='it'>Me lo sono fatto mandare "
@@ -236,7 +236,7 @@ solu(12, "1) <span class='it'>Fammi sapere come va a finire</span> — fare. 2) 
 
 ej(13, "<strong>En tu estudio</strong> — reescribe con causativo: a) «El cliente quiere ver las "
        "pruebas» → hazle verlas. b) «Necesito que me manden el contrato» → hazte que te lo manden. "
-       "c) «Avísame cuando esté listo».", rows=3, ph="a) Gliele faccio vedere…")
+       "c) «Avísame cuando esté listo».", rows=3, ph="a) …")
 solu(13, "a) <span class='it'>Gliele faccio vedere.</span> b) <span class='it'>Mi faccio mandare il "
          "contratto.</span> c) <span class='it'>Fammi sapere quando è pronto.</span>")
 
@@ -251,7 +251,7 @@ ej(15, "<strong>Produzione libera</strong> — escribe 6-8 líneas sobre <em>un 
        "el que dependiste de otras personas</em>: qué hiciste que hicieran, qué dejaste pasar y qué "
        "te hiciste mandar. Obligatorio: 3 <span class='it'>fare + infinito</span>, 1 "
        "<span class='it'>lasciare</span>, 1 <span class='it'>farsi</span> y un slang de hoy.",
-   rows=7, ph="Per il matrimonio di sabato ho dovuto…")
+   rows=7, ph="…")
 libre(15)
 
 autocontrollo("decir «lo faccio venire» sin meter «che»",

@@ -155,57 +155,57 @@ dettato(["Quando avrò finito, ti faccio sapere.",
 
 # ── ejercicios ──────────────────────────────────────────────────────────────
 ej(1, "<strong>Forma il futuro anteriore</strong>: io ___ (finire) · tu ___ (arrivare) · noi ___ "
-      "(capire) · lei ___ (partire) · loro ___ (mangiare)", rows=2, ph="avrò finito, sarai arrivato…")
+      "(capire) · lei ___ (partire) · loro ___ (mangiare)", rows=2, ph="…")
 solu(1, "<span class='it'>avrò finito · sarai arrivato/a · avremo capito · sarà partita · avranno "
         "mangiato</span>")
 
 ej(2, "<strong>Anterioridad</strong> — une con el tiempo correcto: a) Quando ___ (io, finire) il "
       "lavoro, esco. b) Appena ___ (tu, arrivare), chiamami. c) Dopo che ___ (loro, mangiare), "
-      "andiamo.", rows=3, ph="avrò finito…")
+      "andiamo.", rows=3, ph="a) …")
 solu(2, "a) <span class='it'>avrò finito</span> b) <span class='it'>sarai arrivato</span> "
         "c) <span class='it'>avranno mangiato</span>")
 
 ej(3, "<strong>El español dice subjuntivo, el italiano futuro</strong> — traduce: a) Cuando termine, "
       "te aviso. b) En cuanto llegues, escríbeme. c) Después de que lo haya visto, te digo.", rows=3,
-   ph="a) Quando avrò finito, ti avviso…")
+   ph="a) …")
 solu(3, "a) <span class='it'>Quando avrò finito, ti avviso.</span> b) <span class='it'>Appena sarai "
         "arrivato, scrivimi.</span> c) <span class='it'>Dopo che l'avrò visto, ti dico.</span> "
         "Nunca «quando finisca».")
 
 ej(4, "<strong>Futuro di probabilità</strong> — convierte la certeza en suposición: a) «Ha perso il "
       "treno» → ___. b) «È andato a casa» → ___. c) «Non ha capito» → ___.", rows=3,
-   ph="a) Avrà perso il treno…")
+   ph="a) …")
 solu(4, "a) <span class='it'>Avrà perso il treno.</span> b) <span class='it'>Sarà andato a casa.</span> "
         "c) <span class='it'>Non avrà capito.</span>")
 
 ej(5, "<strong>Semplice o anteriore?</strong> — suposición sobre el PRESENTE o sobre el PASADO: "
       "a) ¿Dónde estará ahora? b) ¿Dónde habrá estado ayer? c) Tendrá unos cuarenta años. "
-      "d) Habrá tenido un problema.", rows=3, ph="a) Dove sarà adesso?…")
+      "d) Habrá tenido un problema.", rows=3, ph="a) …")
 solu(5, "a) <span class='it'>Dove sarà adesso?</span> (semplice) b) <span class='it'>Dove sarà stato "
         "ieri?</span> (anteriore) c) <span class='it'>Avrà una quarantina d'anni.</span> (semplice) "
         "d) <span class='it'>Avrà avuto un problema.</span> (anteriore)")
 
 ej(6, "<strong>Los tres futuros</strong> — completa con el correcto: a) Domani ___ (io, partire) "
       "presto. b) Quando ___ (io, partire), ti scrivo. c) Ha detto che ___ (lui, partire) presto.",
-   rows=3, ph="a) partirò b) sarò partito c) sarebbe partito")
+   rows=3, ph="a) …")
 solu(6, "a) <span class='it'>partirò</span> (semplice) b) <span class='it'>sarò partito</span> "
         "(anteriore) c) <span class='it'>sarebbe partito</span> (futuro nel passato, día 24)")
 
 ej(7, "<strong>Clitici</strong> — pon el pronombre y conjuga en futuro anteriore: a) Quando ___ "
       "(mandare, le foto a lui) → «Quando ___ ___». b) Appena ___ (dire, la verità a me) → «Appena "
-      "___ ___».", rows=3, ph="Quando gliele avrò mandate…", ripasso_tuo=True)
+      "___ ___».", rows=3, ph="a) …", ripasso_tuo=True)
 solu(7, "a) <span class='it'>Quando gliele avrò mandate…</span> (concordancia: mandatE) "
         "b) <span class='it'>Appena me l'avrai detta…</span>")
 
 ej(8, "<strong>Reggenze</strong> — completa: Appena ___ (io, riuscire) ___ finire, ti chiamo · "
       "Quando ___ (io, smettere) ___ lavorare, usciamo · Dopo che ___ (io, provare) ___ farlo, ti dico.",
-   rows=3, ph="sarò riuscito a … avrò smesso di … avrò provato a", ripasso_tuo=True)
+   rows=3, ph="…", ripasso_tuo=True)
 solu(8, "<span class='it'>sarò riuscito A · avrò smesso DI · avrò provato A</span>. Riuscire A, "
         "smettere DI, provare A.")
 
 ej(9, "<strong>Concordanza</strong> — habla una mujer o un grupo: a) «___ (io, arrivare) tardi». "
        "b) «Quando ___ (noi, finire) — dos amigas». c) «___ (loro, partire) senza di noi».", rows=2,
-   ph="Sarò arrivata…")
+   ph="a) …")
 solu(9, "a) <span class='it'>Sarò arrivata</span> b) <span class='it'>saremo finite</span>… ojo: "
         "<em>finire</em> aquí es transitivo → <span class='it'>avremo finito</span> (con avere no "
         "concuerda) c) <span class='it'>Saranno partiti/e</span>")
@@ -217,24 +217,24 @@ libre(10)
 ej(11, "<strong>Ascolto</strong> — escucha y di si es anterioridad o suposición: " +
        audio([("1", "Quando avrò finito il progetto, mi prendo una settimana."),
               ("2", "Non risponde, avrà il telefono spento."),
-              ("3", "Appena sarà arrivata, cominciamo.")]), rows=3, ph="1. … (uso: …)",
+              ("3", "Appena sarà arrivata, cominciamo.")]), rows=3, ph="…",
    ripasso_tuo=True)
 solu(11, "1) anterioridad 2) suposición (aquí futuro semplice, sobre el presente) 3) anterioridad.")
 
 ej(12, "<strong>Caccia all'errore</strong> — corrige: a) «Quando finisca, ti chiamo». b) «Sarò "
-       "finito il lavoro» (yo termino el trabajo). c) «Avrà andato a casa».", rows=3, ph="…")
+       "finito il lavoro» (yo termino el trabajo). c) «Avrà andato a casa».", rows=3, ph="a) …")
 solu(12, "a) <span class='it'>Quando avrò finito</span> (futuro, no subjuntivo) b) <span class='it'>"
          "Avrò finito il lavoro</span> (finire transitivo → avere) c) <span class='it'>Sarà andato</span> "
          "(andare → essere)")
 
 ej(13, "<strong>Suposiciones en cadena</strong> — alguien no llegó a una cita. Escribe 3 hipótesis "
-       "distintas con futuro anteriore, empezando una con «boh».", rows=3, ph="Boh, avrà…")
+       "distintas con futuro anteriore, empezando una con «boh».", rows=3, ph="…")
 solu(13, "Respuesta abierta. Deben ser futuro anteriore: <span class='it'>avrà perso il treno · si "
          "sarà dimenticato · sarà rimasto bloccato nel traffico</span>.")
 
 ej(14, "<strong>Che ne dici?</strong> — propón 2 planes usando «che ne dici di + infinito» y responde "
        "a cada uno suponiendo un obstáculo con futuro anteriore.", rows=3,
-   ph="— Che ne dici di…? — Mah, avrà…")
+   ph="…")
 solu(14, "Respuesta abierta. Estructura: <span class='it'>Che ne dici di uscire stasera? — Boh, "
          "Marco avrà già altri piani.</span>")
 
@@ -242,7 +242,7 @@ ej(15, "<strong>Produzione libera</strong> — escribe 6-8 líneas sobre <em>un 
        "todavía no ha pasado</em>: qué harás cuando hayas terminado cada cosa, y qué supones que "
        "habrá pasado con un cliente que no contesta. Obligatorio: 3 de anterioridad (quando/appena + "
        "futuro anteriore), 2 suposiciones y 1 slang de hoy.", rows=7,
-   ph="Domani, appena sarò arrivato in studio…")
+   ph="…")
 libre(15)
 
 autocontrollo("formar avrò finito / sarò arrivato",

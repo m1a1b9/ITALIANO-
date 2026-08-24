@@ -362,6 +362,24 @@ def _validar():
         if pct > 35:
             f.append('siembra %d%% (%d/%d) — máximo ~35%%' % (pct, n_siembra, len(nums)))
 
+    # ── El recuadro NO puede traer la respuesta (2026-08-22). El `ph` es una pista de FORMATO,
+    # no de contenido: «a) …» o «…», nunca italiano. Los días 25-28 salieron con 29 recuadros
+    # que filtraban, y uno (d25 e6) traía las tres soluciones enteras. La regla ya existía dos
+    # veces, pero acotada — «NUNCA muestra el auxiliar ni el participio» (evoc_conj) y «los
+    # distractores no deben filtrar la respuesta» (quiz) —; nunca se generalizó al placeholder.
+    def _pal(s):
+        s = re.sub(r'[^a-záéíóúàèìòùïüñ0-9 ]', ' ', re.sub(r'<[^>]+>', ' ', s).lower())
+        return set(w for w in s.split() if len(w) > 3)
+    for _n, h, _r in _['ejs']:
+        m = re.search(r'placeholder="([^"]*)"', h)
+        if not m or _n not in _['solus']:
+            continue
+        fuga = _pal(m.group(1)) & _pal(_['solus'][_n])
+        if len(fuga) >= 2:
+            f.append('e%d: el recuadro REGALA la respuesta («%s» ← %s) — el placeholder es formato, '
+                     'no contenido: usa «a) …» o «…»'
+                     % (_n, m.group(1)[:40], ', '.join(sorted(fuga)[:4])))
+
     # ── Rotación de «In contesto» (los días 23-27 salieron con 5 diálogos seguidos de
     # clientes y fotografía; el bloque es lo que más valora y repetir escenario lo mata).
     tema = _['tema']

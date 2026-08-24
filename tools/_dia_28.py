@@ -223,27 +223,27 @@ dettato(["Nacque a Palermo e non tornò mai.",
 
 # ── ejercicios ──────────────────────────────────────────────────────────────
 ej(1, "<strong>¿De qué verbo viene?</strong> — di el infinitivo: a) fece b) seppe c) venne d) nacque "
-      "e) disse f) rimase", rows=3, ph="a) fare…")
+      "e) disse f) rimase", rows=3, ph="a) …")
 solu(1, "a) <span class='it'>fare</span> b) <span class='it'>sapere</span> c) <span class='it'>venire"
         "</span> d) <span class='it'>nascere</span> e) <span class='it'>dire</span> f) "
         "<span class='it'>rimanere</span>.")
 
 ej(2, "<strong>Regulares</strong> — pon la 3ª persona singular y plural: a) parlare b) credere "
-      "c) finire d) costruire", rows=3, ph="a) parlò / parlarono…")
+      "c) finire d) costruire", rows=3, ph="a) …")
 solu(2, "a) <span class='it'>parlò / parlarono</span> b) <span class='it'>credé (credette) / "
         "crederono (credettero)</span> c) <span class='it'>finì / finirono</span> d) <span class='it'>"
         "costruì / costruirono</span>.")
 
 ej(3, "<strong>El patrón 1-3-3</strong> — te doy la 3ª singular, completa las seis: "
       "<span class='it'>mise</span> (mettere) → io ___ · tu ___ · lui ___ · noi ___ · voi ___ · "
-      "loro ___", rows=3, ph="misi, mettesti…")
+      "loro ___", rows=3, ph="…")
 solu(3, "<span class='it'>misi · mettesti · mise · mettemmo · metteste · misero</span>. Irregulares "
         "solo la 1ª sing., la 3ª sing. y la 3ª plur.; las otras tres salen del infinitivo.")
 
 ej(4, "<strong>Traduce leyendo</strong> — son frases de libro de historia: a) <span class='it'>Nel "
       "1861 l'Italia divenne un regno unito.</span> b) <span class='it'>I romani costruirono strade "
       "in tutta Europa.</span> c) <span class='it'>Dante scrisse la Commedia in esilio.</span>",
-   rows=3, ph="a) En 1861…")
+   rows=3, ph="a) …")
 solu(4, "a) «En 1861 Italia se convirtió en un reino unido.» b) «Los romanos construyeron carreteras "
         "en toda Europa.» c) «Dante escribió la Commedia en el exilio.» En los tres, pretérito "
         "español y punto.")
@@ -251,7 +251,7 @@ solu(4, "a) «En 1861 Italia se convirtió en un reino unido.» b) «Los romanos
 ej(5, "<strong>Remoto o imperfetto</strong> — igual que en español: a) <span class='it'>___ "
       "(piovere) quando ___ (arrivare, lui).</span> b) <span class='it'>___ (essere) tardi e non "
       "___ (esserci) nessuno.</span> c) <span class='it'>___ (aprire, lui) la porta e ___ (entrare)."
-      "</span>", rows=3, ph="a) Pioveva / arrivò…")
+      "</span>", rows=3, ph="a) …")
 solu(5, "a) <span class='it'>Pioveva quando arrivò</span> (fondo + acción) b) <span class='it'>Era "
         "tardi e non c'era nessuno</span> (los dos fondo) c) <span class='it'>Aprì la porta ed "
         "entrò</span> (las dos avanzan). Idéntico a tu pretérito/imperfecto.")
@@ -264,19 +264,19 @@ solu(6, "a) milanés (y también estándar hablado en todo el norte y centro) b)
 
 ej(7, "<strong>Pronomi combinati</strong> — sustituye: a) Ho mandato le foto a lui → ___. b) Ha "
       "raccontato la storia a noi → ___. c) Diede il libro a me → ___.", rows=3,
-   ph="a) Gliele ho mandate…", ripasso_tuo=True)
+   ph="a) …", ripasso_tuo=True)
 solu(7, "a) <span class='it'>Gliele ho mandate.</span> b) <span class='it'>Ce l'ha raccontata.</span> "
         "c) <span class='it'>Me lo diede.</span> Ojo a la concordancia del participio en a) y b).")
 
 ej(8, "<strong>Elisión (sigue pendiente)</strong> — escribe con apóstrofo: a) glielo ho letto → ___ "
       "b) me lo aveva detto → ___ c) te lo avevo mandato → ___ d) glielo avessi chiesto → ___",
-   rows=3, ph="a) gliel'ho letto…", ripasso_tuo=True)
+   rows=3, ph="a) …", ripasso_tuo=True)
 solu(8, "a) <span class='it'>gliel'ho letto</span> b) <span class='it'>me l'aveva detto</span> "
         "c) <span class='it'>te l'avevo mandato</span> d) <span class='it'>gliel'avessi chiesto</span>.")
 
 ej(9, "<strong>Diretto o indiretto?</strong> — marca D o I y pon el pronombre: a) Rispose ___ "
       "(a Marco). b) Chiamò ___ (Maria). c) Telefonò ___ (ai clienti). d) Vide ___ (i documenti).",
-   rows=3, ph="a) I → gli…", ripasso_tuo=True)
+   rows=3, ph="a) …", ripasso_tuo=True)
 solu(9, "a) I → <span class='it'>gli rispose</span> b) D → <span class='it'>la chiamò</span> c) I → "
         "<span class='it'>gli telefonò</span> d) D → <span class='it'>li vide</span>. Rispondere y "
         "telefonare piden indirecto; chiamare y vedere, directo.")
@@ -301,7 +301,7 @@ ej(12, "<strong>Ascolto</strong> — escucha y escribe; luego di qué verbos est
        audio([("1", "Nacque nel 1901 e morì a Roma."),
               ("2", "Pioveva quando arrivò, e non disse niente."),
               ("3", "Mica male: lo lesse tutto in due giorni.")]), rows=3,
-   ph="1. … (remoto: …)", ripasso_tuo=True)
+   ph="…", ripasso_tuo=True)
 solu(12, "1) <span class='it'>Nacque nel 1901 e morì a Roma</span> — nacque, morì. 2) <span class='it'>"
          "Pioveva quando arrivò, e non disse niente</span> — arrivò, disse (<span class='it'>pioveva"
          "</span> es imperfetto). 3) <span class='it'>Mica male: lo lesse tutto in due giorni</span> "
@@ -311,7 +311,7 @@ ej(13, "<strong>Lettura</strong> — traduce este fragmento, del tipo que te vas
        "«<span class='it'>Arrivò a Palermo che era ancora buio. Non conosceva nessuno e non aveva "
        "un posto dove dormire, ma non gli importava. Si sedette sui gradini della stazione e "
        "aspettò. Quando il sole si alzò, capì che non sarebbe più tornato indietro.</span>»",
-   rows=5, ph="Llegó a Palermo cuando todavía…")
+   rows=5, ph="…")
 solu(13, "«Llegó a Palermo cuando todavía estaba oscuro. No conocía a nadie y no tenía dónde dormir, "
          "pero no le importaba. Se sentó en los escalones de la estación y esperó. Cuando el sol "
          "salió, entendió que ya no volvería atrás.» Cuenta los remotos: <span class='it'>arrivò, "
@@ -321,7 +321,7 @@ solu(13, "«Llegó a Palermo cuando todavía estaba oscuro. No conocía a nadie 
 
 ej(14, "<strong>Concordanza dei tempi (día 27)</strong> — completa: a) Pensavo che ___ (essere) più "
        "giovane. b) Mi disse che ___ (tornare) presto. c) Non sapevo che ___ (nascere) in Sicilia.",
-   rows=3, ph="a) fosse…", ripasso_tuo=True)
+   rows=3, ph="a) …", ripasso_tuo=True)
 solu(14, "a) <span class='it'>fosse</span> b) <span class='it'>sarebbe tornato</span> c) "
          "<span class='it'>fosse nato</span>. Principal en pasado → todo baja un escalón.")
 
@@ -329,7 +329,7 @@ ej(15, "<strong>Produzione libera</strong> — escribe 6-8 líneas contando <em>
        "estudio, o el primer trabajo grande que te tocó</em>, pero <strong>como lo escribiría una "
        "novela</strong>: en passato remoto. Obligatorio: 4 passato remoto (2 de ellos irregulares), "
        "2 <span class='it'>imperfetto</span> de fondo, 1 elisión con apóstrofo y un slang de hoy.",
-   rows=7, ph="Quel giorno pioveva e non c'era nessuno in strada. Aprii…")
+   rows=7, ph="…")
 libre(15)
 
 autocontrollo("reconocer fu, ebbe, fece, disse, nacque sin pensarlo",
