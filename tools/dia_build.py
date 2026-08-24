@@ -18,7 +18,7 @@ USO
     alerta("…")
     guiado(["paso 1","paso 2"], a_medias="…")
     frasi_pronte([("it","es"), …])
-    in_contesto("dialogo it", "traducción es")
+    in_contesto("dialogo it", "traducción es", tema="filosofia")   # tema OBLIGATORIO: fuerza rotación
     slang("Meno male", reg="verde", fon="[…]", it="…", es="…", uso="…", ej=("it","es"))
     cultura(24, "Título", gancho="…", ctx=("IT","ES"), frasi=[("it","es")], spunto="…", puente="…")
     dettato(["f1","f2","f3"])
@@ -36,9 +36,11 @@ QUE IMPONE guardar() — se NIEGA a escribir si algo falla (cada regla nació de
   · el slang no está entre 2 y 4 entradas
   · la siembra "(ripasso tuo)" pasa del 35%
   · en día de repaso, falta la rúbrica CEFR
+  · falta in_contesto() con su tema  <- los días 23-27 salieron con 5 diálogos seguidos de clientes
+Y AVISA (⚠️, sin abortar) si el tema de «In contesto» se repite dentro de 3 días — 6 si es «lavoro».
 Y emite SIEMPRE el mismo <style> y el ?v= vigente: se acabó el drift y el bumpeo archivo por archivo.
 """
-import io, os, re, sys
+import io, json, os, re, sys
 
 try:
     sys.stdout.reconfigure(encoding='utf-8')
@@ -106,7 +108,7 @@ def dia(nn, semana, titulo, sub, nivel="B2", repaso=False, acento=None):
              acento=acento or ('#b8860b' if repaso else '#2d6a4f'),
              cuerpo=[], ejs=[], exs=[], solus={}, libres=set(),
              objetivo=None, ripasso=None, dettato=None, cultura=None,
-             auto=None, rifl=None, n_slang=0)
+             auto=None, rifl=None, n_slang=0, tema=None, avisos=[])
 
 
 # ─────────────────────────────────────────────── bloques de contenido
@@ -171,7 +173,55 @@ def frasi_pronte(pares):
          '</ul>')
 
 
-def in_contesto(dialogo_it, traduccion, titulo="In contesto"):
+# Vocabulario de temas para «In contesto». Añadir aquí antes de usar uno nuevo.
+TEMAS_CONTESTO = {
+    'filosofia': 'ideas con palabras de bar (la caverna, el barco de Teseo)',
+    'mito': 'mitos y relatos clásicos (Sísifo, Ícaro)',
+    'arte': 'cuadros, exposiciones, museos, atribuciones',
+    'negocios': 'trato, precios, socios, cifras — genérico, no su estudio',
+    'storia': 'un hecho histórico contado entre dos',
+    'scienza': 'divulgación sencilla',
+    'letteratura': 'libros, lectura, escritura',
+    'musica': 'canciones, conciertos, gustos',
+    'viaggio': 'moverse, planes, ciudades',
+    'cibo': 'comer, cocinar, restaurantes',
+    'sport': 'partidos, gimnasio, correr',
+    'vita': 'vida cotidiana: amigos, casa, recados',
+    'lavoro': 'SU estudio de fotografía — racionado: máx. 1 cada 6 días',
+}
+_REG = os.path.join(os.path.dirname(os.path.abspath(__file__)), '_temas_contesto.json')
+
+
+def _temas_previos():
+    try:
+        with io.open(_REG, encoding='utf-8') as fh:
+            return {int(k): v for k, v in json.load(fh).items()}
+    except Exception:
+        return {}
+
+
+def _anotar_tema(nn, tema):
+    if not tema:
+        return
+    reg = _temas_previos()
+    reg[nn] = tema
+    with io.open(_REG, 'w', encoding='utf-8') as fh:
+        json.dump({str(k): reg[k] for k in sorted(reg)}, fh, ensure_ascii=False, indent=1)
+
+
+def in_contesto(dialogo_it, traduccion, tema, titulo="In contesto"):
+    """`tema` es OBLIGATORIO y no se renderiza: es el metadato que fuerza la rotación.
+
+    Nació porque los días 23-27 salieron con cinco diálogos seguidos sobre clientes y
+    fotografía. El bloque es lo que el usuario más valora, y repetir escenario lo mata.
+    Elige el tema porque la gramática del día ES la gramática natural de ese tema
+    (causativi → la caverna; passato remoto → un mito), nunca para decorar. Y el
+    vocabulario va en registro de bar: la idea puede ser profunda, las palabras no.
+    """
+    if tema not in TEMAS_CONTESTO:
+        raise ValueError('tema «%s» no está en TEMAS_CONTESTO: %s'
+                         % (tema, ', '.join(sorted(TEMAS_CONTESTO))))
+    _['tema'] = tema
     _add('<h2>📖 %s</h2>\n<div class="bloque">\n  <span class="it">%s</span><br>\n'
          '  <span style="color:#666;font-size:.86rem">→ %s</span>\n</div>'
          % (titulo, dialogo_it, traduccion))
@@ -311,15 +361,32 @@ def _validar():
         pct = 100 * n_siembra // len(nums)
         if pct > 35:
             f.append('siembra %d%% (%d/%d) — máximo ~35%%' % (pct, n_siembra, len(nums)))
+
+    # ── Rotación de «In contesto» (los días 23-27 salieron con 5 diálogos seguidos de
+    # clientes y fotografía; el bloque es lo que más valora y repetir escenario lo mata).
+    tema = _['tema']
+    if not rep and not tema:
+        f.append('falta in_contesto() con su tema — o el día no tiene bloque 📖')
+    if tema:
+        prev = _temas_previos()
+        ventana = 6 if tema == 'lavoro' else 3
+        choca = [d for d, t in prev.items() if t == tema and 0 < nn - d <= ventana]
+        if choca:
+            _['avisos'].append(
+                'tema «%s» repetido: ya salió en el día %s (mínimo %d días de separación%s)'
+                % (tema, ', '.join(str(d) for d in sorted(choca)), ventana,
+                   '; «lavoro» va racionado' if tema == 'lavoro' else ''))
     return f
 
 
 def guardar(force=False):
     fallos = _validar()
     print('--- DÍA %02d ---' % _['nn'])
-    print('ejercicios: %d%s · slang: %d · siembra: %d'
+    print('ejercicios: %d%s · slang: %d · siembra: %d · contesto: %s'
           % (len(_['ejs']), (' + %d examen' % len(_['exs'])) if _['repaso'] else '',
-             _['n_slang'], sum(1 for _n, _h, r in _['ejs'] if r)))
+             _['n_slang'], sum(1 for _n, _h, r in _['ejs'] if r), _['tema'] or '—'))
+    for a in _['avisos']:
+        print('   ⚠️ ', a)
     if fallos and not force:
         for x in fallos:
             print('   ❌', x)
@@ -375,6 +442,7 @@ def guardar(force=False):
     with io.open(tmp, 'w', encoding='utf-8') as fh:
         fh.write(html)
     os.replace(tmp, p_out)
+    _anotar_tema(_['nn'], _['tema'])
     print('   ✅ escrito %s (%d bytes)' % (os.path.basename(p_out), len(html)))
 
 

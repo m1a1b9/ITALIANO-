@@ -81,7 +81,7 @@ frasi_pronte([("Avrei dovuto dirtelo prima", "Debería habértelo dicho antes"),
               ("Al posto tuo non l'avrei fatto", "Yo en tu lugar no lo habría hecho"),
               ("Chi l'avrebbe mai detto!", "¡Quién lo hubiera dicho!")])
 
-in_contesto(
+in_contesto(  # tema: lavoro (su estudio) — racionado desde el día 25
     "— Allora, il cliente ha confermato?<br>\n"
     "  — Mi ha scritto ieri: ha detto che <b>avrebbe mandato</b> l'acconto entro venerdì, ma non è "
     "arrivato niente.<br>\n"
@@ -94,7 +94,8 @@ in_contesto(
     "pero no llegó nada.» — «Mmm. Deberías haberle pedido un depósito antes de empezar.» — «Lo sé, "
     "debería. En tu lugar, ¿qué habrías hecho?» — «Yo se lo habría pedido enseguida. De todos modos "
     "no te preocupes: si no paga el lunes, le escribes tú.» — «Menos mal que me lo dijiste. Me habría "
-    "quedado callado otro mes.»")
+    "quedado callado otro mes.»",
+    tema="lavoro")
 
 slang("Meno male", reg="verde", fon="[ME-no MA-le]",
       it="per fortuna; è andata bene",

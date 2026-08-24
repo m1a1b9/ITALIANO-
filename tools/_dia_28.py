@@ -129,21 +129,26 @@ frasi_pronte([("Nel 1922 prese il potere", "En 1922 tomó el poder"),
               ("Fu allora che capii tutto", "Fue entonces cuando entendí todo")])
 
 in_contesto(
-    "— Sto leggendo un libro di storia italiana, ma <b>mica</b> è facile.<br>\n"
-    "  — Perché? Il vocabolario?<br>\n"
-    "  — No, quello lo capisco. Sono i verbi: <b>fu, ebbe, prese, nacque</b>… all'inizio non "
-    "capivo <b>manco</b> di che verbo si trattasse.<br>\n"
-    "  — Ah, il passato remoto. Guarda, in Sicilia lo usiamo <b>tale e quale</b> anche per ieri. "
-    "Mia nonna dice sempre <b>«ieri andai dal medico»</b>.<br>\n"
-    "  — Davvero? Io pensavo che <b>fosse</b> solo dei libri.<br>\n"
-    "  — <b>Mica</b> tanto. Al nord sì, non lo dicono mai. Ma qui è normalissimo.<br>\n"
-    "  — Allora <b>me l'hai</b> risolto: leggo il libro e lo sento parlare a tua nonna.",
-    "«Estoy leyendo un libro de historia italiana, pero no es nada fácil.» — «¿Por qué? ¿El "
-    "vocabulario?» — «No, ese lo entiendo. Son los verbos: fu, ebbe, prese, nacque… al principio ni "
-    "siquiera entendía de qué verbo se trataba.» — «Ah, el passato remoto. Mira, en Sicilia lo usamos "
-    "igualito también para ayer. Mi abuela siempre dice “ayer fui al médico”.» — «¿En serio? Yo creía "
-    "que era solo de los libros.» — «Qué va. En el norte sí, no lo dicen nunca. Pero aquí es "
-    "normalísimo.» — «Entonces me lo has resuelto: leo el libro y se lo oigo hablar a tu abuela.»")
+    "— Ti ricordi quello della pietra? Come si chiamava?<br>\n"
+    "  — Sisifo. Un tizio furbissimo: <b>ingannò</b> gli dèi due volte e <b>riuscì</b> pure a "
+    "tornare dal regno dei morti.<br>\n"
+    "  — E poi?<br>\n"
+    "  — E poi lo <b>presero</b>. Zeus non se la <b>prese</b> con lui subito: gli <b>diede</b> una "
+    "punizione tranquilla, spingere una pietra fino in cima a una montagna.<br>\n"
+    "  — <b>Mica</b> male, come punizione.<br>\n"
+    "  — Aspetta. <b>Arrivò</b> in cima, e la pietra <b>rotolò</b> giù. E lui ricominciò. Per "
+    "sempre. Non <b>ebbe</b> <b>manco</b> un giorno libero.<br>\n"
+    "  — Ah. Allora è <b>tale e quale</b> il lunedì.<br>\n"
+    "  — Uno scrittore francese <b>disse</b> che dobbiamo immaginarlo felice.<br>\n"
+    "  — Felice? Boh. Però capisco: se la pietra è la tua, spingerla non è una condanna.",
+    "«¿Te acuerdas del de la piedra? ¿Cómo se llamaba?» — «Sísifo. Un tipo listísimo: engañó a los "
+    "dioses dos veces y hasta logró volver del reino de los muertos.» — «¿Y luego?» — «Y luego lo "
+    "agarraron. Zeus no se enojó con él de inmediato: le dio un castigo tranquilo, empujar una piedra "
+    "hasta la cima de una montaña.» — «Nada mal, como castigo.» — «Espera. Llegó a la cima, y la "
+    "piedra rodó hacia abajo. Y él volvió a empezar. Para siempre. No tuvo ni un día libre.» — «Ah. "
+    "Entonces es igualito al lunes.» — «Un escritor francés dijo que hay que imaginárselo feliz.» — "
+    "«¿Feliz? Ni idea. Pero lo entiendo: si la piedra es tuya, empujarla no es una condena.»",
+    tema="mito")
 
 slang("Mica", reg="verde", fon="[MI-ka]",
       it="per niente, affatto — rafforza la negazione",

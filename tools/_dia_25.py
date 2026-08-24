@@ -84,16 +84,20 @@ frasi_pronte([("Quando avrò finito, ti faccio sapere", "Cuando termine, te avis
               ("Boh, si sarà dimenticato", "Ni idea, se habrá olvidado")])
 
 in_contesto(
-    "— Il fotografo non è ancora arrivato, sono le dieci passate.<br>\n"
-    "  — <b>Avrà trovato</b> traffico, o <b>si sarà dimenticato</b>. Gli hai scritto?<br>\n"
-    "  — Sì, ma non risponde. <b>Sarà rimasto</b> senza batteria.<br>\n"
-    "  — Senti, appena <b>sarà arrivato</b> gli spieghi tutto tu, che io devo uscire.<br>\n"
-    "  — Va bene. Quando <b>avrò sistemato</b> le luci, comincio comunque.<br>\n"
-    "  — Perfetto. E quando <b>avrete finito</b>, mandatemi due scatti su WhatsApp.",
-    "«El fotógrafo no llega, ya pasaron las diez.» — «Habrá agarrado tráfico, o se habrá olvidado. "
-    "¿Le escribiste?» — «Sí, pero no contesta. Se habrá quedado sin batería.» — «Oye, en cuanto "
-    "llegue le explicas tú, que yo tengo que salir.» — «Va. Cuando haya acomodado las luces, empiezo "
-    "de todos modos.» — «Perfecto. Y cuando hayan terminado, mándenme dos tomas por WhatsApp.»")
+    "— Hai visto? Il bar all'angolo ha chiuso.<br>\n"
+    "  — Davvero? <b>Mannaggia</b>, ci andavo sempre. <b>Avranno perso</b> troppi soldi.<br>\n"
+    "  — <b>Boh</b>. Secondo me <b>sarà stato</b> l'affitto: qui è salito tantissimo.<br>\n"
+    "  — Può darsi. Oppure <b>si saranno stancati</b>: lavoravano dodici ore al giorno.<br>\n"
+    "  — <b>Che ne dici</b>, riapre qualcun altro?<br>\n"
+    "  — Quando <b>avrò parlato</b> col proprietario ti dico. Ma il posto è buono, appena "
+    "<b>avranno rifatto</b> i muri lo prende qualcuno.<br>\n"
+    "  — Speriamo. Un quartiere senza bar non è un quartiere.",
+    "«¿Viste? El bar de la esquina cerró.» — «¿En serio? Qué lástima, yo iba siempre. Habrán perdido "
+    "demasiado dinero.» — «Ni idea. Para mí habrá sido la renta: aquí subió muchísimo.» — «Puede ser. "
+    "O se habrán cansado: trabajaban doce horas al día.» — «¿Qué dices, abrirá otro?» — «Cuando haya "
+    "hablado con el dueño te digo. Pero el local es bueno; en cuanto hayan rehecho las paredes lo "
+    "toma alguien.» — «Ojalá. Un barrio sin bar no es un barrio.»",
+    tema="negocios")
 
 slang("Boh", reg="verde", fon="[bo, corto y seco]",
       it="non lo so, non ne ho idea",

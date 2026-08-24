@@ -85,16 +85,26 @@ frasi_pronte([("Me lo fai vedere?", "¿Me lo enseñas?"),
               ("Non farmi ridere", "No me hagas reír")])
 
 in_contesto(
-    "— Senti, il cliente vuole vedere le prove prima di stampare.<br>\n"
-    "  — Va bene, <b>gliele faccio vedere</b> stasera. Me le puoi preparare tu?<br>\n"
-    "  — Certo. Però <b>fatti dare</b> un ok scritto, non solo a voce.<br>\n"
-    "  — Hai ragione. <b>Me lo faccio mandare</b> per mail, così resta.<br>\n"
-    "  — Bravo. E se insiste con lo sconto, <b>lascia perdere</b>: non <b>farti convincere</b>.<br>\n"
-    "  — Tranquillo. <b>Ti faccio sapere</b> appena mi risponde.",
-    "«El cliente quiere ver las pruebas antes de imprimir.» — «Va, se las enseño en la noche. ¿Me "
-    "las preparas tú?» — «Claro. Pero haz que te den un visto bueno por escrito, no solo de palabra.» "
-    "— «Tienes razón. Hago que me lo manden por correo, así queda.» — «Bien. Y si insiste con el "
-    "descuento, déjalo: no te dejes convencer.» — «Tranquilo. Te aviso en cuanto me conteste.»")
+    "— Ieri ho letto una storia strana. C'è della gente legata dentro una grotta, girata verso "
+    "il muro.<br>\n"
+    "  — Legata? E chi ce li ha messi?<br>\n"
+    "  — Non si sa. Dietro c'è un fuoco, e passa gente con degli oggetti. Il fuoco "
+    "<b>fa vedere</b> solo le ombre sul muro, e loro credono che le ombre siano il mondo.<br>\n"
+    "  — <b>Roba da matti</b>. E nessuno li <b>lascia uscire</b>?<br>\n"
+    "  — Uno esce. Il sole gli <b>fa male</b> agli occhi, ma alla fine vede le cose vere. Allora "
+    "torna dentro e <b>glielo vuole far capire</b> agli altri.<br>\n"
+    "  — E quelli non ci credono.<br>\n"
+    "  — Peggio: si arrabbiano. Lui <b>glielo fa vedere</b> in tutti i modi, ma non "
+    "<b>si lasciano convincere</b>. Alla fine gli dicono: «<b>Lascia perdere</b>».<br>\n"
+    "  — Mmm. <b>Fammi sapere</b> come si chiama il libro, che me lo segno.",
+    "«Ayer leí una historia rara. Hay gente atada dentro de una cueva, volteada hacia la pared.» — "
+    "«¿Atada? ¿Y quién los metió ahí?» — «No se sabe. Detrás hay un fuego, y pasa gente con objetos. "
+    "El fuego solo deja ver las sombras en la pared, y ellos creen que las sombras son el mundo.» — "
+    "«Cosa de locos. ¿Y nadie los deja salir?» — «Uno sale. El sol le lastima los ojos, pero al final "
+    "ve las cosas de verdad. Entonces vuelve adentro y quiere hacérselo entender a los demás.» — «Y "
+    "esos no le creen.» — «Peor: se enojan. Él se lo enseña de todas las maneras, pero no se dejan "
+    "convencer. Al final le dicen: “Déjalo”.» — «Mmm. Avísame cómo se llama el libro, que me lo apunto.»",
+    tema="filosofia")
 
 slang("Lascia perdere", reg="verde", fon="[LA-sha PER-de-re]",
       it="non insistere, non vale la pena occuparsene",

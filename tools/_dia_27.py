@@ -90,18 +90,22 @@ frasi_pronte([("Pensavo che fosse più facile", "Creía que era más fácil"),
               ("Non è che sia difficile, è che è lungo", "No es que sea difícil, es que es largo")])
 
 in_contesto(
-    "— Allora? Il cliente ha firmato?<br>\n"
-    "  — Mah. <b>Pensavo che avesse già deciso</b>, invece mi ha detto che <b>ci avrebbe pensato</b>.<br>\n"
-    "  — <b>Mi sa che</b> vuole lo sconto.<br>\n"
-    "  — Eh, <b>non è che sia</b> un problema, ma <b>gliel'avevo già detto</b> che il prezzo era quello.<br>\n"
-    "  — <b>Chissà</b> cosa gli <b>avranno raccontato</b> gli altri studi.<br>\n"
-    "  — Boh. <b>Speravo che si fidasse</b> di più, sinceramente.<br>\n"
-    "  — Dai, aspetta. <b>Non sapevo che</b> fosse così indeciso, ma alla fine firmano quasi tutti.",
-    "«¿Y bien? ¿El cliente firmó?» — «Uf. Creía que ya lo había decidido, y en cambio me dijo que lo "
-    "pensaría.» — «Me late que quiere el descuento.» — «Sí, no es que sea un problema, pero ya se lo "
-    "había dicho: el precio era ese.» — «Quién sabe qué le habrán contado los otros estudios.» — "
-    "«Ni idea. Esperaba que confiara más, sinceramente.» — «Anda, espera. No sabía que fuera tan "
-    "indeciso, pero al final casi todos firman.»")
+    "— Allora, com'era la mostra?<br>\n"
+    "  — Mah. <b>Pensavo che fosse</b> più grande. Erano quattro stanze in tutto.<br>\n"
+    "  — Ma come? Mi <b>avevano detto che sarebbe stata</b> enorme.<br>\n"
+    "  — Eh, <b>non è che sia</b> brutta, anzi. È che ti aspetti altro dopo tutta quella pubblicità.<br>\n"
+    "  — <b>Chissà</b> quanto <b>avranno speso</b> per i manifesti in metropolitana.<br>\n"
+    "  — Comunque un quadro mi ha colpito davvero. <b>Non sapevo che l'avesse dipinto</b> a "
+    "ottant'anni: sembra il lavoro di un ragazzo.<br>\n"
+    "  — Bello. <b>Mi sa che</b> ci vado sabato, allora.<br>\n"
+    "  — Vacci presto. <b>Speravo che ci fosse</b> meno gente e invece c'era la fila fuori.",
+    "«¿Y qué tal la exposición?» — «Uf. Creía que era más grande. Eran cuatro salas en total.» — "
+    "«¿Cómo? A mí me habían dicho que sería enorme.» — «Sí, no es que sea mala, al contrario. Es que "
+    "esperas otra cosa después de toda esa publicidad.» — «Quién sabe cuánto habrán gastado en los "
+    "carteles del metro.» — «De todos modos un cuadro sí me impactó. No sabía que lo hubiera pintado "
+    "a los ochenta: parece el trabajo de un chavo.» — «Qué bien. Me late que voy el sábado, "
+    "entonces.» — «Ve temprano. Esperaba que hubiera menos gente y había fila afuera.»",
+    tema="arte")
 
 slang("Mi sa che", reg="verde", fon="[mi sa ke]",
       it="ho l'impressione che, credo proprio che",
