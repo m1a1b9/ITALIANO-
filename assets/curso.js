@@ -337,7 +337,8 @@
     it=(it||'').trim(); if(!it)return false;
     var list=loadVocabList();
     if(list.some(function(w){return norm(w.it)===norm(it)}))return 'dup';
-    list.push({it:it, es:es||'', ctx:ctx||'', estado:'practica', t:Date.now()});
+    // `m` = última modificación: la sincronización se queda con la versión más reciente
+    list.push({it:it, es:es||'', ctx:ctx||'', estado:'practica', t:Date.now(), m:Date.now()});
     localStorage.setItem(VKEY,JSON.stringify(list));
     completarLema(it);          // la palabra base se busca DESPUÉS: guardar debe ser instantáneo
     return true;
@@ -352,7 +353,7 @@
       var cur=loadVocabList(), f=cur.filter(function(x){return norm(x.it)===norm(it)})[0];
       if(!f||f.lema||f.pos)return;
       var l=ls[0];
-      f.lema=l.lema||''; f.pos=l.pos||''; f.flex=l.flex||'';
+      f.lema=l.lema||''; f.pos=l.pos||''; f.flex=l.flex||''; f.m=Date.now();
       f.lemaFuente=(ls.length>1?'regla':(l.fuente||''));
       localStorage.setItem(VKEY,JSON.stringify(cur));
     }).catch(function(){});

@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mi Vocabulario · Italiano</title>
-<link rel="stylesheet" href="assets/curso.css?v=20260822a">
-<script src="assets/vocab.js?v=20260822a"></script>
-<script src="assets/frases.js?v=20260822a"></script>
+<link rel="stylesheet" href="assets/curso.css?v=20260822b">
+<script src="assets/vocab.js?v=20260822b"></script>
+<script src="assets/frases.js?v=20260822b"></script>
 <style>
   body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:760px;margin:0 auto;padding:2.5rem 1.5rem 4rem;line-height:1.5}
   .top{border-left:4px solid #c79a3a;padding-left:1rem;margin-bottom:1.2rem}
@@ -116,7 +116,7 @@
   .w2 .acc .del2{color:#c0392b;border-color:#f0d5d2}
   .vacio2{text-align:center;color:#999;padding:2rem 1rem;background:#fff;border:1px dashed #ccc;border-radius:10px}
 </style>
-<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260822a"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260822b"></script>
 </head>
 <body>
 <div class="top">
@@ -226,12 +226,20 @@ function say(t){if(!('speechSynthesis'in window))return;speechSynthesis.cancel()
    Si viene de una regla local (supuesta) o falta, se marca para revisar. */
 /* ================= LISTA: buscar · filtrar · agrupar por lema · tarjeta compacta ================= */
 var F={q:'',cat:'',estado:'',rev:false,orden:'recientes'};
-function porRevisar(w){return w.lemaFuente==='regla'||(!w.lema&&!w.pos&&w.it&&!/\s/.test(w.it));}
+/* Un significado SIRVE si no es un marcador de posición. Sin esto se colaba «…» como si fuera el
+   significado real (le pasó a `giunto`). Mismo criterio que usa la sección Práctica. */
+function sirveEs(s){s=(s||'').trim();return !!s && !/^[.…\-–—?¿*_\s]+$/.test(s);}
+var FALLO_TRADUCTOR='⚠ el traductor no respondió — escríbelo tú, o guárdala y se completa sola la próxima vez';
+function porRevisar(w){
+  if(w.borrada)return false;
+  return w.lemaFuente==='regla'||!sirveEs(w.es)||(!w.lema&&!w.pos&&w.it&&!/\s/.test(w.it));
+}
 function esc2(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 function filtrar(l){
   var q=F.q.toLowerCase().trim();
   return l.filter(function(w){
+    if(w.borrada)return false;                 // lápida: no se muestra, pero SIGUE en el array guardado
     if(F.cat&&(w.pos||'')!==F.cat)return false;
     if(F.estado==='practica'&&w.estado==='dominada')return false;
     if(F.estado==='dominada'&&w.estado!=='dominada')return false;
@@ -267,20 +275,23 @@ function chips(w){
    usuario acababa de abrir se cerraba solo mientras la página seguía cargando en segundo plano. */
 var ABIERTOS={};
 function render(){
+  // `todas` conserva TODO (incluidas las lápidas) porque es el array que se vuelve a guardar;
+  // `vivas` es solo para contar y mostrar.
   var todas=load(), lista=document.getElementById('lista');
-  var prac=todas.filter(function(w){return w.estado!=='dominada'}).length;
-  var rev=todas.filter(porRevisar).length;
+  var vivas=todas.filter(function(w){return !w.borrada});
+  var prac=vivas.filter(function(w){return w.estado!=='dominada'}).length;
+  var rev=vivas.filter(porRevisar).length;
   document.getElementById('stats').textContent=
-    todas.length+' palabras · '+prac+' en práctica · '+(todas.length-prac)+' dominadas'+(rev?' · '+rev+' por revisar':'');
+    vivas.length+' palabras · '+prac+' en práctica · '+(vivas.length-prac)+' dominadas'+(rev?' · '+rev+' por revisar':'');
   var btnRev=document.getElementById('f-rev');
   if(btnRev)btnRev.textContent='⚠ por revisar'+(rev?' ('+rev+')':'');
-  if(!todas.length){lista.innerHTML='<div class="vacio">Aún no tienes palabras. Selecciona una palabra o frase en cualquier día y pulsa ★ Guardar, o agrégala aquí arriba.</div>';return;}
+  if(!vivas.length){lista.innerHTML='<div class="vacio">Aún no tienes palabras. Selecciona una palabra o frase en cualquier día y pulsa ★ Guardar, o agrégala aquí arriba.</div>';return;}
 
   var l=filtrar(todas);
   if(F.orden==='alfabetico')l.sort(function(a,b){return norm(a.it).localeCompare(norm(b.it))});
   else l.sort(function(a,b){return (b.t||0)-(a.t||0)});
   var cuenta=document.getElementById('cuenta');
-  if(cuenta)cuenta.textContent=l.length===todas.length?'':l.length+' de '+todas.length;
+  if(cuenta)cuenta.textContent=l.length===vivas.length?'':l.length+' de '+vivas.length;
   if(!l.length){lista.innerHTML='<div class="vacio2">Nada coincide con ese filtro.</div>';return;}
 
   lista.innerHTML='';
@@ -331,11 +342,18 @@ function pintarDetalle(w,det,l){
   det.innerHTML=h;
 
   det.querySelector('.oir').onclick=function(){say(w.it)};
-  det.querySelector('.dom').onclick=function(){w.estado=(w.estado==='dominada')?'practica':'dominada';save(l);render()};
-  det.querySelector('.del2').onclick=function(){if(confirm('¿Borrar "'+w.it+'"?')){delete ABIERTOS[norm(w.it)];l.splice(l.indexOf(w),1);save(l);render()}};
-  editable(det.querySelector('.ed-es'),w.es||'',function(v){w.es=v;if(v)cacheSet(norm(w.it),v);save(l);render();},'significado');
-  editable(det.querySelector('.ed-lema'),w.lema||'',function(v){w.lema=v;if(v)w.lemaFuente='manual';save(l);render();},'palabra base (ej. mangiare)');
-  editable(det.querySelector('.ed-lemaes'),w.lemaEs||'',function(v){w.lemaEs=v;if(v)w.lemaEsFuente='manual';save(l);render();},'traducción simple (ej. presionar)');
+  det.querySelector('.dom').onclick=function(){w.estado=(w.estado==='dominada')?'practica':'dominada';w.m=Date.now();save(l);render()};
+  // BORRADO CON LÁPIDA: se marca en vez de quitarla, para que el borrado se PROPAGUE al sincronizar.
+  // Antes se eliminaba del array y la fusión (unión) la resucitaba desde el otro dispositivo.
+  det.querySelector('.del2').onclick=function(){
+    if(!confirm('¿Borrar "'+w.it+'"?'))return;
+    delete ABIERTOS[norm(w.it)];
+    w.borrada=true; w.m=Date.now();
+    save(l);render();
+  };
+  editable(det.querySelector('.ed-es'),w.es||'',function(v){w.es=v;w.m=Date.now();if(v)cacheSet(norm(w.it),v);save(l);render();},'significado');
+  editable(det.querySelector('.ed-lema'),w.lema||'',function(v){w.lema=v;w.m=Date.now();if(v)w.lemaFuente='manual';save(l);render();},'palabra base (ej. mangiare)');
+  editable(det.querySelector('.ed-lemaes'),w.lemaEs||'',function(v){w.lemaEs=v;w.m=Date.now();if(v)w.lemaEsFuente='manual';save(l);render();},'traducción simple (ej. presionar)');
 
   // panel de revisión: las lecturas posibles, para elegir la correcta
   if(porRevisar(w)&&window.LEMA){
@@ -403,9 +421,14 @@ document.getElementById('add-btn').onclick=function(){
   var ctx=document.getElementById('in-ctx').value.trim();
   if(!it)return;
   if(!es)es=lookup(it)||'';
+  if(!sirveEs(es))es='';                       // nunca guardar un marcador como significado
   var l=load();
-  if(l.some(function(w){return norm(w.it)===norm(it)})){alert('Ya está en tu lista.');return;}
-  l.push({it:it,es:es,ctx:ctx,estado:'practica',t:Date.now()});save(l);
+  var yaEsta=l.filter(function(w){return norm(w.it)===norm(it)})[0];
+  if(yaEsta&&!yaEsta.borrada){alert('Ya está en tu lista.');return;}
+  if(yaEsta){                                  // estaba borrada: se revive en vez de duplicarla
+    delete yaEsta.borrada; yaEsta.es=es||yaEsta.es; yaEsta.ctx=ctx||yaEsta.ctx; yaEsta.m=Date.now();
+  }else l.push({it:it,es:es,ctx:ctx,estado:'practica',t:Date.now(),m:Date.now()});
+  save(l);
   document.getElementById('in-it').value='';document.getElementById('in-es').value='';document.getElementById('in-ctx').value='';
   render();resolveMissing();
 };
@@ -422,20 +445,26 @@ function resolveMissing(){
   var l=load(), changed=false;
   // 1) lo local (glosario + def italiana curada/caché)
   l.forEach(function(w){
-    if(!w.es){var es=lookup(w.it);if(es){w.es=es;changed=true;}}
-    if(!w.itdef){var di=defLocal(w.it);if(di){w.itdef=di;changed=true;}}
+    // OJO: se comprueba con sirveEs, no con `!w.es`. Un significado «…» NO está vacío, así que antes
+    // nunca entraba aquí y la palabra se quedaba rota para siempre (caso `giunto`).
+    if(!sirveEs(w.es)){var es=lookup(w.it);if(es){w.es=es;w.m=Date.now();changed=true;}}
+    if(!w.itdef){var di=defLocal(w.it);if(di){w.itdef=di;w.m=Date.now();changed=true;}}
   });
   if(changed){save(l);render();}
   // 2) lo que falte, en línea (uno por uno, sin saturar)
-  var pend=load().filter(function(w){return !w.es||!w.itdef});
+  var pend=load().filter(function(w){return !w.borrada&&(!sirveEs(w.es)||!w.itdef)});
   (function step(i){
     if(i>=pend.length)return;
     var w=pend[i], jobs=[];
-    if(!w.es)jobs.push(translateOnline(w.it).then(function(t){if(t){w._es=t;}}));
+    if(!sirveEs(w.es))jobs.push(translateOnline(w.it).then(function(t){if(t){w._es=t;}}));
     if(!w.itdef)jobs.push(defOnline(w.it).then(function(d){if(d){w._def=d;}}));
     Promise.all(jobs).then(function(){
       var cur=load(),f=cur.filter(function(x){return norm(x.it)===norm(w.it)})[0];
-      if(f){if(w._es&&!f.es){f.es=w._es;cacheSet(norm(f.it),w._es);}if(w._def&&!f.itdef){f.itdef=w._def;fcacheSet(norm(f.it),w._def);}save(cur);render();}
+      if(f){
+        if(w._es&&!sirveEs(f.es)){f.es=w._es;f.m=Date.now();cacheSet(norm(f.it),w._es);}
+        if(w._def&&!f.itdef){f.itdef=w._def;f.m=Date.now();fcacheSet(norm(f.it),w._def);}
+        save(cur);render();
+      }
       setTimeout(function(){step(i+1)},180);
     });
   })(0);
@@ -546,10 +575,12 @@ function resolveLemas(){
     return (out && out.length<=40 && extra.length<=3) ? out : null;
   }
   function solaFallback(word){
-    // último recurso: la palabra sola. Si Google la deja igual (término propio), campo vacío + pista.
+    // Último recurso: la palabra sola. Si no sale nada, campo VACÍO y un aviso NEUTRO: no se puede
+    // saber si el traductor falló o si de verdad no tiene traducción, así que no se afirma ninguna
+    // de las dos (antes decía «Google no traduce esta palabra» incluso cuando el servicio no respondía).
     translateOnline(word).then(function(sola){
       if(sola && norm(sola)!==norm(word)){wordEsEl.value=sola;}
-      else{wordEsEl.value='';wordEsEl.placeholder='escríbelo tú: Google no traduce «'+word+'» aquí (término propio)';}
+      else{wordEsEl.value='';wordEsEl.placeholder='escríbelo tú, o guárdala y se completa después';}
     }).catch(function(){wordEsEl.value='';});
   }
   function renderTokens(){
@@ -571,13 +602,17 @@ function resolveLemas(){
   }
   function pick(word,frase){
     sel=word; resEl.style.display='block';
-    wordItEl.textContent=word; wordEsEl.value='…'; wordEsEl.placeholder='significado en contexto (edítalo si hace falta)';
+    // OJO: el campo se deja VACÍO mientras traduce y el aviso va en el placeholder, que NO se guarda.
+    // Antes se le ponía el texto «…» como valor: si guardabas antes de que llegara la traducción (o si
+    // fallaba), se guardaba «…» como significado. Así quedó `giunto` el 29-jul.
+    wordItEl.textContent=word; wordEsEl.value=''; wordEsEl.placeholder='traduciendo…';
     fraseEsEl.textContent='traduciendo…'; defitEl.textContent='';
     sensosEl.innerHTML='';
     dictOnline(word).then(function(s){if(s&&sel===word)sensosEl.innerHTML='<b>Otros sentidos:</b> '+s;});
     pintarLemas(word);
     translateOnline(frase).then(function(fraseES){
-      fraseEsEl.textContent=fraseES||'(sin conexión: escribe el significado a mano)';
+      wordEsEl.placeholder='significado en contexto (edítalo si hace falta)';
+      fraseEsEl.textContent=fraseES||FALLO_TRADUCTOR;
       var local=lookup(word); if(local){wordEsEl.value=local;return;}
       var re=new RegExp('\\b'+word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i');
       var sinES=frase.replace(re,' ').replace(/\s+/g,' ').trim();
@@ -585,16 +620,22 @@ function resolveLemas(){
         var ctx=(fraseES&&sinES2)?contextDiff(fraseES,sinES2,word):null;
         if(ctx){wordEsEl.value=ctx;} else{solaFallback(word);}
       }).catch(function(){solaFallback(word);});
-    }).catch(function(){fraseEsEl.textContent='(sin conexión: escribe el significado a mano)';wordEsEl.value='';});
+    }).catch(function(){
+      wordEsEl.placeholder='escríbelo tú, o déjalo y se completa después';
+      fraseEsEl.textContent=FALLO_TRADUCTOR; wordEsEl.value='';
+    });
     defOnline(word).then(function(d){if(d)defitEl.textContent='🇮🇹 '+d;});
   }
   saveBtn.onclick=function(){
     if(!sel){alert('Primero haz clic en la palabra que quieres guardar.');return;}
     var l=load();
     if(l.some(function(w){return norm(w.it)===norm(sel)})){alert('"'+sel+'" ya está en tu lista.');return;}
-    var es=wordEsEl.value.trim(), it=defitEl.textContent.replace(/^🇮🇹\s*/,'').trim();
+    // si el traductor falló, se guarda el significado VACÍO (nunca «…»): así entra en la cola de
+    // relleno automático y sale en el filtro «⚠ por revisar», en vez de quedar con basura para siempre.
+    var es=wordEsEl.value.trim(); if(!sirveEs(es))es='';
+    var it=defitEl.textContent.replace(/^🇮🇹\s*/,'').trim();
     // se guarda la forma TAL CUAL la seleccionaste (it) + su palabra base para poder estudiarla
-    var e={it:sel,es:es,ctx:fraseEl.value.trim(),itdef:it||'',estado:'practica',t:Date.now()};
+    var e={it:sel,es:es,ctx:fraseEl.value.trim(),itdef:it||'',estado:'practica',t:Date.now(),m:Date.now()};
     if(lemaSel){e.lema=lemaSel.lema||'';e.pos=lemaSel.pos||'';e.flex=lemaSel.flex||'';e.lemaFuente=lemaSel.fuente||'';}
     l.push(e);
     save(l); if(es)cacheSet(norm(sel),es);

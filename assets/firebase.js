@@ -136,11 +136,37 @@
      no perder datos entre dispositivos. En localhost NO se activa (ahí manda el servidor local). */
   (function(){
     function norm(s){return (''+(s||'')).toLowerCase().trim();}
+    /* Fusión de listas por clave. GANA LA VERSIÓN MÁS RECIENTE (campo `m` = última modificación;
+       si falta, se usa `t` de creación).
+       ANTES ganaba SIEMPRE la copia local, y por eso un dispositivo con datos viejos revertía lo
+       corregido en otro (caso real: una palabra volvía a tener «…» de significado tras arreglarla).
+       DESEMPATE: si la fecha coincide, gana la entrada más completa — así una copia vieja con un
+       marcador («…», «-») nunca pisa a una con significado de verdad.
+       BORRADO: las entradas marcadas `borrada` viajan como lápida para que el borrado se propague
+       (con la unión de antes, el otro dispositivo las resucitaba). Se purgan a los 90 días. */
+    var LAPIDA_MS=90*24*3600*1000;
+    function cuando(o){return (o&&(o.m||o.t))||0;}
+    function completitud(o){
+      if(!o)return -1;
+      var s=0, es=(''+(o.es||'')).trim();
+      if(es && !/^[.…\-–—?¿*_\s]+$/.test(es))s+=4;      // significado de verdad, no un marcador
+      ['lema','lemaEs','ctx','itdef','pos'].forEach(function(k){if((''+(o[k]||'')).trim())s++;});
+      if(o.lemaFuente==='manual'||o.lemaEsFuente==='manual'||o.rev)s+=3;   // revisado a mano: pesa
+      return s;
+    }
     function mergeArrBy(keyName){return function(cloud,local){
-      var out=[], seen={};
-      (Array.isArray(local)?local:[]).forEach(function(o){var k=norm(o&&o[keyName]);if(k&&!seen[k]){seen[k]=1;out.push(o);}});
-      (Array.isArray(cloud)?cloud:[]).forEach(function(o){var k=norm(o&&o[keyName]);if(k&&!seen[k]){seen[k]=1;out.push(o);}});
-      return out;
+      var por={}, orden=[];
+      function meter(o){
+        var k=norm(o&&o[keyName]); if(!k)return;
+        if(!(k in por)){por[k]=o;orden.push(k);return;}
+        var a=por[k], ta=cuando(a), tb=cuando(o);
+        if(tb>ta || (tb===ta && completitud(o)>completitud(a)))por[k]=o;
+      }
+      (Array.isArray(local)?local:[]).forEach(meter);
+      (Array.isArray(cloud)?cloud:[]).forEach(meter);
+      var ahora=Date.now();
+      return orden.map(function(k){return por[k];})
+                  .filter(function(o){return !(o.borrada && ahora-cuando(o)>LAPIDA_MS);});
     };}
     function mergeMapUnion(cloud,local){var o={},c=cloud||{},l=local||{},k;for(k in c)o[k]=c[k];for(k in l)o[k]=l[k];return o;}
     function mergeMax(cloud,local){var o={},c=cloud||{},l=local||{},k;for(k in c)o[k]=c[k];for(k in l)o[k]=Math.max(o[k]||0,l[k]||0);return o;}

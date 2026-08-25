@@ -131,6 +131,9 @@ def fijar(it, nota=None, **campos):
     if 'lemaEs' in campos:
         w['lemaEsFuente'] = 'manual'
     w['rev'] = datetime.date.today().isoformat()
+    # `m` = última modificación. Sin esto, un dispositivo con la copia vieja revertía la corrección
+    # al sincronizar (la fusión se queda con la versión más reciente).
+    w['m'] = int(datetime.datetime.now().timestamp() * 1000)
     if nota:
         w['revNota'] = nota
     _st['tocadas'].append(it)
@@ -143,8 +146,9 @@ def agregar(it, es, lema=None, pos=None, lemaEs=None, ctx='', nota=None):
         abrir()
     if buscar(it):
         raise KeyError('ya existe: %r' % it)
+    _ahora = int(datetime.datetime.now().timestamp() * 1000)
     w = {'it': it, 'es': es, 'ctx': ctx, 'estado': 'practica',
-         't': int(datetime.datetime.now().timestamp() * 1000),
+         't': _ahora, 'm': _ahora,
          'rev': datetime.date.today().isoformat()}
     if lema:   w['lema'] = lema;   w['lemaFuente'] = 'manual'
     if pos:    w['pos'] = pos
