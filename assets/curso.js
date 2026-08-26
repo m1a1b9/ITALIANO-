@@ -219,13 +219,13 @@
   function localLookup(raw){var n=norm(raw);return VOCAB[n]||DCACHE[n]||morph(n)||null;}
   function lookup(raw){return localLookup(raw);}
 
-  // Traducción en línea (solo para palabras que el usuario selecciona y aún no conocemos)
+  /* Traducción en línea (solo para palabras que el usuario selecciona y aún no conocemos).
+     Era una SEGUNDA copia del traductor, sin reintento y sin caché: cada glosa pedía lo suyo
+     directamente a Google y entre todas se ganaban el 429 que dejó «Agregar con contexto» sin
+     servicio dos días. Ahora comparte la única puerta, window.TRAD (assets/vocab.js), que en los
+     días se carga ANTES que este archivo. Sigue devolviendo texto o null: nadie más cambia. */
   function translateOnline(text){
-    return fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=it&tl=es&dt=t&q='+encodeURIComponent(text))
-      .then(function(r){return r.json()})
-      .then(function(j){var t=(j&&j[0])?j[0].map(function(x){return x[0]}).join(''):null;
-        return (t&&t.toLowerCase()!==text.toLowerCase())?t.trim():null;})
-      .catch(function(){return null});
+    return window.TRAD ? TRAD.frase(text) : Promise.resolve(null);
   }
 
   function makeSpan(cls,es,txt){var s=document.createElement('span');s.className=cls;s.setAttribute('data-es',es);s.textContent=txt;return s;}

@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mi Vocabulario · Italiano</title>
-<link rel="stylesheet" href="assets/curso.css?v=20260822b">
-<script src="assets/vocab.js?v=20260822b"></script>
-<script src="assets/frases.js?v=20260822b"></script>
+<link rel="stylesheet" href="assets/curso.css?v=20260826a">
+<script src="assets/vocab.js?v=20260826a"></script>
+<script src="assets/frases.js?v=20260826a"></script>
 <style>
   body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:760px;margin:0 auto;padding:2.5rem 1.5rem 4rem;line-height:1.5}
   .top{border-left:4px solid #c79a3a;padding-left:1rem;margin-bottom:1.2rem}
@@ -19,6 +19,24 @@
   .add input{flex:1;min-width:140px;border:1px solid #ddd;border-radius:6px;padding:.5rem .6rem;font-size:.9rem}
   .add button{background:#c79a3a;color:#fff;border:0;border-radius:6px;padding:.5rem 1rem;font-weight:700;cursor:pointer}
   .stats{font-size:.85rem;color:#666;margin-bottom:.8rem}
+  /* estado de la sincronizacion: discreto cuando todo va bien, visible cuando no */
+  .sync{font-size:.8rem;margin:-.5rem 0 .9rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+  .sync .p{border-radius:20px;padding:.15rem .6rem;font-weight:700}
+  .sync .p.ok{background:#e3f3ea;color:#1a6e47}
+  .sync .p.mal{background:#fdecea;color:#b03a2e}
+  .sync .p.va{background:#fff4d6;color:#8a6d1f}
+  .sync button{background:none;border:0;color:#1a4d80;font:inherit;font-size:.8rem;text-decoration:underline;cursor:pointer;padding:0}
+  .diag{margin:0 0 1.2rem;font-size:.82rem}
+  .diag summary{cursor:pointer;color:#666;list-style:none}
+  .diag summary::-webkit-details-marker{display:none}
+  .diag summary::before{content:"\25b8 "}
+  .diag[open] summary::before{content:"\25be "}
+  .diag .caja{background:#fff;border:1px solid #dde5dd;border-radius:8px;padding:.7rem .9rem;margin-top:.4rem}
+  .diag .l{display:flex;justify-content:space-between;gap:.8rem;padding:.22rem 0;border-bottom:1px solid #f0f3f0}
+  .diag .l:last-child{border-bottom:0}
+  .diag .l b{font-weight:700}
+  .diag .si{color:#1a6e47}.diag .no{color:#b03a2e}.diag .gris{color:#888}
+  .diag button{background:#1a4d80;color:#fff;border:0;border-radius:6px;padding:.4rem .8rem;font:600 .8rem/1 sans-serif;cursor:pointer;margin-top:.5rem}
   .word{display:flex;align-items:center;flex-wrap:wrap;gap:.7rem;background:#fff;border:1px solid #dde5dd;border-radius:8px;padding:.6rem .9rem;margin:.4rem 0}
   .word .ctx{flex-basis:100%;font-size:.8rem;color:#999;font-style:italic;border-top:1px dashed #eee;padding-top:.35rem;margin-top:.1rem}
   .word .es.vacia{color:#bbb;font-style:italic}
@@ -42,6 +60,7 @@
   .cx-tokens .tk{cursor:pointer;padding:.05rem .25rem;border-radius:4px;border-bottom:1px dotted #9ec3e6}
   .cx-tokens .tk:hover{background:#dcebf8}
   .cx-tokens .tk.sel{background:#1a4d80;color:#fff;border-bottom:0}
+  .cx-dudosa{display:inline-block;font-size:.72rem;font-weight:700;background:#fff4d6;color:#8a6d1f;border-radius:5px;padding:.1rem .4rem;margin-left:.3rem;vertical-align:middle}
   .cx-result{margin-top:.7rem;background:#fff;border:1px solid #cddff0;border-radius:6px;padding:.6rem .8rem}
   .cx-line{font-size:.9rem;color:#333;margin-bottom:.5rem}
   .cx-line b{color:#1a4d80}
@@ -116,7 +135,7 @@
   .w2 .acc .del2{color:#c0392b;border-color:#f0d5d2}
   .vacio2{text-align:center;color:#999;padding:2rem 1rem;background:#fff;border:1px dashed #ccc;border-radius:10px}
 </style>
-<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260822b"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260826a"></script>
 </head>
 <body>
 <div class="top">
@@ -156,6 +175,19 @@
 <p style="font-size:.82rem;color:#8a6d1f;background:#fffaf0;border:1px solid #e8d9b5;border-radius:8px;padding:.5rem .8rem;margin:-.6rem 0 1.4rem">💡 <strong>Verbos:</strong> guarda el <strong>infinitivo</strong> (ej. <em>scattare</em>) y pon la forma que viste (ej. <em>scattano</em>) en el campo de origen. Así aprendes el verbo completo.</p>
 
 <div class="stats" id="stats"></div>
+<div class="sync" id="sync"></div>
+
+<details class="diag" id="diag">
+  <summary>🩺 Estado (para cuando algo deje de funcionar)</summary>
+  <div class="caja" id="diag-caja">
+    <div class="l"><span>versión de esta página</span><b id="d-ver" class="gris">…</b></div>
+    <div class="l"><span>sesión iniciada</span><b id="d-ses" class="gris">…</b></div>
+    <div class="l"><span>última subida a la nube</span><b id="d-sync" class="gris">…</b></div>
+    <div class="l"><span>traducciones guardadas aquí</span><b id="d-cache" class="gris">…</b></div>
+    <button id="d-probar">probar los servicios ahora</button>
+    <div id="d-res"></div>
+  </div>
+</details>
 
 <div class="tools">
   <div class="fila">
@@ -188,14 +220,26 @@
 <script>
 var VKEY='italiano-vocab-activo';
 function load(){try{return JSON.parse(localStorage.getItem(VKEY)||'[]')}catch(e){return[]}}
-function save(l){localStorage.setItem(VKEY,JSON.stringify(l))}
+/* Guardar sube a la nube EN EL ACTO, sin esperar el retardo de 1,2 s del espejo. Si la subida
+   falla, la palabra queda en pendientes y el indicador «⚠ sin subir» lo dice. Antes se guardaba
+   solo aquí y un fallo de subida no dejaba rastro: así se quedaron dos días de palabras en el iPad. */
+function save(l){
+  localStorage.setItem(VKEY,JSON.stringify(l));
+  if(window.SYNC)SYNC.ahora(VKEY);
+}
 function norm(s){return (s||'').toLowerCase().replace(/[«»"“”.,;:!¿?()…]/g,'').replace(/[’]/g,"'").trim()}
 var VOCAB=window.VOCAB||{}, SENT=window.SENTENCES||{};
 var DKEY='italiano-dic-cache', DCACHE={};
 try{DCACHE=JSON.parse(localStorage.getItem(DKEY)||'{}')}catch(e){}
 function cacheSet(n,es){if(n&&es){DCACHE[n]=es;localStorage.setItem(DKEY,JSON.stringify(DCACHE))}}
 function lookup(it){var n=norm(it);return VOCAB[n]||SENT[n]||DCACHE[n]||null;}
-function translateOnline(t){return fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=it&tl=es&dt=t&q='+encodeURIComponent(t)).then(function(r){return r.json()}).then(function(j){var x=(j&&j[0])?j[0].map(function(s){return s[0]}).join(''):null;return (x&&x.toLowerCase()!==t.toLowerCase())?x.trim():null}).catch(function(){return null});}
+/* Toda la traducción pasa AHORA por window.TRAD (assets/vocab.js): reintenta, cachea, va de una
+   en una y tira de un traductor de respaldo cuando Google contesta 429 —que es exactamente lo que
+   dejó esta sección inservible durante dos días—. Estos dos envoltorios existen para no cambiar a
+   los llamadores: `translateOnline` sigue devolviendo texto o null. */
+function translateOnline(t){return window.TRAD?TRAD.frase(t):Promise.resolve(null);}
+function translateDetalle(t){return window.TRAD?TRAD.detalle(t):Promise.resolve({texto:null,fuente:null,dudosa:false,igual:false});}
+function tradBloqueado(){return !!(window.TRAD&&TRAD.enCuarentena&&TRAD.enCuarentena());}
 // Definición EN ITALIANO (monolingüe): curada (slang) → caché → Google it→it
 var DEF_IT=window.DEF_IT||{};
 var FKEY='italiano-defit-cache', FCACHE={};
@@ -203,9 +247,10 @@ try{FCACHE=JSON.parse(localStorage.getItem(FKEY)||'{}')}catch(e){}
 function fcacheSet(n,d){if(n&&d){FCACHE[n]=d;localStorage.setItem(FKEY,JSON.stringify(FCACHE))}}
 function shorten(s){if(!s)return null;s=(''+s).replace(/<[^>]+>/g,'').trim().split(/[;:|]/)[0].trim();if(s.length>95)s=s.slice(0,93)+'…';return s;}
 function defLocal(it){var n=norm(it);return DEF_IT[n]||FCACHE[n]||null;}
-function defOnline(t){return fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=it&tl=it&dt=md&q='+encodeURIComponent(t)).then(function(r){return r.json()}).then(function(j){var md=j&&j[12];if(!md||!md.length)return null;var e=md[0]&&md[0][1]&&md[0][1][0];var def=Array.isArray(e)?e[0]:e;return shorten(def);}).catch(function(){return null});}
+// Si Google ya nos bloqueó (429) no se le vuelve a llamar: insistir alarga el bloqueo.
+function defOnline(t){if(tradBloqueado())return Promise.resolve(null);return fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=it&tl=it&dt=md&q='+encodeURIComponent(t)).then(function(r){return r.json()}).then(function(j){var md=j&&j[12];if(!md||!md.length)return null;var e=md[0]&&md[0][1]&&md[0][1][0];var def=Array.isArray(e)?e[0]:e;return shorten(def);}).catch(function(){return null});}
 // Varios sentidos (traducciones alternativas it→es, dt=at — el diccionario dt=bd está vacío en este endpoint)
-function dictOnline(t){var stripAcc=function(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();};var wn=stripAcc(t);
+function dictOnline(t){if(tradBloqueado())return Promise.resolve(null);var stripAcc=function(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();};var wn=stripAcc(t);
   return fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=it&tl=es&dt=t&dt=at&q='+encodeURIComponent(t)).then(function(r){return r.json()}).then(function(j){
   var terms=[]; try{(j[5][0][2]||[]).forEach(function(a){if(a&&a[0]&&stripAcc(a[0])!==wn&&terms.indexOf(a[0])<0)terms.push(a[0]);});}catch(e){}
   return terms.length>1?terms.slice(0,8).join(', '):null;   // solo si hay MÁS de un sentido (y ninguno = la palabra sin traducir)
@@ -547,6 +592,7 @@ function resolveLemas(){
            (l.lema?'<b>'+esc(l.lema)+'</b>':'')+'<span class="cat">'+esc(l.pos||'')+
            (l.flex?' · '+esc(l.flex):'')+'</span></button>';
       });
+      mostrarDef(ls,palabra);
       lemaEl.innerHTML=h;
       [].slice.call(lemaEl.querySelectorAll('.lema-op')).forEach(function(b){
         b.onclick=function(){
@@ -557,6 +603,17 @@ function resolveLemas(){
     });
   }
   function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  /* Definición en italiano. PRIMERO Wiktionary: su texto ya viene descargado para sacar el lema,
+     así que no cuesta ni una petición más, y es lo ÚNICO que seguía respondiendo en el iPad
+     mientras Google estaba bloqueado. Google queda de última opción y solo si no hay cuarentena. */
+  function mostrarDef(ls,palabra){
+    if(sel!==palabra)return;
+    var d=null;
+    (ls||[]).forEach(function(l){if(!d&&l.def)d=l.def;});
+    if(!d)d=defLocal(palabra);
+    if(d){defitEl.textContent='🇮🇹 '+d;return;}
+    defOnline(palabra).then(function(x){if(x&&sel===palabra)defitEl.textContent='🇮🇹 '+x;});
+  }
   function clean(w){return w.replace(/^[«»"“”'.,;:!¿?()\[\]…]+|[«»"“”'.,;:!¿?()\[\]…]+$/g,'');}
   function normWords(s){return (s||'').toLowerCase().replace(/[.,;:!¿?()«»"“”…]/g,' ').split(/\s+/).filter(Boolean);}
   // conectores/artículos que son ruido en el diff (no son la traducción de la palabra)
@@ -609,22 +666,28 @@ function resolveLemas(){
     fraseEsEl.textContent='traduciendo…'; defitEl.textContent='';
     sensosEl.innerHTML='';
     dictOnline(word).then(function(s){if(s&&sel===word)sensosEl.innerHTML='<b>Otros sentidos:</b> '+s;});
-    pintarLemas(word);
-    translateOnline(frase).then(function(fraseES){
+    pintarLemas(word);   // de aquí sale también la definición en italiano (Wiktionary)
+    translateDetalle(frase).then(function(r){
+      if(sel!==word)return;                       // ya cambió de palabra
+      var fraseES=(r.texto&&!r.igual)?r.texto:null;
       wordEsEl.placeholder='significado en contexto (edítalo si hace falta)';
-      fraseEsEl.textContent=fraseES||FALLO_TRADUCTOR;
+      if(!fraseES){ fraseEsEl.textContent=FALLO_TRADUCTOR; solaFallback(word); return; }
+      // Si vino del traductor de respaldo hay que DECIRLO: acierta con las frases pero se
+      // equivoca con palabras sueltas («giunto» -> «junta»), así que no puede pasar por buena.
+      fraseEsEl.innerHTML=esc(fraseES)+(r.dudosa?' <span class="cx-dudosa">⚠ traducción de respaldo — revísala</span>':'');
       var local=lookup(word); if(local){wordEsEl.value=local;return;}
       var re=new RegExp('\\b'+word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i');
       var sinES=frase.replace(re,' ').replace(/\s+/g,' ').trim();
       translateOnline(sinES).then(function(sinES2){
-        var ctx=(fraseES&&sinES2)?contextDiff(fraseES,sinES2,word):null;
+        if(sel!==word)return;
+        var ctx=sinES2?contextDiff(fraseES,sinES2,word):null;
         if(ctx){wordEsEl.value=ctx;} else{solaFallback(word);}
       }).catch(function(){solaFallback(word);});
     }).catch(function(){
+      if(sel!==word)return;
       wordEsEl.placeholder='escríbelo tú, o déjalo y se completa después';
       fraseEsEl.textContent=FALLO_TRADUCTOR; wordEsEl.value='';
     });
-    defOnline(word).then(function(d){if(d)defitEl.textContent='🇮🇹 '+d;});
   }
   saveBtn.onclick=function(){
     if(!sel){alert('Primero haz clic en la palabra que quieres guardar.');return;}
@@ -642,6 +705,87 @@ function resolveLemas(){
     fraseEl.value=''; renderTokens(); render();
   };
   var ft; fraseEl.addEventListener('input',function(){clearTimeout(ft);ft=setTimeout(renderTokens,250);});
+})();
+
+/* ---------- Estado de la sincronización y diagnóstico ----------
+   POR QUÉ: durante dos días las palabras guardadas en el iPad no llegaron a la nube y no había
+   forma de saberlo — la página se veía normal. Ahora se dice siempre, y hay un botón que prueba
+   los tres servicios EN EL PROPIO APARATO, que es donde falla. */
+(function(){
+  var el=document.getElementById('sync');
+  function hace(t){
+    if(!t)return 'nunca';
+    var s=Math.round((Date.now()-t)/1000);
+    if(s<60)return 'hace un momento';
+    if(s<3600)return 'hace '+Math.round(s/60)+' min';
+    if(s<86400)return 'hace '+Math.round(s/3600)+' h';
+    return 'hace '+Math.round(s/86400)+' días';
+  }
+  function pinta(e){
+    if(!el)return;
+    var n=(e.pendientes||[]).length;
+    if(n){
+      el.innerHTML='<span class="p mal">⚠ sin subir</span><span>'+n+' cambio'+(n>1?'s':'')+
+        ' solo en este aparato'+(e.error?' — '+esc2(e.error):'')+'</span>'+
+        '<button id="sync-ya">reintentar ahora</button>';
+      var b=document.getElementById('sync-ya');
+      if(b)b.onclick=function(){ b.textContent='reintentando…'; SYNC.reintentar(); };
+    } else {
+      el.innerHTML='<span class="p ok">✓ sincronizado</span><span>'+hace(e.ultimoOk)+'</span>';
+    }
+    refrescarDiag();
+  }
+  function esc2(x){return (''+x).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+
+  function refrescarDiag(){
+    var v=document.getElementById('d-ver'); if(!v)return;
+    var cargada=window.VERSION_CARGADA||'?', pub=window.VERSION_PUBLICADA;
+    if(pub&&pub!==cargada){ v.textContent=cargada+' — ⚠ hay una más nueva ('+pub+')'; v.className='no'; }
+    else { v.textContent=cargada; v.className='si'; }
+    var ses=document.getElementById('d-ses');
+    var hay=!!(window.firebase&&firebase.auth&&firebase.auth().currentUser);
+    ses.textContent=hay?'sí':'no'; ses.className=hay?'si':'no';
+    var e=(window.SYNC?SYNC.estado():{})||{};
+    var sy=document.getElementById('d-sync'), n=(e.pendientes||[]).length;
+    sy.textContent=n?(n+' sin subir'):hace(e.ultimoOk); sy.className=n?'no':'si';
+    var c=document.getElementById('d-cache');
+    c.textContent=window.TRAD?(TRAD.cuantasEnCache()+(TRAD.enCuarentena()?' · Google en pausa por bloqueo':'')):'—';
+    c.className=window.TRAD&&TRAD.enCuarentena()?'no':'gris';
+  }
+
+  var btn=document.getElementById('d-probar');
+  if(btn)btn.onclick=function(){
+    var out=document.getElementById('d-res');
+    btn.disabled=true; out.innerHTML='<div class="l"><span>probando…</span><b class="gris">espera</b></div>';
+    TRAD.probar().then(function(rs){
+      var nombre={google:'traductor de Google',respaldo:'traductor de respaldo',wikt:'Wiktionary (definiciones)'};
+      out.innerHTML=rs.map(function(r){
+        return '<div class="l"><span>'+nombre[r.quien]+'</span><b class="'+(r.ok?'si':'no')+'">'+
+               (r.ok?'responde':'NO responde'+(r.detalle?' · '+esc2(r.detalle):''))+'</b></div>';
+      }).join('');
+      btn.disabled=false; refrescarDiag();
+    }).catch(function(){ out.innerHTML='<div class="l"><span>no se pudo probar</span><b class="no">—</b></div>'; btn.disabled=false; });
+  };
+
+  /* assets/firebase.js va con `defer`, así que se ejecuta DESPUÉS de este script en línea:
+     window.SYNC todavía no existe aquí. Sin esperarlo, el indicador se quedaba en «modo local»
+     para siempre — justo el aviso que tiene que funcionar. Se espera a que aparezca. */
+  function engancha(){
+    if(!window.SYNC)return false;
+    if(SYNC.local){ if(el)el.innerHTML='<span class="p va">modo local — sin nube</span>'; }
+    else SYNC.alCambiar(pinta);
+    refrescarDiag();
+    return true;
+  }
+  if(!engancha()){
+    var reloj=setInterval(function(){ if(engancha())clearInterval(reloj); },300);
+    setTimeout(function(){
+      clearInterval(reloj);
+      if(!window.SYNC&&el)el.innerHTML='<span class="p mal">⚠ sin conexión con la nube — tus palabras están solo en este aparato</span>';
+    },8000);
+  }
+  setInterval(refrescarDiag, 30000);
+  var d=document.getElementById('diag'); if(d)d.addEventListener('toggle',refrescarDiag);
 })();
 
 render();

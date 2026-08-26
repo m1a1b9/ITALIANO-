@@ -744,7 +744,7 @@ window.DEF_IT = {
    cae a reglas locales marcadas como dudosas (fuente:'regla') para que se puedan revisar.
    Uso:  LEMA.analizar('mangiava').then(function(ls){ ... })   ->  [{lema,pos,flex,fuente}]      */
 window.LEMA = (function(){
-  var VERSION = 4;                       // súbela si cambia el parser: invalida caché y re-analiza
+  var VERSION = 5;                       // súbela si cambia el parser: invalida caché y re-analiza
   var CKEY = 'italiano-lema-cache-v' + VERSION, CACHE = {};
   try { CACHE = JSON.parse(localStorage.getItem(CKEY) || '{}'); } catch (e) {}
   function cacheSet(k, v){ try { CACHE[k] = v; localStorage.setItem(CKEY, JSON.stringify(CACHE)); } catch (e) {} }
@@ -872,6 +872,17 @@ window.LEMA = (function(){
     return w.join(' ').replace(/\s+/g, ' ').trim() || null;
   }
 
+  /* ¿Esta línea es solo el encabezado de la acepción y no una definición?
+     «amareggiato m sing» sí · «giungere (vai alla coniugazione)» sí ·
+     «deluso da un fatto, tradito nelle aspettative» no (esa es la definición). */
+  function esCabecera(l, palabra){
+    var n = (l || '').toLowerCase().replace(/\([^)]*\)/g, ' ').replace(/\s+/g, ' ').trim();
+    var p = (palabra || '').toLowerCase();
+    if (!p || n.indexOf(p) !== 0) return false;
+    var resto = n.slice(p.length).replace(/[,;.]/g, ' ').trim();
+    return resto === '' || /^(m|f|mf)?\s*(sing|plur|pl|inv)?\s*(m|f)?\s*(sing|plur|pl|inv)?$/.test(resto);
+  }
+
   /* Del texto plano de Wiktionary saca una lectura por sección gramatical.
      Estructura real: «=== Voce verbale ===» y debajo la palabra + «…​ di <lema>». */
   function parsear(txt, palabra){
@@ -900,8 +911,22 @@ window.LEMA = (function(){
     var out = [], vistos = {};
     bloques.forEach(function(b){
       var info = POS[b.sec], pos = info[0], esForma = info[1], lema = null, flex = null;
-      var genero = null, plural = null, registro = null;
+      var genero = null, plural = null, registro = null, def = null;
       b.lineas.forEach(function(l){
+        /* DEFINICIÓN EN ITALIANO — el texto de Wiktionary ya está descargado para sacar el lema,
+           así que aprovecharla no cuesta ni una petición más. Importa porque Wiktionary es lo
+           ÚNICO que le seguía respondiendo en el iPad cuando Google lo tenía bloqueado por 429:
+           es la red de seguridad para no quedarse sin ninguna pista del significado.
+           La 1.ª línea que no es el encabezado es la definición (los ejemplos van después). */
+        if (!def && !esCabecera(l, palabra) && l.length > 3 && !/^=+/.test(l)){
+          var d = l.replace(/\s+/g, ' ').trim();
+          // Fuera el relleno de Wiktionary y las líneas que solo repiten la gramática
+          // («participio passato maschile singolare di giungere»): eso ya lo dice `flex`
+          // y como definición no aporta nada sobre el significado.
+          var gram = /^(.*?)\bdi\s+[a-zàèéìòùA-ZÀÈÉÌÒÙ'\-]+\s*$/.exec(d);
+          var inutil = /definizione mancante|^vedi\b|^si veda\b/i.test(d) || !!(gram && DESC_FLEX.test(gram[1]));
+          if (!inutil && d.length <= 160) def = d;
+        }
         // «battibecco m sing (pl.: battibecchi)» -> género y plural
         if (!genero){
           var g = /^\S+\s+([mf])\s+(?:sing|pl)\b(?:.*?\(pl\.?:?\s*([^)]+)\))?/.exec(l);
@@ -939,6 +964,7 @@ window.LEMA = (function(){
       vistos[k] = 1;
       var o = { lema: lema, pos: pos, flex: flex, fuente: 'wiktionary' };
       if (registro) o.registro = registro;
+      if (def) o.def = def;                       // definicion en italiano (red de seguridad si el traductor cae)
       if (pos === 'sustantivo' && !esForma){ if (genero) o.genero = genero; if (plural) o.plural = plural; }
       if (pos === 'verbo'){
         var a = auxDe(lema, b.trans);
@@ -1058,4 +1084,180 @@ window.LEMA = (function(){
 
   return { analizar: analizar, etiqueta: etiqueta, ficha: ficha, elegirPorContexto: elegirPorContexto,
            registroEs: registroEs, esVulgar: esVulgar, norm: norm, version: VERSION };
+})();
+
+/* ============================================================================
+   window.TRAD — traducción it→es que NO se rinde a la primera        (26-ago-2026)
+   ----------------------------------------------------------------------------
+   POR QUÉ EXISTE: el endpoint que usamos (translate.googleapis.com, client=gtx)
+   es NO OFICIAL y falla de vez en cuando. Comprobado: «esiliato e» devolvió
+   HTTP 500 y al repetirla, 200. Antes había DOS copias de `translateOnline`
+   (curso.js y mi-vocabulario.html), las dos sin un solo reintento: ese fallo
+   suelto tumbaba «Agregar con contexto» entero y dejaba la palabra sin
+   significado. Ahora hay una sola puerta, con reintento, caché y cola.
+
+   - REINTENTO: 3 intentos (0 · 700 ms · 2 s).
+   - CACHÉ en localStorage: lo ya traducido no vuelve a la red.
+   - COLA: una petición a la vez. Un clic disparaba 3-4 llamadas simultáneas al
+     mismo servicio, compitiendo entre ellas.
+   - RESPALDO (MyMemory) SOLO si Google agota los reintentos. Traduce bien las
+     frases pero se equivoca con palabras sueltas («giunto» -> «junta»), así que
+     viaja marcado `dudosa:true` y quien lo pinte DEBE avisar. Se le manda solo
+     el texto a traducir: ningún dato personal.
+   ========================================================================== */
+window.TRAD = (function(){
+  var CKEY = 'italiano-trad-cache', MAX = 800, CACHE = {};
+  try { CACHE = JSON.parse(localStorage.getItem(CKEY) || '{}'); } catch (e) {}
+  function guardarCache(){
+    try {
+      var ks = Object.keys(CACHE);
+      if (ks.length > MAX) ks.slice(0, ks.length - MAX).forEach(function(k){ delete CACHE[k]; });
+      localStorage.setItem(CKEY, JSON.stringify(CACHE));
+    } catch (e) {}
+  }
+  function clave(t){ return (t || '').replace(/\s+/g, ' ').trim().toLowerCase(); }
+  function esperar(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+  // Estado de la última llamada a cada servicio: lo lee el diagnóstico de la página.
+  var salud = { google: null, respaldo: null, wikt: null };
+  function anotar(quien, ok, detalle){ salud[quien] = { ok: ok, detalle: detalle || '', t: Date.now() }; }
+
+  // Una petición a la vez: la cola sigue viva aunque una falle.
+  var cola = Promise.resolve();
+  function enCola(fn){
+    var p = cola.then(fn, fn);
+    cola = p.then(function(){}, function(){});
+    return p;
+  }
+
+  function pedirGoogle(texto){
+    var u = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=it&tl=es&dt=t&q=' + encodeURIComponent(texto);
+    return fetch(u).then(function(r){
+      if (!r.ok){ var e = new Error('HTTP ' + r.status); e.status = r.status; throw e; }
+      return r.json();
+    }).then(function(j){
+      var t = (j && j[0]) ? j[0].map(function(x){ return x[0]; }).join('') : null;
+      return t ? t.trim() : null;
+    });
+  }
+
+  function pedirRespaldo(texto){
+    var u = 'https://api.mymemory.translated.net/get?langpair=it|es&q=' + encodeURIComponent(texto);
+    return fetch(u).then(function(r){
+      if (!r.ok){ var e = new Error('HTTP ' + r.status); e.status = r.status; throw e; }
+      return r.json();
+    }).then(function(j){
+      var t = j && j.responseData && j.responseData.translatedText;
+      if (!t) return null;
+      // MyMemory devuelve a veces la palabra envuelta en signos (vi «¿Amargado?») o en mayúsculas.
+      t = ('' + t).trim().replace(/^[¿¡"\s]+/, '').replace(/[?!"\s]+$/, '').trim();
+      if (!t || /^[?!.\-\s]*$/.test(t)) return null;
+      if (t === t.toUpperCase() && t.length > 3) t = t.charAt(0) + t.slice(1).toLowerCase();
+      return t;
+    });
+  }
+
+  /* CUARENTENA — la pieza clave, y la causa REAL del fallo que reportó el usuario.
+     Google no da un error de red: devuelve **HTTP 429 «Sorry...»** cuando una IP usa
+     demasiado este endpoint no oficial, y el bloqueo dura un buen rato. El curso disparaba
+     3-4 peticiones por cada clic en una palabra, así que se lo ganaba solo; y como todo
+     estaba envuelto en `.catch(→ null)`, en pantalla salía «sin conexión».
+     Reproducido: tras una ráfaga de pruebas, esta misma máquina empezó a recibir 429.
+     REGLA: un 429/403 NO se reintenta —insistir alarga el bloqueo—. Se apunta la hora, se
+     deja a Google en cuarentena un rato y mientras tanto se tira del respaldo. */
+  var QKEY = 'italiano-trad-cuarentena', CUARENTENA_MS = 20 * 60 * 1000;
+  function bloqueadoHasta(){ try { return +localStorage.getItem(QKEY) || 0; } catch (e) { return 0; } }
+  function bloqueado(){ return Date.now() < bloqueadoHasta(); }
+  function marcarBloqueo(){ try { localStorage.setItem(QKEY, '' + (Date.now() + CUARENTENA_MS)); } catch (e) {} }
+  function levantarBloqueo(){ try { localStorage.removeItem(QKEY); } catch (e) {} }
+
+  var ESPERAS = [0, 700, 2000];
+  function conReintento(texto){
+    if (bloqueado()){
+      var b = new Error('en cuarentena tras un 429'); b.status = 429; b.cuarentena = true;
+      return Promise.reject(b);
+    }
+    var ultimoError = null;
+    function intento(i){
+      if (i >= ESPERAS.length) return Promise.reject(ultimoError || new Error('sin respuesta'));
+      return esperar(ESPERAS[i])
+        .then(function(){ return pedirGoogle(texto); })
+        .catch(function(e){
+          ultimoError = e;
+          // 429/403 = nos está limitando. Rendirse YA: insistir solo alarga el bloqueo.
+          if (e && (e.status === 429 || e.status === 403)){ marcarBloqueo(); throw e; }
+          return intento(i + 1);
+        });
+    }
+    return intento(0);
+  }
+
+  /* Núcleo. Devuelve SIEMPRE un objeto:
+       {texto, fuente:'cache'|'google'|'respaldo', dudosa, igual}
+     `igual` = la traducción es idéntica al original (no supo traducirla).
+     `dudosa` = viene del respaldo: hay que enseñarla marcada y no guardarla sola. */
+  function detalle(texto){
+    var k = clave(texto);
+    if (!k) return Promise.resolve({ texto: null, fuente: null, dudosa: false, igual: false });
+    if (CACHE[k]) return Promise.resolve({ texto: CACHE[k].t, fuente: 'cache', dudosa: !!CACHE[k].d, igual: false });
+    return enCola(function(){
+      if (CACHE[k]) return { texto: CACHE[k].t, fuente: 'cache', dudosa: !!CACHE[k].d, igual: false };
+      return conReintento(texto).then(function(t){
+        anotar('google', true); levantarBloqueo();   // volvió a responder: se acabó la cuarentena
+        var igual = !!t && t.toLowerCase() === texto.toLowerCase();
+        if (t && !igual){ CACHE[k] = { t: t, d: 0 }; guardarCache(); }
+        return { texto: t, fuente: 'google', dudosa: false, igual: igual };
+      }).catch(function(e){
+        anotar('google', false, e && (e.status ? 'HTTP ' + e.status : (e.message || 'sin respuesta')));
+        return pedirRespaldo(texto).then(function(t){
+          anotar('respaldo', !!t);
+          var igual = !!t && t.toLowerCase() === texto.toLowerCase();
+          if (t && !igual){ CACHE[k] = { t: t, d: 1 }; guardarCache(); }
+          return { texto: t, fuente: 'respaldo', dudosa: true, igual: igual };
+        }).catch(function(e2){
+          anotar('respaldo', false, (e2 && e2.message) || 'sin respuesta');
+          return { texto: null, fuente: null, dudosa: false, igual: false };
+        });
+      });
+    });
+  }
+
+  /* Compatible con el viejo `translateOnline`: string o null, y null también cuando
+     la «traducción» es la palabra sin traducir (que es lo que hacía antes). */
+  function frase(texto){
+    return detalle(texto).then(function(r){ return (r.texto && !r.igual) ? r.texto : null; });
+  }
+
+  /* Para el diagnóstico de la página: prueba cada servicio y dice qué contestó. */
+  function probar(){
+    var pruebas = [
+      ['google', function(){ return pedirGoogle('ciao'); }],
+      ['respaldo', function(){ return pedirRespaldo('ciao'); }],
+      ['wikt', function(){
+        return fetch('https://it.wiktionary.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&origin=*&titles=ciao')
+          .then(function(r){ if (!r.ok){ var e = new Error('HTTP ' + r.status); e.status = r.status; throw e; } return r.json(); })
+          .then(function(j){ return (j && j.query) ? 'ok' : null; });
+      }]
+    ];
+    return Promise.all(pruebas.map(function(p){
+      return p[1]().then(function(v){
+        anotar(p[0], !!v, v ? '' : 'respondió vacío');
+        if (p[0] === 'google' && v) levantarBloqueo();
+        return { quien: p[0], ok: !!v, detalle: v ? '' : 'respondió vacío' };
+      }).catch(function(e){
+        var d;
+        if (e && e.status === 429) d = 'HTTP 429 — Google está limitando esta conexión';
+        else if (e && e.status === 403) d = 'HTTP 403 — Google rechaza esta conexión';
+        else d = (e && (e.status ? 'HTTP ' + e.status : e.message)) || 'sin respuesta';
+        if (p[0] === 'google' && e && (e.status === 429 || e.status === 403)) marcarBloqueo();
+        anotar(p[0], false, d);
+        return { quien: p[0], ok: false, detalle: d };
+      });
+    }));
+  }
+
+  function enCache(texto){ return !!CACHE[clave(texto)]; }
+  return { frase: frase, detalle: detalle, probar: probar, salud: salud, enCache: enCache,
+           cuantasEnCache: function(){ return Object.keys(CACHE).length; },
+           enCuarentena: bloqueado, cuarentenaHasta: bloqueadoHasta, levantarCuarentena: levantarBloqueo };
 })();

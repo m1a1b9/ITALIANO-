@@ -135,6 +135,19 @@
      Espeja ciertas claves de localStorage a users/{uid}/progreso/{clave}, FUSIONANDO (unión) para
      no perder datos entre dispositivos. En localhost NO se activa (ahí manda el servidor local). */
   (function(){
+    /* La cabecera de aquí arriba decía «en localhost NO se activa», pero NO había comprobación
+       ninguna: el espejo arrancaba igual, `loginGate` plantaba el recuadro de contraseña encima
+       del curso en el servidor local, y todo quedaba marcado como «sin subir». Esta es la
+       comprobación que faltaba. Se deja un SYNC de mentira para que la página no tenga que
+       preguntar si existe. */
+    if(/localhost|127\.0\.0\.1/.test(location.hostname)){
+      window.SYNC={ local:true,
+        estado:function(){return {ultimoOk:0,pendientes:[],error:''};},
+        ahora:function(){return Promise.resolve(false);},
+        reintentar:function(){return Promise.resolve([]);},
+        alCambiar:function(){}, claves:[] };
+      return;
+    }
     function norm(s){return (''+(s||'')).toLowerCase().trim();}
     /* Fusión de listas por clave. GANA LA VERSIÓN MÁS RECIENTE (campo `m` = última modificación;
        si falta, se usa `t` de creación).
@@ -181,19 +194,69 @@
     var muted=false;
     function lsSetMuted(k,v){muted=true;try{localStorage.setItem(k,JSON.stringify(v));}finally{muted=false;}}
     function progRef(k){var u=auth.currentUser;return u?db.collection('users').doc(u.uid).collection('progreso').doc(k):null;}
+    var _set=localStorage.setItem.bind(localStorage);
+
+    /* ===== ESTADO DE LA SINCRONIZACIÓN: visible, y con reintento =====
+       Antes esto era `ref.set(...).catch(function(){})`. Si la escritura fallaba, lo guardado se
+       quedaba SOLO en este aparato y nadie se enteraba: así se perdieron dos días de vocabulario
+       (en la nube no había nada nuevo desde el 20-ago y él siguió guardando palabras a diario).
+       Ahora lo que no sube queda en `pendientes` y se reintenta —al volver la conexión, al volver
+       a la pestaña (clave en el iPad, que suspende la app) y con espera creciente— y la página lo
+       enseña. Los datos NUNCA se pierden: siguen en localStorage hasta que suben. */
+    var EKEY='italiano-sync-estado';
+    var estado={ultimoOk:0, pendientes:[], error:''};
+    try{ var _g=JSON.parse(localStorage.getItem(EKEY)||'null'); if(_g&&_g.pendientes)estado=_g; }catch(e){}
+    var oyentes=[];
+    function avisar(){
+      try{ _set(EKEY, JSON.stringify(estado)); }catch(e){}
+      oyentes.forEach(function(f){ try{ f(estado); }catch(e){} });
+    }
+    function pendiente(k,si){
+      var i=estado.pendientes.indexOf(k);
+      if(si && i<0)estado.pendientes.push(k);
+      if(!si && i>=0)estado.pendientes.splice(i,1);
+    }
+    var reintento=null, espera=5000, ESPERA_MAX=5*60*1000;
+    function programarReintento(){
+      if(reintento)return;
+      reintento=setTimeout(function(){ reintento=null; reintentarPendientes(); }, espera);
+      espera=Math.min(espera*2, ESPERA_MAX);
+    }
+    function reintentarPendientes(){
+      if(!estado.pendientes.length)return Promise.resolve([]);
+      return Promise.all(estado.pendientes.slice().map(sync));
+    }
+
     function sync(k){
-      var ref=progRef(k); if(!ref)return Promise.resolve(false);
+      var ref=progRef(k);
+      if(!ref){                                   // sin sesión no se puede escribir: queda pendiente
+        pendiente(k,true); estado.error='sin sesión iniciada'; avisar();
+        return Promise.resolve(false);
+      }
       var before=localStorage.getItem(k), local=lsGet(k);
       return ref.get().then(function(d){
         var cloud=d.exists?(d.data()||{}).data:null;
         var merged=CLAVES[k](cloud, local);
         lsSetMuted(k, merged);
-        ref.set({data:merged, t:Date.now()}).catch(function(){});
-        return localStorage.getItem(k)!==before;   // ¿la nube trajo algo nuevo a este dispositivo?
-      }).catch(function(){ if(local!=null)ref.set({data:local, t:Date.now()}).catch(function(){}); return false; });
+        return ref.set({data:merged, t:Date.now()}).then(function(){
+          pendiente(k,false); estado.ultimoOk=Date.now(); estado.error=''; espera=5000; avisar();
+          return localStorage.getItem(k)!==before;   // ¿la nube trajo algo nuevo a este dispositivo?
+        });
+      }).catch(function(e){
+        pendiente(k,true);
+        estado.error=(e&&(e.code||e.message))||'no se pudo guardar en la nube';
+        avisar(); programarReintento();
+        return false;
+      });
     }
-    var timers={}, _set=localStorage.setItem.bind(localStorage);
+
+    var timers={};
     localStorage.setItem=function(k,v){ _set(k,v); if(!muted && CLAVES[k]){ clearTimeout(timers[k]); timers[k]=setTimeout(function(){sync(k);},1200); } };
+
+    // El iPad suspende la app al cambiar de pantalla: al volver es cuando hay que reintentar.
+    window.addEventListener('online', reintentarPendientes);
+    document.addEventListener('visibilitychange', function(){ if(!document.hidden) reintentarPendientes(); });
+
     loginGate(function(){
       Promise.all(Object.keys(CLAVES).map(sync)).then(function(res){
         if(res.some(function(c){return c;}) && !sessionStorage.getItem('fb-reload')){
@@ -201,5 +264,39 @@
         }
       });
     });
+
+    /* Lo usa la página para pintar «✓ sincronizado» / «⚠ N sin subir», y para subir en el acto
+       al guardar una palabra en vez de esperar el retardo de 1,2 s. */
+    window.SYNC={
+      estado:function(){ return estado; },
+      ahora:function(k){ return k?sync(k):Promise.all(Object.keys(CLAVES).map(sync)); },
+      reintentar:reintentarPendientes,
+      alCambiar:function(f){ oyentes.push(f); try{ f(estado); }catch(e){} },
+      claves:Object.keys(CLAVES)
+    };
+  })();
+
+  /* ===== QUE NO SE QUEDE CLAVADO EN UNA VERSIÓN VIEJA =====
+     El curso se abre desde un icono en la pantalla de inicio del iPad. Esa modalidad guarda su
+     PROPIA caché, no comparte la de Safari y no se puede recargar a mano: si se queda con un HTML
+     viejo sigue pidiendo el `?v=` antiguo y NINGUNA corrección futura le llega. El truco de `?v=`
+     no salva de esto, porque es el propio HTML el que se ha quedado atrás.
+     Se compara la versión de este archivo con la publicada y se recarga UNA sola vez por versión
+     (la marca en sessionStorage evita el bucle si la caché se resiste). */
+  (function(){
+    var sc=document.currentScript;
+    if(!sc){ var l=document.querySelectorAll('script[src*="firebase.js"]'); sc=l[l.length-1]; }
+    var m=sc && /[?&]v=([^&"']+)/.exec(sc.src||'');
+    var mia=m?m[1]:null;
+    window.VERSION_CARGADA=mia;
+    if(!mia||!window.fetch)return;
+    fetch('version.json',{cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).then(function(j){
+      if(!j||!j.v)return;
+      window.VERSION_PUBLICADA=j.v;
+      if(j.v===mia)return;
+      if(sessionStorage.getItem('fb-version')===j.v)return;   // ya se recargó por esta versión
+      sessionStorage.setItem('fb-version',j.v);
+      location.reload();
+    }).catch(function(){});
   })();
 })();
