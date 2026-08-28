@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mi Vocabulario · Italiano</title>
-<link rel="stylesheet" href="assets/curso.css?v=20260828a">
-<script src="assets/vocab.js?v=20260828a"></script>
-<script src="assets/frases.js?v=20260828a"></script>
+<link rel="stylesheet" href="assets/curso.css?v=20260828b">
+<script src="assets/vocab.js?v=20260828b"></script>
+<script src="assets/frases.js?v=20260828b"></script>
 <style>
   body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:760px;margin:0 auto;padding:2.5rem 1.5rem 4rem;line-height:1.5}
   .top{border-left:4px solid #c79a3a;padding-left:1rem;margin-bottom:1.2rem}
@@ -80,8 +80,17 @@
   .cx-mas summary::-webkit-details-marker{display:none}
   .cx-mas summary::before{content:"\25b8 "}
   .cx-mas[open] summary::before{content:"\25be "}
-  .cx-base{font-size:.83rem;color:#555;margin-top:.3rem}
-  .cx-base b{font-style:italic;color:#14392b}
+  /* La palabra base (el verbo del que sale la forma) es lo que de verdad estudia: va A LA VISTA,
+     con su propio significado editable, no escondida en «más». */
+  .cx-base{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin:.5rem 0 .1rem;
+           font-size:.84rem;color:#555;background:#f7fbff;border:1px solid #e2edf7;
+           border-radius:6px;padding:.4rem .6rem}
+  .cx-base .et{color:#7a94ad;font-size:.76rem}
+  .cx-base b{font-style:italic;color:#14392b;font-size:.92rem}
+  .cx-base .cat{color:#8a9aa8;font-size:.76rem}
+  .cx-base input{flex:1;min-width:130px;border:1px solid #cddff0;border-radius:6px;
+                 padding:.35rem .55rem;font:inherit;font-size:.85rem;background:#fff}
+  .cx-base:empty{display:none}
   /* lema / categoría: la palabra base desde la que se estudia y conjuga */
   .cx-lema{margin:.5rem 0 .2rem;font-size:.83rem;color:#555}
   .cx-lema .t{color:#7a5c12;font-weight:700;display:block;margin-bottom:.25rem}
@@ -144,7 +153,7 @@
   .w2 .acc .del2{color:#c0392b;border-color:#f0d5d2}
   .vacio2{text-align:center;color:#999;padding:2rem 1rem;background:#fff;border:1px dashed #ccc;border-radius:10px}
 </style>
-<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260828a"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260828b"></script>
 </head>
 <body>
 <div class="top">
@@ -169,11 +178,11 @@
       <input id="cx-word-es" placeholder="significado">
     </div>
     <div class="cx-sensos" id="cx-sensos"></div>
+    <div class="cx-base" id="cx-base"></div>
     <div class="cx-lema" id="cx-lema"></div>
     <details class="cx-mas" id="cx-mas">
       <summary>más</summary>
       <div class="cx-defit" id="cx-defit"></div>
-      <div class="cx-base" id="cx-base"></div>
     </details>
     <button id="cx-save">★ Guardar</button>
   </div>
@@ -639,12 +648,31 @@ function resolveLemas(){
   function pintarMas(){
     var l=lemaSel||((lecturas&&lecturas.length)?lecturas[0]:null);
     var defs=(l&&l.defs)||[];
-    defitEl.innerHTML=defs.length
-      ? '🇮🇹 '+defs.map(function(d){return esc(d)}).join('<br>🇮🇹 ')
-      : '';
-    baseEl.innerHTML=l&&l.lema
-      ? 'palabra base: <b>'+esc(l.lema)+'</b> · '+esc(l.pos||'')+(l.flex?' ('+esc(l.flex)+')':'')
-      : '';
+    defitEl.innerHTML=defs.length ? '🇮🇹 '+defs.map(function(d){return esc(d)}).join('<br>🇮🇹 ') : '';
+    pintarBase(l);
+  }
+  /* LA PALABRA BASE. Es lo fundamental para él: de «inzuppati» lo que estudia es «inzuppare».
+     Va visible y con su propia traducción, que se guarda junto al significado de la forma.
+     Si la base ES la palabra (un sustantivo como «tasca»), no se repite el campo: sobra. */
+  function pintarBase(l){
+    if(!l||!l.lema){ baseEl.innerHTML=''; return; }
+    var mismaPalabra=norm(l.lema)===norm(sel||'');
+    var h='<span class="et">palabra base:</span><b>'+esc(l.lema)+'</b>'+
+          '<span class="cat">'+esc(l.pos||'')+(l.flex?' · '+esc(l.flex):'')+'</span>';
+    if(!mismaPalabra)h+='<input id="cx-base-es" placeholder="qué significa '+esc(l.lema)+'">';
+    baseEl.innerHTML=h;
+    if(mismaPalabra)return;
+    var inp=document.getElementById('cx-base-es');
+    var yaLocal=lookup(l.lema);                      // glosario curado: manda y no gasta red
+    if(yaLocal){inp.value=yaLocal;return;}
+    inp.placeholder='buscando…';
+    (window.TRAD?TRAD.sentidos(l.lema):Promise.resolve({opciones:[]})).then(function(r){
+      var inp2=document.getElementById('cx-base-es');
+      if(!inp2||inp2.value.trim())return;            // ya escribió él: no se le pisa
+      var op=(r.opciones||[])[0];
+      inp2.placeholder='qué significa '+l.lema;
+      if(op){inp2.value=op;cacheSet(norm(l.lema),op);}
+    }).catch(function(){});
   }
   function renderTokens(){
     var s=fraseEl.value; tokensEl.innerHTML=''; sel=null; resEl.style.display='none';
@@ -712,7 +740,18 @@ function resolveLemas(){
     var e=yaEsta||{it:sel,t:Date.now()};
     if(yaEsta)delete e.borrada;                    // estaba borrada: se revive en vez de duplicarla
     e.es=es; e.ctx=fraseEl.value.trim(); e.itdef=it||''; e.estado=e.estado||'practica'; e.m=Date.now();
-    if(lemaSel){e.lema=lemaSel.lema||'';e.pos=lemaSel.pos||'';e.flex=lemaSel.flex||'';e.lemaFuente=lemaSel.fuente||'';}
+    if(lemaSel){
+      e.lema=lemaSel.lema||'';e.pos=lemaSel.pos||'';e.flex=lemaSel.flex||'';e.lemaFuente=lemaSel.fuente||'';
+      ['aux','auxSupuesto','part','genero','plural','registro'].forEach(function(k){
+        if(lemaSel[k]!==undefined)e[k]=lemaSel[k];
+      });
+      // el significado de la palabra base se guarda AQUÍ, con el de la forma, en vez de esperar
+      // al relleno de segundo plano (que a veces metía basura del traductor de respaldo)
+      var bi=document.getElementById('cx-base-es');
+      var bes=bi?bi.value.trim():'';
+      if(!bes && norm(e.lema)===norm(sel))bes=es;    // la base ES la palabra: mismo significado
+      if(sirveEs(bes)){e.lemaEs=bes;cacheSet(norm(e.lema),bes);}
+    }
     if(!yaEsta)l.push(e);
     save(l); if(es)cacheSet(norm(sel),es);
     fraseEl.value=''; renderTokens(); render();
