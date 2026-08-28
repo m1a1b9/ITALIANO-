@@ -744,7 +744,7 @@ window.DEF_IT = {
    cae a reglas locales marcadas como dudosas (fuente:'regla') para que se puedan revisar.
    Uso:  LEMA.analizar('mangiava').then(function(ls){ ... })   ->  [{lema,pos,flex,fuente}]      */
 window.LEMA = (function(){
-  var VERSION = 5;                       // súbela si cambia el parser: invalida caché y re-analiza
+  var VERSION = 6;                       // súbela si cambia el parser: invalida caché y re-analiza
   var CKEY = 'italiano-lema-cache-v' + VERSION, CACHE = {};
   try { CACHE = JSON.parse(localStorage.getItem(CKEY) || '{}'); } catch (e) {}
   function cacheSet(k, v){ try { CACHE[k] = v; localStorage.setItem(CKEY, JSON.stringify(CACHE)); } catch (e) {} }
@@ -911,21 +911,32 @@ window.LEMA = (function(){
     var out = [], vistos = {};
     bloques.forEach(function(b){
       var info = POS[b.sec], pos = info[0], esForma = info[1], lema = null, flex = null;
-      var genero = null, plural = null, registro = null, def = null;
+      var genero = null, plural = null, registro = null, defs = [];
       b.lineas.forEach(function(l){
-        /* DEFINICIÓN EN ITALIANO — el texto de Wiktionary ya está descargado para sacar el lema,
-           así que aprovecharla no cuesta ni una petición más. Importa porque Wiktionary es lo
-           ÚNICO que le seguía respondiendo en el iPad cuando Google lo tenía bloqueado por 429:
-           es la red de seguridad para no quedarse sin ninguna pista del significado.
-           La 1.ª línea que no es el encabezado es la definición (los ejemplos van después). */
-        if (!def && !esCabecera(l, palabra) && l.length > 3 && !/^=+/.test(l)){
+        /* ACEPCIONES EN ITALIANO — el texto de Wiktionary ya está descargado para sacar el lema,
+           así que aprovecharlas no cuesta ni una petición más. Importa porque Wiktionary es lo
+           ÚNICO que le seguía respondiendo en el iPad cuando Google lo tenía bloqueado por 429.
+           Se guardan hasta 3, no una: «spaccatura» tiene «atto di ridurre qualcosa in pezzi» Y
+           «(senso figurato) divisione tra parti in opposizione» — la segunda es la de SU frase,
+           y con una sola acepción esa nunca se veía. */
+        if (defs.length < 3 && !esCabecera(l, palabra) && l.length > 3 && !/^=+/.test(l)){
           var d = l.replace(/\s+/g, ' ').trim();
-          // Fuera el relleno de Wiktionary y las líneas que solo repiten la gramática
-          // («participio passato maschile singolare di giungere»): eso ya lo dice `flex`
-          // y como definición no aporta nada sobre el significado.
+          // Fuera: el relleno de Wiktionary, los enlaces a otros proyectos, las líneas que solo
+          // repiten la gramática («participio passato … di giungere» — eso ya lo dice `flex`) y
+          // los EJEMPLOS, que Wiktionary pone en el mismo nivel que las definiciones y se colaban
+          // («era amareggiato perché non riusciva più a piangere»).
           var gram = /^(.*?)\bdi\s+[a-zàèéìòùA-ZÀÈÉÌÒÙ'\-]+\s*$/.exec(d);
-          var inutil = /definizione mancante|^vedi\b|^si veda\b/i.test(d) || !!(gram && DESC_FLEX.test(gram[1]));
-          if (!inutil && d.length <= 160) def = d;
+          /* ¿ejemplo o acepción? Las dos llevan la palabra dentro y Wiktionary las pone al mismo
+             nivel. Se descarta como ejemplo solo si además es LARGA (5+ palabras) y no empieza por
+             una marca entre paréntesis. Así cae «era amareggiato perché non riusciva più a piangere»
+             pero se salvan «(per estensione) alito, respiro: trattenere il fiato» y las locuciones
+             cortas como «avere fiato, avere vita», que sí son significados. */
+          var raiz = (lema || palabra || '').slice(0, Math.max(4, Math.floor((lema || palabra || '').length * 0.6)));
+          var tieneRaiz = raiz.length > 3 && new RegExp('\\b' + raiz.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i').test(d);
+          var ejemplo = tieneRaiz && d.split(/\s+/).length >= 5 && !/^\s*\(/.test(d);
+          var inutil = /definizione mancante|^vedi\b|^si veda\b|altri progetti|wikipedia|wikiquote/i.test(d) ||
+                       !!(gram && DESC_FLEX.test(gram[1])) || ejemplo;
+          if (!inutil && d.length <= 160 && defs.indexOf(d) < 0) defs.push(d);
         }
         // «battibecco m sing (pl.: battibecchi)» -> género y plural
         if (!genero){
@@ -964,7 +975,7 @@ window.LEMA = (function(){
       vistos[k] = 1;
       var o = { lema: lema, pos: pos, flex: flex, fuente: 'wiktionary' };
       if (registro) o.registro = registro;
-      if (def) o.def = def;                       // definicion en italiano (red de seguridad si el traductor cae)
+      if (defs.length){ o.defs = defs; o.def = defs[0]; }   // acepciones en italiano (red de seguridad si el traductor cae)
       if (pos === 'sustantivo' && !esForma){ if (genero) o.genero = genero; if (plural) o.plural = plural; }
       if (pos === 'verbo'){
         var a = auxDe(lema, b.trans);
@@ -1256,8 +1267,191 @@ window.TRAD = (function(){
     }));
   }
 
+
+  /* ---- SENTIDOS: 2-4 significados de diccionario, para que ÉL elija -----------------------
+     Antes el significado se DEDUCÍA restando dos traducciones (la frase, y la frase sin la
+     palabra). Era ingenioso y frágil: de ahí salió `spaccatura` -> «troceo». Ahora se pide el
+     diccionario y se le enseñan las opciones reales:
+        spaccatura -> (división) (escisión) · fiato -> (aliento) (respiración) (soplo) (hálito)
+     Una sola petición por palabra, en la misma cola y con la misma caché que el resto.
+     CADENA: googleapis (varias opciones) -> clients5 (una, otro host y otro límite, con CORS)
+             -> MyMemory (una, marcada dudosa). `translate.google.com` NO sirve: responde, pero
+             sin cabecera CORS, así que el navegador la bloquea (comprobado). */
+  var SKEY = 'italiano-sentidos-cache', SCACHE = {};
+  try { SCACHE = JSON.parse(localStorage.getItem(SKEY) || '{}'); } catch (e) {}
+  function guardarSentidos(){
+    try {
+      var ks = Object.keys(SCACHE);
+      if (ks.length > MAX) ks.slice(0, ks.length - MAX).forEach(function(k){ delete SCACHE[k]; });
+      localStorage.setItem(SKEY, JSON.stringify(SCACHE));
+    } catch (e) {}
+  }
+  function limpiar(lista, palabra){
+    var out = [], p = (palabra || '').toLowerCase();
+    (lista || []).forEach(function(t){
+      var s = ('' + (t || '')).trim().replace(/^[¿¡"'\s]+/, '').replace(/[?!"'\s]+$/, '').trim();
+      if (!s || s.length > 40) return;
+      if (s.toLowerCase() === p) return;                                   // sin traducir
+      // El traductor de respaldo devuelve «¿Amargado?» y se guardaba «Amargado». Si la palabra
+      // italiana va en minúscula, su significado también: si no, la lista acaba con mayúsculas
+      // sueltas (le pasó con «Amargado» y «Arrodíllate.», hubo que corregirlas a mano).
+      if (p && p[0] === p[0].toLowerCase() && s[0] === s[0].toUpperCase() && s !== s.toUpperCase())
+        s = s.charAt(0).toLowerCase() + s.slice(1);
+      if (out.some(function(x){ return x.toLowerCase() === s.toLowerCase(); })) return;
+      out.push(s);
+    });
+    return out.slice(0, 5);
+  }
+  function pedirSentidosGoogle(palabra){
+    var u = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=it&tl=es&dt=t&dt=at&q=' + encodeURIComponent(palabra);
+    return fetch(u).then(function(r){
+      if (!r.ok){ var e = new Error('HTTP ' + r.status); e.status = r.status; throw e; }
+      return r.json();
+    }).then(function(j){
+      var principal = (j && j[0]) ? j[0].map(function(x){ return x[0]; }).join('').trim() : '';
+      var alts = [];
+      try { alts = (j[5][0][2] || []).map(function(a){ return a[0]; }); } catch (e) {}
+      return limpiar([principal].concat(alts), palabra);
+    });
+  }
+  // Otro host de Google, con CORS y con su propio límite: da UNA traducción, pero buena.
+  function pedirSentidosClients5(palabra){
+    var u = 'https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=it&tl=es&q=' + encodeURIComponent(palabra);
+    return fetch(u).then(function(r){
+      if (!r.ok){ var e = new Error('HTTP ' + r.status); e.status = r.status; throw e; }
+      return r.json();
+    }).then(function(j){
+      var t = Array.isArray(j) ? (typeof j[0] === 'string' ? j[0] : (j[0] && j[0][0])) : null;
+      return limpiar([t], palabra);
+    });
+  }
+
+  /* Devuelve {opciones:[…], fuente, dudosa}. `dudosa` = hay que enseñarlo marcado. */
+  function sentidos(palabra){
+    var k = clave(palabra);
+    if (!k) return Promise.resolve({ opciones: [], fuente: null, dudosa: false });
+    if (SCACHE[k]) return Promise.resolve({ opciones: SCACHE[k].o || [], fuente: 'cache', dudosa: !!SCACHE[k].d });
+    return enCola(function(){
+      if (SCACHE[k]) return { opciones: SCACHE[k].o || [], fuente: 'cache', dudosa: !!SCACHE[k].d };
+      function guardar(ops, dudosa, fuente){
+        if (ops.length){ SCACHE[k] = { o: ops, d: dudosa ? 1 : 0 }; guardarSentidos(); }
+        return { opciones: ops, fuente: fuente, dudosa: dudosa };
+      }
+      var primero = bloqueado()
+        ? Promise.reject({ status: 429, cuarentena: true })
+        : pedirSentidosGoogle(palabra);
+      return primero.then(function(ops){
+        anotar('google', true); levantarBloqueo();
+        return guardar(ops, false, 'google');
+      }).catch(function(e){
+        if (e && (e.status === 429 || e.status === 403)) marcarBloqueo();
+        anotar('google', false, e && (e.status ? 'HTTP ' + e.status : e.message));
+        return pedirSentidosClients5(palabra).then(function(ops){
+          if (!ops.length) throw new Error('vacío');
+          return guardar(ops, false, 'google2');
+        }).catch(function(){
+          return pedirRespaldo(palabra).then(function(t){
+            anotar('respaldo', !!t);
+            return guardar(limpiar([t], palabra), true, 'respaldo');
+          }).catch(function(){ return { opciones: [], fuente: null, dudosa: false }; });
+        });
+      });
+    });
+  }
+
+
+  /* ---- LOTE: muchas palabras en UNA sola petición ---------------------------------------
+     LA CAUSA REAL de que Google nos bloquee. Abrir UN día del curso disparaba **71 peticiones**
+     (medido en dia01), una cada 180 ms, porque el glosado pedía cada palabra por separado. Con 28
+     días eso son miles de peticiones, y de ahí sale el HTTP 429 que dejó el vocabulario sin
+     traductor dos días. No hacía falta otro proveedor: hacía falta dejar de preguntar 71 veces.
+     El endpoint acepta varias líneas en un mismo `q=` y responde en el mismo orden, así que 71
+     peticiones se convierten en 3.
+     SEGURIDAD: si el número de líneas que vuelve no cuadra con las que se enviaron, no se puede
+     saber qué traducción es de qué palabra -> se descarta el lote y se piden una a una. Antes que
+     un dato mal emparejado, prefiero gastar una petición de más. */
+  var LOTE_MAX = 25;
+  function pedirLoteGoogle(palabras){
+    var q = palabras.join('\n');
+    var u = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=it&tl=es&dt=t&q=' + encodeURIComponent(q);
+    return fetch(u).then(function(r){
+      if (!r.ok){ var e = new Error('HTTP ' + r.status); e.status = r.status; throw e; }
+      return r.json();
+    }).then(function(j){
+      var t = (j && j[0]) ? j[0].map(function(x){ return x[0]; }).join('') : '';
+      var lineas = ('' + t).split('\n');
+      if (lineas.length !== palabras.length) return null;      // no cuadra: no se arriesga
+      var m = {};
+      palabras.forEach(function(p, i){
+        var v = (lineas[i] || '').trim();
+        if (v && v.toLowerCase() !== p.toLowerCase()) m[p] = v;
+      });
+      return m;
+    });
+  }
+
+  /* Traduce una lista. Devuelve Promise<{palabra: traducción}> — solo las que se pudieron. */
+  function lote(palabras){
+    var pedir = [], res = {};
+    (palabras || []).forEach(function(p){
+      var s = ('' + (p || '')).trim();
+      if (!s) return;
+      var k = clave(s);
+      if (CACHE[k]) { res[s] = CACHE[k].t; return; }
+      if (pedir.indexOf(s) < 0) pedir.push(s);
+    });
+    if (!pedir.length) return Promise.resolve(res);
+    if (bloqueado()) return Promise.resolve(res);              // en cuarentena: solo lo cacheado
+
+    var grupos = [];
+    for (var i = 0; i < pedir.length; i += LOTE_MAX) grupos.push(pedir.slice(i, i + LOTE_MAX));
+
+    return grupos.reduce(function(cadena, grupo){
+      return cadena.then(function(){
+        if (bloqueado()) return;                               // nos bloquearon a mitad: parar
+        return enCola(function(){ return pedirLoteGoogle(grupo); })
+          .then(function(m){
+            levantarBloqueo();
+            if (m){                                            // el lote cuadró
+              Object.keys(m).forEach(function(p){
+                res[p] = m[p]; CACHE[clave(p)] = { t: m[p], d: 0 };
+              });
+              guardarCache();
+              return;
+            }
+            // no cuadró: una a una, sin inventar emparejamientos
+            return grupo.reduce(function(c2, p){
+              return c2.then(function(){
+                return frase(p).then(function(t){ if (t) res[p] = t; });
+              });
+            }, Promise.resolve());
+          })
+          .catch(function(e){
+            if (e && (e.status === 429 || e.status === 403)) marcarBloqueo();
+            anotar('google', false, e && (e.status ? 'HTTP ' + e.status : e.message));
+          });
+      });
+    }, Promise.resolve()).then(function(){ return res; });
+  }
+
+  /* ---- ¿Merece la pena preguntar por esto? ----------------------------------------------
+     El glosado pedía la traducción de «A2», «vs», «B1», números y siglas — cosas que no son
+     palabras italianas. Cada una gastaba una petición del cupo que luego falta para el
+     vocabulario de verdad. */
+  var NIVELES = /^[abc][12]$/i;
+  function vale(palabra){
+    var s = ('' + (palabra || '')).trim();
+    if (s.length < 2) return false;                    // letras sueltas
+    if (NIVELES.test(s)) return false;                 // A2, B1, C1…
+    if (!/[a-zàèéìòùáíóúüA-ZÀÈÉÌÒÙ]/.test(s)) return false;   // números, signos
+    if (/^\d+$/.test(s.replace(/[.,%°]/g, ''))) return false;
+    if (s === s.toUpperCase() && s.length <= 4) return false; // siglas: PDF, ONU, IVA
+    if (/^(vs|etc|ecc|ok|km|kg|cm|mm|ml|pdf|url|app|web|tv|cd|dvd|pc)$/i.test(s)) return false;
+    return true;
+  }
+
   function enCache(texto){ return !!CACHE[clave(texto)]; }
-  return { frase: frase, detalle: detalle, probar: probar, salud: salud, enCache: enCache,
+  return { frase: frase, detalle: detalle, sentidos: sentidos, lote: lote, vale: vale, probar: probar, salud: salud, enCache: enCache,
            cuantasEnCache: function(){ return Object.keys(CACHE).length; },
            enCuarentena: bloqueado, cuarentenaHasta: bloqueadoHasta, levantarCuarentena: levantarBloqueo };
 })();

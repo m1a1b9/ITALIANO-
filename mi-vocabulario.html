@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mi Vocabulario · Italiano</title>
-<link rel="stylesheet" href="assets/curso.css?v=20260826a">
-<script src="assets/vocab.js?v=20260826a"></script>
-<script src="assets/frases.js?v=20260826a"></script>
+<link rel="stylesheet" href="assets/curso.css?v=20260828a">
+<script src="assets/vocab.js?v=20260828a"></script>
+<script src="assets/frases.js?v=20260828a"></script>
 <style>
   body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:760px;margin:0 auto;padding:2.5rem 1.5rem 4rem;line-height:1.5}
   .top{border-left:4px solid #c79a3a;padding-left:1rem;margin-bottom:1.2rem}
@@ -15,9 +15,6 @@
   .links{display:flex;gap:.6rem;flex-wrap:wrap;margin:.6rem 0 1.4rem}
   .links a,.links button{font-size:.82rem;color:#2d6a4f;text-decoration:none;border:1px solid #cfe3d8;border-radius:6px;padding:.4rem .7rem;background:#fff;cursor:pointer}
   .links a:hover,.links button:hover{background:#eef2ee}
-  .add{display:flex;gap:.5rem;flex-wrap:wrap;background:#fffaf0;border:1px solid #e8d9b5;border-radius:8px;padding:.9rem 1rem;margin-bottom:1.4rem}
-  .add input{flex:1;min-width:140px;border:1px solid #ddd;border-radius:6px;padding:.5rem .6rem;font-size:.9rem}
-  .add button{background:#c79a3a;color:#fff;border:0;border-radius:6px;padding:.5rem 1rem;font-weight:700;cursor:pointer}
   .stats{font-size:.85rem;color:#666;margin-bottom:.8rem}
   /* estado de la sincronizacion: discreto cuando todo va bien, visible cuando no */
   .sync{font-size:.8rem;margin:-.5rem 0 .9rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
@@ -71,8 +68,20 @@
   .cx-result button{background:#1a4d80;color:#fff;border:0;border-radius:6px;padding:.5rem 1rem;font-weight:700;cursor:pointer;margin-top:.5rem}
   .word .es{cursor:text}
   .es-edit{border:1px solid #c79a3a;border-radius:5px;padding:.25rem .45rem;font:inherit;font-size:.9rem;min-width:200px}
-  .cx-sensos{font-size:.83rem;color:#555;margin:.2rem 0 .1rem}
-  .cx-sensos b{color:#1a4d80}
+  /* significados para elegir: se tocan y rellenan el campo */
+  .cx-sensos{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;margin:.45rem 0 .1rem;font-size:.83rem;color:#555}
+  .cx-sensos .et{color:#7a94ad;font-size:.76rem}
+  .sen-op{background:#fff;border:1.5px solid #cddff0;border-radius:20px;padding:.3rem .75rem;
+          font:inherit;font-size:.85rem;cursor:pointer;color:#1a4d80}
+  .sen-op:hover{border-color:#1a4d80;background:#f2f8fd}
+  .sen-op.on{background:#1a4d80;border-color:#1a4d80;color:#fff;font-weight:700}
+  .cx-mas{margin:.5rem 0 .2rem;font-size:.83rem}
+  .cx-mas summary{cursor:pointer;color:#7a94ad;font-size:.8rem;list-style:none}
+  .cx-mas summary::-webkit-details-marker{display:none}
+  .cx-mas summary::before{content:"\25b8 "}
+  .cx-mas[open] summary::before{content:"\25be "}
+  .cx-base{font-size:.83rem;color:#555;margin-top:.3rem}
+  .cx-base b{font-style:italic;color:#14392b}
   /* lema / categoría: la palabra base desde la que se estudia y conjuga */
   .cx-lema{margin:.5rem 0 .2rem;font-size:.83rem;color:#555}
   .cx-lema .t{color:#7a5c12;font-weight:700;display:block;margin-bottom:.25rem}
@@ -135,12 +144,12 @@
   .w2 .acc .del2{color:#c0392b;border-color:#f0d5d2}
   .vacio2{text-align:center;color:#999;padding:2rem 1rem;background:#fff;border:1px dashed #ccc;border-radius:10px}
 </style>
-<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260826a"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260828a"></script>
 </head>
 <body>
 <div class="top">
   <h1>★ Mi Vocabulario Activo</h1>
-  <p>Palabras y frases que quieres llevar de <em>pasivo</em> a <em>activo</em>. Guárdalas con el botón ★ en los días, o agrégalas aquí a mano.</p>
+  <p>Palabras y frases que quieres llevar de <em>pasivo</em> a <em>activo</em>. Guárdalas con el botón ★ en los días, o pega abajo la frase donde la encontraste.</p>
 </div>
 
 <div class="links">
@@ -150,29 +159,26 @@
 </div>
 
 <div class="ctxadd">
-  <div class="ctxadd-h">🧩 Agregar con contexto <span>— pega la frase y elige la palabra (traducción más precisa)</span></div>
+  <div class="ctxadd-h">📖 Diccionario <span>— pega la frase, toca la palabra y elige su significado</span></div>
   <textarea id="cx-frase" placeholder="Pega aquí la frase completa donde encontraste la palabra… (ej. «artificiale che mescola forme ioniche ed eoliche»)"></textarea>
   <div id="cx-tokens" class="cx-tokens"></div>
   <div id="cx-result" class="cx-result" style="display:none">
-    <div class="cx-line"><b>Frase:</b> <span id="cx-frase-es">…</span></div>
+    <div class="cx-line"><span id="cx-frase-es">…</span></div>
     <div class="cx-word">
       <span class="cx-it" id="cx-word-it"></span>
-      <input id="cx-word-es" placeholder="significado en contexto (edítalo si hace falta)">
+      <input id="cx-word-es" placeholder="significado">
     </div>
-    <div class="cx-defit" id="cx-defit"></div>
     <div class="cx-sensos" id="cx-sensos"></div>
     <div class="cx-lema" id="cx-lema"></div>
-    <button id="cx-save">★ Guardar con este significado</button>
+    <details class="cx-mas" id="cx-mas">
+      <summary>más</summary>
+      <div class="cx-defit" id="cx-defit"></div>
+      <div class="cx-base" id="cx-base"></div>
+    </details>
+    <button id="cx-save">★ Guardar</button>
   </div>
 </div>
 
-<div class="add">
-  <input id="in-it" placeholder="Palabra o frase en italiano (de una canción, etc.)">
-  <input id="in-es" placeholder="Significado (se completa solo)">
-  <input id="in-ctx" placeholder="¿Dónde la encontraste? (opcional)">
-  <button id="add-btn">＋ Agregar</button>
-</div>
-<p style="font-size:.82rem;color:#8a6d1f;background:#fffaf0;border:1px solid #e8d9b5;border-radius:8px;padding:.5rem .8rem;margin:-.6rem 0 1.4rem">💡 <strong>Verbos:</strong> guarda el <strong>infinitivo</strong> (ej. <em>scattare</em>) y pon la forma que viste (ej. <em>scattano</em>) en el campo de origen. Así aprendes el verbo completo.</p>
 
 <div class="stats" id="stats"></div>
 <div class="sync" id="sync"></div>
@@ -249,18 +255,8 @@ function shorten(s){if(!s)return null;s=(''+s).replace(/<[^>]+>/g,'').trim().spl
 function defLocal(it){var n=norm(it);return DEF_IT[n]||FCACHE[n]||null;}
 // Si Google ya nos bloqueó (429) no se le vuelve a llamar: insistir alarga el bloqueo.
 function defOnline(t){if(tradBloqueado())return Promise.resolve(null);return fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=it&tl=it&dt=md&q='+encodeURIComponent(t)).then(function(r){return r.json()}).then(function(j){var md=j&&j[12];if(!md||!md.length)return null;var e=md[0]&&md[0][1]&&md[0][1][0];var def=Array.isArray(e)?e[0]:e;return shorten(def);}).catch(function(){return null});}
-// Varios sentidos (traducciones alternativas it→es, dt=at — el diccionario dt=bd está vacío en este endpoint)
-function dictOnline(t){if(tradBloqueado())return Promise.resolve(null);var stripAcc=function(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();};var wn=stripAcc(t);
-  return fetch('https://translate.googleapis.com/translate_a/single?client=gtx&sl=it&tl=es&dt=t&dt=at&q='+encodeURIComponent(t)).then(function(r){return r.json()}).then(function(j){
-  var terms=[]; try{(j[5][0][2]||[]).forEach(function(a){if(a&&a[0]&&stripAcc(a[0])!==wn&&terms.indexOf(a[0])<0)terms.push(a[0]);});}catch(e){}
-  return terms.length>1?terms.slice(0,8).join(', '):null;   // solo si hay MÁS de un sentido (y ninguno = la palabra sin traducir)
-}).catch(function(){return null});}
-function autofill(){var itEl=document.getElementById('in-it'),esEl=document.getElementById('in-es');
-  var it=itEl.value.trim(); if(!it||esEl.value.trim())return;
-  var es=lookup(it); if(es){esEl.value=es;return;}
-  esEl.placeholder='buscando…';
-  translateOnline(it).then(function(t){esEl.placeholder='Significado (se completa solo si está en el glosario)';if(t&&!esEl.value.trim()){esEl.value=t;cacheSet(norm(it),t);}});}
-
+// Los significados salen ahora de TRAD.sentidos (assets/vocab.js): misma cola, misma caché y
+// misma cuarentena que el resto. Antes esto era una TERCERA llamada suelta a Google.
 // audio italiano
 var itVoice=null;
 function pick(){var vs=speechSynthesis.getVoices();itVoice=vs.find(function(v){return /^it/i.test(v.lang)&&!/pt|bra/i.test(v.lang+v.name)})||null;}
@@ -460,23 +456,6 @@ function editable(el,valor,onSave,ph){
   rv.onclick=function(){F.rev=!F.rev;rv.classList.toggle('on',F.rev);render();};
   marcarEstado();
 })();
-document.getElementById('in-it').addEventListener('blur',autofill);
-document.getElementById('add-btn').onclick=function(){
-  var it=document.getElementById('in-it').value.trim(), es=document.getElementById('in-es').value.trim();
-  var ctx=document.getElementById('in-ctx').value.trim();
-  if(!it)return;
-  if(!es)es=lookup(it)||'';
-  if(!sirveEs(es))es='';                       // nunca guardar un marcador como significado
-  var l=load();
-  var yaEsta=l.filter(function(w){return norm(w.it)===norm(it)})[0];
-  if(yaEsta&&!yaEsta.borrada){alert('Ya está en tu lista.');return;}
-  if(yaEsta){                                  // estaba borrada: se revive en vez de duplicarla
-    delete yaEsta.borrada; yaEsta.es=es||yaEsta.es; yaEsta.ctx=ctx||yaEsta.ctx; yaEsta.m=Date.now();
-  }else l.push({it:it,es:es,ctx:ctx,estado:'practica',t:Date.now(),m:Date.now()});
-  save(l);
-  document.getElementById('in-it').value='';document.getElementById('in-es').value='';document.getElementById('in-ctx').value='';
-  render();resolveMissing();
-};
 document.getElementById('export').onclick=function(){
   var blob=new Blob([JSON.stringify(load(),null,2)],{type:'application/json'});
   var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mi-vocabulario-italiano.json';a.click();
@@ -571,74 +550,101 @@ function resolveLemas(){
   var wordItEl=document.getElementById('cx-word-it'), wordEsEl=document.getElementById('cx-word-es');
   var defitEl=document.getElementById('cx-defit'), saveBtn=document.getElementById('cx-save');
   var sensosEl=document.getElementById('cx-sensos'), lemaEl=document.getElementById('cx-lema');
+  var masEl=document.getElementById('cx-mas'), baseEl=document.getElementById('cx-base');
+  var lecturas=null, opciones=null;      // lo que devuelven Wiktionary y el diccionario
   var sel=null, lemaSel=null;   // lemaSel = la lectura que el usuario elige (o la única que haya)
 
   /* Lema y categoría: cuando hay más de una lectura (p. ej. «premuto» = adjetivo O participio de
      «premere») se ofrecen para elegir AQUÍ, que es donde se tiene la frase delante. */
-  function pintarLemas(palabra){
+  /* Wiktionary: palabra base, categoría y acepciones. El selector de base solo sale A LA VISTA
+     cuando hay ambigüedad REAL de categoría (verbo o sustantivo, como «compito» o «giunto»),
+     porque eso cambia lo que va a estudiar. Si no, se va al plegado: era una de las cinco cosas
+     que aparecían a la vez y sobraba. */
+  function pintarLemas(palabra,frase){
     lemaEl.innerHTML=''; lemaSel=null;
-    if(!window.LEMA)return;
-    lemaEl.innerHTML='<span class="t">buscando la palabra base…</span>';
+    if(!window.LEMA){ lecturas=[]; pintarSentidos(); return; }
     LEMA.analizar(palabra).then(function(ls){
       if(sel!==palabra)return;                       // el usuario ya cambió de palabra
-      if(!ls.length){lemaEl.innerHTML='<span class="t">Palabra base: no la encontré — puedes escribirla luego en la lista</span>';return;}
-      lemaSel=ls[0];
-      var titulo=ls.length>1
-        ? '¿Cuál es aquí? — toca la correcta según tu frase'
-        : 'Palabra base'+(ls[0].fuente==='regla'?' (supuesta: revísala)':'');
-      var h='<span class="t">'+titulo+'</span>';
-      ls.forEach(function(l,i){
-        h+='<button type="button" class="lema-op'+(i===0?' on':'')+'" data-i="'+i+'">'+
+      lecturas=ls||[];
+      // TU FRASE decide cuál lectura es, con el mismo desambiguador que usa la lista:
+      // «il compito» -> sustantivo · «hai eseguito» -> verbo. Si lo resuelve, no hay nada que preguntar.
+      var auto=(LEMA.elegirPorContexto&&lecturas.length>1)?LEMA.elegirPorContexto(lecturas,frase,palabra):-1;
+      lemaSel=lecturas.length?lecturas[auto>=0?auto:0]:null;
+      pintarSentidos();                              // reordena los significados según la categoría
+      pintarMas();
+      var categorias={}; lecturas.forEach(function(l){if(l.pos)categorias[l.pos]=1;});
+      var ambiguo=auto<0 && lecturas.length>1 && Object.keys(categorias).length>1;
+      if(!ambiguo)return;                            // lo demás vive en «más»
+      var h='<span class="t">¿Cuál es aquí? — toca la correcta según tu frase</span>';
+      lecturas.forEach(function(l,i){
+        h+='<button type="button" class="lema-op'+(lecturas[i]===lemaSel?' on':'')+'" data-i="'+i+'">'+
            (l.lema?'<b>'+esc(l.lema)+'</b>':'')+'<span class="cat">'+esc(l.pos||'')+
            (l.flex?' · '+esc(l.flex):'')+'</span></button>';
       });
-      mostrarDef(ls,palabra);
       lemaEl.innerHTML=h;
       [].slice.call(lemaEl.querySelectorAll('.lema-op')).forEach(function(b){
         b.onclick=function(){
           lemaEl.querySelectorAll('.lema-op').forEach(function(x){x.classList.remove('on')});
-          b.classList.add('on'); lemaSel=ls[+b.getAttribute('data-i')];
+          b.classList.add('on');
+          lemaSel=lecturas[+b.getAttribute('data-i')];
+          pintarSentidos(); pintarMas();             // otra categoría => otro orden y otras acepciones
         };
       });
-    });
+    }).catch(function(){ if(sel===palabra){lecturas=[];pintarSentidos();} });
   }
   function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-  /* Definición en italiano. PRIMERO Wiktionary: su texto ya viene descargado para sacar el lema,
-     así que no cuesta ni una petición más, y es lo ÚNICO que seguía respondiendo en el iPad
-     mientras Google estaba bloqueado. Google queda de última opción y solo si no hay cuarentena. */
-  function mostrarDef(ls,palabra){
-    if(sel!==palabra)return;
-    var d=null;
-    (ls||[]).forEach(function(l){if(!d&&l.def)d=l.def;});
-    if(!d)d=defLocal(palabra);
-    if(d){defitEl.textContent='🇮🇹 '+d;return;}
-    defOnline(palabra).then(function(x){if(x&&sel===palabra)defitEl.textContent='🇮🇹 '+x;});
-  }
   function clean(w){return w.replace(/^[«»"“”'.,;:!¿?()\[\]…]+|[«»"“”'.,;:!¿?()\[\]…]+$/g,'');}
-  function normWords(s){return (s||'').toLowerCase().replace(/[.,;:!¿?()«»"“”…]/g,' ').split(/\s+/).filter(Boolean);}
-  // conectores/artículos que son ruido en el diff (no son la traducción de la palabra)
-  var STOP={'el':1,'la':1,'los':1,'las':1,'un':1,'una':1,'unos':1,'unas':1,'lo':1,'le':1,'les':1,
-    'de':1,'del':1,'al':1,'a':1,'y':1,'e':1,'o':1,'u':1,'que':1,'por':1,'para':1,'con':1,'sin':1,
-    'en':1,'es':1,'son':1,'su':1,'sus':1,'se':1,'todo':1,'todos':1,'toda':1,'todas':1,'tanto':1,
-    'tan':1,'mas':1,'muy':1,'pero':1,'como':1,'este':1,'esta':1,'ese':1,'esa':1};
-  // palabras de fraseES que NO están cubiertas por la frase-sin-la-palabra ≈ traducción en contexto.
-  // Filtra conectores y descarta si queda la propia palabra (= Google no la tradujo) o si es muy larga.
-  function contextDiff(fraseES,sinES,word){
-    var pool=normWords(sinES).slice(), extra=[];
-    normWords(fraseES).forEach(function(w){var i=pool.indexOf(w);if(i>=0)pool.splice(i,1);else extra.push(w);});
-    var wn=norm(word);
-    extra=extra.filter(function(w){return !STOP[w] && w!==wn;});
-    var out=extra.join(' ').trim();
-    return (out && out.length<=40 && extra.length<=3) ? out : null;
+  /* Se ha ido el motor de «deducir» el significado restando dos traducciones (la frase, y la
+     frase sin la palabra). Era ingenioso y frágil: de ahí salió `spaccatura` -> «troceo», y
+     gastaba dos peticiones por palabra. Ahora se pide el diccionario y ÉL elige entre las
+     acepciones reales, que es lo que pidió. */
+
+  // El diccionario da varias opciones; se ordenan según la categoría que dijo Wiktionary. Para un
+  // sustantivo, «división» vale más que «dividir». No se descarta nada: solo se reordena.
+  var PARECE_VERBO=/(ar|er|ir)(se)?$/i;
+  function ordenarOpciones(ops,pos){
+    if(!pos)return ops.slice();
+    var esVerbo=pos==='verbo';
+    return ops.slice().sort(function(a,b){
+      var va=PARECE_VERBO.test(a)?1:0, vb=PARECE_VERBO.test(b)?1:0;
+      return esVerbo ? vb-va : va-vb;   // sort estable: si empatan, se respeta el orden de Google
+    });
   }
-  function solaFallback(word){
-    // Último recurso: la palabra sola. Si no sale nada, campo VACÍO y un aviso NEUTRO: no se puede
-    // saber si el traductor falló o si de verdad no tiene traducción, así que no se afirma ninguna
-    // de las dos (antes decía «Google no traduce esta palabra» incluso cuando el servicio no respondía).
-    translateOnline(word).then(function(sola){
-      if(sola && norm(sola)!==norm(word)){wordEsEl.value=sola;}
-      else{wordEsEl.value='';wordEsEl.placeholder='escríbelo tú, o guárdala y se completa después';}
-    }).catch(function(){wordEsEl.value='';});
+  function pintarSentidos(){
+    if(opciones===null){sensosEl.innerHTML='<span class="et">buscando significados…</span>';return;}
+    var pos=(lemaSel&&lemaSel.pos)||((lecturas&&lecturas.length)?lecturas[0].pos:null);
+    var ops=ordenarOpciones(opciones.opciones||[],pos).slice(0,4);
+    if(!ops.length){
+      // Sin diccionario. Las acepciones italianas de Wiktionary son la red de seguridad: es lo
+      // único que seguía respondiendo en su iPad cuando Google estaba bloqueado.
+      var defs=(lecturas&&lecturas.length&&lecturas[0].defs)||[];
+      sensosEl.innerHTML=defs.length
+        ? '<span class="et">el traductor no responde. En italiano significa: <i>'+esc(defs[0])+'</i> — escribe tú el significado</span>'
+        : '<span class="et">el traductor no responde — escribe tú el significado</span>';
+      return;
+    }
+    var h='<span class="et">significados:</span>';
+    ops.forEach(function(o,i){h+='<button type="button" class="sen-op" data-i="'+i+'">'+esc(o)+'</button>';});
+    if(opciones.dudosa)h+='<span class="cx-dudosa">⚠ del traductor de respaldo — revísalo</span>';
+    sensosEl.innerHTML=h;
+    var btns=[].slice.call(sensosEl.querySelectorAll('.sen-op'));
+    function marcar(b){btns.forEach(function(x){x.classList.remove('on')});if(b)b.classList.add('on');}
+    btns.forEach(function(b){
+      b.onclick=function(){ wordEsEl.value=ops[+b.getAttribute('data-i')]; marcar(b); };
+    });
+    // se preselecciona el primero para no obligarle a tocar si ya es el bueno
+    if(!wordEsEl.value.trim()){ wordEsEl.value=ops[0]; marcar(btns[0]); }
+    wordEsEl.placeholder='significado';
+  }
+  function pintarMas(){
+    var l=lemaSel||((lecturas&&lecturas.length)?lecturas[0]:null);
+    var defs=(l&&l.defs)||[];
+    defitEl.innerHTML=defs.length
+      ? '🇮🇹 '+defs.map(function(d){return esc(d)}).join('<br>🇮🇹 ')
+      : '';
+    baseEl.innerHTML=l&&l.lema
+      ? 'palabra base: <b>'+esc(l.lema)+'</b> · '+esc(l.pos||'')+(l.flex?' ('+esc(l.flex)+')':'')
+      : '';
   }
   function renderTokens(){
     var s=fraseEl.value; tokensEl.innerHTML=''; sel=null; resEl.style.display='none';
@@ -662,45 +668,52 @@ function resolveLemas(){
     // OJO: el campo se deja VACÍO mientras traduce y el aviso va en el placeholder, que NO se guarda.
     // Antes se le ponía el texto «…» como valor: si guardabas antes de que llegara la traducción (o si
     // fallaba), se guardaba «…» como significado. Así quedó `giunto` el 29-jul.
-    wordItEl.textContent=word; wordEsEl.value=''; wordEsEl.placeholder='traduciendo…';
-    fraseEsEl.textContent='traduciendo…'; defitEl.textContent='';
-    sensosEl.innerHTML='';
-    dictOnline(word).then(function(s){if(s&&sel===word)sensosEl.innerHTML='<b>Otros sentidos:</b> '+s;});
-    pintarLemas(word);   // de aquí sale también la definición en italiano (Wiktionary)
+    // OJO: el campo se deja VACÍO mientras busca y el aviso va en el placeholder, que NO se guarda.
+    wordItEl.textContent=word; wordEsEl.value=''; wordEsEl.placeholder='buscando…';
+    fraseEsEl.textContent='traduciendo la frase…'; defitEl.textContent=''; baseEl.innerHTML='';
+    lemaEl.innerHTML=''; masEl.open=false;
+    lecturas=null; opciones=null; pintarSentidos();
+
+    // 1) la frase entera en español
     translateDetalle(frase).then(function(r){
-      if(sel!==word)return;                       // ya cambió de palabra
+      if(sel!==word)return;
       var fraseES=(r.texto&&!r.igual)?r.texto:null;
-      wordEsEl.placeholder='significado en contexto (edítalo si hace falta)';
-      if(!fraseES){ fraseEsEl.textContent=FALLO_TRADUCTOR; solaFallback(word); return; }
+      if(!fraseES){ fraseEsEl.textContent=FALLO_TRADUCTOR; return; }
       // Si vino del traductor de respaldo hay que DECIRLO: acierta con las frases pero se
       // equivoca con palabras sueltas («giunto» -> «junta»), así que no puede pasar por buena.
       fraseEsEl.innerHTML=esc(fraseES)+(r.dudosa?' <span class="cx-dudosa">⚠ traducción de respaldo — revísala</span>':'');
-      var local=lookup(word); if(local){wordEsEl.value=local;return;}
-      var re=new RegExp('\\b'+word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i');
-      var sinES=frase.replace(re,' ').replace(/\s+/g,' ').trim();
-      translateOnline(sinES).then(function(sinES2){
-        if(sel!==word)return;
-        var ctx=sinES2?contextDiff(fraseES,sinES2,word):null;
-        if(ctx){wordEsEl.value=ctx;} else{solaFallback(word);}
-      }).catch(function(){solaFallback(word);});
-    }).catch(function(){
+    }).catch(function(){ if(sel===word)fraseEsEl.textContent=FALLO_TRADUCTOR; });
+
+    // 2) los significados de LA PALABRA, para que él elija
+    var local=lookup(word);                       // tu glosario curado manda
+    if(local){wordEsEl.value=local;}
+    (window.TRAD?TRAD.sentidos(word):Promise.resolve({opciones:[]})).then(function(r){
       if(sel!==word)return;
-      wordEsEl.placeholder='escríbelo tú, o déjalo y se completa después';
-      fraseEsEl.textContent=FALLO_TRADUCTOR; wordEsEl.value='';
-    });
+      opciones=r; pintarSentidos();
+    }).catch(function(){ if(sel===word){opciones={opciones:[]};pintarSentidos();} });
+
+    // 3) palabra base y acepciones en italiano (Wiktionary, sin coste extra)
+    pintarLemas(word,frase);
   }
   saveBtn.onclick=function(){
     if(!sel){alert('Primero haz clic en la palabra que quieres guardar.');return;}
     var l=load();
-    if(l.some(function(w){return norm(w.it)===norm(sel)})){alert('"'+sel+'" ya está en tu lista.');return;}
+    /* OJO con las LÁPIDAS: una palabra borrada sigue en el array marcada `borrada`, invisible.
+       Antes esta comprobación miraba TODAS las entradas, así que una palabra que habías borrado
+       ya no se podía volver a agregar: decía «ya está en tu lista» y no aparecía por ningún lado.
+       La lógica de revivir vivía solo en la fila manual, que ya no existe. */
+    var yaEsta=l.filter(function(w){return norm(w.it)===norm(sel)})[0];
+    if(yaEsta&&!yaEsta.borrada){alert('"'+sel+'" ya está en tu lista.');return;}
     // si el traductor falló, se guarda el significado VACÍO (nunca «…»): así entra en la cola de
     // relleno automático y sale en el filtro «⚠ por revisar», en vez de quedar con basura para siempre.
     var es=wordEsEl.value.trim(); if(!sirveEs(es))es='';
-    var it=defitEl.textContent.replace(/^🇮🇹\s*/,'').trim();
+    var it=(lemaSel&&lemaSel.defs&&lemaSel.defs[0])||'';
     // se guarda la forma TAL CUAL la seleccionaste (it) + su palabra base para poder estudiarla
-    var e={it:sel,es:es,ctx:fraseEl.value.trim(),itdef:it||'',estado:'practica',t:Date.now(),m:Date.now()};
+    var e=yaEsta||{it:sel,t:Date.now()};
+    if(yaEsta)delete e.borrada;                    // estaba borrada: se revive en vez de duplicarla
+    e.es=es; e.ctx=fraseEl.value.trim(); e.itdef=it||''; e.estado=e.estado||'practica'; e.m=Date.now();
     if(lemaSel){e.lema=lemaSel.lema||'';e.pos=lemaSel.pos||'';e.flex=lemaSel.flex||'';e.lemaFuente=lemaSel.fuente||'';}
-    l.push(e);
+    if(!yaEsta)l.push(e);
     save(l); if(es)cacheSet(norm(sel),es);
     fraseEl.value=''; renderTokens(); render();
   };

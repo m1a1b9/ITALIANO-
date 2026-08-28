@@ -304,18 +304,28 @@
      la traducción UNA sola vez por palabra y se aplica a TODAS sus apariciones a la vez. */
   function resolverPendientes(pend){
     var claves=Object.keys(pend);
-    (function step(i){
-      if(i>=claves.length)return;
-      var k=claves[i], p=pend[k];
-      translateOnline(p.raw).then(function(t){
-        if(t){
-          cacheSet(k,t);
-          p.nodes.forEach(function(tn){
-            if(tn.parentNode)tn.parentNode.replaceChild(makeSpan('g',t,tn.nodeValue),tn);
-          });
-        }else notrSet(k);
-      }).then(function(){setTimeout(function(){step(i+1)},180)});
-    })(0);
+    if(!claves.length)return;
+    /* ANTES: una petición por palabra, cada 180 ms. Medido en dia01: **71 peticiones** solo por
+       abrir el día, y entre ellas «A2», «vs» o «B1», que ni siquiera son palabras. Multiplicado por
+       28 días, eso es lo que le ganaba a Google el HTTP 429 que dejó el vocabulario sin traductor
+       dos días. No hacía falta cambiar de traductor: hacía falta dejar de preguntar tanto.
+       AHORA: se descarta lo que no es palabra y el resto va en lotes de 25 -> 3 peticiones. */
+    var utiles=[], basura=[];
+    claves.forEach(function(k){
+      ((window.TRAD&&TRAD.vale)?TRAD.vale(pend[k].raw):true) ? utiles.push(k) : basura.push(k);
+    });
+    basura.forEach(notrSet);                      // no se vuelve a preguntar por ellas
+    if(!utiles.length||!window.TRAD||!TRAD.lote)return;
+    TRAD.lote(utiles.map(function(k){return pend[k].raw;})).then(function(mapa){
+      utiles.forEach(function(k){
+        var p=pend[k], t=mapa[p.raw];
+        if(!t){notrSet(k);return;}
+        cacheSet(k,t);
+        p.nodes.forEach(function(tn){
+          if(tn.parentNode)tn.parentNode.replaceChild(makeSpan('g',t,tn.nodeValue),tn);
+        });
+      });
+    }).catch(function(){});
   }
 
   /* ---------- 3. TRADUCTOR DE SELECCIÓN ---------- */
