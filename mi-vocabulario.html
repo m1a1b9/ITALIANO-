@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mi Vocabulario · Italiano</title>
-<link rel="stylesheet" href="assets/curso.css?v=20260828b">
-<script src="assets/vocab.js?v=20260828b"></script>
-<script src="assets/frases.js?v=20260828b"></script>
+<link rel="stylesheet" href="assets/curso.css?v=20260828c">
+<script src="assets/vocab.js?v=20260828c"></script>
+<script src="assets/frases.js?v=20260828c"></script>
 <style>
   body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#1c1c1e;max-width:760px;margin:0 auto;padding:2.5rem 1.5rem 4rem;line-height:1.5}
   .top{border-left:4px solid #c79a3a;padding-left:1rem;margin-bottom:1.2rem}
@@ -153,7 +153,7 @@
   .w2 .acc .del2{color:#c0392b;border-color:#f0d5d2}
   .vacio2{text-align:center;color:#999;padding:2rem 1rem;background:#fff;border:1px dashed #ccc;border-radius:10px}
 </style>
-<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260828b"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script defer src="assets/firebase.js?v=20260828c"></script>
 </head>
 <body>
 <div class="top">
@@ -674,22 +674,55 @@ function resolveLemas(){
       if(op){inp2.value=op;cacheSet(norm(l.lema),op);}
     }).catch(function(){});
   }
+  /* FRASES DE VARIAS PALABRAS. 9 de sus 80 entradas son locuciones («fare strada», «non è un
+     granché»), y entraban por la fila manual que se quitó: sin esto no tendría por dónde meterlas.
+     REGLA: tocar una palabra la elige a ella. Tocar la de al lado ESTIRA la selección, así que una
+     frase se va formando tocando sus palabras en orden: non → è → un → granché.
+     Tocar una palabra lejana empieza de cero, y tocar una que ya está dentro deja solo esa.
+     POR QUÉ ASÍ y no «toca la primera y la última»: con aquella regla, mirar otra palabra suelta
+     —que es lo que más se hace— obligaba a tocar dos veces, porque el 2.º toque siempre creaba una
+     frase. Exigir que sea la de al lado quita esa ambigüedad sin añadir ningún botón. */
+  var toks=[], iIni=-1, iFin=-1;
+  function textoSel(){
+    if(iIni<0)return '';
+    var a=Math.min(iIni,iFin), b=Math.max(iIni,iFin), out=[];
+    for(var i=a;i<=b;i++)out.push(clean(toks[i].textContent));
+    return out.join(' ').replace(/\s+/g,' ').trim();
+  }
+  function pintarSeleccion(){
+    var a=Math.min(iIni,iFin), b=Math.max(iIni,iFin);
+    toks.forEach(function(sp,i){ sp.classList.toggle('sel', iIni>=0 && i>=a && i<=b); });
+    var n=(iIni<0)?0:(b-a+1);
+    hintEl.textContent = n===0
+      ? '👆 Toca la palabra que quieres guardar. ¿Es una frase? Toca sus palabras seguidas, una tras otra.'
+      : (n===1
+          ? '👆 «'+textoSel()+'». Si es parte de una frase, toca la palabra de al lado para estirarla.'
+          : '👆 Frase de '+n+' palabras. Sigue tocando a los lados para estirarla, o toca otra para empezar de nuevo.');
+  }
+  var hintEl=null;
   function renderTokens(){
     var s=fraseEl.value; tokensEl.innerHTML=''; sel=null; resEl.style.display='none';
+    toks=[]; iIni=-1; iFin=-1;
     if(!s.trim())return;
-    var hint=document.createElement('div');hint.className='cx-hint';hint.textContent='👆 Haz clic en la palabra que quieres guardar:';
-    tokensEl.appendChild(hint);
+    hintEl=document.createElement('div'); hintEl.className='cx-hint';
+    tokensEl.appendChild(hintEl);
     var wrap=document.createElement('div');
     s.split(/(\s+)/).forEach(function(t){
       if(/^\s+$/.test(t)||!clean(t)){wrap.appendChild(document.createTextNode(t));return;}
       var sp=document.createElement('span');sp.className='tk';sp.textContent=t;
+      var idx=toks.length; toks.push(sp);
       sp.onclick=function(){
-        wrap.querySelectorAll('.tk.sel').forEach(function(x){x.classList.remove('sel')});
-        sp.classList.add('sel'); pick(clean(t), s);
+        var a=Math.min(iIni,iFin), b=Math.max(iIni,iFin);
+        if(iIni>=0 && idx===b+1)      iFin=idx, iIni=a;     // la de la derecha: estira
+        else if(iIni>=0 && idx===a-1) iIni=idx, iFin=b;     // la de la izquierda: estira
+        else                          iIni=idx, iFin=idx;   // lejana, o ya dentro: solo esa
+        pintarSeleccion();
+        pick(textoSel(), s);
       };
       wrap.appendChild(sp);
     });
     tokensEl.appendChild(wrap);
+    pintarSeleccion();
   }
   function pick(word,frase){
     sel=word; resEl.style.display='block';
@@ -712,10 +745,17 @@ function resolveLemas(){
       fraseEsEl.innerHTML=esc(fraseES)+(r.dudosa?' <span class="cx-dudosa">⚠ traducción de respaldo — revísala</span>':'');
     }).catch(function(){ if(sel===word)fraseEsEl.textContent=FALLO_TRADUCTOR; });
 
-    // 2) los significados de LA PALABRA, para que él elija
+    // 2) el significado. Una PALABRA va al diccionario (varias acepciones para elegir); una
+    //    FRASE se traduce entera: pedirle acepciones a «non è un granché» no tiene sentido.
+    var esFrase=/\s/.test(word);
     var local=lookup(word);                       // tu glosario curado manda
     if(local){wordEsEl.value=local;}
-    (window.TRAD?TRAD.sentidos(word):Promise.resolve({opciones:[]})).then(function(r){
+    var busca = !window.TRAD ? Promise.resolve({opciones:[]})
+              : esFrase ? TRAD.detalle(word).then(function(r){
+                  return {opciones:(r.texto&&!r.igual)?[r.texto]:[], dudosa:r.dudosa};
+                })
+              : TRAD.sentidos(word);
+    busca.then(function(r){
       if(sel!==word)return;
       opciones=r; pintarSentidos();
     }).catch(function(){ if(sel===word){opciones={opciones:[]};pintarSentidos();} });
